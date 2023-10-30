@@ -1,0 +1,48 @@
+version: '3'
+services:
+  etl-demo:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: docker_health
+    ports:
+      - 5000:5000
+    networks:
+      - hdp-dh-net
+    volumes:
+      - ./.hdpdata:/var/lib/hdp/data
+  ehrbase:
+    image: ehrbase/ehrbase:0.31.0
+    ports:
+      - 8080:8080
+    networks:
+      hdp-dh-net:
+        aliases:
+          - hdp-ehrbase-net
+    env_file:
+      - ehrbase/.env.ehrbase
+    environment:
+      VIRTUAL_HOST: hdp.dh.unimaas.nl
+      DB_URL: jdbc:postgresql://ehrdb:5432/ehrbase
+      DB_USER_ADMIN: ehrbase
+      DB_PASS_ADMIN: ehrbase
+      DB_USER: ehrbase_restricted
+      DB_PASS: ehrbase_restricted
+    restart: on-failure
+  ehrdb:
+    image: ehrbase/ehrbase-postgres:13.4.v2
+    ports:
+      - 5432:5432
+    networks:
+      - hdp-dh-net
+    volumes:
+      - ./ehrbase/.pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      EHRBASE_USER_ADMIN: ehrbase
+      EHRBASE_PASSWORD_ADMIN: ehrbase
+      EHRBASE_USER: ehrbase_restricted
+      EHRBASE_PASSWORD: ehrbase_restricted
+networks:
+  hdp-dh-net: {}

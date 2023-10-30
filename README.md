@@ -29,3 +29,19 @@ pandas
 matplotlib
 ```
 
+# Docker
+
+## Get EHRbase docker image
+
+```
+git clone https://github.com/ehrbase/ehrbase.git
+cd ehrbase/
+docker pull ehrbase/ehrbase
+```
+
+## Run multi-containers (EHRbase + EHRDB + python ETL)
+
+```
+cd ..
+docker-compose up
+```

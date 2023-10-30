@@ -1,3 +1,4 @@
+from pathlib import Path
 import json
 from datetime import datetime
 from typing import List
@@ -11,7 +12,11 @@ from pydantic import BaseModel
 
 EHRBASE_USERRNAME = "ehrbase-user"
 EHRBASE_PASSWORD = "SuperSecretPassword"
-EHRBASE_BASE_URL = "http://localhost:8080/ehrbase/rest/openehr/v1"
+EHRBASE_BASE_URL = "http://hdp-ehrbase-net:8080/ehrbase/rest/openehr/v1"
+
+TEMPLATE_PATH = Path("data/template")
+COMPOSITION_PATH = Path("data/composition")
+SYNTHEA_PATH = Path("data/synthea_csv")
 
 
 class VitalSigns(BaseModel):
@@ -430,21 +435,21 @@ def main():
     """
     # all_ehr_ids = get_all_ehr_id()
     # list_all_templates()
-    post_template("vital_signs.opt")
+    post_template(TEMPLATE_PATH / "vital_signs.opt")
     # list_all_templates()
 
     patient_id = "a2f7ab19-64e1-6fb3-7232-413f04c55100"
 
     ehr_id = create_ehr(patient_id)
 
-    observations = pd.read_csv("synthea_csv/observations.csv")
-    encounters = pd.read_csv("synthea_csv/encounters.csv")
+    observations = pd.read_csv(SYNTHEA_PATH / "observations.csv")
+    encounters = pd.read_csv(SYNTHEA_PATH / "encounters.csv")
 
     patient_encounters = encounters.loc[encounters["PATIENT"] == patient_id]
     encounter_ids = patient_encounters["Id"].tolist()
 
     for encounter_id in encounter_ids:
-        composition = load_composition_example("vital_signs_20231025075308_000001_1.json")
+        composition = load_composition_example(COMPOSITION_PATH / "vital_signs_20231025075308_000001_1.json")
 
         encounter_start = encounters.loc[encounters["Id"] == encounter_id]["START"].values[0]
         encounter_stop = encounters.loc[encounters["Id"] == encounter_id]["STOP"].values[0]
