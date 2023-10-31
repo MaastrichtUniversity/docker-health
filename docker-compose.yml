@@ -2,17 +2,15 @@ version: '3'
 services:
   etl-demo:
     build:
-      context: ./
+      context: ./ETL
       dockerfile: Dockerfile
-    image: docker_health
-    ports:
-      - 5000:5000
+    image: etl_demo
     networks:
       - hdp-dh-net
-    volumes:
-      - ./.hdpdata:/var/lib/hdp/data
   ehrbase:
     image: ehrbase/ehrbase:0.31.0
+    depends_on:
+      - ehrdb
     ports:
       - 8080:8080
     networks:
