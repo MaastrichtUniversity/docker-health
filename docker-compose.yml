@@ -1,5 +1,14 @@
 version: '3'
 services:
+  proxy:
+    image: jwilder/nginx-proxy:0.9.3
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - hdp-dh-net
   etl-demo:
     build:
       context: ./ETL
@@ -9,7 +18,7 @@ services:
       - hdp-dh-net
   ehrbase:
     image: ehrbase/ehrbase:0.31.0
-    depends_on:
+    depends_on:loc
       - ehrdb
     ports:
       - 8080:8080
