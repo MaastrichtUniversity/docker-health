@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 import json
 from datetime import datetime
@@ -10,13 +11,14 @@ import matplotlib.pyplot as plt
 from pandas import DataFrame
 from pydantic import BaseModel
 
-EHRBASE_USERRNAME = "ehrbase-user"
-EHRBASE_PASSWORD = "SuperSecretPassword"
-EHRBASE_BASE_URL = "http://hdp-ehrbase-net:8080/ehrbase/rest/openehr/v1"
+EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
+EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
+EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 
 TEMPLATE_PATH = Path("data/template")
 COMPOSITION_PATH = Path("data/composition")
 SYNTHEA_PATH = Path("data/synthea_csv")
+PLOT_PATH = Path("data/plot")
 
 
 class VitalSigns(BaseModel):
@@ -105,8 +107,9 @@ def plot_bloodpressure_over_time(ehr_id: UUID) -> None:
     dataframe = dataframe.sort_values(by="Time")
     dataframe.set_index("Time", inplace=True)
     dataframe.plot()
-    plt.savefig(f"{ehr_id}_bloodpressure_over_time.png")
-    plt.show()
+
+    plt.savefig(PLOT_PATH / f"{ehr_id}_bloodpressure_over_time.png")
+    plt.close()
 
 
 def post_template(filename: str) -> None:

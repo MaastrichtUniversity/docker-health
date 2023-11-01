@@ -20,28 +20,11 @@
     exporter.csv.folder_per_run = true
     exporter.baseDirectory = /tmp/synthea_output
     ```
-    
+
 # Python
 Packages required
 ```
 requests
 pandas
 matplotlib
-```
-
-# Docker
-
-## Get EHRbase docker image
-
-```
-git clone https://github.com/ehrbase/ehrbase.git
-cd ehrbase/
-docker pull ehrbase/ehrbase
-```
-
-## Run multi-containers (EHRbase + EHRDB + python ETL)
-
-```
-cd ..
-docker-compose up
 ```

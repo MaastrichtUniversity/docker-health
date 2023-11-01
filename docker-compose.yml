@@ -14,27 +14,26 @@ services:
       context: ./ETL
       dockerfile: Dockerfile
     image: etl_demo
+    volumes:
+      - ./ETL/data/plot:/code/data/plot
+    environment:
+      EHRBASE_USERRNAME: user
+      EHRBASE_PASSWORD: foobar
+      EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
     networks:
       - hdp-dh-net
   ehrbase:
     image: ehrbase/ehrbase:0.31.0
-    depends_on:loc
+    depends_on:
       - ehrdb
     ports:
       - 8080:8080
     networks:
       hdp-dh-net:
         aliases:
-          - hdp-ehrbase-net
+          - ehrbase.dh.local
     env_file:
       - ehrbase/.env.ehrbase
-    environment:
-      VIRTUAL_HOST: hdp.dh.unimaas.nl
-      DB_URL: jdbc:postgresql://ehrdb:5432/ehrbase
-      DB_USER_ADMIN: ehrbase
-      DB_PASS_ADMIN: ehrbase
-      DB_USER: ehrbase_restricted
-      DB_PASS: ehrbase_restricted
     restart: on-failure
   ehrdb:
     image: ehrbase/ehrbase-postgres:13.4.v2
