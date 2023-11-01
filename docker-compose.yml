@@ -1,0 +1,54 @@
+version: '3'
+services:
+  proxy:
+    image: jwilder/nginx-proxy:0.9.3
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - hdp-dh-net
+  etl-demo:
+    build:
+      context: ./ETL
+      dockerfile: Dockerfile
+    image: etl_demo
+    volumes:
+      - ./ETL/data/plot:/code/data/plot
+    environment:
+      EHRBASE_USERRNAME: user
+      EHRBASE_PASSWORD: foobar
+      EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
+    networks:
+      - hdp-dh-net
+  ehrbase:
+    image: ehrbase/ehrbase:0.31.0
+    depends_on:
+      - ehrdb
+    ports:
+      - 8080:8080
+    networks:
+      hdp-dh-net:
+        aliases:
+          - ehrbase.dh.local
+    env_file:
+      - ehrbase/.env.ehrbase
+    restart: on-failure
+  ehrdb:
+    image: ehrbase/ehrbase-postgres:13.4.v2
+    ports:
+      - 5432:5432
+    networks:
+      - hdp-dh-net
+    volumes:
+      - ./ehrbase/.pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      EHRBASE_USER_ADMIN: ehrbase
+      EHRBASE_PASSWORD_ADMIN: ehrbase
+      EHRBASE_USER: ehrbase_restricted
+      EHRBASE_PASSWORD: ehrbase_restricted
+networks:
+  hdp-dh-net: {}
