@@ -20,3 +20,7 @@ if [[ $1 == "demo" ]]; then
     echo "Exit rit.sh"
     exit 0
 fi
+
+if [[ $1 == "down" ]]; then
+    docker compose down
+fi
