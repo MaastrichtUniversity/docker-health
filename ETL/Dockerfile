@@ -1,4 +1,4 @@
-FROM python:3.12
+FROM python:3.12.0
 
 WORKDIR /code
 
@@ -10,4 +10,6 @@ RUN pip install -r requirements.txt
 
 COPY ./ ./
 
-CMD ["./bootstrap.sh"]
+ENTRYPOINT ["./bootstrap.sh"]
+CMD ["run"]
+
