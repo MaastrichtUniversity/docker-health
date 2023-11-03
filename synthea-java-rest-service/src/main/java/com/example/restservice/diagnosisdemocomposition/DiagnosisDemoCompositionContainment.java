@@ -1,14 +1,12 @@
-package com.example.diagnosisdemocomposition;
+package com.example.restservice.diagnosisdemocomposition;
 
-import com.example.diagnosisdemocomposition.definition.DiagnosisEvaluation;
-import com.example.diagnosisdemocomposition.definition.GenderEvaluation;
+import com.example.restservice.diagnosisdemocomposition.definition.DiagnosisEvaluation;
+import com.example.restservice.diagnosisdemocomposition.definition.GenderEvaluation;
 import com.nedap.archie.rm.archetyped.FeederAudit;
 import com.nedap.archie.rm.datastructures.Cluster;
 import com.nedap.archie.rm.generic.Participation;
 import com.nedap.archie.rm.generic.PartyIdentified;
 import com.nedap.archie.rm.generic.PartyProxy;
-import java.lang.String;
-import java.time.temporal.TemporalAccessor;
 import org.ehrbase.openehr.sdk.generator.commons.aql.containment.Containment;
 import org.ehrbase.openehr.sdk.generator.commons.aql.field.AqlFieldImp;
 import org.ehrbase.openehr.sdk.generator.commons.aql.field.ListAqlFieldImp;
@@ -18,6 +16,8 @@ import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.Category;
 import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.Language;
 import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.Setting;
 import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.Territory;
+
+import java.time.temporal.TemporalAccessor;
 
 public class DiagnosisDemoCompositionContainment extends Containment {
   public SelectAqlField<DiagnosisDemoComposition> DIAGNOSIS_DEMO_COMPOSITION = new AqlFieldImp<DiagnosisDemoComposition>(DiagnosisDemoComposition.class, "", "DiagnosisDemoComposition", DiagnosisDemoComposition.class, this);

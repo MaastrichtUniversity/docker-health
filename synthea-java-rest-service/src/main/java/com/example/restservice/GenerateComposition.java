@@ -1,8 +1,8 @@
-package com.example;
+package com.example.restservice;
 
-import com.example.diagnosisdemocomposition.DiagnosisDemoComposition;
-import com.example.diagnosisdemocomposition.definition.DiagnosisEvaluation;
-import com.example.diagnosisdemocomposition.definition.GenderEvaluation;
+import com.example.restservice.diagnosisdemocomposition.DiagnosisDemoComposition;
+import com.example.restservice.diagnosisdemocomposition.definition.DiagnosisEvaluation;
+import com.example.restservice.diagnosisdemocomposition.definition.GenderEvaluation;
 import com.nedap.archie.rm.datatypes.CodePhrase;
 import com.nedap.archie.rm.datavalues.DvCodedText;
 import com.nedap.archie.rm.generic.PartyIdentified;

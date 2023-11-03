@@ -1,17 +1,18 @@
-package com.example.diagnosisdemocomposition.definition;
+package com.example.restservice.diagnosisdemocomposition.definition;
 
 import com.nedap.archie.rm.archetyped.FeederAudit;
 import com.nedap.archie.rm.datastructures.Cluster;
 import com.nedap.archie.rm.datavalues.DvCodedText;
 import com.nedap.archie.rm.generic.PartyProxy;
-import java.util.List;
-import javax.annotation.processing.Generated;
 import org.ehrbase.openehr.sdk.generator.commons.annotations.Archetype;
 import org.ehrbase.openehr.sdk.generator.commons.annotations.Entity;
 import org.ehrbase.openehr.sdk.generator.commons.annotations.Path;
 import org.ehrbase.openehr.sdk.generator.commons.interfaces.EntryEntity;
 import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.Language;
 import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.NullFlavour;
+
+import javax.annotation.processing.Generated;
+import java.util.List;
 
 @Entity
 @Archetype("openEHR-EHR-EVALUATION.gender.v1")

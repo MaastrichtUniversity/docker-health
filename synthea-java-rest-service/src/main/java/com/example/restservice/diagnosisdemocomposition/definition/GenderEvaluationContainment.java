@@ -1,4 +1,4 @@
-package com.example.diagnosisdemocomposition.definition;
+package com.example.restservice.diagnosisdemocomposition.definition;
 
 import com.nedap.archie.rm.archetyped.FeederAudit;
 import com.nedap.archie.rm.datastructures.Cluster;

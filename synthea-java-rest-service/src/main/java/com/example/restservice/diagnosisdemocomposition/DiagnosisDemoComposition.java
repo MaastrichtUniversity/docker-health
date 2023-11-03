@@ -1,27 +1,23 @@
-package com.example.diagnosisdemocomposition;
+package com.example.restservice.diagnosisdemocomposition;
 
-import com.example.diagnosisdemocomposition.definition.DiagnosisEvaluation;
-import com.example.diagnosisdemocomposition.definition.GenderEvaluation;
+import com.example.restservice.diagnosisdemocomposition.definition.DiagnosisEvaluation;
+import com.example.restservice.diagnosisdemocomposition.definition.GenderEvaluation;
 import com.nedap.archie.rm.archetyped.FeederAudit;
 import com.nedap.archie.rm.datastructures.Cluster;
 import com.nedap.archie.rm.generic.Participation;
 import com.nedap.archie.rm.generic.PartyIdentified;
 import com.nedap.archie.rm.generic.PartyProxy;
 import com.nedap.archie.rm.support.identification.ObjectVersionId;
-import java.lang.String;
-import java.time.temporal.TemporalAccessor;
-import java.util.List;
-import javax.annotation.processing.Generated;
-import org.ehrbase.openehr.sdk.generator.commons.annotations.Archetype;
-import org.ehrbase.openehr.sdk.generator.commons.annotations.Entity;
-import org.ehrbase.openehr.sdk.generator.commons.annotations.Id;
-import org.ehrbase.openehr.sdk.generator.commons.annotations.Path;
-import org.ehrbase.openehr.sdk.generator.commons.annotations.Template;
+import org.ehrbase.openehr.sdk.generator.commons.annotations.*;
 import org.ehrbase.openehr.sdk.generator.commons.interfaces.CompositionEntity;
 import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.Category;
 import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.Language;
 import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.Setting;
 import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.Territory;
+
+import javax.annotation.processing.Generated;
+import java.time.temporal.TemporalAccessor;
+import java.util.List;
 
 @Entity
 @Archetype("openEHR-EHR-COMPOSITION.encounter.v1")

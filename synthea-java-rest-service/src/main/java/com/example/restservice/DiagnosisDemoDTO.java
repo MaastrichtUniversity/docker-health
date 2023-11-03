@@ -1,14 +1,30 @@
-package com.example;
+package com.example.restservice;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 public class DiagnosisDemoDTO {
 
+    @NotBlank(message = "startTime is mandatory field")
+    @NotEmpty(message = "startTime cannot be empty")
     private String startTime;
+    @NotBlank(message = "endTime is mandatory field")
+    @NotEmpty(message = "endTime cannot be empty")
     private String endTime;
+    @NotBlank(message = "dateClinicallyRecognised is mandatory field")
+    @NotEmpty(message = "dateClinicallyRecognised cannot be empty")
     private String dateClinicallyRecognised;
-
+    @NotBlank(message = "diagnosisValue is mandatory field")
+    @NotEmpty(message = "diagnosisValue cannot be empty")
     private String diagnosisValue;
+    @NotBlank(message = "diagnosisSNOMEDCode is mandatory field")
+    @NotEmpty(message = "diagnosisSNOMEDCode cannot be empty")
     private String diagnosisSNOMEDCode;
+    @NotBlank(message = "genderSNOMEDCode is mandatory field")
+    @NotEmpty(message = "genderSNOMEDCode cannot be empty")
     private String genderSNOMEDCode;
+    @NotBlank(message = "genderValue is mandatory field")
+    @NotEmpty(message = "genderValue cannot be empty")
     private String genderValue;
 
     public DiagnosisDemoDTO(String startTime, String endTime, String dateClinicallyRecognised, String diagnosisValue, String getDiagnosisSNOMEDCode, String genderSNOMEDCode, String genderValue) {

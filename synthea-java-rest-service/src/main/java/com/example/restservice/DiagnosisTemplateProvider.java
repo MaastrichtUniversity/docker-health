@@ -1,4 +1,4 @@
-package com.example;
+package com.example.restservice;
 
 import org.apache.xmlbeans.XmlException;
 import org.ehrbase.openehr.sdk.webtemplate.templateprovider.TemplateProvider;
