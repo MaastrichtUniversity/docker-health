@@ -21,6 +21,18 @@ if [[ $1 == "demo" ]]; then
     exit 0
 fi
 
+if [[ $1 == "backend" ]]; then
+    docker compose up -d ehrbase proxy
+    until docker logs --tail 30 hdp-ehrbase-1 2>&1 | grep -q "Started EhrBase in";
+    do
+      echo "Waiting for EhrBase"
+      sleep 10
+    done
+
+    echo "EHRbase up and running, exiting rit.sh"
+    exit 0
+fi
+
 if [[ $1 == "down" ]]; then
     docker compose down
 fi
