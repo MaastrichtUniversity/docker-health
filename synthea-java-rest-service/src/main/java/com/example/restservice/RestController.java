@@ -14,13 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.net.URISyntaxException;
+
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
 
     private String response;
 
     @PostMapping("/diagnosis-demo")
-    String createNew(@Valid @RequestBody DiagnosisDemoDTO diagnosisDemoDTO) {
+    String createNew(@Valid @RequestBody DiagnosisDemoDTO diagnosisDemoDTO) throws URISyntaxException {
         GenerateComposition generateComposition = new GenerateComposition();
         DiagnosisDemoComposition composition = generateComposition.generateComposition(diagnosisDemoDTO);
         DiagnosisTemplateProvider provider = new DiagnosisTemplateProvider();
@@ -37,6 +39,13 @@ public class RestController {
             System.out.println("Composition validated successfully");
         }
 
+        // Uncomment the following lines to run the interaction
+        // This will:
+        //  - Post the diagnosis-demo template if not found
+        //  - Create an EHR
+        //  - Post the composition
+//        EHRbaseClientDemo ehRbaseClientDemo = new EHRbaseClientDemo();
+//        ehRbaseClientDemo.interactWithEHRBase(composition);
 
         CanonicalJson json = new CanonicalJson();
         return json.marshal(rmObject);

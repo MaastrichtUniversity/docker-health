@@ -1,0 +1,60 @@
+package com.example.restservice;
+
+import com.example.restservice.diagnosisdemocomposition.DiagnosisDemoComposition;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.ehrbase.openehr.sdk.client.openehrclient.OpenEhrClientConfig;
+import org.ehrbase.openehr.sdk.client.openehrclient.defaultrestclient.DefaultRestClient;
+import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Optional;
+import java.util.UUID;
+
+public class EHRbaseClientDemo {
+    private static final String OPEN_EHR_URL = "http://localhost:8080/ehrbase/";
+    private static final String USERNAME = "user";
+    private static final String PASSWORD = "foobar";
+
+    public void interactWithEHRBase(DiagnosisDemoComposition composition) throws URISyntaxException {
+        CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(
+                AuthScope.ANY,
+                new UsernamePasswordCredentials(USERNAME, PASSWORD)
+        );
+
+        HttpClient httpClient = HttpClientBuilder.create()
+                .setDefaultCredentialsProvider(credentialsProvider)
+                .build();
+
+
+        DiagnosisTemplateProvider provider = new DiagnosisTemplateProvider();
+
+        // Setup REST client
+        DefaultRestClient client = new DefaultRestClient(new OpenEhrClientConfig(new URI(OPEN_EHR_URL)),provider,httpClient);
+
+        // Check for template otherwise upload
+        Optional<OPERATIONALTEMPLATE> operationalTemplateFound =
+                client.templateEndpoint().findTemplate("diagnosis-demo");
+
+        if (operationalTemplateFound.isEmpty()){
+            System.out.println("Template not found");
+            client.templateEndpoint().ensureExistence("diagnosis-demo");
+        }
+
+        // Create EHR
+        UUID ehr = client.ehrEndpoint().createEhr();
+
+        System.out.println(ehr);
+
+        // Post composition
+        client.compositionEndpoint(ehr).mergeCompositionEntity(composition);
+
+        System.out.println(composition.getVersionUid());
+    }
+}
