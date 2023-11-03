@@ -9,6 +9,14 @@ services:
       - "443:443"
     networks:
       - hdp-dh-net
+  java-rest-demo:
+    build:
+      context: ./synthea-java-rest-service
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8080
+    networks:
+      - hdp-dh-net
   etl-demo:
     build:
       context: ./ETL
@@ -50,5 +58,6 @@ services:
       EHRBASE_PASSWORD_ADMIN: ehrbase
       EHRBASE_USER: ehrbase_restricted
       EHRBASE_PASSWORD: ehrbase_restricted
+
 networks:
   hdp-dh-net: {}
