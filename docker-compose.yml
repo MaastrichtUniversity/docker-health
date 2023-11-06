@@ -1,4 +1,4 @@
-version: '3'
+version: '3.6'
 services:
   proxy:
     image: jwilder/nginx-proxy:0.9.3
@@ -9,12 +9,23 @@ services:
       - "443:443"
     networks:
       - hdp-dh-net
+  ehr-templates:
+    build:
+      context: ./hdp-models
+      dockerfile: Dockerfile
+    image: ehr_templates
+    volumes:
+      - shared-data:/code/demo-data/templates
+    # tty: true
+    networks:
+      - hdp-dh-net
   etl-demo:
     build:
       context: ./ETL
       dockerfile: Dockerfile
     image: etl_demo
     volumes:
+      - shared-data:/code/demo-data/templates
       - ./ETL/data/plot:/code/data/plot
     environment:
       EHRBASE_USERRNAME: user
@@ -52,3 +63,5 @@ services:
       EHRBASE_PASSWORD: ehrbase_restricted
 networks:
   hdp-dh-net: {}
+volumes:
+  shared-data:

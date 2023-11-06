@@ -3,6 +3,11 @@ COMPOSE_PROJECT_NAME="hdp"
 export COMPOSE_PROJECT_NAME
 
 if [[ $1 == "demo" ]]; then
+    # clone repository containing archetypes and templates
+    git clone https://github.com/MaastrichtUniversity/hdp-models
+    # clone repository containing data for the demo
+    # git clone https://github.com/MaastrichtUniversity/dh-demodata
+
     docker compose build
     docker compose up -d ehrbase proxy
     until docker logs --tail 30 hdp-ehrbase-1 2>&1 | grep -q "Started EhrBase in";
@@ -11,11 +16,13 @@ if [[ $1 == "demo" ]]; then
       sleep 10
     done
 
+    echo "copy EHR templates"
+    docker compose up -d ehr-templates
     echo "Running etl-demo"
     docker compose up -d etl-demo
-    sleep 5
-    echo "Print logs for etl-demo"
-    docker compose logs etl-demo
+    # sleep 5
+    # echo "Print logs for etl-demo"
+    # docker compose logs etl-demo
 
     echo "Exit rit.sh"
     exit 0
