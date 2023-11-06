@@ -22,3 +22,21 @@ Update the credentials in `./ehrbase/.env.ehrbase`
 ```
 ./rit.sh demo
 ```
+
+# Specified command-lines
+```
+docker exec -it hdp-etl-demo-1 bash
+```
+
+```
+python ETL.py --help
+Usage: ETL.py [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  get-all-ehr-id      Get all EHR ID on a specific openEHR instance
+  list-all-templates  Print all template available on the server
+  run                 Runs all ETL from default hard coded values
+```
