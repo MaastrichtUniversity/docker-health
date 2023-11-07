@@ -32,3 +32,4 @@ dmypy.json
 # cloned github repo
 hdp-models
 dh-demodata
+externals/*
