@@ -1,6 +1,36 @@
+#!/usr/bin/env bash
+
+set -e
+
+. ./lib-hdp.sh
+
+ARGS="$@ "
+if [[ ${ARGS} = *"-vv "* ]]; then
+   export LOGTRESHOLD=$DBG
+   ARGS="${ARGS/-vv /}"
+elif [[ ${ARGS} = *"--verbose "* ]] || [[ ${ARGS} = *"-v "* ]]; then
+   export LOGTRESHOLD=$INF
+   ARGS="${ARGS/--verbose /}"
+   ARGS="${ARGS/-v /}"
+fi
+
+
 # Set the prefix for the project
 COMPOSE_PROJECT_NAME="hdp"
 export COMPOSE_PROJECT_NAME
+
+# specify externals for this project
+externals="externals/dh-demodata https://github.com/MaastrichtUniversity/dh-demodata.git
+externals/hdp-models https://github.com/MaastrichtUniversity/hdp-models.git"
+
+
+# do the required action in case of externals or exec
+if [[ $1 == "externals" ]]; then
+    action=${ARGS/$1/}
+    run_repo_action ${action} "${externals}"
+    exit 0
+fi
+
 
 if [[ $1 == "demo" ]]; then
     # clone repository containing archetypes and templates
