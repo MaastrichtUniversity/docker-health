@@ -31,13 +31,13 @@ if [[ $1 == "externals" ]]; then
     exit 0
 fi
 
+if [[ $1 == "data" ]]; then
+    echo "Generate a synthetic dataset"
+    docker compose build demo-data
+    docker compose up demo-data
+fi
 
 if [[ $1 == "demo" ]]; then
-    # clone repository containing archetypes and templates
-    git clone https://github.com/MaastrichtUniversity/hdp-models
-    # clone repository containing data for the demo
-    # git clone https://github.com/MaastrichtUniversity/dh-demodata
-
     docker compose build
     docker compose up -d ehrbase proxy
     until docker logs --tail 30 hdp-ehrbase-1 2>&1 | grep -q "Started EhrBase in";
@@ -46,8 +46,6 @@ if [[ $1 == "demo" ]]; then
       sleep 10
     done
 
-    echo "copy EHR templates"
-    docker compose up -d ehr-templates
     echo "Running etl-demo"
     docker compose up -d etl-demo
     # sleep 5
