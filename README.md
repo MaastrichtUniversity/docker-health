@@ -19,6 +19,23 @@ SECURITY_AUTHPASSWORD=foobar
 Update the credentials in `./ehrbase/.env.ehrbase`
 
 # Run the stack
+
+## Clone the external repositories
+
+```
+./rit.sh externals clone
+```
+
+## Create the synthetic dataset
+
+```
+./rit.sh data
+```
+
+## Run ETL demo
+
+**WIP**
+
 ```
 ./rit.sh demo
 ```
