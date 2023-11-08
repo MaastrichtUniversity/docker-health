@@ -32,3 +32,4 @@ dmypy.json
 # cloned github repo
 externals/*
 demo_data/
+notebooks/.ipynb_checkpoints

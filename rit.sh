@@ -37,6 +37,13 @@ if [[ $1 == "data" ]]; then
     docker compose up demo-data
 fi
 
+if [[ $1 == "data-exploration" ]]; then
+    echo "Explore synthea dataset"
+    docker compose build data-exploration
+    docker compose up -d proxy data-exploration
+fi
+
+
 if [[ $1 == "demo" ]]; then
     docker compose build
     docker compose up -d ehrbase proxy

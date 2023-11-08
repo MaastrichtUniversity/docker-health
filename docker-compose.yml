@@ -31,6 +31,20 @@ services:
       EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
     networks:
       - hdp-dh-net
+  data-exploration:
+    image: quay.io/jupyter/datascience-notebook:2023-10-31
+    command: "start-notebook.sh --ServerApp.token="
+    environment:
+      VIRTUAL_HOST: jupyter.local.dh.unimaas.nl
+    ports:
+      - 8888:8888
+    volumes:
+      - ./demo_data/csv:/home/jovyan/data
+      - ./notebooks/:/home/jovyan/notebooks
+    networks:
+      hdp-dh-net:
+        aliases:
+          - jupyter.dh.local
   ehrbase:
     image: ehrbase/ehrbase:0.31.0
     depends_on:
