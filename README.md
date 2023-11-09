@@ -25,6 +25,7 @@ Update the credentials in `./ehrbase/.env.ehrbase`
 
 ```
 ./rit.sh externals clone
+./rit.sh externals checkout develop
 ```
 
 ## Create the synthetic dataset
@@ -33,6 +34,14 @@ Update the credentials in `./ehrbase/.env.ehrbase`
 ./rit.sh data
 ```
 
+## Start the data  exploration Jupyter notebook
+
+```
+./rit.sh data-exploration
+```
+open browser and goto [jupyter.local.dh.unimaas.nl](jupyter.local.dh.unimaas.nl)
+
+
 ## Run ETL demo
 
 **WIP**
@@ -40,6 +49,13 @@ Update the credentials in `./ehrbase/.env.ehrbase`
 ```
 ./rit.sh demo
 ```
+
+## Kill the whole stack
+
+```
+./rit.sh down
+```
+
 
 # Specified command-lines
 ```
