@@ -8,6 +8,7 @@ The current services:
 # Add this virtual host entry in your /etc/hosts file
 ```
 127.0.0.1	ehrbase.local.dh.unimaas.nl
+127.0.0.1	jupyter.local.dh.unimaas.nl
 ```
 
 Go to your browser and try this:
@@ -19,9 +20,42 @@ SECURITY_AUTHPASSWORD=foobar
 Update the credentials in `./ehrbase/.env.ehrbase`
 
 # Run the stack
+
+## Clone the external repositories
+
+```
+./rit.sh externals clone
+./rit.sh externals checkout develop
+```
+
+## Create the synthetic dataset
+
+```
+./rit.sh data
+```
+
+## Start the data  exploration Jupyter notebook
+
+```
+./rit.sh data-exploration
+```
+open browser and goto [jupyter.local.dh.unimaas.nl](jupyter.local.dh.unimaas.nl)
+
+
+## Run ETL demo
+
+**WIP**
+
 ```
 ./rit.sh demo
 ```
+
+## Kill the whole stack
+
+```
+./rit.sh down
+```
+
 
 # Specified command-lines
 ```

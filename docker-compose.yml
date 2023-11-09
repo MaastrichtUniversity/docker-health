@@ -1,4 +1,4 @@
-version: '3'
+version: '3.6'
 services:
   proxy:
     image: jwilder/nginx-proxy:0.9.3
@@ -9,12 +9,21 @@ services:
       - "443:443"
     networks:
       - hdp-dh-net
+  demo-data:
+    build:
+      context: ./externals/dh-demodata
+      dockerfile: Dockerfile
+    image: demo_data
+    volumes:
+      - ./demo_data:/opt/output
   etl-demo:
     build:
       context: ./ETL
       dockerfile: Dockerfile
     image: etl_demo
     volumes:
+      - ./externals/hdp-models/templates:/code/data/templates
+      - ./demo_data/csv:/code/data/synthea_csv
       - ./ETL/data/plot:/code/data/plot
     environment:
       EHRBASE_USERRNAME: user
@@ -22,6 +31,20 @@ services:
       EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
     networks:
       - hdp-dh-net
+  data-exploration:
+    image: quay.io/jupyter/datascience-notebook:2023-10-31
+    command: "start-notebook.sh --ServerApp.token="
+    environment:
+      VIRTUAL_HOST: jupyter.local.dh.unimaas.nl
+    ports:
+      - 8888:8888
+    volumes:
+      - ./demo_data/csv:/home/jovyan/data
+      - ./notebooks/:/home/jovyan/notebooks
+    networks:
+      hdp-dh-net:
+        aliases:
+          - jupyter.dh.local
   ehrbase:
     image: ehrbase/ehrbase:0.31.0
     depends_on:

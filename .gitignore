@@ -29,3 +29,7 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
+# cloned github repo
+externals/*
+demo_data/
+notebooks/.ipynb_checkpoints
