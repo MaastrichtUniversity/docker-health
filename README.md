@@ -41,6 +41,12 @@ Update the credentials in `./ehrbase/.env.ehrbase`
 ```
 open browser and goto [jupyter.local.dh.unimaas.nl](jupyter.local.dh.unimaas.nl)
 
+## Start the EHRbase backend
+
+```
+./rit.sh backend
+```
+
 
 ## Run ETL demo
 
