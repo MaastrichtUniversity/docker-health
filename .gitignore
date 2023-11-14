@@ -1,3 +1,35 @@
+# Pycharm
 .idea
 *.png
-venv
+
+## Cherry picked python gitignore from: https://github.com/github/gitignore/blob/main/Python.gitignore
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# pyenv
+.python-version
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# cloned github repo
+externals/*
+demo_data/
+notebooks/.ipynb_checkpoints

@@ -8,6 +8,7 @@ The current services:
 # Add this virtual host entry in your /etc/hosts file
 ```
 127.0.0.1	ehrbase.local.dh.unimaas.nl
+127.0.0.1	jupyter.local.dh.unimaas.nl
 ```
 
 Go to your browser and try this:
@@ -19,6 +20,38 @@ SECURITY_AUTHPASSWORD=foobar
 Update the credentials in `./ehrbase/.env.ehrbase`
 
 # Run the stack
+
+## Clone the external repositories
+
+```
+./rit.sh externals clone
+./rit.sh externals checkout develop
+```
+
+## Create the synthetic dataset
+
+```
+./rit.sh data
+```
+
+## Start the data  exploration Jupyter notebook
+
+```
+./rit.sh data-exploration
+```
+open browser and goto [jupyter.local.dh.unimaas.nl](jupyter.local.dh.unimaas.nl)
+
+## Start the EHRbase backend
+
+```
+./rit.sh backend
+```
+
+
+## Run ETL demo
+
+**WIP**
+
 ```
 ./rit.sh demo
 ```
@@ -50,3 +83,29 @@ curl -X 'POST' \
 ```
 
 Will return a valid composition
+
+
+## Kill the whole stack
+
+```
+./rit.sh down
+```
+
+
+# Specified command-lines
+```
+docker exec -it hdp-etl-demo-1 bash
+```
+
+```
+python ETL.py --help
+Usage: ETL.py [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  get-all-ehr-id      Get all EHR ID on a specific openEHR instance
+  list-all-templates  Print all template available on the server
+  run                 Runs all ETL from default hard coded values
+```
