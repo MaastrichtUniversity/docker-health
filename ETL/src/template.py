@@ -51,3 +51,7 @@ def post_template(filename: str) -> None:
 
     if response.ok:
         print(f"Template {filename} successfully added")
+    else:
+        print(f"\nTemplate {filename} could NOT be posted.")
+        print(f"Response: {response.text}")
+        print(f"Status Code: {response.status_code}")

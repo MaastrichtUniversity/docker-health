@@ -12,55 +12,6 @@ EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
 EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
 EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 
-
-def create_ehr(patient_id: str) -> UUID:
-    """
-    Check if patient_id is already registered, if so return existing ehr_id
-    If the patient is new, register an ehr and return the ehr_id
-    Parameters
-    ----------
-    patient_id: str
-        External identifier for the patient
-    Returns
-    -------
-    UUID
-        ehr_id for the given patient id
-
-    """
-    ehr_id = get_ehr_id_for_subject_id(patient_id)
-    if ehr_id:
-        return ehr_id
-
-    url = f"{EHRBASE_BASE_URL}/ehr"
-    id_payload = {
-        "_type": "EHR_STATUS",
-        "archetype_node_id": "openEHR-EHR-EHR_STATUS.generic.v1",
-        "name": {"value": "EHR Status"},
-        "subject": {
-            "external_ref": {
-                "id": {"_type": "GENERIC_ID", "value": patient_id, "scheme": "datahub"},
-                "namespace": "datahub",
-                "type": "PERSON",
-            }
-        },
-        "is_modifiable": True,
-        "is_queryable": True,
-    }
-
-    headers = {"Accept": "application/json", "Prefer": "return=representation", "Content-Type": "application/json"}
-    response = requests.request(
-        "POST",
-        url,
-        data=json.dumps(id_payload),
-        headers=headers,
-        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
-        timeout=10,
-    )
-    response_json = json.loads(response.text)
-
-    return response_json["ehr_id"]["value"]
-
-
 def get_ehr_id_for_subject_id(subject_id: str) -> None | UUID:
     """
     Get the ehr_id for a patient given the patient external id.
@@ -93,6 +44,55 @@ def get_ehr_id_for_subject_id(subject_id: str) -> None | UUID:
 
     response_json = json.loads(response.text)
     return response_json["ehr_id"]["value"]
+
+def create_ehr(patient_id: str) -> UUID:
+    """
+    Check if patient_id is already registered, if so return existing ehr_id
+    If the patient is new, register an ehr and return the ehr_id
+    Parameters
+    ----------
+    patient_id: str
+        External identifier for the patient
+    Returns
+    -------
+    UUID
+        ehr_id for the given patient id
+
+    """
+    ehr_id = get_ehr_id_for_subject_id(patient_id)
+    if ehr_id:
+        print(f'An EHR identifier already exists for this patient [patient_id:{patient_id}].')
+        return ehr_id
+
+    url = f"{EHRBASE_BASE_URL}/ehr"
+    id_payload = {
+        "_type": "EHR_STATUS",
+        "archetype_node_id": "openEHR-EHR-EHR_STATUS.generic.v1",
+        "name": {"value": "EHR Status"},
+        "subject": {
+            "external_ref": {
+                "id": {"_type": "GENERIC_ID", "value": patient_id, "scheme": "datahub"},
+                "namespace": "datahub",
+                "type": "PERSON",
+            }
+        },
+        "is_modifiable": True,
+        "is_queryable": True,
+    }
+
+    headers = {"Accept": "application/json", "Prefer": "return=representation", "Content-Type": "application/json"}
+    response = requests.request(
+        "POST",
+        url,
+        data=json.dumps(id_payload),
+        headers=headers,
+        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        timeout=10,
+    )
+    response_json = json.loads(response.text)
+
+    return response_json["ehr_id"]["value"]
+
 
 
 def fetch_all_ehr_id() -> List[UUID]:
