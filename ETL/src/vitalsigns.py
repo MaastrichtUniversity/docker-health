@@ -24,16 +24,13 @@ PLOT_PATH = Path("data/plot")
 class VitalSigns(BaseModel):
     """Data model for the vital signs"""
 
-    systolic: float
-    diastolic: float
-    time: datetime
-    bmi: float
     height: float
     weight: float
     heart_rate: float
-    respiration_rate: float
+    blood_systolic: float
+    blood_diastolic: float
 
-def parse_vital_signs(vital_signs: pd.DataFrame) -> VitalSigns:
+def parse_vital_signs(vital_signs_df: pd.DataFrame) -> VitalSigns:
     """
     Parse vital signs dataframe to a vital signs class
     Parameters
@@ -47,16 +44,35 @@ def parse_vital_signs(vital_signs: pd.DataFrame) -> VitalSigns:
         Instance of VitalSigns filled with the values
 
     """
-    results = VitalSigns
-    results.systolic = vital_signs[vital_signs["DESCRIPTION"] == "Systolic Blood Pressure"]["VALUE"].values[0]
-    results.diastolic = vital_signs[vital_signs["DESCRIPTION"] == "Diastolic Blood Pressure"]["VALUE"].values[0]
-    results.time = vital_signs[vital_signs["DESCRIPTION"] == "Systolic Blood Pressure"]["DATE"].values[0]
-    results.bmi = vital_signs[vital_signs["DESCRIPTION"] == "Body mass index (BMI) [Ratio]"]["VALUE"].values[0]
-    results.height = vital_signs[vital_signs["DESCRIPTION"] == "Body Height"]["VALUE"].values[0]
-    results.weight = vital_signs[vital_signs["DESCRIPTION"] == "Body Weight"]["VALUE"].values[0]
-    results.heart_rate = vital_signs[vital_signs["DESCRIPTION"] == "Heart rate"]["VALUE"].values[0]
-    results.respiration_rate = vital_signs[vital_signs["DESCRIPTION"] == "Respiratory rate"]["VALUE"].values[0]
-    return results
+    vital_signs_variables = [
+        {'name': 'Body Height', 'units': 'cm'},
+        {'name': 'Body Weight', 'units': 'kg'},
+        {'name': 'Heart rate', 'units': '/min'},
+        {'name': 'Systolic Blood Pressure', 'units': 'mm[Hg]'},
+        {'name': 'Diastolic Blood Pressure', 'units': 'mm[Hg]'}
+    ]
+
+    vital_signs = VitalSigns
+
+    for variable in vital_signs_variables:
+        measure = vital_signs_df[vital_signs_df["DESCRIPTION"] == variable["name"]].squeeze()
+        try:
+            value = float(measure["VALUE"])
+            if measure["UNITS"] != variable["units"]:
+                value = None
+        except ValueError:
+            value = None
+        if variable["name"] == "Body Height":
+            vital_signs.height = value
+        if variable["name"] == "Body Weight":
+            vital_signs.weight = value 
+        if variable["name"] == "Heart rate":
+            vital_signs.heart_rate = value 
+        if variable["name"] == "Systolic Blood Pressure":
+            vital_signs.blood_systolic = value 
+        if variable["name"] == "Diastolic Blood Pressure":
+            vital_signs.blood_diastolic = value 
+    return vital_signs
 
 def update_composition_vital_signs(composition: dict, vital_signs: VitalSigns) -> dict:
     """
