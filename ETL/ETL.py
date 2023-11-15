@@ -74,9 +74,8 @@ def run():
     where_disorder = conditions_df.DESCRIPTION.apply(lambda x: bool(re.search('.*(disorder)', x)))
     conditions_df = conditions_df[where_disorder]
     patient_diagnosis_df = conditions_df[conditions_df["PATIENT"] == patient_id]
-    patient_diagnosis = parse_all_diagnosis(patient_diagnosis_df)
     all_diagnosis = {}
-    for _, diagnosis_df in all_diagnosis_df.iterrows():
+    for _, diagnosis_df in patient_diagnosis_df.iterrows():
         encounter_id = diagnosis_df["ENCOUNTER"]
         all_diagnosis[encounter_id] = parse_all_diagnosis(diagnosis_df)
     # composition = load_composition_example(COMPOSITION_PATH / EXAMPLE_COMPOSITION)
@@ -85,8 +84,7 @@ def run():
 
 
     ## VITAL SIGNS COMPOSITION
-    patient_encounters_df = encounters_df[encounters_df["PATIENT"] == patient_id]
-    patient_encounter_ids = patient_encounters_df["Id"].tolist()
+    patient_encounters_ids = encounters_df[encounters_df["PATIENT"] == patient_id]["Id"].tolist()
 
     all_vital_signs = {}
     for encounter_id in patient_encounter_ids:
@@ -114,7 +112,6 @@ def run():
 @click.group()
 def cli():
     pass
-
 
 cli.add_command(run)
 cli.add_command(list_all_templates)

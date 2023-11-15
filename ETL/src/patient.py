@@ -21,7 +21,7 @@ PLOT_PATH = Path("data/plot")
 
 
 class Patient(BaseModel):
-    """Data model for the vital signs"""
+    """Data model for the Patient class"""
 
     gender: str
     birthdate: datetime
@@ -29,11 +29,11 @@ class Patient(BaseModel):
 
 def parse_patient(patient_df: pd.DataFrame) -> Patient:
     """
-    Parse vital signs dataframe to a vital signs class
+    Parse a unique patient dataframe to a patient class
     Parameters
     ----------
-    patient
-        Pandas dataframe that contains the values for the vital signs
+    patient_df
+        Pandas dataframe that contains information on the patient
 
     Returns
     -------

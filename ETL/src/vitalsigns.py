@@ -20,15 +20,35 @@ EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 
 PLOT_PATH = Path("data/plot")
 
+VITAL_SIGNS_VARIABLES = [
+    {'name': 'Body Height', 'units': 'cm'},
+    {'name': 'Body Weight', 'units': 'kg'},
+    {'name': 'Heart rate', 'units': '/min'},
+    {'name': 'Systolic Blood Pressure', 'units': 'mm[Hg]'},
+    {'name': 'Diastolic Blood Pressure', 'units': 'mm[Hg]'}
+]
+
+class Measure:
+    def __init__(self, value, unit, unit_gt):
+        try:
+            self.value = float(value)
+        except ValueError:
+            self.value = None
+        if unit != unit_gt:
+            print("Wrong unit of measure: units is [{units}] but should be [{unit_gt}]!")
+            self.unit = None
+            self.value = None
+        else:
+            self.unit = str(unit)
 
 class VitalSigns(BaseModel):
     """Data model for the vital signs"""
 
-    height: float
-    weight: float
-    heart_rate: float
-    blood_systolic: float
-    blood_diastolic: float
+    height: object
+    weight: object
+    heart_rate: object
+    blood_systolic: object
+    blood_diastolic: object
 
 def parse_vital_signs(vital_signs_df: pd.DataFrame) -> VitalSigns:
     """
@@ -44,34 +64,21 @@ def parse_vital_signs(vital_signs_df: pd.DataFrame) -> VitalSigns:
         Instance of VitalSigns filled with the values
 
     """
-    vital_signs_variables = [
-        {'name': 'Body Height', 'units': 'cm'},
-        {'name': 'Body Weight', 'units': 'kg'},
-        {'name': 'Heart rate', 'units': '/min'},
-        {'name': 'Systolic Blood Pressure', 'units': 'mm[Hg]'},
-        {'name': 'Diastolic Blood Pressure', 'units': 'mm[Hg]'}
-    ]
-
     vital_signs = VitalSigns
 
-    for variable in vital_signs_variables:
-        measure = vital_signs_df[vital_signs_df["DESCRIPTION"] == variable["name"]].squeeze()
-        try:
-            value = float(measure["VALUE"])
-            if measure["UNITS"] != variable["units"]:
-                value = None
-        except ValueError:
-            value = None
+    for variable in VITAL_SIGNS_VARIABLES:
+        measurement = vital_signs_df[vital_signs_df["DESCRIPTION"] == variable["name"]].squeeze()
+        measure_instance = Measure(measurement["VALUE"], measurement["UNITS"], variable["units"])
         if variable["name"] == "Body Height":
-            vital_signs.height = value
+            vital_signs.height = measure_instance
         if variable["name"] == "Body Weight":
-            vital_signs.weight = value 
+            vital_signs.weight = measure_instance 
         if variable["name"] == "Heart rate":
-            vital_signs.heart_rate = value 
+            vital_signs.heart_rate = measure_instance 
         if variable["name"] == "Systolic Blood Pressure":
-            vital_signs.blood_systolic = value 
+            vital_signs.blood_systolic = measure_instance 
         if variable["name"] == "Diastolic Blood Pressure":
-            vital_signs.blood_diastolic = value 
+            vital_signs.blood_diastolic = measure_instance 
     return vital_signs
 
 def update_composition_vital_signs(composition: dict, vital_signs: VitalSigns) -> dict:
