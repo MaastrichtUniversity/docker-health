@@ -1,6 +1,7 @@
 package com.example.restservice;
 
 import com.example.restservice.diagnosisdemocomposition.DiagnosisDemoComposition;
+import com.example.restservice.patientcomposition.PatientComposition;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
@@ -21,7 +22,7 @@ public class EHRbaseClientDemo {
     private static final String USERNAME = "user";
     private static final String PASSWORD = "foobar";
 
-    public void interactWithEHRBase(DiagnosisDemoComposition composition) throws URISyntaxException {
+    public void interactWithEHRBaseDiagnosis(DiagnosisDemoComposition composition) throws URISyntaxException {
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(
                 AuthScope.ANY,
@@ -40,11 +41,11 @@ public class EHRbaseClientDemo {
 
         // Check for template otherwise upload
         Optional<OPERATIONALTEMPLATE> operationalTemplateFound =
-                client.templateEndpoint().findTemplate("diagnosis-demo");
+                client.templateEndpoint().findTemplate("diagnosis_demo");
 
         if (operationalTemplateFound.isEmpty()){
             System.out.println("Template not found");
-            client.templateEndpoint().ensureExistence("diagnosis-demo");
+            client.templateEndpoint().ensureExistence("diagnosis_demo");
         }
 
         // Create EHR
@@ -57,4 +58,42 @@ public class EHRbaseClientDemo {
 
         System.out.println(composition.getVersionUid());
     }
+
+    public void interactWithEHRBasePatient(PatientComposition composition) throws URISyntaxException {
+        CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(
+                AuthScope.ANY,
+                new UsernamePasswordCredentials(USERNAME, PASSWORD)
+        );
+
+        HttpClient httpClient = HttpClientBuilder.create()
+                .setDefaultCredentialsProvider(credentialsProvider)
+                .build();
+
+
+       PatientTemplateProvider provider = new PatientTemplateProvider();
+
+        // Setup REST client
+        DefaultRestClient client = new DefaultRestClient(new OpenEhrClientConfig(new URI(OPEN_EHR_URL)),provider,httpClient);
+
+        // Check for template otherwise upload
+        Optional<OPERATIONALTEMPLATE> operationalTemplateFound =
+                client.templateEndpoint().findTemplate("patient");
+
+        if (operationalTemplateFound.isEmpty()){
+            System.out.println("Template not found");
+            client.templateEndpoint().ensureExistence("patient");
+        }
+
+        // Create EHR
+        UUID ehr = client.ehrEndpoint().createEhr();
+
+        System.out.println(ehr);
+
+        // Post composition
+        client.compositionEndpoint(ehr).mergeCompositionEntity(composition);
+
+        System.out.println(composition.getVersionUid());
+    }
+
 }

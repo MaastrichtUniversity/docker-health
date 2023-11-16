@@ -1,8 +1,7 @@
-package com.example.restservice.diagnosisdemocomposition.definition;
+package com.example.restservice.patientcomposition.definition;
 
 import com.nedap.archie.rm.archetyped.FeederAudit;
 import com.nedap.archie.rm.datastructures.Cluster;
-import com.nedap.archie.rm.datavalues.DvCodedText;
 import com.nedap.archie.rm.generic.PartyProxy;
 import org.ehrbase.openehr.sdk.generator.commons.aql.containment.Containment;
 import org.ehrbase.openehr.sdk.generator.commons.aql.field.AqlFieldImp;
@@ -15,7 +14,7 @@ import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.NullFlavour;
 public class GenderEvaluationContainment extends Containment {
   public SelectAqlField<GenderEvaluation> GENDER_EVALUATION = new AqlFieldImp<GenderEvaluation>(GenderEvaluation.class, "", "GenderEvaluation", GenderEvaluation.class, this);
 
-  public SelectAqlField<DvCodedText> SEX_ASSIGNED_AT_BIRTH = new AqlFieldImp<DvCodedText>(GenderEvaluation.class, "/data[at0002]/items[at0019]/value", "sexAssignedAtBirth", DvCodedText.class, this);
+  public SelectAqlField<SexAssignedAtBirthDefiningCode> SEX_ASSIGNED_AT_BIRTH_DEFINING_CODE = new AqlFieldImp<SexAssignedAtBirthDefiningCode>(GenderEvaluation.class, "/data[at0002]/items[at0019]/value|defining_code", "sexAssignedAtBirthDefiningCode", SexAssignedAtBirthDefiningCode.class, this);
 
   public SelectAqlField<NullFlavour> SEX_ASSIGNED_AT_BIRTH_NULL_FLAVOUR_DEFINING_CODE = new AqlFieldImp<NullFlavour>(GenderEvaluation.class, "/data[at0002]/items[at0019]/null_flavour|defining_code", "sexAssignedAtBirthNullFlavourDefiningCode", NullFlavour.class, this);
 

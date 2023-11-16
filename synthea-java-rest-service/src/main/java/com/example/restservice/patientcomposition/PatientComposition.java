@@ -1,6 +1,8 @@
-package com.example.restservice.diagnosisdemocomposition;
+package com.example.restservice.patientcomposition;
 
-import com.example.restservice.diagnosisdemocomposition.definition.DiagnosisEvaluation;
+import com.example.restservice.patientcomposition.definition.BirthEvaluation;
+import com.example.restservice.patientcomposition.definition.DeathEvaluation;
+import com.example.restservice.patientcomposition.definition.GenderEvaluation;
 import com.nedap.archie.rm.archetyped.FeederAudit;
 import com.nedap.archie.rm.datastructures.Cluster;
 import com.nedap.archie.rm.generic.Participation;
@@ -23,92 +25,105 @@ import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.Setting;
 import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.Territory;
 
 @Entity
-@Archetype("openEHR-EHR-COMPOSITION.problem_list.v2")
+@Archetype("openEHR-EHR-COMPOSITION.encounter.v1")
 @Generated(
     value = "org.ehrbase.openehr.sdk.generator.ClassGenerator",
-    date = "2023-11-15T13:51:24.812247259+01:00",
+    date = "2023-11-15T13:51:36.016399622+01:00",
     comments = "https://github.com/ehrbase/openEHR_SDK Version: 2.5.0-SNAPSHOT"
 )
-@Template("diagnosis_demo")
-public class DiagnosisDemoComposition implements CompositionEntity {
+@Template("patient")
+public class PatientComposition implements CompositionEntity {
   /**
-   * Path: Diagnosis/category
+   * Path: Patient/category
    */
   @Path("/category|defining_code")
   private Category categoryDefiningCode;
 
   /**
-   * Path: Diagnosis/context/Extension
+   * Path: Patient/context/Extension
    * Description: Additional information required to capture local context or to align with other reference models/formalisms.
-   * Comment: For example: Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.
+   * Comment: e.g. Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.
    */
-  @Path("/context/other_context[at0006]/items[at0008]")
+  @Path("/context/other_context[at0001]/items[at0002]")
   private List<Cluster> extension;
 
   /**
-   * Path: Diagnosis/context/start_time
+   * Path: Patient/context/start_time
    */
   @Path("/context/start_time|value")
   private TemporalAccessor startTimeValue;
 
   /**
-   * Path: Diagnosis/context/participations
+   * Path: Patient/context/participations
    */
   @Path("/context/participations")
   private List<Participation> participations;
 
   /**
-   * Path: Diagnosis/context/end_time
+   * Path: Patient/context/end_time
    */
   @Path("/context/end_time|value")
   private TemporalAccessor endTimeValue;
 
   /**
-   * Path: Diagnosis/context/location
+   * Path: Patient/context/location
    */
   @Path("/context/location")
   private String location;
 
   /**
-   * Path: Diagnosis/context/health_care_facility
+   * Path: Patient/context/health_care_facility
    */
   @Path("/context/health_care_facility")
   private PartyIdentified healthCareFacility;
 
   /**
-   * Path: Diagnosis/context/setting
+   * Path: Patient/context/setting
    */
   @Path("/context/setting|defining_code")
   private Setting settingDefiningCode;
 
   /**
-   * Path: Diagnosis/Diagnosis
-   * Description: Details about a single identified health condition, injury, disability or any other issue which impacts on the physical, mental and/or social well-being of an individual.
-   * Comment: Clear delineation between the scope of a problem versus a diagnosis is not easy to achieve in practice. For the purposes of clinical documentation with this archetype, problem and diagnosis are regarded as a continuum, with increasing levels of detail and supportive evidence usually providing weight towards the label of 'diagnosis'.
+   * Path: Patient/Gender
+   * Description: Details about the gender of an individual.
    */
-  @Path("/content[openEHR-EHR-EVALUATION.problem_diagnosis.v1 and name/value='Diagnosis']")
-  private List<DiagnosisEvaluation> diagnosis;
+  @Path("/content[openEHR-EHR-EVALUATION.gender.v1]")
+  private GenderEvaluation gender;
 
   /**
-   * Path: Diagnosis/composer
+   * Path: Patient/Birth
+   * Description: Overview or summary record of the pregnancy and birth of an individual.
+   */
+  @Path("/content[openEHR-EHR-EVALUATION.birth_summary.v0 and name/value='Birth']")
+  private BirthEvaluation birth;
+
+  /**
+   * Path: Patient/Death
+   * Description: Summary information about the circumstances and context of the death of an individual, excluding the cause(s) of death.
+   */
+  @Path("/content[openEHR-EHR-EVALUATION.death_summary.v1 and name/value='Death']")
+  private DeathEvaluation death;
+
+  /**
+   * Path: Patient/composer
    */
   @Path("/composer")
   private PartyProxy composer;
 
   /**
-   * Path: Diagnosis/language
+   * Path: Patient/language
    */
   @Path("/language")
   private Language language;
 
   /**
-   * Path: Diagnosis/feeder_audit
+   * Path: Patient/feeder_audit
    */
   @Path("/feeder_audit")
   private FeederAudit feederAudit;
 
   /**
-   * Path: Diagnosis/territory
+   * Path: Patient/territory
    */
   @Path("/territory")
   private Territory territory;
@@ -180,12 +195,28 @@ public class DiagnosisDemoComposition implements CompositionEntity {
      return this.settingDefiningCode ;
   }
 
-  public void setDiagnosis(List<DiagnosisEvaluation> diagnosis) {
-     this.diagnosis = diagnosis;
+  public void setGender(GenderEvaluation gender) {
+     this.gender = gender;
   }
 
-  public List<DiagnosisEvaluation> getDiagnosis() {
-     return this.diagnosis ;
+  public GenderEvaluation getGender() {
+     return this.gender ;
+  }
+
+  public void setBirth(BirthEvaluation birth) {
+     this.birth = birth;
+  }
+
+  public BirthEvaluation getBirth() {
+     return this.birth ;
+  }
+
+  public void setDeath(DeathEvaluation death) {
+     this.death = death;
+  }
+
+  public DeathEvaluation getDeath() {
+     return this.death ;
   }
 
   public void setComposer(PartyProxy composer) {

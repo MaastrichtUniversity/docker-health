@@ -20,12 +20,6 @@ public class DiagnosisDemoDTO {
     @NotBlank(message = "diagnosisSNOMEDCode is mandatory field")
     @NotEmpty(message = "diagnosisSNOMEDCode cannot be empty")
     private String diagnosisSNOMEDCode;
-    @NotBlank(message = "genderSNOMEDCode is mandatory field")
-    @NotEmpty(message = "genderSNOMEDCode cannot be empty")
-    private String genderSNOMEDCode;
-    @NotBlank(message = "genderValue is mandatory field")
-    @NotEmpty(message = "genderValue cannot be empty")
-    private String genderValue;
 
     public DiagnosisDemoDTO(String startTime, String endTime, String dateClinicallyRecognised, String diagnosisValue, String getDiagnosisSNOMEDCode, String genderSNOMEDCode, String genderValue) {
         this.startTime = startTime;
@@ -33,8 +27,6 @@ public class DiagnosisDemoDTO {
         this.dateClinicallyRecognised = dateClinicallyRecognised;
         this.diagnosisValue = diagnosisValue;
         this.diagnosisSNOMEDCode = getDiagnosisSNOMEDCode;
-        this.genderSNOMEDCode = genderSNOMEDCode;
-        this.genderValue = genderValue;
     }
 
     public String getStartTime() {
@@ -75,22 +67,6 @@ public class DiagnosisDemoDTO {
 
     public void setDiagnosisSNOMEDCode(String diagnosisSNOMEDCode) {
         this.diagnosisSNOMEDCode = diagnosisSNOMEDCode;
-    }
-
-    public String getGenderSNOMEDCode() {
-        return genderSNOMEDCode;
-    }
-
-    public void setGenderSNOMEDCode(String genderSNOMEDCode) {
-        this.genderSNOMEDCode = genderSNOMEDCode;
-    }
-
-    public String getGenderValue() {
-        return genderValue;
-    }
-
-    public void setGenderValue(String genderValue) {
-        this.genderValue = genderValue;
     }
 
 

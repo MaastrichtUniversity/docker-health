@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
-public class DiagnosisTemplateProvider implements TemplateProvider {
+public class PatientTemplateProvider implements TemplateProvider {
     @Override
     public Optional<OPERATIONALTEMPLATE> find(String templateId){
-        InputStream stream = getClass().getResourceAsStream("/diagnosis_demo.opt");
+        InputStream stream = getClass().getResourceAsStream("/patient.opt");
         try {
             TemplateDocument template = TemplateDocument.Factory.parse(stream);
             return Optional.ofNullable(template.getTemplate());
