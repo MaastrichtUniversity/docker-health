@@ -35,18 +35,18 @@ public class EHRbaseClientDemo {
                 .build();
 
 
-        DiagnosisTemplateProvider provider = new DiagnosisTemplateProvider();
+        TemplateProviderLoader provider = new TemplateProviderLoader();
 
         // Setup REST client
         DefaultRestClient client = new DefaultRestClient(new OpenEhrClientConfig(new URI(OPEN_EHR_URL)),provider,httpClient);
 
         // Check for template otherwise upload
         Optional<OPERATIONALTEMPLATE> operationalTemplateFound =
-                client.templateEndpoint().findTemplate("diagnosis_demo");
+                client.templateEndpoint().findTemplate(TemplateProviderLoader.TEMPLATE_NAME_DIAGNOSIS);
 
         if (operationalTemplateFound.isEmpty()){
             System.out.println("Template not found");
-            client.templateEndpoint().ensureExistence("diagnosis_demo");
+            client.templateEndpoint().ensureExistence(TemplateProviderLoader.TEMPLATE_NAME_DIAGNOSIS);
         }
 
         // Create EHR
@@ -72,18 +72,18 @@ public class EHRbaseClientDemo {
                 .build();
 
 
-       PatientTemplateProvider provider = new PatientTemplateProvider();
+        TemplateProviderLoader provider = new TemplateProviderLoader();
 
         // Setup REST client
         DefaultRestClient client = new DefaultRestClient(new OpenEhrClientConfig(new URI(OPEN_EHR_URL)),provider,httpClient);
 
         // Check for template otherwise upload
         Optional<OPERATIONALTEMPLATE> operationalTemplateFound =
-                client.templateEndpoint().findTemplate("patient");
+                client.templateEndpoint().findTemplate(TemplateProviderLoader.TEMPLATE_NAME_PATIENT);
 
         if (operationalTemplateFound.isEmpty()){
             System.out.println("Template not found");
-            client.templateEndpoint().ensureExistence("patient");
+            client.templateEndpoint().ensureExistence(TemplateProviderLoader.TEMPLATE_NAME_PATIENT);
         }
 
         // Create EHR
@@ -110,18 +110,18 @@ public class EHRbaseClientDemo {
                 .build();
 
 
-        VitalSignsTemplateProvider provider = new VitalSignsTemplateProvider();
+        TemplateProviderLoader provider = new TemplateProviderLoader();
 
         // Setup REST client
         DefaultRestClient client = new DefaultRestClient(new OpenEhrClientConfig(new URI(OPEN_EHR_URL)),provider,httpClient);
 
         // Check for template otherwise upload
         Optional<OPERATIONALTEMPLATE> operationalTemplateFound =
-                client.templateEndpoint().findTemplate("vital_signs");
+                client.templateEndpoint().findTemplate(TemplateProviderLoader.TEMPLATE_NAME_VITAL_SIGNS);
 
         if (operationalTemplateFound.isEmpty()){
             System.out.println("Template not found");
-            client.templateEndpoint().ensureExistence("vital_signs");
+            client.templateEndpoint().ensureExistence(TemplateProviderLoader.TEMPLATE_NAME_VITAL_SIGNS);
         }
 
         // Create EHR

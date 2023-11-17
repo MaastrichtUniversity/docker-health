@@ -9,10 +9,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
-public class DiagnosisTemplateProvider implements TemplateProvider {
+
+public class TemplateProviderLoader implements TemplateProvider {
+    static String TEMPLATE_NAME_DIAGNOSIS = "diagnosis_demo";
+    static String TEMPLATE_NAME_PATIENT = "patient";
+    static String TEMPLATE_NAME_VITAL_SIGNS = "vital_signs";
+
+
     @Override
     public Optional<OPERATIONALTEMPLATE> find(String templateId){
-        InputStream stream = getClass().getResourceAsStream("/diagnosis_demo.opt");
+        InputStream stream = getClass().getResourceAsStream("/" + templateId + ".opt");
         try {
             TemplateDocument template = TemplateDocument.Factory.parse(stream);
             return Optional.ofNullable(template.getTemplate());
@@ -20,6 +26,5 @@ public class DiagnosisTemplateProvider implements TemplateProvider {
             System.out.println("Error Happened");
             return Optional.ofNullable(null);
         }
-
     }
 }

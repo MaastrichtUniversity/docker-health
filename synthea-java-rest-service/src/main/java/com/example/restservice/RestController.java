@@ -27,10 +27,10 @@ public class RestController {
     String createNewDiagnosis(@Valid @RequestBody DiagnosisDemoDTO diagnosisDemoDTO) throws URISyntaxException {
         GenerateComposition generateComposition = new GenerateComposition();
         DiagnosisDemoComposition composition = generateComposition.generateDiagnosisComposition(diagnosisDemoDTO);
-        DiagnosisTemplateProvider provider = new DiagnosisTemplateProvider();
+        TemplateProviderLoader provider = new TemplateProviderLoader();
         GeneratedDtoToRmConverter cut = new GeneratedDtoToRmConverter(provider);
         Composition rmObject = (Composition) cut.toRMObject(composition);
-        OPERATIONALTEMPLATE template = provider.find("diagnosis-demo").orElseThrow();
+        OPERATIONALTEMPLATE template = provider.find(TemplateProviderLoader.TEMPLATE_NAME_DIAGNOSIS).orElseThrow();
 
         // Validation
         CompositionValidator compositionValidator = new CompositionValidator();
@@ -57,10 +57,10 @@ public class RestController {
     String createNewPatient(@Valid @RequestBody PatientDTO patientDTO) throws URISyntaxException {
         GenerateComposition generateComposition = new GenerateComposition();
         PatientComposition patientComposition = generateComposition.generatePatientComposition(patientDTO);
-        PatientTemplateProvider patientTemplateProvider = new PatientTemplateProvider();
+        TemplateProviderLoader patientTemplateProvider = new TemplateProviderLoader();
         GeneratedDtoToRmConverter cut = new GeneratedDtoToRmConverter(patientTemplateProvider);
         Composition rmObject = (Composition) cut.toRMObject(patientComposition);
-        OPERATIONALTEMPLATE template = patientTemplateProvider.find("patient").orElseThrow();
+        OPERATIONALTEMPLATE template = patientTemplateProvider.find(TemplateProviderLoader.TEMPLATE_NAME_PATIENT).orElseThrow();
         CompositionValidator compositionValidator = new CompositionValidator();
         var result = compositionValidator.validate(rmObject, template);
         if (result.size() > 0) {
@@ -74,8 +74,8 @@ public class RestController {
         //  - Post the patient template if not found
         //  - Create an EHR
         //  - Post the composition
-//        EHRbaseClientDemo ehRbaseClientDemo = new EHRbaseClientDemo();
-//        ehRbaseClientDemo.interactWithEHRBasePatient( patientComposition);
+        EHRbaseClientDemo ehRbaseClientDemo = new EHRbaseClientDemo();
+        ehRbaseClientDemo.interactWithEHRBasePatient( patientComposition);
 
 
 
@@ -91,9 +91,9 @@ public class RestController {
         GenerateComposition generateComposition = new GenerateComposition();
         VitalSignsComposition vitalSignsComposition = generateComposition.generateVitalSignsComposition(vitalSignsDTO);
 
-        VitalSignsTemplateProvider vitalSignsTemplateProvider = new VitalSignsTemplateProvider();
+        TemplateProviderLoader vitalSignsTemplateProvider = new TemplateProviderLoader();
         GeneratedDtoToRmConverter cut = new GeneratedDtoToRmConverter(vitalSignsTemplateProvider);
-        OPERATIONALTEMPLATE template = vitalSignsTemplateProvider.find("vital_signs").orElseThrow();
+        OPERATIONALTEMPLATE template = vitalSignsTemplateProvider.find(TemplateProviderLoader.TEMPLATE_NAME_VITAL_SIGNS).orElseThrow();
 
         CompositionValidator compositionValidator = new CompositionValidator();
         Composition rmObject = (Composition) cut.toRMObject(vitalSignsComposition);

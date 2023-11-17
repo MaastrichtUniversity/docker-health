@@ -84,15 +84,29 @@ curl -X 'POST' \
 
 
 ```
-curl -X POST --location "http://localhost:8081/patient" \
-    -H "Content-Type: application/json" \
-    -d "{
-          \"startTime\": \"2011-10-18T20:29:31Z\",
-          \"sexAssignedAtBirth\": \"Male\",
-          \"dateOfBirth\": \"2000-10-18T20:29:31Z\",
-          \"dateOfDeath\": \"2000-10-18T20:29:31Z\"
-        }"
+curl -X 'POST' \
+  'http://localhost:8081/patient' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "startTime": "2011-10-18T20:29:31Z",
+    "sexAssignedAtBirth": "Male",
+    "dateOfBirth": "2000-10-18T20:29:31Z",
+    "dateOfDeath": "2000-10-18T20:29:31Z"
+}'
 
+```
+
+
+```
+curl -X 'POST' \
+  'http://localhost:8081/vital_signs' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "startTime": "2011-10-18T20:29:31Z",
+    "endTime": "2022-10-18T20:29:31Z"
+}'
 ```
 
 Will return a valid composition
