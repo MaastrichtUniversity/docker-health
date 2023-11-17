@@ -1,8 +1,14 @@
 package com.example.restservice;
 
-import com.example.restservice.diagnosisdemocomposition.DiagnosisDemoComposition;
-import com.example.restservice.patientcomposition.PatientComposition;
-import com.example.restservice.vitalsignscomposition.VitalSignsComposition;
+import com.example.restservice.compositions.diagnosisdemocomposition.DiagnosisDemoComposition;
+import com.example.restservice.compositions.patientcomposition.PatientComposition;
+import com.example.restservice.compositions.vitalsignscomposition.VitalSignsComposition;
+import com.example.restservice.dto.DiagnosisDemoDTO;
+import com.example.restservice.dto.PatientDTO;
+import com.example.restservice.dto.VitalSignsDTO;
+import com.example.restservice.load.EHRbaseClientDemo;
+import com.example.restservice.transform.GenerateComposition;
+import com.example.restservice.utils.TemplateProviderLoader;
 import com.nedap.archie.rm.composition.Composition;
 import jakarta.validation.Valid;
 import org.ehrbase.openehr.sdk.serialisation.dto.GeneratedDtoToRmConverter;
