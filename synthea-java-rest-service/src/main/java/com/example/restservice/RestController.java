@@ -21,8 +21,6 @@ import java.net.URISyntaxException;
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
 
-    private String response;
-
     @PostMapping("/diagnosis-demo")
     String createNewDiagnosis(@Valid @RequestBody DiagnosisDemoDTO diagnosisDemoDTO) throws URISyntaxException {
         GenerateComposition generateComposition = new GenerateComposition();
@@ -47,7 +45,7 @@ public class RestController {
         //  - Create an EHR
         //  - Post the composition
         EHRbaseClientDemo ehRbaseClientDemo = new EHRbaseClientDemo();
-        ehRbaseClientDemo.interactWithEHRBaseDiagnosis(composition);
+        ehRbaseClientDemo.interactWithEHRBase(composition, TemplateProviderLoader.TEMPLATE_NAME_DIAGNOSIS);
 
         CanonicalJson json = new CanonicalJson();
         return json.marshal(rmObject);
@@ -75,14 +73,10 @@ public class RestController {
         //  - Create an EHR
         //  - Post the composition
         EHRbaseClientDemo ehRbaseClientDemo = new EHRbaseClientDemo();
-        ehRbaseClientDemo.interactWithEHRBasePatient( patientComposition);
-
-
+        ehRbaseClientDemo.interactWithEHRBase(patientComposition, TemplateProviderLoader.TEMPLATE_NAME_PATIENT);
 
         CanonicalJson json = new CanonicalJson();
         return json.marshal(rmObject);
-
-
     }
 
 
@@ -105,8 +99,7 @@ public class RestController {
         }
 
         EHRbaseClientDemo ehRbaseClientDemo = new EHRbaseClientDemo();
-        ehRbaseClientDemo.interactWithEHRBaseVitalSigns(vitalSignsComposition);
-
+        ehRbaseClientDemo.interactWithEHRBase(vitalSignsComposition, TemplateProviderLoader.TEMPLATE_NAME_VITAL_SIGNS);
 
         CanonicalJson json = new CanonicalJson();
         return json.marshal(rmObject);
