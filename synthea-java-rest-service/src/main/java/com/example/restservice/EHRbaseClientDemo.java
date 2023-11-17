@@ -2,6 +2,7 @@ package com.example.restservice;
 
 import com.example.restservice.diagnosisdemocomposition.DiagnosisDemoComposition;
 import com.example.restservice.patientcomposition.PatientComposition;
+import com.example.restservice.vitalsignscomposition.VitalSignsComposition;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
@@ -83,6 +84,44 @@ public class EHRbaseClientDemo {
         if (operationalTemplateFound.isEmpty()){
             System.out.println("Template not found");
             client.templateEndpoint().ensureExistence("patient");
+        }
+
+        // Create EHR
+        UUID ehr = client.ehrEndpoint().createEhr();
+
+        System.out.println(ehr);
+
+        // Post composition
+        client.compositionEndpoint(ehr).mergeCompositionEntity(composition);
+
+        System.out.println(composition.getVersionUid());
+    }
+
+
+    public void interactWithEHRBaseVitalSigns(VitalSignsComposition composition) throws URISyntaxException {
+        CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(
+                AuthScope.ANY,
+                new UsernamePasswordCredentials(USERNAME, PASSWORD)
+        );
+
+        HttpClient httpClient = HttpClientBuilder.create()
+                .setDefaultCredentialsProvider(credentialsProvider)
+                .build();
+
+
+        VitalSignsTemplateProvider provider = new VitalSignsTemplateProvider();
+
+        // Setup REST client
+        DefaultRestClient client = new DefaultRestClient(new OpenEhrClientConfig(new URI(OPEN_EHR_URL)),provider,httpClient);
+
+        // Check for template otherwise upload
+        Optional<OPERATIONALTEMPLATE> operationalTemplateFound =
+                client.templateEndpoint().findTemplate("vital_signs");
+
+        if (operationalTemplateFound.isEmpty()){
+            System.out.println("Template not found");
+            client.templateEndpoint().ensureExistence("vital_signs");
         }
 
         // Create EHR

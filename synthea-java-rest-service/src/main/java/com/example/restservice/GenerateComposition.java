@@ -7,6 +7,7 @@ import com.example.restservice.patientcomposition.definition.BirthEvaluation;
 import com.example.restservice.patientcomposition.definition.DeathEvaluation;
 import com.example.restservice.patientcomposition.definition.GenderEvaluation;
 import com.example.restservice.patientcomposition.definition.SexAssignedAtBirthDefiningCode;
+import com.example.restservice.vitalsignscomposition.VitalSignsComposition;
 import com.nedap.archie.rm.datatypes.CodePhrase;
 import com.nedap.archie.rm.datavalues.DvCodedText;
 import com.nedap.archie.rm.generic.PartyIdentified;
@@ -113,6 +114,17 @@ public class GenerateComposition {
         return composition;
     }
 
+    public VitalSignsComposition generateVitalSignsComposition(VitalSignsDTO vitalSignsDTO){
+        VitalSignsComposition composition = new VitalSignsComposition();
+        composition.setSettingDefiningCode(Setting.HOME);
+        composition.setLanguage(Language.EN);
+        composition.setTerritory(Territory.NL);
+        composition.setEndTimeValue(formatToCorrectTime(vitalSignsDTO.getEndTime()));
+        composition.setStartTimeValue(formatToCorrectTime(vitalSignsDTO.getStartTime()));
+        composition.setComposer(new PartyIdentified(null, "DataHub", null));
+
+        return composition;
+    }
 
 
 }

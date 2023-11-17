@@ -2,6 +2,7 @@ package com.example.restservice;
 
 import com.example.restservice.diagnosisdemocomposition.DiagnosisDemoComposition;
 import com.example.restservice.patientcomposition.PatientComposition;
+import com.example.restservice.vitalsignscomposition.VitalSignsComposition;
 import com.nedap.archie.rm.composition.Composition;
 import jakarta.validation.Valid;
 import org.ehrbase.openehr.sdk.serialisation.dto.GeneratedDtoToRmConverter;
@@ -83,6 +84,34 @@ public class RestController {
 
 
     }
+
+
+    @PostMapping("/vital_signs")
+    String createNewVitalSigns(@Valid @RequestBody VitalSignsDTO vitalSignsDTO) throws URISyntaxException {
+        GenerateComposition generateComposition = new GenerateComposition();
+        VitalSignsComposition vitalSignsComposition = generateComposition.generateVitalSignsComposition(vitalSignsDTO);
+
+        VitalSignsTemplateProvider vitalSignsTemplateProvider = new VitalSignsTemplateProvider();
+        GeneratedDtoToRmConverter cut = new GeneratedDtoToRmConverter(vitalSignsTemplateProvider);
+        OPERATIONALTEMPLATE template = vitalSignsTemplateProvider.find("vital_signs").orElseThrow();
+
+        CompositionValidator compositionValidator = new CompositionValidator();
+        Composition rmObject = (Composition) cut.toRMObject(vitalSignsComposition);
+        var result = compositionValidator.validate(rmObject, template);
+        if (result.size() > 0) {
+            result.forEach(System.out::println);
+        } else {
+            System.out.println("Composition validated successfully");
+        }
+
+        EHRbaseClientDemo ehRbaseClientDemo = new EHRbaseClientDemo();
+        ehRbaseClientDemo.interactWithEHRBaseVitalSigns(vitalSignsComposition);
+
+
+        CanonicalJson json = new CanonicalJson();
+        return json.marshal(rmObject);
+    }
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
