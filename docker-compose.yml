@@ -13,6 +13,10 @@ services:
     build:
       context: ./synthea-java-rest-service
       dockerfile: Dockerfile
+    environment:
+      DIAGNOSIS_SEM_VER: 0.4.0
+      PATIENT_SEM_VER: 0.2.0
+      VITAL_SIGNS_SEM_VER: 0.2.0
     ports:
       - 8081:8080
     networks:
