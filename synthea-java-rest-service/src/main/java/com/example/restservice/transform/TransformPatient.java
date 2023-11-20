@@ -21,11 +21,12 @@ import static java.util.Objects.nonNull;
 
 public class TransformPatient implements ITransformDto {
 
-    PatientDTO patientDTO;
-    final String templateId = "patient";
+    private final PatientDTO patientDTO;
+    private final String templateSemVer;
 
     public TransformPatient(PatientDTO patientDTO) {
         this.patientDTO = patientDTO;
+        this.templateSemVer = System.getenv("PATIENT_SEM_VER");
     }
 
     @Override
@@ -76,6 +77,11 @@ public class TransformPatient implements ITransformDto {
 
     @Override
     public String getTemplateId() {
-        return templateId;
+        return "patient";
+    }
+
+    @Override
+    public String getTemplateSemVer() {
+        return this.templateSemVer;
     }
 }

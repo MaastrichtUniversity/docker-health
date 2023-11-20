@@ -19,11 +19,12 @@ import static com.example.restservice.transform.Formatters.formatToCorrectTime;
 
 public class TransformDiagnosis implements ITransformDto {
 
-    DiagnosisDemoDTO diagnosisDemoDTO;
-    final String templateId = "diagnosis_demo";
+    private final DiagnosisDemoDTO diagnosisDemoDTO;
+    private final String templateSemVer;
 
     public TransformDiagnosis(DiagnosisDemoDTO diagnosisDemoDTO) {
         this.diagnosisDemoDTO = diagnosisDemoDTO;
+        this.templateSemVer = System.getenv("DIAGNOSIS_SEM_VER");
     }
 
     @Override
@@ -60,6 +61,11 @@ public class TransformDiagnosis implements ITransformDto {
 
     @Override
     public String getTemplateId() {
-        return templateId;
+        return "diagnosis_demo";
+    }
+
+    @Override
+    public String getTemplateSemVer() {
+        return this.templateSemVer;
     }
 }

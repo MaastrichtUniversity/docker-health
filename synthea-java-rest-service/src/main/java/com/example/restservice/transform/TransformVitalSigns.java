@@ -12,11 +12,13 @@ import static com.example.restservice.transform.Formatters.formatToCorrectTime;
 
 public class TransformVitalSigns implements ITransformDto {
 
-    VitalSignsDTO vitalSignsDTO;
-    final String templateId = "vital_signs";
+    private final VitalSignsDTO vitalSignsDTO;
+    private final String templateSemVer;
+
 
     public TransformVitalSigns(VitalSignsDTO vitalSignsDTO) {
         this.vitalSignsDTO = vitalSignsDTO;
+        this.templateSemVer = System.getenv("VITAL_SIGNS_SEM_VER");
     }
 
     @Override
@@ -34,6 +36,11 @@ public class TransformVitalSigns implements ITransformDto {
 
     @Override
     public String getTemplateId() {
-        return templateId;
+        return "vital_signs";
+    }
+
+    @Override
+    public String getTemplateSemVer() {
+        return this.templateSemVer;
     }
 }

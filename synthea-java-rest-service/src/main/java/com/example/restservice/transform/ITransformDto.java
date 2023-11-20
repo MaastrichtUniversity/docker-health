@@ -7,4 +7,7 @@ public interface ITransformDto {
     CompositionEntity transform();
 
     String getTemplateId();
+
+    String getTemplateSemVer();
+
 }
