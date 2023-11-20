@@ -37,12 +37,12 @@ public class EHRbaseClientDemo {
         TemplateProviderLoader provider = new TemplateProviderLoader();
 
         // Setup REST client
-        DefaultRestClient client = new DefaultRestClient(new OpenEhrClientConfig(new URI(OPEN_EHR_URL)),provider,httpClient);
+        DefaultRestClient client = new DefaultRestClient(new OpenEhrClientConfig(new URI(OPEN_EHR_URL)), provider, httpClient);
 
         // Check for template otherwise upload
         Optional<OPERATIONALTEMPLATE> operationalTemplateFound = client.templateEndpoint().findTemplate(templateId);
 
-        if (operationalTemplateFound.isEmpty()){
+        if (operationalTemplateFound.isEmpty()) {
             System.out.println("Template not found");
             client.templateEndpoint().ensureExistence(templateId);
         }

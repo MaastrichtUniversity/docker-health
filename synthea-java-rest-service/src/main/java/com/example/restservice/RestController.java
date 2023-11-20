@@ -1,20 +1,13 @@
 package com.example.restservice;
 
-import com.example.restservice.compositions.diagnosisdemocomposition.DiagnosisDemoComposition;
-import com.example.restservice.compositions.patientcomposition.PatientComposition;
-import com.example.restservice.compositions.vitalsignscomposition.VitalSignsComposition;
 import com.example.restservice.dto.DiagnosisDemoDTO;
 import com.example.restservice.dto.PatientDTO;
 import com.example.restservice.dto.VitalSignsDTO;
-import com.example.restservice.load.EHRbaseClientDemo;
-import com.example.restservice.transform.GenerateComposition;
-import com.example.restservice.utils.TemplateProviderLoader;
-import com.nedap.archie.rm.composition.Composition;
+import com.example.restservice.transform.TransformDiagnosis;
+import com.example.restservice.transform.TransformPatient;
+import com.example.restservice.transform.TransformService;
+import com.example.restservice.transform.TransformVitalSigns;
 import jakarta.validation.Valid;
-import org.ehrbase.openehr.sdk.serialisation.dto.GeneratedDtoToRmConverter;
-import org.ehrbase.openehr.sdk.serialisation.jsonencoding.CanonicalJson;
-import org.ehrbase.openehr.sdk.validation.CompositionValidator;
-import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,86 +22,39 @@ public class RestController {
 
     @PostMapping("/diagnosis-demo")
     String createNewDiagnosis(@Valid @RequestBody DiagnosisDemoDTO diagnosisDemoDTO) throws URISyntaxException {
-        GenerateComposition generateComposition = new GenerateComposition();
-        DiagnosisDemoComposition composition = generateComposition.generateDiagnosisComposition(diagnosisDemoDTO);
-        TemplateProviderLoader provider = new TemplateProviderLoader();
-        GeneratedDtoToRmConverter cut = new GeneratedDtoToRmConverter(provider);
-        Composition rmObject = (Composition) cut.toRMObject(composition);
-        OPERATIONALTEMPLATE template = provider.find(TemplateProviderLoader.TEMPLATE_NAME_DIAGNOSIS).orElseThrow();
+        TransformService transformService = new TransformService(new TransformDiagnosis(diagnosisDemoDTO));
+        transformService.transform();
 
-        // Validation
-        CompositionValidator compositionValidator = new CompositionValidator();
-        var result = compositionValidator.validate(rmObject, template);
-        if (result.size() > 0) {
-            result.forEach(System.out::println);
-        } else {
-            System.out.println("Composition validated successfully");
-        }
+        String jsonComposition = transformService.convertToJson();
 
-        // Uncomment the following lines to run the interaction
-        // This will:
-        //  - Post the diagnosis-demo template if not found
-        //  - Create an EHR
-        //  - Post the composition
-        EHRbaseClientDemo ehRbaseClientDemo = new EHRbaseClientDemo();
-        ehRbaseClientDemo.interactWithEHRBase(composition, TemplateProviderLoader.TEMPLATE_NAME_DIAGNOSIS);
+        transformService.load();
 
-        CanonicalJson json = new CanonicalJson();
-        return json.marshal(rmObject);
+        return jsonComposition;
     }
 
     @PostMapping("/patient")
     String createNewPatient(@Valid @RequestBody PatientDTO patientDTO) throws URISyntaxException {
-        GenerateComposition generateComposition = new GenerateComposition();
-        PatientComposition patientComposition = generateComposition.generatePatientComposition(patientDTO);
-        TemplateProviderLoader patientTemplateProvider = new TemplateProviderLoader();
-        GeneratedDtoToRmConverter cut = new GeneratedDtoToRmConverter(patientTemplateProvider);
-        Composition rmObject = (Composition) cut.toRMObject(patientComposition);
-        OPERATIONALTEMPLATE template = patientTemplateProvider.find(TemplateProviderLoader.TEMPLATE_NAME_PATIENT).orElseThrow();
-        CompositionValidator compositionValidator = new CompositionValidator();
-        var result = compositionValidator.validate(rmObject, template);
-        if (result.size() > 0) {
-            result.forEach(System.out::println);
-        } else {
-            System.out.println("Composition validated successfully");
-        }
+        TransformService transformService = new TransformService(new TransformPatient(patientDTO));
+        transformService.transform();
 
-        // Uncomment the following lines to run the interaction
-        // This will:
-        //  - Post the patient template if not found
-        //  - Create an EHR
-        //  - Post the composition
-        EHRbaseClientDemo ehRbaseClientDemo = new EHRbaseClientDemo();
-        ehRbaseClientDemo.interactWithEHRBase(patientComposition, TemplateProviderLoader.TEMPLATE_NAME_PATIENT);
+        String jsonComposition = transformService.convertToJson();
 
-        CanonicalJson json = new CanonicalJson();
-        return json.marshal(rmObject);
+        transformService.load();
+
+        return jsonComposition;
     }
 
 
     @PostMapping("/vital_signs")
     String createNewVitalSigns(@Valid @RequestBody VitalSignsDTO vitalSignsDTO) throws URISyntaxException {
-        GenerateComposition generateComposition = new GenerateComposition();
-        VitalSignsComposition vitalSignsComposition = generateComposition.generateVitalSignsComposition(vitalSignsDTO);
+        TransformService transformService = new TransformService(new TransformVitalSigns(vitalSignsDTO));
+        transformService.transform();
 
-        TemplateProviderLoader vitalSignsTemplateProvider = new TemplateProviderLoader();
-        GeneratedDtoToRmConverter cut = new GeneratedDtoToRmConverter(vitalSignsTemplateProvider);
-        OPERATIONALTEMPLATE template = vitalSignsTemplateProvider.find(TemplateProviderLoader.TEMPLATE_NAME_VITAL_SIGNS).orElseThrow();
+        String jsonComposition = transformService.convertToJson();
 
-        CompositionValidator compositionValidator = new CompositionValidator();
-        Composition rmObject = (Composition) cut.toRMObject(vitalSignsComposition);
-        var result = compositionValidator.validate(rmObject, template);
-        if (result.size() > 0) {
-            result.forEach(System.out::println);
-        } else {
-            System.out.println("Composition validated successfully");
-        }
+        transformService.load();
 
-        EHRbaseClientDemo ehRbaseClientDemo = new EHRbaseClientDemo();
-        ehRbaseClientDemo.interactWithEHRBase(vitalSignsComposition, TemplateProviderLoader.TEMPLATE_NAME_VITAL_SIGNS);
-
-        CanonicalJson json = new CanonicalJson();
-        return json.marshal(rmObject);
+        return jsonComposition;
     }
 
 

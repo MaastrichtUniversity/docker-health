@@ -11,11 +11,6 @@ import java.util.Optional;
 
 
 public class TemplateProviderLoader implements TemplateProvider {
-    public static String TEMPLATE_NAME_DIAGNOSIS = "diagnosis_demo";
-    public static String TEMPLATE_NAME_PATIENT = "patient";
-    public static String TEMPLATE_NAME_VITAL_SIGNS = "vital_signs";
-
-
     @Override
     public Optional<OPERATIONALTEMPLATE> find(String templateId){
         InputStream stream = getClass().getResourceAsStream("/" + templateId + ".opt");
