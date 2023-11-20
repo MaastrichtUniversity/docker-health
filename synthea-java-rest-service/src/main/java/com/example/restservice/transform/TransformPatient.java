@@ -30,7 +30,7 @@ public class TransformPatient implements ITransformDto {
     }
 
     @Override
-    public CompositionEntity transform() {
+    public CompositionEntity toCompositionEntity() {
         PatientComposition composition = new PatientComposition();
         composition.setSettingDefiningCode(Setting.HOME);
         composition.setLanguage(Language.EN);

@@ -4,7 +4,7 @@ import org.ehrbase.openehr.sdk.generator.commons.interfaces.CompositionEntity;
 
 public interface ITransformDto {
 
-    CompositionEntity transform();
+    CompositionEntity toCompositionEntity();
 
     String getTemplateId();
 

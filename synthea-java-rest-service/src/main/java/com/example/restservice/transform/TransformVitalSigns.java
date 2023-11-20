@@ -22,7 +22,7 @@ public class TransformVitalSigns implements ITransformDto {
     }
 
     @Override
-    public CompositionEntity transform() {
+    public CompositionEntity toCompositionEntity() {
         VitalSignsComposition composition = new VitalSignsComposition();
         composition.setSettingDefiningCode(Setting.HOME);
         composition.setLanguage(Language.EN);

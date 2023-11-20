@@ -28,7 +28,7 @@ public class TransformDiagnosis implements ITransformDto {
     }
 
     @Override
-    public CompositionEntity transform() {
+    public CompositionEntity toCompositionEntity() {
         DiagnosisDemoComposition composition = new DiagnosisDemoComposition();
         composition.setSettingDefiningCode(Setting.HOME);
         composition.setLanguage(Language.EN);

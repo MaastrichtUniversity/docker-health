@@ -27,7 +27,7 @@ public class TransformService {
     }
 
     public void transform() {
-        this.compositionEntity = this.transformDto.transform();
+        this.compositionEntity = this.transformDto.toCompositionEntity();
         GeneratedDtoToRmConverter converter = new GeneratedDtoToRmConverter(provider);
         this.rmObject = (Composition) converter.toRMObject(this.compositionEntity);
     }
