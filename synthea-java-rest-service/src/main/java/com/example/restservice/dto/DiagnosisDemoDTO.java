@@ -33,41 +33,19 @@ public class DiagnosisDemoDTO {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
     public String getEndTime() {
         return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
     }
 
     public String getDateClinicallyRecognised() {
         return dateClinicallyRecognised;
     }
 
-    public void setDateClinicallyRecognised(String dateClinicallyRecognised) {
-        this.dateClinicallyRecognised = dateClinicallyRecognised;
-    }
-
     public String getDiagnosisValue() {
         return diagnosisValue;
-    }
-
-    public void setDiagnosisValue(String diagnosisValue) {
-        this.diagnosisValue = diagnosisValue;
     }
 
     public String getDiagnosisSNOMEDCode() {
         return diagnosisSNOMEDCode;
     }
-
-    public void setDiagnosisSNOMEDCode(String diagnosisSNOMEDCode) {
-        this.diagnosisSNOMEDCode = diagnosisSNOMEDCode;
-    }
-
-
 }
