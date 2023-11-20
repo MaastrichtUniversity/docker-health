@@ -8,24 +8,30 @@ import org.ehrbase.openehr.sdk.serialisation.dto.GeneratedDtoToRmConverter;
 import org.ehrbase.openehr.sdk.serialisation.jsonencoding.CanonicalJson;
 import org.ehrbase.openehr.sdk.validation.CompositionValidator;
 import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
+import org.openehr.schemas.v1.StringDictionaryItem;
 
 import java.net.URISyntaxException;
 
 public class TransformService {
 
     ITransformDto transformDto;
-
     CompositionEntity compositionEntity;
-
     EHRbaseClientDemo clientDemo;
+    TemplateProviderLoader provider;
+    OPERATIONALTEMPLATE template;
+    Composition rmObject;
 
     public TransformService(ITransformDto transformDto) {
         this.transformDto = transformDto;
         this.clientDemo = new EHRbaseClientDemo();
+        this.provider = new TemplateProviderLoader();
+        this.template = provider.find(this.transformDto.getTemplateId()).orElseThrow();
     }
 
     public void transform() {
         this.compositionEntity = this.transformDto.transform();
+        GeneratedDtoToRmConverter converter = new GeneratedDtoToRmConverter(provider);
+        this.rmObject = (Composition) converter.toRMObject(this.compositionEntity);
     }
 
     public void load() throws URISyntaxException {
@@ -33,22 +39,45 @@ public class TransformService {
     }
 
     public String convertToJson() {
-        TemplateProviderLoader provider = new TemplateProviderLoader();
-        GeneratedDtoToRmConverter cut = new GeneratedDtoToRmConverter(provider);
-        Composition rmObject = (Composition) cut.toRMObject(this.compositionEntity);
-        OPERATIONALTEMPLATE template = provider.find(this.transformDto.getTemplateId()).orElseThrow();
+        CanonicalJson json = new CanonicalJson();
+        return json.marshal(this.rmObject);
+    }
 
+    public void verifyTemplate() {
+        // Verify template version
+        for (StringDictionaryItem stringDictionaryItem : this.template.getDescription().getOtherDetailsArray()) {
+            if (stringDictionaryItem.getId().equals("sem_ver")) {
+                String sem_ver = stringDictionaryItem.getStringValue();
+                System.out.println("sem_ver");
+                System.out.println(sem_ver);
+                if (sem_ver.equals(this.transformDto.getTemplateSemVer())) {
+                    System.out.println("Template semantic version verified successfully");
+                } else {
+                    System.out.println(this.transformDto.getTemplateSemVer() + " doesn't match: " + sem_ver);
+                }
+            }
+        }
+    }
+
+    public void validateComposition() {
         // Validation
         CompositionValidator compositionValidator = new CompositionValidator();
-        var result = compositionValidator.validate(rmObject, template);
+        var result = compositionValidator.validate(this.rmObject, this.template);
         if (result.size() > 0) {
             result.forEach(System.out::println);
         } else {
             System.out.println("Composition validated successfully");
         }
-
-        CanonicalJson json = new CanonicalJson();
-        return json.marshal(rmObject);
     }
 
+    public String result() throws URISyntaxException {
+        this.transform();
+
+        this.verifyTemplate();
+        this.validateComposition();
+
+        this.load();
+
+        return this.convertToJson();
+    }
 }
