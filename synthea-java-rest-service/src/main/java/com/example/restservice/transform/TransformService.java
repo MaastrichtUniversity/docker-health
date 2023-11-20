@@ -16,14 +16,12 @@ public class TransformService {
 
     ITransformDto transformDto;
     CompositionEntity compositionEntity;
-    EHRbaseClientDemo clientDemo;
     TemplateProviderLoader provider;
     OPERATIONALTEMPLATE template;
     Composition rmObject;
 
     public TransformService(ITransformDto transformDto) {
         this.transformDto = transformDto;
-        this.clientDemo = new EHRbaseClientDemo();
         this.provider = new TemplateProviderLoader();
         this.template = provider.find(this.transformDto.getTemplateId()).orElseThrow();
     }
@@ -35,7 +33,8 @@ public class TransformService {
     }
 
     public void load() throws URISyntaxException {
-        this.clientDemo.interactWithEHRBase(this.compositionEntity, this.transformDto.getTemplateId());
+        EHRbaseClientDemo clientDemo = new EHRbaseClientDemo();
+        clientDemo.interactWithEHRBase(this.compositionEntity, this.transformDto.getTemplateId());
     }
 
     public String convertToJson() {
