@@ -71,9 +71,8 @@ public class TransformService {
     }
 
     public String result() throws URISyntaxException {
-        this.transform();
-
         this.verifyTemplate();
+        this.transform();
         this.validateComposition();
 
         this.load();
