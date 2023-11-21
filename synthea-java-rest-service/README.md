@@ -12,4 +12,4 @@ Modify the command below with the correct paths
 
 # Set environment variables for configuration
 
-```DIAGNOSIS_SEM_VER=0.4.0;PATIENT_SEM_VER=0.2.0;VITAL_SIGNS_SEM_VER=0.2.0```
+``` DIAGNOSIS_SEM_VER=0.4.0;EHRBASE_BASE_URL="http://ehrbase.dh.local:8080/ehrbase/";PATIENT_SEM_VER=0.2.0;VITAL_SIGNS_SEM_VER=0.2.0;EHRBASE_USERNAME=user;EHRBASE_PASSWORD=foobar```

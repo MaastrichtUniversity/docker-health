@@ -18,9 +18,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class EHRbaseClientDemo {
-    private static final String OPEN_EHR_URL = "http://localhost:8080/ehrbase/";
-    private static final String USERNAME = "user";
-    private static final String PASSWORD = "foobar";
+    private static final String OPEN_EHR_URL = System.getenv("EHRBASE_BASE_URL");
+    private static final String USERNAME = System.getenv("EHRBASE_USERNAME");
+    private static final String PASSWORD = System.getenv("EHRBASE_PASSWORD");
 
     public void interactWithEHRBase(CompositionEntity composition, String templateId) throws URISyntaxException {
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();

@@ -9,6 +9,7 @@ The current services:
 ```
 127.0.0.1	ehrbase.local.dh.unimaas.nl
 127.0.0.1	jupyter.local.dh.unimaas.nl
+127.0.0.1	javarest.local.dh.unimaas.nl
 ```
 
 Go to your browser and try this:
@@ -64,6 +65,7 @@ docker compose up java-rest-demo
 ```
 
 Swagger interface is now at http://localhost:8081/swagger-ui/index.html
+or http://javarest.local.dh.unimaas.nl/swagger-ui/index.html
 
 ## diagnosis
 ```

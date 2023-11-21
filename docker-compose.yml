@@ -14,9 +14,13 @@ services:
       context: ./synthea-java-rest-service
       dockerfile: Dockerfile
     environment:
+      VIRTUAL_HOST: javarest.local.dh.unimaas.nl
       DIAGNOSIS_SEM_VER: 0.4.0
       PATIENT_SEM_VER: 0.2.0
       VITAL_SIGNS_SEM_VER: 0.2.0
+      EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/"
+      EHRBASE_USERNAME: user
+      EHRBASE_PASSWORD: foobar
     ports:
       - 8081:8080
     networks:

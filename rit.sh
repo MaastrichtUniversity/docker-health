@@ -37,6 +37,12 @@ if [[ $1 == "data" ]]; then
     docker compose up demo-data
 fi
 
+if [[ $1 == "java" ]]; then
+    echo "Start Sprint boot Rest API"
+    docker compose build java-rest-demo
+    docker compose up -d proxy java-rest-demo
+fi
+
 if [[ $1 == "data-exploration" ]]; then
     echo "Explore synthea dataset"
     docker compose build data-exploration
