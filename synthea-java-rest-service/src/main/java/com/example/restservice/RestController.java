@@ -2,7 +2,7 @@ package com.example.restservice;
 
 import com.example.restservice.dto.DiagnosisDemoDTO;
 import com.example.restservice.dto.PatientDTO;
-import com.example.restservice.dto.VitalSignsDTO;
+import com.example.restservice.dto.vitalsigns.VitalSignsDTO;
 import com.example.restservice.transform.TransformDiagnosis;
 import com.example.restservice.transform.TransformPatient;
 import com.example.restservice.transform.TransformService;

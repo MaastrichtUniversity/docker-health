@@ -65,7 +65,7 @@ docker compose up java-rest-demo
 
 Swagger interface is now at http://localhost:8081/swagger-ui/index.html
 
-
+## diagnosis
 ```
 curl -X 'POST' \
   'http://localhost:8081/diagnosis-demo' \
@@ -82,7 +82,7 @@ curl -X 'POST' \
 }'
 ```
 
-
+## patient
 ```
 curl -X 'POST' \
   'http://localhost:8081/patient' \
@@ -98,14 +98,41 @@ curl -X 'POST' \
 ```
 
 
+## vital_signs
+
+Minimum
 ```
 curl -X 'POST' \
   'http://localhost:8081/vital_signs' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
-    "startTime": "2011-10-18T20:29:31Z",
-    "endTime": "2022-10-18T20:29:31Z"
+    "startTime": "2011-10-18T20:29:31Z"
+}'
+```
+
+Extended
+```
+curl -X 'POST' \
+  'http://localhost:8081/vital_signs' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "startTime": "2011-10-18T20:29:31Z",
+  "bodyHeightObservation": {
+    "pointInTime": [
+      {
+        "bodyHeightMagnitude": 185,
+        "bodyHeightUnits": "cm",
+        "timeValue": "1999-12-18T04:05:06Z"
+      },
+      {
+        "bodyHeightMagnitude": 173,
+        "bodyHeightUnits": "cm",
+        "timeValue": "2023-12-18T01:02:03Z"
+      }	
+    ]
+  }
 }'
 ```
 
