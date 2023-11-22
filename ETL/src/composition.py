@@ -46,7 +46,7 @@ def post_composition(ehr_id: UUID, composition: dict) -> UUID:
         versioned id for this composition
 
     """
-    print(json.dumps(composition))
+    # print(json.dumps(composition))
     url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition"
     headers = {
         "Accept": "application/json; charset=UTF-8",
@@ -61,11 +61,18 @@ def post_composition(ehr_id: UUID, composition: dict) -> UUID:
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
+
     response_json = json.loads(response.text)
+    print(f"RESPONSE: {response.status_code}")
+    if response.ok:
+        print(f"Composition was successfully created")
+        return response_json["uid"]["value"]
+    else:
+        print(f"ERROR {response_json["error"]}")
+        print(response_json["message"])
+        return None
 
-    return response_json["uid"]["value"]
-
-def update_composition_high_level(composition: dict, start_time: datetime, end_time: datetime) -> dict:
+def update_composition_high_level(composition: dict, start_time: datetime) -> dict:
     """
     Update the composition with:
         - territory
@@ -93,5 +100,5 @@ def update_composition_high_level(composition: dict, start_time: datetime, end_t
     composition["composer"]["name"] = "DataHub"
     # set start time
     composition["context"]["start_time"]["value"] = start_time
-    composition["context"]["end_time"] = {"value": end_time}
+    # composition["context"]["end_time"] = {"value": end_time} # no end time
     return composition
