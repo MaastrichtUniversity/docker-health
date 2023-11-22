@@ -13,19 +13,16 @@ from pydantic import BaseModel
 import pandas as pd
 
 
-EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
-EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
-EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
-
 PLOT_PATH = Path("data/plot")
 
 
-class Diagnosis(BaseModel):
+class Diagnosis:
     """Data model for the diagnosis"""
-    snomed_code: int
-    description: str
-    startdate: datetime
-    stopdate: datetime
+    def __init__(self, snomed_code, description, startdate, stopdate):
+        self.snomed_code = snomed_code # int
+        self.description = description # str
+        self.startdate = startdate     # datetime
+        self.stopdate = stopdate       # datetime
 
 def parse_all_diagnosis(diagnosis_df: pd.DataFrame) -> Diagnosis:
     """
@@ -40,37 +37,31 @@ def parse_all_diagnosis(diagnosis_df: pd.DataFrame) -> Diagnosis:
     diagnosis_df
         Instance of Diagnosis filled with the values
     """
-    diagnosis = Diagnosis
-
     # Parse SNOMED-CT CODE:
     snomed_code = diagnosis_df["CODE"]
     try:
-        diagnosis.snomed_code = int(snomed_code)
+        snomed_code = int(snomed_code)
     except ValueError:
-        diagnosis.snomed_code = None
+        snomed_code = None
 
     # Parse description of the disorder:
     description = diagnosis_df["DESCRIPTION"]
 
     # Parse startdate (date of diagnosis):
-    startdate = diagnosis_df["START"]
     try:
-        date = datetime.fromisoformat(str(startdate)) # str for None values
-        diagnosis.startdate = date
-    except ValueError:
-        diagnosis.startdate = None
+        startdate = datetime.fromisoformat(diagnosis_df["START"]).isoformat()
+    except TypeError:
+        startdate = None
 
     # Parse stopdate (date of reslution):
-    stopdate = diagnosis_df["STOP"]
     try:
-        date = datetime.fromisoformat(str(stopdate)) # str for None values
-        diagnosis.stopdate = date
-    except ValueError:
-        diagnosis.stopdate = None
+        stopdate = datetime.fromisoformat(diagnosis_df["STOP"]).isoformat()
+    except TypeError:
+        stopdate = None
 
-    return diagnosis
+    return Diagnosis(snomed_code, description, startdate, stopdate)
 
-def update_composition_disgnosis(composition: dict, diagnosis: dict) -> dict:
+def update_composition_diagnosis(composition: dict, diagnosis: Diagnosis) -> dict:
     """
     Update the composition with the values from the diagnosis dataframe
     Values:
@@ -91,4 +82,15 @@ def update_composition_disgnosis(composition: dict, diagnosis: dict) -> dict:
     dict
         Updated composition
     """
-    pass
+    for archetype in composition["content"]:
+        if archetype["name"]["value"] == "Diagnosis":
+            for item in archetype["data"]['items']:
+                if item["name"]["value"] == "Diagnosis":
+                    item["value"]["value"] = diagnosis.description
+                    item["value"]["defining_code"]["code_string"] = str(diagnosis.snomed_code)
+                    item["value"]["defining_code"]["terminology_id"]["value"] = "SNOMED-CT"
+                elif item["name"]["value"] == "Date of Diagnosis":
+                    item["value"]["value"] = diagnosis.startdate
+                elif item["name"]["value"] == "Date of Resolution":
+                    item["value"]["value"] = diagnosis.stopdate
+    return composition

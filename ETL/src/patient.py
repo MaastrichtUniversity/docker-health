@@ -13,19 +13,15 @@ from pydantic import BaseModel
 import pandas as pd
 
 
-EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
-EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
-EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
-
 PLOT_PATH = Path("data/plot")
 
 
-class Patient(BaseModel):
+class Patient:
     """Data model for the Patient class"""
-
-    gender: str
-    birthdate: datetime
-    deathbirth: datetime
+    def __init__(self, gender, birthdate, deathdate):
+        self.gender = gender       # str
+        self.birthdate = birthdate # datetime
+        self.deathdate = deathdate # datetime
 
 def parse_patient(patient_df: pd.DataFrame) -> Patient:
     """
@@ -46,32 +42,24 @@ def parse_patient(patient_df: pd.DataFrame) -> Patient:
         return 1
     patient_df = patient_df.squeeze()
 
-    patient = Patient
-
     # Parse Gender (Sex assigned at birth):
     gender = patient_df["GENDER"]
-    if gender in ['M', 'F', 'I']: # code for Male, Female, Intersec
-        patient.gender = gender
-    else:
-        patient.gender = None
+    if gender not in ['M', 'F', 'I']: # code for Male, Female, Intersec
+        gender = None
 
     # Parse birthdate:
-    birthdate = patient_df["BIRTHDATE"]
     try:
-        date = datetime.fromisoformat(str(birthdate)) # str for None values
-        patient.birthdate = date
-    except ValueError:
-        patient.birthdate = None
+        birthdate = datetime.fromisoformat(patient_df["BIRTHDATE"]).isoformat()
+    except TypeError:
+        birthdate = None
 
     # Parse deathdate:
-    deathdate = patient_df["DEATHDATE"]
     try:
-        date = datetime.fromisoformat(str(deathdate)) # str for None values
-        patient.deathdate = date
-    except ValueError:
-        patient.deathdate = None
+        deathdate = datetime.fromisoformat(patient_df["DEATHDATE"]).isoformat()
+    except TypeError:
+        deathdate = None
 
-    return patient
+    return Patient(gender, birthdate, deathdate)
 
 def update_composition_patient(composition: dict, patient: Patient) -> dict:
     """
@@ -93,4 +81,24 @@ def update_composition_patient(composition: dict, patient: Patient) -> dict:
     dict
         Updated composition
     """
-    pass
+    for archetype in composition["content"]:
+        if archetype["name"]["value"] == "Gender":
+            # archetype["data"]['items'][0]["value"]["value"] = patient.gender
+            archetype["data"]['items'][0]["value"]["defining_code"]["code_string"] = patient.gender
+            if patient.gender == "M":
+                archetype["data"]['items'][0]["value"]["value"] = "Male"
+            elif patient.gender == "F":
+                archetype["data"]['items'][0]["value"]["value"] = "Female"
+            elif patient.gender == "I":
+                archetype["data"]['items'][0]["value"]["value"] = "Intersex"
+        elif archetype["name"]["value"] == "Birth":
+            # if patient.birthdate is None:
+            #     archetype["data"]["items"][0]["value"] = ""
+            # else:
+            archetype["data"]["items"][0]["value"]["value"] = patient.birthdate
+        elif archetype["name"]["value"] == "Death":
+            # if patient.deathdate is None:
+            #     archetype["data"]["items"][0]["value"] = ""
+            # else:
+            archetype["data"]["items"][0]["value"]["value"] = patient.birthdate # patient.deathdate
+    return composition
