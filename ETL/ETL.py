@@ -9,26 +9,39 @@ import re
 from pathlib import Path
 import pandas as pd
 import click
+import pytz
+from datetime import datetime
+
 
 from src.template import fetch_all_templates, post_template
 from src.ehr import create_ehr, fetch_all_ehr_id
 from src.composition import load_composition_example, update_composition_high_level, post_composition
-from src.patient import parse_patient
-from src.diagnosis import parse_all_diagnosis
+from src.encounter import parse_all_encounters
+from src.patient import parse_patient, update_composition_patient
+from src.diagnosis import parse_all_diagnosis, update_composition_diagnosis
 from src.vitalsigns import (
-    parse_vital_signs,
-    update_composition_vital_signs,
-    remove_pulse_oximetry_from_composition,
+    parse_vitalsigns,
+    update_composition_vitalsigns,
     plot_bloodpressure_over_time,
 )
+
+NLTZ = pytz.timezone('Europe/Amsterdam')
+
+VITALSIGNS_VARIABLES = [
+    {'name': 'Body Height', 'units': 'cm'},
+    {'name': 'Body Weight', 'units': 'kg'},
+    {'name': 'Heart rate', 'units': '/min'},
+    {'name': 'Systolic Blood Pressure', 'units': 'mm[Hg]'},
+    {'name': 'Diastolic Blood Pressure', 'units': 'mm[Hg]'}
+]
 
 
 @click.command(help="Get all EHR ID on a specific openEHR instance")
 def get_all_ehr_id():
     """This function is a proxy for the click command to interact with the above fetch_all_ehr_id function."""
     ehr_ids = fetch_all_ehr_id()
-    for id in ehr_ids:
-        click.echo(id)
+    for i in ehr_ids:
+        click.echo(i)
 
 
 @click.command(help="Print all template available on the server")
@@ -40,10 +53,10 @@ def list_all_templates():
 @click.command(help="Runs all ETL from default hard coded values")
 def run():
     """Runs the ETL"""
+
     TEMPLATE_PATH = Path("data/templates")
     SYNTHEA_PATH = Path("data/synthea_csv")
-    # COMPOSITION_PATH = Path("data/composition")
-    # EXAMPLE_COMPOSITION = "vital_signs_20231025075308_000001_1.json"
+    COMPOSITION_PATH = Path("data/compositions/locatable")
 
     # Load datasets
     patients_df = pd.read_csv(SYNTHEA_PATH / "patients.csv")
@@ -51,23 +64,53 @@ def run():
     observations_df = pd.read_csv(SYNTHEA_PATH / "observations.csv")
     encounters_df = pd.read_csv(SYNTHEA_PATH / "encounters.csv")
 
-    # POST templates
+    all_encounters = parse_all_encounters(encounters_df)
+
+    # STEP 1 : POST templates
     post_template(TEMPLATE_PATH / "vital_signs.opt")
     post_template(TEMPLATE_PATH / "patient.opt")
     post_template(TEMPLATE_PATH / "diagnosis_demo.opt")
     # fetch_all_templates()
 
-    # Create EHR for the first patient of the dataset
+
+    # STEP 2 : Create EHR for the first patient of the dataset
     patient_id = patients_df.iloc[0]["Id"]
     ehr_id = create_ehr(patient_id)
     # all_ehr_ids = fetch_all_ehr_id()
 
-    # Create compositions:
+
+    # STEP 3 : Create compositions:
+
     ## PATIENT COMPOSITION
     patient = parse_patient(patients_df[patients_df["Id"] == patient_id])
-    # composition = load_composition_example(COMPOSITION_PATH / EXAMPLE_COMPOSITION)
-    # composition = update_composition_high_level(composition, encounter_start, encounter_stop)
-    # composition = update_composition_patient(composition, vital_signs_class)
+    patient_composition = load_composition_example(COMPOSITION_PATH / "patient_20231122085524_000001_1.json")
+    patient_composition = update_composition_patient(patient_composition, patient)
+    patient_composition = update_composition_high_level(patient_composition, datetime.now(NLTZ).isoformat())
+    response = post_composition(ehr_id, patient_composition)
+
+
+    ## VITAL SIGNS COMPOSITION
+    patient_encounter_ids = [encounter_id for encounter_id, encounter in all_encounters.items() if encounter.patient_id == patient_id]
+    # patient_encounter_ids = encounters_df[encounters_df["PATIENT"] == patient_id]["Id"].tolist()
+    all_vitalsigns = {}
+    for encounter_id in patient_encounter_ids:
+        vitalsigns_df = observations_df[
+            (observations_df["ENCOUNTER"] == encounter_id) & \
+            (observations_df["CATEGORY"] == "vital-signs") & \
+            (observations_df["DESCRIPTION"].isin([v["name"] for v in VITALSIGNS_VARIABLES]))
+        ]
+
+        if vitalsigns_df.shape[0] == 0:
+            # print(f"Encounter id {encounter_id} has no vital signs observations")
+            continue
+        
+        all_vitalsigns[encounter_id] = parse_vitalsigns(vitalsigns_df, VITALSIGNS_VARIABLES)
+        vitalsigns_composition = load_composition_example(COMPOSITION_PATH / "vital_signs_20231122085528_000001_1.json")
+        vitalsigns_composition = update_composition_vitalsigns(vitalsigns_composition, all_vitalsigns[encounter_id])
+        vitalsigns_composition = update_composition_high_level(vitalsigns_composition, all_encounters[encounter_id].startdate)
+        reponse = post_composition(ehr_id, vitalsigns_composition)
+
+    # plot_bloodpressure_over_time(ehr_id)
 
 
     ## DIAGNOSIS COMPOSITION
@@ -78,35 +121,20 @@ def run():
     for _, diagnosis_df in patient_diagnosis_df.iterrows():
         encounter_id = diagnosis_df["ENCOUNTER"]
         all_diagnosis[encounter_id] = parse_all_diagnosis(diagnosis_df)
-    # composition = load_composition_example(COMPOSITION_PATH / EXAMPLE_COMPOSITION)
-    # composition = update_composition_high_level(composition, encounter_start, encounter_stop)
-    # composition = update_composition_patient(composition, vital_signs_class)
+
+    for encounter_id, diagnosis in all_diagnosis.items():
+        diagnosis_composition = load_composition_example(COMPOSITION_PATH / "diagnosis_demo_20231122085526_000001_1.json")
+        diagnosis_composition = update_composition_diagnosis(diagnosis_composition,  all_diagnosis[encounter_id])
+        diagnosis_composition = update_composition_high_level(diagnosis_composition, all_encounters[encounter_id].startdate)
+        response = post_composition(ehr_id, diagnosis_composition)
 
 
-    ## VITAL SIGNS COMPOSITION
-    patient_encounters_ids = encounters_df[encounters_df["PATIENT"] == patient_id]["Id"].tolist()
+    # RESPONSE: 422
+    # ERROR Unprocessable Entity
+    # /content[openEHR-EHR-EVALUATION.problem_diagnosis.v1 and
+    # name/value='Diagnosis']/data[at0001]/items[at0002 and name/value='Diagnosis']/value:
+    # CodePhrase codeString does not match any option, found: 312608009
 
-    all_vital_signs = {}
-    for encounter_id in patient_encounter_ids:
-        vital_signs_df = observations_df[
-            (observations_df["ENCOUNTER"] == encounter_id) & (observations_df["CATEGORY"] == "vital-signs")
-        ]
-
-        if vital_signs_df.shape[0] == 0:
-            print(f"{encounter_id} has no vital signs observations")
-            continue
-        else:
-            all_vital_signs[encounter_id] = parse_vital_signs(vital_signs_df)
-
-        # encounter_start = encounters_df.loc[encounters_df["Id"] == encounter_id]["START"].values[0]
-        # encounter_stop = encounters_df.loc[encounters_df["Id"] == encounter_id]["STOP"].values[0]
-        # composition = load_composition_example(COMPOSITION_PATH / EXAMPLE_COMPOSITION)
-        # composition = update_composition_high_level(composition, encounter_start, encounter_stop)
-        composition = update_composition_vital_signs(composition, vital_signs_class)
-        composition = remove_pulse_oximetry_from_composition(composition)
-        post_composition(ehr_id, composition)
-
-    plot_bloodpressure_over_time(ehr_id)
 
 
 @click.group()
