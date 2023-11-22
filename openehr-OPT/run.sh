@@ -4,8 +4,6 @@ docker build -t openehr-opt .
 
 docker run -it -v ./composition_outs:/composition_outs -e PATH=/usr/share/groovy/bin:$PATH -e GROOVY_HOME=/usr/share/groovy/ openehr-opt bash 
 
-# gradle build -x test
-
 mkdir /composition_outs/version
 ./opt.sh ingen templates/patient.opt /composition_outs/version 1 json version
 ./opt.sh ingen templates/diagnosis_demo.opt /composition_outs/version 1 json version

@@ -16,8 +16,6 @@ RUN git clone https://github.com/ppazos/openEHR-OPT.git
 
 WORKDIR /opt/openEHR-OPT
 
-# RUN mkdir -p compositions_outs
-
 COPY templates/ templates
 
 # VOLUME composition_outs composition_outs
