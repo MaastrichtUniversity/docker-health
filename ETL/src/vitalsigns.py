@@ -20,13 +20,6 @@ EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 
 PLOT_PATH = Path("data/plot")
 
-VITAL_SIGNS_VARIABLES = [
-    {'name': 'Body Height', 'units': 'cm'},
-    {'name': 'Body Weight', 'units': 'kg'},
-    {'name': 'Heart rate', 'units': '/min'},
-    {'name': 'Systolic Blood Pressure', 'units': 'mm[Hg]'},
-    {'name': 'Diastolic Blood Pressure', 'units': 'mm[Hg]'}
-]
 
 class Measure:
     def __init__(self, value, unit, unit_gt):
@@ -41,21 +34,22 @@ class Measure:
         else:
             self.unit = str(unit)
 
-class VitalSigns(BaseModel):
+class VitalSigns:
     """Data model for the vital signs"""
+    def __init__(self, time, height, weight, heart_rate, blood_systolic, blood_diastolic):
+        self.time = time # datetVITALSIGNS_VARIABLESime
+        self.height = height # object instance
+        self.weight = weight # object instance
+        self.heart_rate = heart_rate # object instance
+        self.blood_systolic = blood_systolic # object instance
+        self.blood_diastolic = blood_diastolic # object instance
 
-    height: object
-    weight: object
-    heart_rate: object
-    blood_systolic: object
-    blood_diastolic: object
-
-def parse_vital_signs(vital_signs_df: pd.DataFrame) -> VitalSigns:
+def parse_vitalsigns(vitalsigns_df: pd.DataFrame, vitalsigns_variables) -> VitalSigns:
     """
     Parse vital signs dataframe to a vital signs class
     Parameters
     ----------
-    vital_signs
+    vitalsigns
         Pandas dataframe that contains the values for the vital signs
 
     Returns
@@ -64,41 +58,38 @@ def parse_vital_signs(vital_signs_df: pd.DataFrame) -> VitalSigns:
         Instance of VitalSigns filled with the values
 
     """
-    vital_signs = VitalSigns
-
-    for variable in VITAL_SIGNS_VARIABLES:
-        measurement = vital_signs_df[vital_signs_df["DESCRIPTION"] == variable["name"]].squeeze()
+    for variable in vitalsigns_variables:
+        measurement = vitalsigns_df[vitalsigns_df["DESCRIPTION"] == variable["name"]].squeeze()
+        time = measurement["DATE"]
         measure_instance = Measure(measurement["VALUE"], measurement["UNITS"], variable["units"])
         if variable["name"] == "Body Height":
-            vital_signs.height = measure_instance
-        if variable["name"] == "Body Weight":
-            vital_signs.weight = measure_instance 
-        if variable["name"] == "Heart rate":
-            vital_signs.heart_rate = measure_instance 
-        if variable["name"] == "Systolic Blood Pressure":
-            vital_signs.blood_systolic = measure_instance 
-        if variable["name"] == "Diastolic Blood Pressure":
-            vital_signs.blood_diastolic = measure_instance 
-    return vital_signs
+            height = measure_instance
+        elif variable["name"] == "Body Weight":
+            weight = measure_instance 
+        elif variable["name"] == "Heart rate":
+            heart_rate = measure_instance 
+        elif variable["name"] == "Systolic Blood Pressure":
+            blood_systolic = measure_instance 
+        elif variable["name"] == "Diastolic Blood Pressure":
+            blood_diastolic = measure_instance
+    return VitalSigns(time, height, weight, heart_rate, blood_systolic, blood_diastolic)
 
-def update_composition_vital_signs(composition: dict, vital_signs: VitalSigns) -> dict:
+def update_composition_vitalsigns(composition: dict, vitalsigns: VitalSigns) -> dict:
     """
     Update the composition with the values from the vital signs dataframe
     Values:
-        - Systolic Blood Pressure
-        - Diastolic Blood Pressure
         - Time of measurement
-        - Body mass index
         - Body Height
         - Body Weight
         - Heart rate
-        - Respiratory rate
+        - Systolic Blood Pressure
+        - Diastolic Blood Pressure
 
     Parameters
     ----------
     composition: dict
         The composition for which the values need to be updated
-    vital_signs: VitalSigns
+    vitalsigns: VitalSigns
         Contains all vital signs values
 
     Returns
@@ -106,81 +97,23 @@ def update_composition_vital_signs(composition: dict, vital_signs: VitalSigns) -
     dict
         Updated composition
     """
-
-    for index, item in enumerate(composition["content"]):
-        # Update bloodpressure
-        if item["archetype_details"]["archetype_id"]["value"] == "openEHR-EHR-OBSERVATION.blood_pressure.v2":
-            composition["content"][index]["data"]["origin"]["value"] = vital_signs.time
-            composition["content"][index]["data"]["events"][0]["time"]["value"] = vital_signs.time
-            # Hard coded the order
-            composition["content"][index]["data"]["events"][0]["data"]["items"][0]["value"][
-                "magnitude"
-            ] = vital_signs.systolic
-            composition["content"][index]["data"]["events"][0]["data"]["items"][1]["value"][
-                "magnitude"
-            ] = vital_signs.diastolic
-        # update BMI
-        if item["archetype_details"]["archetype_id"]["value"] == "openEHR-EHR-OBSERVATION.body_mass_index.v2":
-            composition["content"][index]["data"]["origin"]["value"] = vital_signs.time
-            composition["content"][index]["data"]["events"][0]["time"]["value"] = vital_signs.time
-            # Hard coded the order
-            composition["content"][index]["data"]["events"][0]["data"]["items"][0]["value"][
-                "magnitude"
-            ] = vital_signs.bmi
-        # Update height
-        if item["archetype_details"]["archetype_id"]["value"] == "openEHR-EHR-OBSERVATION.height.v2":
-            composition["content"][index]["data"]["origin"]["value"] = vital_signs.time
-            composition["content"][index]["data"]["events"][0]["time"]["value"] = vital_signs.time
-            # Hard coded the order
-            composition["content"][index]["data"]["events"][0]["data"]["items"][0]["value"][
-                "magnitude"
-            ] = vital_signs.height
-        # Update weight
-        if item["archetype_details"]["archetype_id"]["value"] == "openEHR-EHR-OBSERVATION.body_weight.v2":
-            composition["content"][index]["data"]["origin"]["value"] = vital_signs.time
-            composition["content"][index]["data"]["events"][0]["time"]["value"] = vital_signs.time
-            # Hard coded the order
-            composition["content"][index]["data"]["events"][0]["data"]["items"][0]["value"][
-                "magnitude"
-            ] = vital_signs.weight
-
-        # Update heart rate
-        if item["archetype_details"]["archetype_id"]["value"] == "openEHR-EHR-OBSERVATION.pulse.v2":
-            composition["content"][index]["data"]["origin"]["value"] = vital_signs.time
-            composition["content"][index]["data"]["events"][0]["time"]["value"] = vital_signs.time
-            # Hard coded the order
-            composition["content"][index]["data"]["events"][0]["data"]["items"][0]["value"][
-                "magnitude"
-            ] = vital_signs.heart_rate
-
-        # Update respiration rate
-        if item["archetype_details"]["archetype_id"]["value"] == "openEHR-EHR-OBSERVATION.respiration.v2":
-            composition["content"][index]["data"]["origin"]["value"] = vital_signs.time
-            composition["content"][index]["data"]["events"][0]["time"]["value"] = vital_signs.time
-            # Hard coded the order
-            composition["content"][index]["data"]["events"][0]["data"]["items"][0]["value"][
-                "magnitude"
-            ] = vital_signs.respiration_rate
-
+    for archetype in composition["content"]:
+        archetype["data"]["origin"]["value"] = vitalsigns.time
+        archetype["data"]["events"][0]["time"]["value"] = vitalsigns.time
+        if archetype["name"]["value"] == "Body Height":
+            archetype["data"]["events"][0]["data"]["items"][0]["value"]["magnitude"] = vitalsigns.height.value
+        elif archetype["name"]["value"] == "Body weight":
+            archetype["data"]["events"][0]["data"]["items"][0]["value"]["magnitude"] = vitalsigns.weight.value
+        elif archetype["name"]["value"] == "Heart rate":
+            archetype["data"]["events"][0]["data"]["items"][0]["value"]["magnitude"] = vitalsigns.heart_rate.value
+        elif archetype["name"]["value"] == "Blood pressure":
+            for item in archetype["data"]["events"][0]["data"]["items"]:
+                if item["name"]["value"] == "Systolic":
+                    item["value"]["magnitude"] = vitalsigns.blood_systolic.value
+                elif item["name"]["value"] == "Diastolic":
+                    item["value"]["magnitude"] = vitalsigns.blood_diastolic.value
     return composition
 
-def remove_pulse_oximetry_from_composition(composition: dict) -> dict:
-    """
-    Remove pulse oximetry observation from composition
-    Parameters
-    ----------
-    composition: dict
-        The composition for which the values need to be removed
-
-    Returns
-    -------
-    dict
-        Updated composition
-    """
-    for index, item in enumerate(composition["content"]):
-        if item["archetype_details"]["archetype_id"]["value"] == "openEHR-EHR-OBSERVATION.pulse_oximetry.v1":
-            del composition["content"][index]
-    return composition
 
 def plot_bloodpressure_over_time(ehr_id: UUID) -> None:
     """
