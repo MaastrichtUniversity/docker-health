@@ -78,9 +78,7 @@ curl -X 'POST' \
   "endTime": "2010-10-18T20:29:31Z",
   "dateClinicallyRecognised": "2017-10-18T20:29:31Z",
   "diagnosisValue": "Anemia (disorder)",
-  "diagnosisSNOMEDCode": "271737000",
-  "genderSNOMEDCode": "248153007",
-  "genderValue": "Male"
+  "diagnosisSNOMEDCode": "271737000"
 }'
 ```
 
