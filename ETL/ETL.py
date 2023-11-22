@@ -1,7 +1,7 @@
 """
 Post the vital_signs.opt template
 Create a unique EHR for a patient
-Create a composition per emcounter using a JSON composition as an example
+Create a composition per encounter using a JSON composition as an example
 Post the compositions
 """
 

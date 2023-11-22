@@ -81,6 +81,4 @@ if [[ $1 == "backend" ]]; then
     exit 0
 fi
 
-if [[ $1 == "down" ]]; then
-    docker compose down
-fi
+docker compose $ARGS
