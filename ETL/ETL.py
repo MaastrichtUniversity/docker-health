@@ -27,14 +27,6 @@ from src.vitalsigns import (
 
 NLTZ = pytz.timezone('Europe/Amsterdam')
 
-VITALSIGNS_VARIABLES = [
-    {'name': 'Body Height', 'units': 'cm'},
-    {'name': 'Body Weight', 'units': 'kg'},
-    {'name': 'Heart rate', 'units': '/min'},
-    {'name': 'Systolic Blood Pressure', 'units': 'mm[Hg]'},
-    {'name': 'Diastolic Blood Pressure', 'units': 'mm[Hg]'}
-]
-
 
 @click.command(help="Get all EHR ID on a specific openEHR instance")
 def get_all_ehr_id():
@@ -66,22 +58,22 @@ def run():
 
     all_encounters = parse_all_encounters(encounters_df)
 
-    # STEP 1 : POST templates
+    print("\n\nSTEP 1 : POST templates")
     post_template(TEMPLATE_PATH / "vital_signs.opt")
     post_template(TEMPLATE_PATH / "patient.opt")
     post_template(TEMPLATE_PATH / "diagnosis_demo.opt")
     # fetch_all_templates()
 
 
-    # STEP 2 : Create EHR for the first patient of the dataset
+    print("\n\nSTEP 2 : Create EHR for the first patient of the dataset")
     patient_id = patients_df.iloc[0]["Id"]
     ehr_id = create_ehr(patient_id)
     # all_ehr_ids = fetch_all_ehr_id()
 
 
-    # STEP 3 : Create compositions:
+    print("\n\nSTEP 3 : Create compositions:")
 
-    ## PATIENT COMPOSITION
+    print("\nPatient composition..")
     patient = parse_patient(patients_df[patients_df["Id"] == patient_id])
     patient_composition = load_composition_example(COMPOSITION_PATH / "patient_20231122085524_000001_1.json")
     patient_composition = update_composition_patient(patient_composition, patient)
@@ -89,7 +81,15 @@ def run():
     response = post_composition(ehr_id, patient_composition)
 
 
-    ## VITAL SIGNS COMPOSITION
+    print("\nVital Signs compositions..")
+    vitalsigns_variables = [
+        {'name': 'Body Height', 'units': 'cm'},
+        {'name': 'Body Weight', 'units': 'kg'},
+        {'name': 'Heart rate', 'units': '/min'},
+        {'name': 'Systolic Blood Pressure', 'units': 'mm[Hg]'},
+        {'name': 'Diastolic Blood Pressure', 'units': 'mm[Hg]'}
+    ]
+
     patient_encounter_ids = [encounter_id for encounter_id, encounter in all_encounters.items() if encounter.patient_id == patient_id]
     # patient_encounter_ids = encounters_df[encounters_df["PATIENT"] == patient_id]["Id"].tolist()
     all_vitalsigns = {}
@@ -97,14 +97,14 @@ def run():
         vitalsigns_df = observations_df[
             (observations_df["ENCOUNTER"] == encounter_id) & \
             (observations_df["CATEGORY"] == "vital-signs") & \
-            (observations_df["DESCRIPTION"].isin([v["name"] for v in VITALSIGNS_VARIABLES]))
+            (observations_df["DESCRIPTION"].isin([v["name"] for v in vitalsigns_variables]))
         ]
 
         if vitalsigns_df.shape[0] == 0:
             # print(f"Encounter id {encounter_id} has no vital signs observations")
             continue
         
-        all_vitalsigns[encounter_id] = parse_vitalsigns(vitalsigns_df, VITALSIGNS_VARIABLES)
+        all_vitalsigns[encounter_id] = parse_vitalsigns(vitalsigns_df, vitalsigns_variables)
         vitalsigns_composition = load_composition_example(COMPOSITION_PATH / "vital_signs_20231122085528_000001_1.json")
         vitalsigns_composition = update_composition_vitalsigns(vitalsigns_composition, all_vitalsigns[encounter_id])
         vitalsigns_composition = update_composition_high_level(vitalsigns_composition, all_encounters[encounter_id].startdate)
@@ -113,7 +113,7 @@ def run():
     # plot_bloodpressure_over_time(ehr_id)
 
 
-    ## DIAGNOSIS COMPOSITION
+    print("\nDiagnosis compositions..")
     where_disorder = conditions_df.DESCRIPTION.apply(lambda x: bool(re.search('.*(disorder)', x)))
     conditions_df = conditions_df[where_disorder]
     patient_diagnosis_df = conditions_df[conditions_df["PATIENT"] == patient_id]
@@ -128,13 +128,11 @@ def run():
         diagnosis_composition = update_composition_high_level(diagnosis_composition, all_encounters[encounter_id].startdate)
         response = post_composition(ehr_id, diagnosis_composition)
 
-
     # RESPONSE: 422
     # ERROR Unprocessable Entity
     # /content[openEHR-EHR-EVALUATION.problem_diagnosis.v1 and
     # name/value='Diagnosis']/data[at0001]/items[at0002 and name/value='Diagnosis']/value:
     # CodePhrase codeString does not match any option, found: 312608009
-
 
 
 @click.group()
