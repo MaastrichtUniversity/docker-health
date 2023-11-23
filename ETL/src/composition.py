@@ -29,6 +29,19 @@ def load_composition_example(filename: str) -> dict:
     with open(filename, "rb") as file:
         return json.load(file)
 
+def dump_composition(composition: dict, filename: str):
+    """
+    Dump and save a composition as a JSON format.
+    Parameters
+    ----------
+    composition: dict
+        Composition stored as a python dictionary
+    filename: str
+        Name of file which stores the composition
+    """
+    with open(filename, "w") as file:
+        json.dump(composition, file)
+
 def post_composition(ehr_id: UUID, composition: dict) -> UUID:
     """
     Post a composition to the server
