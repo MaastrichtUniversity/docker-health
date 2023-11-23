@@ -1,7 +1,7 @@
 #! /bin/bash
 python ETL.py --help
 # echo "Running demo ETL"
-# python ETL.py run
+python ETL.py run
 
 echo "Geting all templates on system"
 python ETL.py list-all-templates
