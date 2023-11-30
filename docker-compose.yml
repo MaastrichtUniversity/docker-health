@@ -31,6 +31,22 @@ services:
       EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
     networks:
       - hdp-dh-net
+  flatehr-demo:
+    build:
+      context: ./flatehr
+      dockerfile: Dockerfile
+    image: flatehr_demo
+    volumes:
+      - ./externals/hdp-models/templates:/code/data/templates
+      - ./demo_data/:/code/data/synthea
+      - ./flatehr/data/conf_files:/code/data/conf_files
+    environment:
+      EHRBASE_USERRNAME: user
+      EHRBASE_PASSWORD: foobar
+      EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
+    tty: true
+    networks:
+      - hdp-dh-net
   data-exploration:
     image: quay.io/jupyter/datascience-notebook:2023-10-31
     command: "start-notebook.sh --ServerApp.token="
