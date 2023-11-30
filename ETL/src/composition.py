@@ -81,7 +81,7 @@ def post_composition(ehr_id: UUID, composition: dict) -> UUID:
         print(f"Composition was successfully created")
         return response_json["uid"]["value"]
     else:
-        print(f"ERROR {response_json["error"]}")
+        print(f"ERROR {response_json['error']}")
         print(response_json["message"])
         return None
 
