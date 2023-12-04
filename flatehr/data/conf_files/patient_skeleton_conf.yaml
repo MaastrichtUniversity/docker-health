@@ -1,0 +1,42 @@
+paths:
+  ctx/category: #  required
+    maps_to: []
+    suffixes:
+      "|code": ""
+  ctx/composer: #  required
+    maps_to: []
+    suffixes:
+      "|id": ""
+      "|id_scheme": ""
+      "|id_namespace": ""
+      "|name": ""
+  ctx/encoding: #  required
+    maps_to: []
+  ctx/language: #  required
+    maps_to: []
+  ctx/setting: #  required
+    maps_to: []
+    suffixes:
+      "|code": ""
+      "|value": ""
+  ctx/start_time: #  required
+    maps_to: []
+  ctx/subject: #  required
+    maps_to: []
+    suffixes:
+      "|id": ""
+      "|id_scheme": ""
+      "|id_namespace": ""
+      "|name": ""
+  ctx/territory: #  required
+    maps_to: []
+  patient/birth/date_of_birth: #  required
+    maps_to: []
+  patient/death/date_of_death: # NOT required
+    maps_to: []
+  patient/gender/sex_assigned_at_birth: #  required
+    maps_to: []
+    suffixes:
+      "|code": ""
+
+
