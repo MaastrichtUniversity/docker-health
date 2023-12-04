@@ -44,7 +44,7 @@ services:
       EHRBASE_USERRNAME: user
       EHRBASE_PASSWORD: foobar
       EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
-    tty: true
+      ECIS_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/ecis/v1"
     networks:
       - hdp-dh-net
   data-exploration:
