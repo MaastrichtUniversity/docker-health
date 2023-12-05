@@ -1,0 +1,28 @@
+ehr_id:
+  maps_to: []
+  value: '{{ random_ehr_id() }}'
+paths:
+  patient/birth/date_of_birth:
+    maps_to:
+    - $.attributes.birthdate_as_localdate
+    suffixes:
+      ? ''
+      : '{{ maps_to[0] }}'
+  patient/composer:
+    suffixes:
+      '|name': DataHub
+  patient/death/date_of_death:
+    maps_to:
+    - $.attributes.deathdate
+    suffixes:
+      ? ''
+      : '{{ maps_to[0] }}'
+  patient/gender/sex_assigned_at_birth:
+    maps_to:
+    - $.attributes.gender
+    suffixes:
+      '|code': '{{ maps_to[0] }}'
+  patient/territory:
+    suffixes:
+      '|code': NL
+      '|terminology': ISO_3166-1
