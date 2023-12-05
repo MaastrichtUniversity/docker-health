@@ -56,6 +56,14 @@ open browser and goto [jupyter.local.dh.unimaas.nl](jupyter.local.dh.unimaas.nl)
 ./rit.sh demo
 ```
 
+## Run flatehr example
+
+Download `patient.json` web template from archetype designer and store it in `externals/hdp-models/templates/`
+
+```
+./rit.sh flatehr
+```
+
 ## Kill the whole stack
 
 ```
