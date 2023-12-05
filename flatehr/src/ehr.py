@@ -36,7 +36,12 @@ def get_ehr_id_for_subject_id(subject_id: str) -> None | UUID:
     }
 
     response = requests.request(
-        "GET", url, headers=headers, params=myparams, auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD), timeout=10
+        "GET",
+        url,
+        headers=headers,
+        params=myparams,
+        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        timeout=10
     )
 
     if response.status_code == 404:
@@ -80,7 +85,11 @@ def create_ehr(patient_id: str) -> UUID:
         "is_queryable": True,
     }
 
-    headers = {"Accept": "application/json", "Prefer": "return=representation", "Content-Type": "application/json"}
+    headers = {
+        "Accept": "application/json",
+        "Prefer": "return=representation",
+        "Content-Type": "application/json"
+    }
     response = requests.request(
         "POST",
         url,
@@ -111,7 +120,12 @@ def fetch_all_ehr_id() -> List[UUID]:
         "Prefer": "return=representation",
     }
     response = requests.request(
-        "GET", url, headers=headers, params={"q": query}, auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD), timeout=10
+        "GET",
+        url,
+        headers=headers,
+        params={"q": query},
+        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        timeout=10
     )
     if response.ok:
         response_json = json.loads(response.text)

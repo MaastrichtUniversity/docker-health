@@ -4,7 +4,6 @@ Functions to POST a composition to EHRbase
 
 import os
 import json
-from datetime import datetime
 from uuid import UUID
 import requests
 
@@ -48,12 +47,11 @@ def post_composition(ehr_id: UUID, composition: dict) -> UUID:
     response_json = json.loads(response.text)
     print(f"RESPONSE: {response.status_code}")
     if response.ok:
-        print(f"Composition was successfully created")
+        print("Composition was successfully created")
         return response_json["uid"]["value"]
-    else:
-        print(f'ERROR {response_json["error"]}')
-        print(response_json["message"])
-        return None
+    print(f'ERROR {response_json["error"]}')
+    print(response_json["message"])
+    return None
 
 
 def post_flat_composition(ehr_id: UUID, template_id: str, flat_composition: dict) -> UUID:
@@ -94,12 +92,11 @@ def post_flat_composition(ehr_id: UUID, template_id: str, flat_composition: dict
     response_json = json.loads(response.text)
     print(f"RESPONSE: {response.status_code}")
     if response.ok:
-        print(f"Composition was successfully created")
+        print("Composition was successfully created")
         return response_json["uid"]["value"]
-    else:
-        print(f'ERROR {response_json["error"]}')
-        print(response_json["message"])
-        return None
+    print(f'ERROR {response_json["error"]}')
+    print(response_json["message"])
+    return None
 
 def post_flat_composition_2(ehr_id: UUID, template_id: str, flat_composition: dict) -> UUID:
     """
@@ -139,9 +136,8 @@ def post_flat_composition_2(ehr_id: UUID, template_id: str, flat_composition: di
     response_json = json.loads(response.text)
     print(f"RESPONSE: {response.status_code}")
     if response.ok:
-        print(f"Composition was successfully created")
+        print("Composition was successfully created")
         return response_json["compositionUid"]
-    else:
-        print(f'ERROR {response_json["error"]}')
-        print(response_json["message"])
-        return None
+    print(f'ERROR {response_json["error"]}')
+    print(response_json["message"])
+    return None

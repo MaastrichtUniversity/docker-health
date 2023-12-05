@@ -4,13 +4,12 @@ Functions to POST and GET templates from the EHRbase
 
 import os
 import json
-import requests
 import xml.etree.ElementTree as ET
+import requests
 
 EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
 EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
 EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
-
 
 def fetch_all_templates() -> None:
     """
@@ -32,9 +31,10 @@ def fetch_all_templates() -> None:
     if response.ok:
         response_json = json.loads(response.text)
         for template in response_json:
-            print(
-                f"{template['concept']}\t{template['template_id']}\t{template['archetype_id']}\t{template['created_timestamp']}"
-            )
+            print(f"concept: {template['concept']}")
+            print(f"template_id: {template['template_id']}")
+            print(f"archetype_id: {template['archetype_id']}")
+            print(f"timestamp: {template['created_timestamp']}")
 
 
 def post_template(filename: str) -> None:
