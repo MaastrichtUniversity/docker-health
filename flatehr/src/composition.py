@@ -101,32 +101,47 @@ def post_flat_composition(ehr_id: UUID, template_id: str, flat_composition: dict
         print(response_json["message"])
         return None
 
+def post_flat_composition_2(ehr_id: UUID, template_id: str, flat_composition: dict) -> UUID:
+    """
+    Post a flat composition to the server
+    Parameters
+    ----------
+    ehr_id: UUID
+        ehr_id for patient
+    template_id: str
+        identifier of the template
+    composition: dict
+        flat Composition to be posted
 
-# # print(json.dumps(composition))
-# template_id = "patient"
-# url = f"http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1/composition?format=FLAT&templateId={template_id}&ehrId={ehr_id}"
-# url = f"{ECIS_BASE_URL}/composition?format=FLAT&templateId={template_id}&ehrId={ehr_id}" \
 
-# headers = {
-#     # "Accept": "application/json; charset=UTF-8",
-#     "Prefer": "return=representation",
-#     "Content-Type": "application/json",
-# }
-# response = requests.request(
-#     "POST",
-#     url,
-#     headers=headers,
-#     data=json.dumps(patient_flat_composition),
-#     auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
-#     timeout=10,
-# )
+    Returns
+    -------
+    UUID
+        versioned id for this composition
 
-# response_json = json.loads(response.text)
-# print(f"RESPONSE: {response.status_code}")
-# if response.ok:
-#     print(f"Composition was successfully created")
-#     print(response_json["uid"]["value"])
-# else:
-#     print(f'ERROR {response_json["error"]}')
-#     print(response_json["message"])
+    """
+    url = f"{ECIS_BASE_URL}/composition/?format=FLAT&ehrId={ehr_id}&templateId={template_id}"
 
+    headers = {
+        # "Accept": "application/json; charset=UTF-8",
+        # "Prefer": "return=representation",
+        "Content-Type": "application/json",
+    }
+    response = requests.request(
+        "POST",
+        url,
+        headers=headers,
+        data=json.dumps(flat_composition),
+        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        timeout=10,
+    )
+
+    response_json = json.loads(response.text)
+    print(f"RESPONSE: {response.status_code}")
+    if response.ok:
+        print(f"Composition was successfully created")
+        return response_json["compositionUid"]
+    else:
+        print(f'ERROR {response_json["error"]}')
+        print(response_json["message"])
+        return None
