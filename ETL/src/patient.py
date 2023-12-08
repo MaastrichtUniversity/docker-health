@@ -2,26 +2,29 @@
 Functions specific to the Patient template
 """
 
-import os
-import json
-from pathlib import Path
 from datetime import datetime
-from uuid import UUID
-import requests
-from pydantic import BaseModel
+from typing import Optional
 
 import pandas as pd
+import pytz
+from pydantic import BaseModel, Field
+
+NLTZ = pytz.timezone('Europe/Amsterdam')
 
 
-PLOT_PATH = Path("data/plot")
+def datetime_now() -> datetime:
+    """Return current time on the NL timezone"""
+    return datetime.now(NLTZ)
 
 
-class Patient:
+class Patient(BaseModel):
     """Data model for the Patient class"""
-    def __init__(self, gender, birthdate, deathdate):
-        self.gender = gender       # str
-        self.birthdate = birthdate # datetime
-        self.deathdate = deathdate # datetime
+
+    gender: str = Field(..., serialization_alias='sexAssignedAtBirth')
+    birthdate: datetime = Field(..., serialization_alias='dateOfBirth')
+    death_date: Optional[datetime] = Field(None, serialization_alias='dateOfDeath')
+    start_time: datetime = Field(default_factory=datetime_now, serialization_alias='startTime')
+
 
 def parse_patient(patient_df: pd.DataFrame) -> Patient:
     """
@@ -55,11 +58,11 @@ def parse_patient(patient_df: pd.DataFrame) -> Patient:
 
     # Parse deathdate:
     try:
-        deathdate = datetime.fromisoformat(patient_df["DEATHDATE"]).isoformat()
-    except TypeError:
-        deathdate = None
+        death_date = datetime.fromisoformat(str(patient_df["DEATHDATE"]))  # str for None values
+        return Patient(gender=gender, birthdate=birthdate, deathdate=death_date)
+    except ValueError:
+        return Patient(gender=gender, birthdate=birthdate)
 
-    return Patient(gender, birthdate, deathdate)
 
 def update_composition_patient(composition: dict, patient: Patient) -> dict:
     """
@@ -100,5 +103,5 @@ def update_composition_patient(composition: dict, patient: Patient) -> dict:
             # if patient.deathdate is None:
             #     archetype["data"]["items"][0]["value"] = ""
             # else:
-            archetype["data"]["items"][0]["value"]["value"] = patient.birthdate # patient.deathdate
+            archetype["data"]["items"][0]["value"]["value"] = patient.birthdate  # patient.deathdate
     return composition
