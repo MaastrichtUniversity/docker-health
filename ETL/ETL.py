@@ -73,8 +73,8 @@ def run():
 
     print("\nPatient composition..")
     patient = parse_patient(patients_df[patients_df["Id"] == patient_id])
-    patien_json_str = patient.model_dump_json(by_alias=True,indent=4)
-    print(f"\npatient: {patien_json_str}")
+    patient_json_str = patient.model_dump_json(by_alias=True,indent=4)
+    print(f"\npatient: {patient_json_str}")
     patient_composition = transform_composition(patient.model_dump_json(by_alias=True), "patient")
     # print(f"\ncomposition: {patient_composition}")
 
@@ -117,22 +117,15 @@ def run():
     where_disorder = conditions_df.DESCRIPTION.apply(lambda x: bool(re.search('.*(disorder)', x)))
     conditions_df = conditions_df[where_disorder]
     patient_diagnosis_df = conditions_df[conditions_df["PATIENT"] == patient_id]
-    all_diagnosis = {}
     for _, diagnosis_df in patient_diagnosis_df.iterrows():
-        encounter_id = diagnosis_df["ENCOUNTER"]
-        all_diagnosis[encounter_id] = parse_all_diagnosis(diagnosis_df)
+        diagnosis = parse_all_diagnosis(diagnosis_df)
+        diagnosis_json_str = diagnosis.model_dump_json(by_alias=True,indent=4)
+        print(f"\ndiagnosis: {diagnosis_json_str}")
+        diagnosis_composition = transform_composition(diagnosis.model_dump_json(by_alias=True), "diagnosis-demo")
+        # print(f"\ncomposition: {diagnosis_composition}")
 
-    for encounter_id, diagnosis in all_diagnosis.items():
-        diagnosis_composition = load_composition_example(COMPOSITION_PATH / "diagnosis_demo_20231122085526_000001_1.json")
-        diagnosis_composition = update_composition_diagnosis(diagnosis_composition,  all_diagnosis[encounter_id])
-        diagnosis_composition = update_composition_high_level(diagnosis_composition, all_encounters[encounter_id].startdate)
-        response = post_composition(ehr_id, diagnosis_composition)
-
-    # RESPONSE: 422
-    # ERROR Unprocessable Entity
-    # /content[openEHR-EHR-EVALUATION.problem_diagnosis.v1 and
-    # name/value='Diagnosis']/data[at0001]/items[at0002 and name/value='Diagnosis']/value:
-    # CodePhrase codeString does not match any option, found: 312608009
+        diagnosis_composition_uuid = post_composition(ehr_id, diagnosis_composition)
+        print(f"\ndiagnosis_composition_uuid: {diagnosis_composition_uuid}")
 
 
 @click.group()

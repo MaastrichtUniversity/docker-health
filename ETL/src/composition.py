@@ -7,7 +7,9 @@ import json
 from datetime import datetime
 from uuid import UUID
 import requests
+import pytz
 
+NLTZ = pytz.timezone('Europe/Amsterdam')
 EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
 EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
 EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
@@ -146,3 +148,8 @@ def transform_composition(composition: str, template_id: str) -> dict:
 
     return response.json()
 
+
+
+def datetime_now() -> datetime:
+    """Return current time on the NL timezone"""
+    return datetime.now(NLTZ)

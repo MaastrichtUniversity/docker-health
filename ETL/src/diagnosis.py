@@ -2,27 +2,26 @@
 Functions specific to the Diagnosis template
 """
 
-import os
-import json
-from pathlib import Path
 from datetime import datetime
-from uuid import UUID
-import requests
-from pydantic import BaseModel
+from pathlib import Path
+from typing import Optional
 
 import pandas as pd
+from pydantic import BaseModel, Field
 
+from src.composition import datetime_now
 
 PLOT_PATH = Path("data/plot")
 
 
-class Diagnosis:
+class Diagnosis(BaseModel):
     """Data model for the diagnosis"""
-    def __init__(self, snomed_code, description, startdate, stopdate):
-        self.snomed_code = snomed_code # int
-        self.description = description # str
-        self.startdate = startdate     # datetime
-        self.stopdate = stopdate       # datetime
+    snomed_code: str = Field(..., serialization_alias='diagnosisSNOMEDCode')
+    description: str = Field(..., serialization_alias='diagnosisValue')
+    startdate: datetime = Field(..., serialization_alias='dateOfDiagnosisValue')
+    stopdate: Optional[datetime] = Field(None, serialization_alias='dateOfResolutionValue')
+    start_time: datetime = Field(default_factory=datetime_now, serialization_alias='startTime')
+
 
 def parse_all_diagnosis(diagnosis_df: pd.DataFrame) -> Diagnosis:
     """
@@ -40,7 +39,7 @@ def parse_all_diagnosis(diagnosis_df: pd.DataFrame) -> Diagnosis:
     # Parse SNOMED-CT CODE:
     snomed_code = diagnosis_df["CODE"]
     try:
-        snomed_code = int(snomed_code)
+        snomed_code = str(snomed_code)
     except ValueError:
         snomed_code = None
 
@@ -57,9 +56,10 @@ def parse_all_diagnosis(diagnosis_df: pd.DataFrame) -> Diagnosis:
     try:
         stopdate = datetime.fromisoformat(diagnosis_df["STOP"]).isoformat()
     except TypeError:
-        stopdate = None
+        return Diagnosis(snomed_code=snomed_code, description=description, startdate=startdate)
 
-    return Diagnosis(snomed_code, description, startdate, stopdate)
+    return Diagnosis(snomed_code=snomed_code, description=description, startdate=startdate, stopdate=stopdate)
+
 
 def update_composition_diagnosis(composition: dict, diagnosis: Diagnosis) -> dict:
     """

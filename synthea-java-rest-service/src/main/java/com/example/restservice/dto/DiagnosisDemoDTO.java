@@ -8,12 +8,10 @@ public class DiagnosisDemoDTO {
     @NotBlank(message = "startTime is mandatory field")
     @NotEmpty(message = "startTime cannot be empty")
     private String startTime;
-    @NotBlank(message = "endTime is mandatory field")
-    @NotEmpty(message = "endTime cannot be empty")
-    private String endTime;
-    @NotBlank(message = "dateClinicallyRecognised is mandatory field")
-    @NotEmpty(message = "dateClinicallyRecognised cannot be empty")
-    private String dateClinicallyRecognised;
+    private String dateOfResolutionValue = null;
+    @NotBlank(message = "dateOfDiagnosisValue is mandatory field")
+    @NotEmpty(message = "dateOfDiagnosisValue cannot be empty")
+    private String dateOfDiagnosisValue;
     @NotBlank(message = "diagnosisValue is mandatory field")
     @NotEmpty(message = "diagnosisValue cannot be empty")
     private String diagnosisValue;
@@ -21,10 +19,10 @@ public class DiagnosisDemoDTO {
     @NotEmpty(message = "diagnosisSNOMEDCode cannot be empty")
     private String diagnosisSNOMEDCode;
 
-    public DiagnosisDemoDTO(String startTime, String endTime, String dateClinicallyRecognised, String diagnosisValue, String getDiagnosisSNOMEDCode, String genderSNOMEDCode, String genderValue) {
+    public DiagnosisDemoDTO(String startTime, String dateOfResolutionValue, String dateOfDiagnosisValue, String diagnosisValue, String getDiagnosisSNOMEDCode, String genderSNOMEDCode, String genderValue) {
         this.startTime = startTime;
-        this.endTime = endTime;
-        this.dateClinicallyRecognised = dateClinicallyRecognised;
+        this.dateOfResolutionValue = dateOfResolutionValue;
+        this.dateOfDiagnosisValue = dateOfDiagnosisValue;
         this.diagnosisValue = diagnosisValue;
         this.diagnosisSNOMEDCode = getDiagnosisSNOMEDCode;
     }
@@ -33,12 +31,12 @@ public class DiagnosisDemoDTO {
         return startTime;
     }
 
-    public String getEndTime() {
-        return endTime;
+    public String getDateOfResolutionValue() {
+        return dateOfResolutionValue;
     }
 
-    public String getDateClinicallyRecognised() {
-        return dateClinicallyRecognised;
+    public String getDateOfDiagnosisValue() {
+        return dateOfDiagnosisValue;
     }
 
     public String getDiagnosisValue() {

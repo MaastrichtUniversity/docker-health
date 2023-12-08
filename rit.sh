@@ -62,7 +62,7 @@ fi
 if [[ $1 == "demo" ]]; then
     docker compose build
     docker compose up -d ehrbase proxy
-    until docker logs --tail 30 hdp-ehrbase-1 2>&1 | grep -q "Started EhrBase in";
+    until docker logs --tail 100 hdp-ehrbase-1 2>&1 | grep -q "Started EhrBase in";
     do
       echo "Waiting for EhrBase"
       sleep 10

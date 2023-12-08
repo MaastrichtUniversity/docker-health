@@ -6,15 +6,9 @@ from datetime import datetime
 from typing import Optional
 
 import pandas as pd
-import pytz
 from pydantic import BaseModel, Field
 
-NLTZ = pytz.timezone('Europe/Amsterdam')
-
-
-def datetime_now() -> datetime:
-    """Return current time on the NL timezone"""
-    return datetime.now(NLTZ)
+from src.composition import datetime_now
 
 
 class Patient(BaseModel):
