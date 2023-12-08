@@ -115,3 +115,34 @@ def update_composition_high_level(composition: dict, start_time: datetime) -> di
     composition["context"]["start_time"]["value"] = start_time
     # composition["context"]["end_time"] = {"value": end_time} # no end time
     return composition
+
+
+def transform_composition(composition: str, template_id: str) -> dict:
+    """
+    Post a composition to the Transformation REST API service.
+
+    Parameters
+    ----------
+    composition
+    template_id
+
+    Returns
+    -------
+    dict
+        The transformed EHR composition
+    """
+    url = f"http://transform.dh.local:8080/{template_id}"
+    headers = {
+        "accept": "*/*",
+        "Content-Type": "application/json",
+    }
+    response = requests.request(
+        "POST",
+        url,
+        headers=headers,
+        data=composition,
+        timeout=10,
+    )
+
+    return response.json()
+

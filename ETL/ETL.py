@@ -9,15 +9,14 @@ import re
 from pathlib import Path
 import pandas as pd
 import click
-import pytz
-from datetime import datetime
 
 
 from src.template import fetch_all_templates, post_template
 from src.ehr import create_ehr, fetch_all_ehr_id
-from src.composition import load_composition_example, update_composition_high_level, post_composition
+from src.composition import load_composition_example, update_composition_high_level, post_composition, \
+    transform_composition
 from src.encounter import parse_all_encounters
-from src.patient import parse_patient, update_composition_patient
+from src.patient import parse_patient
 from src.diagnosis import parse_all_diagnosis, update_composition_diagnosis
 from src.vitalsigns import (
     parse_vitalsigns,
@@ -25,7 +24,7 @@ from src.vitalsigns import (
     plot_bloodpressure_over_time,
 )
 
-NLTZ = pytz.timezone('Europe/Amsterdam')
+
 
 
 @click.command(help="Get all EHR ID on a specific openEHR instance")
@@ -68,18 +67,19 @@ def run():
     print("\n\nSTEP 2 : Create EHR for the first patient of the dataset")
     patient_id = patients_df.iloc[0]["Id"]
     ehr_id = create_ehr(patient_id)
-    # all_ehr_ids = fetch_all_ehr_id()
-
+    print(f"ehr_id: {ehr_id}")
 
     print("\n\nSTEP 3 : Create compositions:")
 
     print("\nPatient composition..")
     patient = parse_patient(patients_df[patients_df["Id"] == patient_id])
-    patient_composition = load_composition_example(COMPOSITION_PATH / "patient_20231122085524_000001_1.json")
-    patient_composition = update_composition_patient(patient_composition, patient)
-    patient_composition = update_composition_high_level(patient_composition, datetime.now(NLTZ).isoformat())
-    response = post_composition(ehr_id, patient_composition)
+    patien_json_str = patient.model_dump_json(by_alias=True,indent=4)
+    print(f"\npatient: {patien_json_str}")
+    patient_composition = transform_composition(patient.model_dump_json(by_alias=True), "patient")
+    # print(f"\ncomposition: {patient_composition}")
 
+    patient_composition_uuid = post_composition(ehr_id, patient_composition)
+    print(f"\npatient_composition_uuid: {patient_composition_uuid}")
 
     print("\nVital Signs compositions..")
     vitalsigns_variables = [
@@ -103,7 +103,7 @@ def run():
         if vitalsigns_df.shape[0] == 0:
             # print(f"Encounter id {encounter_id} has no vital signs observations")
             continue
-        
+
         all_vitalsigns[encounter_id] = parse_vitalsigns(vitalsigns_df, vitalsigns_variables)
         vitalsigns_composition = load_composition_example(COMPOSITION_PATH / "vital_signs_20231122085528_000001_1.json")
         vitalsigns_composition = update_composition_vitalsigns(vitalsigns_composition, all_vitalsigns[encounter_id])

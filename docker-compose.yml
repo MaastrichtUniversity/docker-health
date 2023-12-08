@@ -24,7 +24,9 @@ services:
     ports:
       - 8081:8080
     networks:
-      - hdp-dh-net
+      hdp-dh-net:
+        aliases:
+          - transform.dh.local
   demo-data:
     build:
       context: ./externals/dh-demodata
@@ -41,6 +43,9 @@ services:
       - ./externals/hdp-models/templates:/code/data/templates
       - ./demo_data/csv:/code/data/synthea_csv
       - ./ETL/data/plot:/code/data/plot
+      # Volume binds to auto-reload the code inside the container
+#      - ./ETL/ETL.py:/code/ETL.py
+#      - ./ETL/src:/code/src
     environment:
       EHRBASE_USERRNAME: user
       EHRBASE_PASSWORD: foobar
