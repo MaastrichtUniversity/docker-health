@@ -35,12 +35,27 @@ if [[ $1 == "data" ]]; then
     echo "Generate a synthetic dataset"
     docker compose build demo-data
     docker compose up demo-data
+
+    echo "Exit rit.sh"
+    exit 0
+fi
+
+if [[ $1 == "java" ]]; then
+    echo "Start Sprint boot Rest API"
+    docker compose build java-rest-demo
+    docker compose up -d proxy java-rest-demo
+
+    echo "Exit rit.sh"
+    exit 0
 fi
 
 if [[ $1 == "data-exploration" ]]; then
     echo "Explore synthea dataset"
     docker compose build data-exploration
     docker compose up -d proxy data-exploration
+
+    echo "Exit rit.sh"
+    exit 0
 fi
 
 

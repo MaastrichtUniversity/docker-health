@@ -9,6 +9,7 @@ The current services:
 ```
 127.0.0.1	ehrbase.local.dh.unimaas.nl
 127.0.0.1	jupyter.local.dh.unimaas.nl
+127.0.0.1	javarest.local.dh.unimaas.nl
 ```
 
 Go to your browser and try this:
@@ -55,6 +56,88 @@ open browser and goto [jupyter.local.dh.unimaas.nl](jupyter.local.dh.unimaas.nl)
 ```
 ./rit.sh demo
 ```
+
+# Run the java rest synthea demo
+
+```
+docker compose build java-rest-demo
+docker compose up java-rest-demo
+```
+
+Swagger interface is now at http://localhost:8081/swagger-ui/index.html
+or http://javarest.local.dh.unimaas.nl/swagger-ui/index.html
+
+## diagnosis
+```
+curl -X 'POST' \
+  'http://localhost:8081/diagnosis-demo' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "startTime": "2011-10-18T20:29:31Z",
+  "endTime": "2010-10-18T20:29:31Z",
+  "dateClinicallyRecognised": "2017-10-18T20:29:31Z",
+  "diagnosisValue": "Anemia (disorder)",
+  "diagnosisSNOMEDCode": "271737000"
+}'
+```
+
+## patient
+```
+curl -X 'POST' \
+  'http://localhost:8081/patient' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "startTime": "2011-10-18T20:29:31Z",
+    "sexAssignedAtBirth": "Male",
+    "dateOfBirth": "2000-10-18T20:29:31Z",
+    "dateOfDeath": "2000-10-18T20:29:31Z"
+}'
+
+```
+
+
+## vital_signs
+
+Minimum
+```
+curl -X 'POST' \
+  'http://localhost:8081/vital_signs' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "startTime": "2011-10-18T20:29:31Z"
+}'
+```
+
+Extended
+```
+curl -X 'POST' \
+  'http://localhost:8081/vital_signs' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "startTime": "2011-10-18T20:29:31Z",
+  "bodyHeightObservation": {
+    "pointInTime": [
+      {
+        "bodyHeightMagnitude": 185,
+        "bodyHeightUnits": "cm",
+        "timeValue": "1999-12-18T04:05:06Z"
+      },
+      {
+        "bodyHeightMagnitude": 173,
+        "bodyHeightUnits": "cm",
+        "timeValue": "2023-12-18T01:02:03Z"
+      }	
+    ]
+  }
+}'
+```
+
+Will return a valid composition
+
 
 ## Kill the whole stack
 

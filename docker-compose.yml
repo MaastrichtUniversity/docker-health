@@ -9,6 +9,22 @@ services:
       - "443:443"
     networks:
       - hdp-dh-net
+  java-rest-demo:
+    build:
+      context: ./synthea-java-rest-service
+      dockerfile: Dockerfile
+    environment:
+      VIRTUAL_HOST: javarest.local.dh.unimaas.nl
+      DIAGNOSIS_SEM_VER: 0.4.0
+      PATIENT_SEM_VER: 0.2.0
+      VITAL_SIGNS_SEM_VER: 0.2.0
+      EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/"
+      EHRBASE_USERNAME: user
+      EHRBASE_PASSWORD: foobar
+    ports:
+      - 8081:8080
+    networks:
+      - hdp-dh-net
   demo-data:
     build:
       context: ./externals/dh-demodata
@@ -73,5 +89,6 @@ services:
       EHRBASE_PASSWORD_ADMIN: ehrbase
       EHRBASE_USER: ehrbase_restricted
       EHRBASE_PASSWORD: ehrbase_restricted
+
 networks:
   hdp-dh-net: {}
