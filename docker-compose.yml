@@ -41,7 +41,11 @@ services:
     image: etl_demo
     volumes:
       - ./externals/hdp-models/templates:/code/data/templates
-      - ./demo_data/csv:/code/data/synthea_csv
+      - ./demo_data/ccda:/code/data/ccda
+      - ./demo_data/csv:/code/data/csv
+      - ./demo_data/fhir:/code/data/fhir      
+      - ./demo_data/json:/code/data/json
+      - ./demo_data/sql:/code/data/sql
       - ./ETL/data/plot:/code/data/plot
       # Volume binds to auto-reload the code inside the container
       - ./ETL/ETL.py:/code/ETL.py
