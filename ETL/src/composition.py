@@ -2,47 +2,19 @@
 Functions to POST a composition to EHRbase
 """
 
-import os
 import json
+import os
 from datetime import datetime
 from uuid import UUID
-import requests
+
 import pytz
+import requests
 
 NLTZ = pytz.timezone('Europe/Amsterdam')
 EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
 EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
 EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 
-def load_composition_example(filename: str) -> dict:
-    """
-    Load an example composition and parse it to a python dictionary
-    Parameters
-    ----------
-    filename: str
-        Name of file which stores the composition
-
-    Returns
-    -------
-    dict
-        Parsed composition
-
-    """
-    with open(filename, "rb") as file:
-        return json.load(file)
-
-def dump_composition(composition: dict, filename: str):
-    """
-    Dump and save a composition as a JSON format.
-    Parameters
-    ----------
-    composition: dict
-        Composition stored as a python dictionary
-    filename: str
-        Name of file which stores the composition
-    """
-    with open(filename, "w") as file:
-        json.dump(composition, file)
 
 def post_composition(ehr_id: UUID, composition: dict) -> UUID:
     """
@@ -87,37 +59,6 @@ def post_composition(ehr_id: UUID, composition: dict) -> UUID:
         print(response_json["message"])
         return None
 
-def update_composition_high_level(composition: dict, start_time: datetime) -> dict:
-    """
-    Update the composition with:
-        - territory
-        - composer
-        - encounter start time
-        - encounter end time
-
-    Parameters
-    ----------
-    composition: dict
-        Composition that needs to be updated
-    start_time: datetime
-        Start time of the encounter
-    end_time: datetime
-        End ime of the encounter
-
-    Returns
-    -------
-    dict
-        Updated composition
-    """
-    # set territory
-    composition["territory"]["code_string"] = "NL"
-    # set composer
-    composition["composer"]["name"] = "DataHub"
-    # set start time
-    composition["context"]["start_time"]["value"] = start_time
-    # composition["context"]["end_time"] = {"value": end_time} # no end time
-    return composition
-
 
 def transform_composition(composition: str, template_id: str) -> dict:
     """
@@ -151,7 +92,6 @@ def transform_composition(composition: str, template_id: str) -> dict:
     # print(json.dumps(result, indent=4))
 
     return result
-
 
 
 def datetime_now() -> datetime:

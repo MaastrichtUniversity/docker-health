@@ -12,6 +12,7 @@ EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
 EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
 EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 
+
 def get_ehr_id_for_subject_id(subject_id: str) -> None | UUID:
     """
     Get the ehr_id for a patient given the patient external id.
@@ -45,6 +46,7 @@ def get_ehr_id_for_subject_id(subject_id: str) -> None | UUID:
     response_json = json.loads(response.text)
     return response_json["ehr_id"]["value"]
 
+
 def create_ehr(patient_id: str) -> UUID:
     """
     Check if patient_id is already registered, if so return existing ehr_id
@@ -61,7 +63,7 @@ def create_ehr(patient_id: str) -> UUID:
     """
     ehr_id = get_ehr_id_for_subject_id(patient_id)
     if ehr_id:
-        print(f'An EHR identifier already exists for this patient [patient_id:{patient_id}].')
+        print(f"An EHR identifier already exists for this patient [patient_id:{patient_id}].")
         return ehr_id
 
     url = f"{EHRBASE_BASE_URL}/ehr"
@@ -94,7 +96,6 @@ def create_ehr(patient_id: str) -> UUID:
     return response_json["ehr_id"]["value"]
 
 
-
 def fetch_all_ehr_id() -> List[UUID]:
     """
     Returns a list of all ehr_id available on the server
@@ -117,4 +118,3 @@ def fetch_all_ehr_id() -> List[UUID]:
         response_json = json.loads(response.text)
         return response_json["rows"]
     return []
-

@@ -16,11 +16,12 @@ PLOT_PATH = Path("data/plot")
 
 class Diagnosis(BaseModel):
     """Data model for the diagnosis"""
-    snomed_code: str = Field(..., serialization_alias='diagnosisSNOMEDCode')
-    description: str = Field(..., serialization_alias='diagnosisValue')
-    startdate: datetime = Field(..., serialization_alias='dateOfDiagnosisValue')
-    stopdate: Optional[datetime] = Field(None, serialization_alias='dateOfResolutionValue')
-    start_time: datetime = Field(default_factory=datetime_now, serialization_alias='startTime')
+
+    snomed_code: str = Field(..., serialization_alias="diagnosisSNOMEDCode")
+    description: str = Field(..., serialization_alias="diagnosisValue")
+    startdate: datetime = Field(..., serialization_alias="dateOfDiagnosisValue")
+    stopdate: Optional[datetime] = Field(None, serialization_alias="dateOfResolutionValue")
+    start_time: datetime = Field(default_factory=datetime_now, serialization_alias="startTime")
 
 
 def parse_all_diagnosis(diagnosis_df: pd.DataFrame) -> Diagnosis:
@@ -59,38 +60,3 @@ def parse_all_diagnosis(diagnosis_df: pd.DataFrame) -> Diagnosis:
         return Diagnosis(snomed_code=snomed_code, description=description, startdate=startdate)
 
     return Diagnosis(snomed_code=snomed_code, description=description, startdate=startdate, stopdate=stopdate)
-
-
-def update_composition_diagnosis(composition: dict, diagnosis: Diagnosis) -> dict:
-    """
-    Update the composition with the values from the diagnosis dataframe
-    Values:
-        - CNOMED-CT code
-        - Description of the disorder
-        - Date of the diagnosis
-        - Date of resolution
-
-    Parameters
-    ----------
-    composition: dict
-        The composition for which the values need to be updated
-    all_diagnosis: Diagnosis
-        Contains all diagnosis values
-
-    Returns
-    -------
-    dict
-        Updated composition
-    """
-    for archetype in composition["content"]:
-        if archetype["name"]["value"] == "Diagnosis":
-            for item in archetype["data"]['items']:
-                if item["name"]["value"] == "Diagnosis":
-                    item["value"]["value"] = diagnosis.description
-                    item["value"]["defining_code"]["code_string"] = str(diagnosis.snomed_code)
-                    item["value"]["defining_code"]["terminology_id"]["value"] = "SNOMED-CT"
-                elif item["name"]["value"] == "Date of Diagnosis":
-                    item["value"]["value"] = diagnosis.startdate
-                elif item["name"]["value"] == "Date of Resolution":
-                    item["value"]["value"] = diagnosis.stopdate
-    return composition

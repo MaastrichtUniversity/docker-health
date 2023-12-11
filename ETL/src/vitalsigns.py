@@ -22,26 +22,28 @@ EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 PLOT_PATH = Path("data/plot")
 
 
-
 class Measurement(BaseModel):
     """Data model about Body height measurement"""
-    value: float = Field(..., serialization_alias='bodyHeightMagnitude')
-    units: str = Field(..., serialization_alias='bodyHeightUnits')
-    time: datetime = Field(None, serialization_alias='timeValue')
+
+    value: float = Field(..., serialization_alias="bodyHeightMagnitude")
+    units: str = Field(..., serialization_alias="bodyHeightUnits")
+    time: datetime = Field(None, serialization_alias="timeValue")
+
 
 class PointsInTime(BaseModel):
-    measurements: list[Measurement] = Field(..., serialization_alias='pointInTime')
+    measurements: list[Measurement] = Field(..., serialization_alias="pointInTime")
 
 
 class VitalSigns(BaseModel):
     """Data model for the vital signs"""
 
-    start_time: datetime = Field(default_factory=datetime_now, serialization_alias='startTime')
-    height: PointsInTime = Field(..., serialization_alias='bodyHeightObservation')
+    start_time: datetime = Field(default_factory=datetime_now, serialization_alias="startTime")
+    height: PointsInTime = Field(..., serialization_alias="bodyHeightObservation")
     # weight: Measure
     # heart_rate: Measure
     # blood_systolic: Measure
     # blood_diastolic: Measure
+
 
 def parse_vital_signs(vital_signs_df: pd.DataFrame, vitalsigns_variables) -> VitalSigns:
     """
@@ -80,46 +82,6 @@ def parse_vital_signs(vital_signs_df: pd.DataFrame, vitalsigns_variables) -> Vit
 
     return VitalSigns(height=height)
 
-def update_composition_vitalsigns(composition: dict, vitalsigns: VitalSigns) -> dict:
-    """
-    Update the composition with the values from the vital signs dataframe
-    Values:
-        - Time of measurement
-        - Body Height
-        - Body Weight
-        - Heart rate
-        - Systolic Blood Pressure
-        - Diastolic Blood Pressure
-
-    Parameters
-    ----------
-    composition: dict
-        The composition for which the values need to be updated
-    vitalsigns: VitalSigns
-        Contains all vital signs values
-
-    Returns
-    -------
-    dict
-        Updated composition
-    """
-    for archetype in composition["content"]:
-        archetype["data"]["origin"]["value"] = vitalsigns.time
-        archetype["data"]["events"][0]["time"]["value"] = vitalsigns.time
-        if archetype["name"]["value"] == "Body Height":
-            archetype["data"]["events"][0]["data"]["items"][0]["value"]["magnitude"] = vitalsigns.height.value
-        elif archetype["name"]["value"] == "Body weight":
-            archetype["data"]["events"][0]["data"]["items"][0]["value"]["magnitude"] = vitalsigns.weight.value
-        elif archetype["name"]["value"] == "Heart rate":
-            archetype["data"]["events"][0]["data"]["items"][0]["value"]["magnitude"] = vitalsigns.heart_rate.value
-        elif archetype["name"]["value"] == "Blood pressure":
-            for item in archetype["data"]["events"][0]["data"]["items"]:
-                if item["name"]["value"] == "Systolic":
-                    item["value"]["magnitude"] = vitalsigns.blood_systolic.value
-                elif item["name"]["value"] == "Diastolic":
-                    item["value"]["magnitude"] = vitalsigns.blood_diastolic.value
-    return composition
-
 
 def plot_bloodpressure_over_time(ehr_id: UUID) -> None:
     """
@@ -138,8 +100,7 @@ def plot_bloodpressure_over_time(ehr_id: UUID) -> None:
         "Prefer": "return=representation",
     }
     response = requests.request(
-        "GET", url, headers=headers, params={"q": query},
-        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD), timeout=10
+        "GET", url, headers=headers, params={"q": query}, auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD), timeout=10
     )
     response_json = json.loads(response.text)
     dataframe = pd.DataFrame(columns=["Time", "Systolic", "Diastolic"])

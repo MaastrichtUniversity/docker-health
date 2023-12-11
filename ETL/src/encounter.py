@@ -1,12 +1,11 @@
-
-
 class Encounter:
     """Data model for encounter"""
+
     def __init__(self, identifier, startdate, stopdate, patient_id):
-        self.id = identifier # int
-        self.startdate = startdate # datetime
-        self.stopdate = stopdate     # datetime
-        self.patient_id = patient_id # patient_id
+        self.id = identifier  # int
+        self.startdate = startdate  # datetime
+        self.stopdate = stopdate  # datetime
+        self.patient_id = patient_id  # patient_id
 
 
 def parse_all_encounters(encounters_df):

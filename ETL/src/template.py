@@ -23,12 +23,7 @@ def fetch_all_templates() -> None:
         "Prefer": "return=minimal",
     }
 
-    response = requests.request(
-        "GET", url,
-        headers=headers,
-        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
-        timeout=10
-    )
+    response = requests.request("GET", url, headers=headers, auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD), timeout=10)
     if response.ok:
         response_json = json.loads(response.text)
         for template in response_json:
@@ -47,24 +42,13 @@ def post_template(filename: str) -> None:
     """
     url = f"{EHRBASE_BASE_URL}/definition/template/adl1.4"
 
-    headers = {
-        "Accept": "application/xml",
-        "Prefer": "return=minimal",
-        "Content-Type":
-        "application/xml"
-    }
+    headers = {"Accept": "application/xml", "Prefer": "return=minimal", "Content-Type": "application/xml"}
 
     print(filename)
     with open(filename, "rb") as payload:
         response = requests.request(
-            "POST",
-            url,
-            headers=headers,
-            data=payload.read(),
-            auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
-            timeout=10
+            "POST", url, headers=headers, data=payload.read(), auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD), timeout=10
         )
-
 
     print(f"RESPONSE: {response.status_code}")
     if response.ok:
@@ -72,7 +56,7 @@ def post_template(filename: str) -> None:
     else:
         # Convert XML output text to Dictionary:
         response_text = {"error": None, "message": None}
-        for item in  ET.fromstring(response.content):
+        for item in ET.fromstring(response.content):
             response_text[item.tag] = item.text
         print(f'ERROR {response_text["error"]}')
         print(response_text["message"])

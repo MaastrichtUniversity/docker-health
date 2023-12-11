@@ -40,7 +40,6 @@ def run():
 
     TEMPLATE_PATH = Path("data/templates")
     SYNTHEA_PATH = Path("data/synthea_csv")
-    COMPOSITION_PATH = Path("data/compositions/locatable")
 
     # Load datasets
     patients_df = pd.read_csv(SYNTHEA_PATH / "patients.csv")
