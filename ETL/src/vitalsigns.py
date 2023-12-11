@@ -39,7 +39,7 @@ class VitalSigns(BaseModel):
 
     start_time: datetime = Field(default_factory=datetime_now, serialization_alias="startTime")
     height: PointsInTime = Field(..., serialization_alias="bodyHeightObservation")
-    # weight: PointsInTime = Field(..., serialization_alias="bodyHeightObservation")
+    weight: PointsInTime = Field(..., serialization_alias="bodyWeightObservation")
     # heart_rate: Measure
     # blood_systolic: Measure
     # blood_diastolic: Measure
@@ -61,7 +61,7 @@ def parse_vital_signs(vital_signs_df: pd.DataFrame, vitalsigns_variables) -> Vit
     """
 
     height_measurements = []
-    # weight_measurements = []
+    weight_measurements = []
     for variable in vitalsigns_variables:
         vital_signs_measurement = vital_signs_df[vital_signs_df["DESCRIPTION"] == variable["name"]].squeeze()
         # measure_instance = Measure(measurement["VALUE"], measurement["UNITS"], variable["units"])
@@ -71,8 +71,8 @@ def parse_vital_signs(vital_signs_df: pd.DataFrame, vitalsigns_variables) -> Vit
 
         if variable["name"] == "Body Height":
             height_measurements.append(Measurement(value=value, units=units, time=time))
-        # elif variable["name"] == "Body Weight":
-        #     weight_measurements.append(Measurement(value=value, units=units, time=time))
+        elif variable["name"] == "Body Weight":
+            weight_measurements.append(Measurement(value=value, units=units, time=time))
         # if variable["name"] == "Heart rate":
         #     vital_signs.heart_rate = measure_instance
         # if variable["name"] == "Systolic Blood Pressure":
@@ -80,9 +80,9 @@ def parse_vital_signs(vital_signs_df: pd.DataFrame, vitalsigns_variables) -> Vit
         # if variable["name"] == "Diastolic Blood Pressure":
         #     vital_signs.blood_diastolic = measure_instance
     height = PointsInTime(measurements=height_measurements)
-    # weight = PointsInTime(measurements=weight_measurements)
+    weight = PointsInTime(measurements=weight_measurements)
 
-    return VitalSigns(height=height)
+    return VitalSigns(height=height, weight=weight)
 
 
 def plot_bloodpressure_over_time(ehr_id: UUID) -> None:

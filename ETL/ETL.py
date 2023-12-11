@@ -68,14 +68,13 @@ def run():
     print(f"\npatient: {patient_json_str}")
     patient_composition = transform_composition(patient.model_dump_json(by_alias=True), "patient")
     # print(f"\ncomposition: {patient_composition}")
-
     patient_composition_uuid = post_composition(ehr_id, patient_composition)
     print(f"\npatient_composition_uuid: {patient_composition_uuid}")
 
     print("\nVital Signs compositions..")
     vitalsigns_variables = [
         {"name": "Body Height", "units": "cm"},
-        # {'name': 'Body Weight', 'units': 'kg'},
+        {"name": "Body Weight", "units": "kg"},
         # {'name': 'Heart rate', 'units': '/min'},
         # {'name': 'Systolic Blood Pressure', 'units': 'mm[Hg]'},
         # {'name': 'Diastolic Blood Pressure', 'units': 'mm[Hg]'}

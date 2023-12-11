@@ -85,8 +85,8 @@ services:
       - 5432:5432
     networks:
       - hdp-dh-net
-    volumes:
-      - ./ehrbase/.pgdata:/var/lib/postgresql/data
+#    volumes:
+#      - ./ehrbase/.pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres

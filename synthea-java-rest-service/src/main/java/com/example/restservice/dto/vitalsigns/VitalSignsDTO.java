@@ -11,10 +11,12 @@ public class VitalSignsDTO {
     private String startTime;
 
     private ObservationDto bodyHeightObservation;
+    private ObservationDto bodyWeightObservation;
 
-    public VitalSignsDTO(String startTime, ObservationDto bodyHeightObservation) {
+    public VitalSignsDTO(String startTime, ObservationDto bodyHeightObservation, ObservationDto bodyWeightObservation) {
         this.startTime = startTime;
         this.bodyHeightObservation = bodyHeightObservation;
+        this.bodyWeightObservation = bodyWeightObservation;
     }
 
     public String getStartTime() {
@@ -23,5 +25,8 @@ public class VitalSignsDTO {
 
     public ObservationDto getBodyHeightObservation() {
         return bodyHeightObservation;
+    }
+    public ObservationDto getBodyWeightObservation() {
+        return bodyWeightObservation;
     }
 }
