@@ -44,8 +44,8 @@ services:
       - ./demo_data/csv:/code/data/synthea_csv
       - ./ETL/data/plot:/code/data/plot
       # Volume binds to auto-reload the code inside the container
-#      - ./ETL/ETL.py:/code/ETL.py
-#      - ./ETL/src:/code/src
+      - ./ETL/ETL.py:/code/ETL.py
+      - ./ETL/src:/code/src
     environment:
       EHRBASE_USERRNAME: user
       EHRBASE_PASSWORD: foobar

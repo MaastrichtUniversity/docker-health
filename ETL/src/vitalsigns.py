@@ -8,11 +8,12 @@ from pathlib import Path
 from datetime import datetime
 from uuid import UUID
 import requests
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from src.composition import datetime_now
 
 EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
 EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
@@ -21,35 +22,33 @@ EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 PLOT_PATH = Path("data/plot")
 
 
-class Measure:
-    def __init__(self, value, unit, unit_gt):
-        try:
-            self.value = float(value)
-        except ValueError:
-            self.value = None
-        if unit != unit_gt:
-            print("Wrong unit of measure: units is [{units}] but should be [{unit_gt}]!")
-            self.unit = None
-            self.value = None
-        else:
-            self.unit = str(unit)
 
-class VitalSigns:
+class Measurement(BaseModel):
+    """Data model about Body height measurement"""
+    value: float = Field(..., serialization_alias='bodyHeightMagnitude')
+    units: str = Field(..., serialization_alias='bodyHeightUnits')
+    time: datetime = Field(None, serialization_alias='timeValue')
+
+class PointsInTime(BaseModel):
+    measurements: list[Measurement] = Field(..., serialization_alias='pointInTime')
+
+
+class VitalSigns(BaseModel):
     """Data model for the vital signs"""
-    def __init__(self, time, height, weight, heart_rate, blood_systolic, blood_diastolic):
-        self.time = time # datetVITALSIGNS_VARIABLESime
-        self.height = height # object instance
-        self.weight = weight # object instance
-        self.heart_rate = heart_rate # object instance
-        self.blood_systolic = blood_systolic # object instance
-        self.blood_diastolic = blood_diastolic # object instance
 
-def parse_vitalsigns(vitalsigns_df: pd.DataFrame, vitalsigns_variables) -> VitalSigns:
+    start_time: datetime = Field(default_factory=datetime_now, serialization_alias='startTime')
+    height: PointsInTime = Field(..., serialization_alias='bodyHeightObservation')
+    # weight: Measure
+    # heart_rate: Measure
+    # blood_systolic: Measure
+    # blood_diastolic: Measure
+
+def parse_vital_signs(vital_signs_df: pd.DataFrame, vitalsigns_variables) -> VitalSigns:
     """
     Parse vital signs dataframe to a vital signs class
     Parameters
     ----------
-    vitalsigns
+    vital_signs_df
         Pandas dataframe that contains the values for the vital signs
 
     Returns
@@ -58,21 +57,28 @@ def parse_vitalsigns(vitalsigns_df: pd.DataFrame, vitalsigns_variables) -> Vital
         Instance of VitalSigns filled with the values
 
     """
+
+    measurements = []
     for variable in vitalsigns_variables:
-        measurement = vitalsigns_df[vitalsigns_df["DESCRIPTION"] == variable["name"]].squeeze()
-        time = measurement["DATE"]
-        measure_instance = Measure(measurement["VALUE"], measurement["UNITS"], variable["units"])
+        vital_signs_measurement = vital_signs_df[vital_signs_df["DESCRIPTION"] == variable["name"]].squeeze()
+        # measure_instance = Measure(measurement["VALUE"], measurement["UNITS"], variable["units"])
+        value = float(vital_signs_measurement["VALUE"])
+        units = vital_signs_measurement["UNITS"]
+        time = vital_signs_measurement["DATE"]
+
         if variable["name"] == "Body Height":
-            height = measure_instance
-        elif variable["name"] == "Body Weight":
-            weight = measure_instance 
-        elif variable["name"] == "Heart rate":
-            heart_rate = measure_instance 
-        elif variable["name"] == "Systolic Blood Pressure":
-            blood_systolic = measure_instance 
-        elif variable["name"] == "Diastolic Blood Pressure":
-            blood_diastolic = measure_instance
-    return VitalSigns(time, height, weight, heart_rate, blood_systolic, blood_diastolic)
+            measurements.append(Measurement(value=value, units=units, time=time))
+        # if variable["name"] == "Body Weight":
+        #     vital_signs.weight = measure_instance
+        # if variable["name"] == "Heart rate":
+        #     vital_signs.heart_rate = measure_instance
+        # if variable["name"] == "Systolic Blood Pressure":
+        #     vital_signs.blood_systolic = measure_instance
+        # if variable["name"] == "Diastolic Blood Pressure":
+        #     vital_signs.blood_diastolic = measure_instance
+    height = PointsInTime(measurements=measurements)
+
+    return VitalSigns(height=height)
 
 def update_composition_vitalsigns(composition: dict, vitalsigns: VitalSigns) -> dict:
     """

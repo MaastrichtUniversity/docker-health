@@ -146,7 +146,11 @@ def transform_composition(composition: str, template_id: str) -> dict:
         timeout=10,
     )
 
-    return response.json()
+    result = response.json()
+
+    # print(json.dumps(result, indent=4))
+
+    return result
 
 
 

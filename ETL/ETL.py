@@ -7,24 +7,17 @@ Post the compositions
 
 import re
 from pathlib import Path
-import pandas as pd
+
 import click
+import pandas as pd
 
-
-from src.template import fetch_all_templates, post_template
+from src.composition import post_composition, transform_composition
+from src.diagnosis import parse_all_diagnosis
 from src.ehr import create_ehr, fetch_all_ehr_id
-from src.composition import load_composition_example, update_composition_high_level, post_composition, \
-    transform_composition
 from src.encounter import parse_all_encounters
 from src.patient import parse_patient
-from src.diagnosis import parse_all_diagnosis, update_composition_diagnosis
-from src.vitalsigns import (
-    parse_vitalsigns,
-    update_composition_vitalsigns,
-    plot_bloodpressure_over_time,
-)
-
-
+from src.template import fetch_all_templates, post_template
+from src.vitalsigns import  parse_vital_signs
 
 
 @click.command(help="Get all EHR ID on a specific openEHR instance")
@@ -63,7 +56,6 @@ def run():
     post_template(TEMPLATE_PATH / "diagnosis_demo.opt")
     # fetch_all_templates()
 
-
     print("\n\nSTEP 2 : Create EHR for the first patient of the dataset")
     patient_id = patients_df.iloc[0]["Id"]
     ehr_id = create_ehr(patient_id)
@@ -73,10 +65,10 @@ def run():
 
     print("\nPatient composition..")
     patient = parse_patient(patients_df[patients_df["Id"] == patient_id])
-    patient_json_str = patient.model_dump_json(by_alias=True,indent=4)
+    patient_json_str = patient.model_dump_json(by_alias=True, indent=4)
     print(f"\npatient: {patient_json_str}")
     patient_composition = transform_composition(patient.model_dump_json(by_alias=True), "patient")
-    # print(f"\ncomposition: {patient_composition}")
+    print(f"\ncomposition: {patient_composition}")
 
     patient_composition_uuid = post_composition(ehr_id, patient_composition)
     print(f"\npatient_composition_uuid: {patient_composition_uuid}")
@@ -84,34 +76,36 @@ def run():
     print("\nVital Signs compositions..")
     vitalsigns_variables = [
         {'name': 'Body Height', 'units': 'cm'},
-        {'name': 'Body Weight', 'units': 'kg'},
-        {'name': 'Heart rate', 'units': '/min'},
-        {'name': 'Systolic Blood Pressure', 'units': 'mm[Hg]'},
-        {'name': 'Diastolic Blood Pressure', 'units': 'mm[Hg]'}
+        # {'name': 'Body Weight', 'units': 'kg'},
+        # {'name': 'Heart rate', 'units': '/min'},
+        # {'name': 'Systolic Blood Pressure', 'units': 'mm[Hg]'},
+        # {'name': 'Diastolic Blood Pressure', 'units': 'mm[Hg]'}
     ]
 
-    patient_encounter_ids = [encounter_id for encounter_id, encounter in all_encounters.items() if encounter.patient_id == patient_id]
+    patient_encounter_ids = [encounter_id for encounter_id, encounter in all_encounters.items() if
+                             encounter.patient_id == patient_id]
     # patient_encounter_ids = encounters_df[encounters_df["PATIENT"] == patient_id]["Id"].tolist()
-    all_vitalsigns = {}
     for encounter_id in patient_encounter_ids:
         vitalsigns_df = observations_df[
             (observations_df["ENCOUNTER"] == encounter_id) & \
             (observations_df["CATEGORY"] == "vital-signs") & \
             (observations_df["DESCRIPTION"].isin([v["name"] for v in vitalsigns_variables]))
-        ]
+            ]
 
         if vitalsigns_df.shape[0] == 0:
             # print(f"Encounter id {encounter_id} has no vital signs observations")
             continue
 
-        all_vitalsigns[encounter_id] = parse_vitalsigns(vitalsigns_df, vitalsigns_variables)
-        vitalsigns_composition = load_composition_example(COMPOSITION_PATH / "vital_signs_20231122085528_000001_1.json")
-        vitalsigns_composition = update_composition_vitalsigns(vitalsigns_composition, all_vitalsigns[encounter_id])
-        vitalsigns_composition = update_composition_high_level(vitalsigns_composition, all_encounters[encounter_id].startdate)
-        reponse = post_composition(ehr_id, vitalsigns_composition)
+        vitalsigns = parse_vital_signs(vitalsigns_df, vitalsigns_variables)
+        vitalsigns_json_str = vitalsigns.model_dump_json(by_alias=True, indent=4)
+        print(f"\ndiagnosis: {vitalsigns_json_str}")
+        vitalsigns_composition = transform_composition(vitalsigns.model_dump_json(by_alias=True), "vital_signs")
+        # print(f"\ncomposition: {vitalsigns_composition}")
+
+        vitalsigns_composition_uuid = post_composition(ehr_id, vitalsigns_composition)
+        print(f"\ndiagnosis_composition_uuid: {vitalsigns_composition_uuid}")
 
     # plot_bloodpressure_over_time(ehr_id)
-
 
     print("\nDiagnosis compositions..")
     where_disorder = conditions_df.DESCRIPTION.apply(lambda x: bool(re.search('.*(disorder)', x)))
@@ -119,7 +113,7 @@ def run():
     patient_diagnosis_df = conditions_df[conditions_df["PATIENT"] == patient_id]
     for _, diagnosis_df in patient_diagnosis_df.iterrows():
         diagnosis = parse_all_diagnosis(diagnosis_df)
-        diagnosis_json_str = diagnosis.model_dump_json(by_alias=True,indent=4)
+        diagnosis_json_str = diagnosis.model_dump_json(by_alias=True, indent=4)
         print(f"\ndiagnosis: {diagnosis_json_str}")
         diagnosis_composition = transform_composition(diagnosis.model_dump_json(by_alias=True), "diagnosis-demo")
         # print(f"\ncomposition: {diagnosis_composition}")
@@ -131,6 +125,7 @@ def run():
 @click.group()
 def cli():
     pass
+
 
 cli.add_command(run)
 cli.add_command(list_all_templates)
