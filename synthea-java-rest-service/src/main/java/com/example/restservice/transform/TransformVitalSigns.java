@@ -4,7 +4,7 @@ import com.example.restservice.compositions.vitalsignscomposition.VitalSignsComp
 import com.example.restservice.compositions.vitalsignscomposition.definition.BodyHeightObservation;
 import com.example.restservice.compositions.vitalsignscomposition.definition.BodyHeightPointInTimePointEvent;
 import com.example.restservice.dto.vitalsigns.VitalSignsDTO;
-import com.example.restservice.dto.vitalsigns.definitions.BodyHeightPointInTimePointEventDto;
+import com.example.restservice.dto.vitalsigns.definitions.PointInTimePointEventDto;
 import com.nedap.archie.rm.generic.PartyIdentified;
 import com.nedap.archie.rm.generic.PartySelf;
 import org.ehrbase.openehr.sdk.generator.commons.interfaces.CompositionEntity;
@@ -61,11 +61,11 @@ public class TransformVitalSigns implements ITransformDto {
 
     public List<BodyHeightPointInTimePointEvent> parseBodyHeightPointInTimeEvents(){
         List<BodyHeightPointInTimePointEvent> bodyHeightPointInTimePointEvents = new ArrayList<>();
-        for (BodyHeightPointInTimePointEventDto pointEvent : this.vitalSignsDTO.getBodyHeightObservation().getPointInTime()) {
+        for (PointInTimePointEventDto pointEvent : this.vitalSignsDTO.getBodyHeightObservation().getPointInTime()) {
             BodyHeightPointInTimePointEvent bodyHeightPointInTimePointEvent = new BodyHeightPointInTimePointEvent();
 
-            Double magnitude = pointEvent.getBodyHeightMagnitude();
-            String unit = pointEvent.getBodyHeightUnits();
+            Double magnitude = pointEvent.getMagnitude();
+            String unit = pointEvent.getUnits();
             String time = pointEvent.getTimeValue();
 
             this.originTimeValue = time;

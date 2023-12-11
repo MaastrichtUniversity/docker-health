@@ -122,13 +122,13 @@ curl -X 'POST' \
   "bodyHeightObservation": {
     "pointInTime": [
       {
-        "bodyHeightMagnitude": 185,
-        "bodyHeightUnits": "cm",
+        "magnitude": 185,
+        "units": "cm",
         "timeValue": "1999-12-18T04:05:06Z"
       },
       {
-        "bodyHeightMagnitude": 173,
-        "bodyHeightUnits": "cm",
+        "magnitude": 173,
+        "units": "cm",
         "timeValue": "2023-12-18T01:02:03Z"
       }	
     ]

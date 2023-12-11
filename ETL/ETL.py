@@ -17,7 +17,7 @@ from src.ehr import create_ehr, fetch_all_ehr_id
 from src.encounter import parse_all_encounters
 from src.patient import parse_patient
 from src.template import fetch_all_templates, post_template
-from src.vitalsigns import  parse_vital_signs
+from src.vitalsigns import parse_vital_signs
 
 
 @click.command(help="Get all EHR ID on a specific openEHR instance")
@@ -67,29 +67,30 @@ def run():
     patient_json_str = patient.model_dump_json(by_alias=True, indent=4)
     print(f"\npatient: {patient_json_str}")
     patient_composition = transform_composition(patient.model_dump_json(by_alias=True), "patient")
-    print(f"\ncomposition: {patient_composition}")
+    # print(f"\ncomposition: {patient_composition}")
 
     patient_composition_uuid = post_composition(ehr_id, patient_composition)
     print(f"\npatient_composition_uuid: {patient_composition_uuid}")
 
     print("\nVital Signs compositions..")
     vitalsigns_variables = [
-        {'name': 'Body Height', 'units': 'cm'},
+        {"name": "Body Height", "units": "cm"},
         # {'name': 'Body Weight', 'units': 'kg'},
         # {'name': 'Heart rate', 'units': '/min'},
         # {'name': 'Systolic Blood Pressure', 'units': 'mm[Hg]'},
         # {'name': 'Diastolic Blood Pressure', 'units': 'mm[Hg]'}
     ]
 
-    patient_encounter_ids = [encounter_id for encounter_id, encounter in all_encounters.items() if
-                             encounter.patient_id == patient_id]
+    patient_encounter_ids = [
+        encounter_id for encounter_id, encounter in all_encounters.items() if encounter.patient_id == patient_id
+    ]
     # patient_encounter_ids = encounters_df[encounters_df["PATIENT"] == patient_id]["Id"].tolist()
     for encounter_id in patient_encounter_ids:
         vitalsigns_df = observations_df[
-            (observations_df["ENCOUNTER"] == encounter_id) & \
-            (observations_df["CATEGORY"] == "vital-signs") & \
-            (observations_df["DESCRIPTION"].isin([v["name"] for v in vitalsigns_variables]))
-            ]
+            (observations_df["ENCOUNTER"] == encounter_id)
+            & (observations_df["CATEGORY"] == "vital-signs")
+            & (observations_df["DESCRIPTION"].isin([v["name"] for v in vitalsigns_variables]))
+        ]
 
         if vitalsigns_df.shape[0] == 0:
             # print(f"Encounter id {encounter_id} has no vital signs observations")
@@ -97,17 +98,17 @@ def run():
 
         vitalsigns = parse_vital_signs(vitalsigns_df, vitalsigns_variables)
         vitalsigns_json_str = vitalsigns.model_dump_json(by_alias=True, indent=4)
-        print(f"\ndiagnosis: {vitalsigns_json_str}")
+        print(f"\nvitalsigns: {vitalsigns_json_str}")
         vitalsigns_composition = transform_composition(vitalsigns.model_dump_json(by_alias=True), "vital_signs")
         # print(f"\ncomposition: {vitalsigns_composition}")
 
         vitalsigns_composition_uuid = post_composition(ehr_id, vitalsigns_composition)
-        print(f"\ndiagnosis_composition_uuid: {vitalsigns_composition_uuid}")
+        print(f"\nvitalsigns_composition_uuid: {vitalsigns_composition_uuid}")
 
     # plot_bloodpressure_over_time(ehr_id)
 
     print("\nDiagnosis compositions..")
-    where_disorder = conditions_df.DESCRIPTION.apply(lambda x: bool(re.search('.*(disorder)', x)))
+    where_disorder = conditions_df.DESCRIPTION.apply(lambda x: bool(re.search(".*(disorder)", x)))
     conditions_df = conditions_df[where_disorder]
     patient_diagnosis_df = conditions_df[conditions_df["PATIENT"] == patient_id]
     for _, diagnosis_df in patient_diagnosis_df.iterrows():
