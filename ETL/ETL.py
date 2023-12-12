@@ -17,7 +17,7 @@ from src.ehr import create_ehr, fetch_all_ehr_id
 # from src.encounter import parse_all_encounters
 from src.patient import parse_patient_csv, parse_patient_json, create_patient_attribute
 from src.template import fetch_all_templates, post_template
-from src.vitalsigns import  parse_vital_signs
+from src.vitalsigns import parse_vital_signs
 
 
 @click.command(help="Get all EHR ID on a specific openEHR instance")

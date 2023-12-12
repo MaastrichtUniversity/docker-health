@@ -1,6 +1,6 @@
 package com.example.restservice.dto.vitalsigns;
 
-import com.example.restservice.dto.vitalsigns.definitions.BodyHeightObservationDto;
+import com.example.restservice.dto.vitalsigns.definitions.ObservationDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -10,18 +10,23 @@ public class VitalSignsDTO {
     @NotEmpty(message = "startTime cannot be empty")
     private String startTime;
 
-    private BodyHeightObservationDto bodyHeightObservation;
+    private ObservationDto bodyHeightObservation;
+    private ObservationDto bodyWeightObservation;
 
-    public VitalSignsDTO(String startTime, BodyHeightObservationDto bodyHeightObservation) {
+    public VitalSignsDTO(String startTime, ObservationDto bodyHeightObservation, ObservationDto bodyWeightObservation) {
         this.startTime = startTime;
         this.bodyHeightObservation = bodyHeightObservation;
+        this.bodyWeightObservation = bodyWeightObservation;
     }
 
     public String getStartTime() {
         return startTime;
     }
 
-    public BodyHeightObservationDto getBodyHeightObservation() {
+    public ObservationDto getBodyHeightObservation() {
         return bodyHeightObservation;
+    }
+    public ObservationDto getBodyWeightObservation() {
+        return bodyWeightObservation;
     }
 }

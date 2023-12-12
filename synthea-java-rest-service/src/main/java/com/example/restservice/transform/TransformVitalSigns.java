@@ -3,8 +3,10 @@ package com.example.restservice.transform;
 import com.example.restservice.compositions.vitalsignscomposition.VitalSignsComposition;
 import com.example.restservice.compositions.vitalsignscomposition.definition.BodyHeightObservation;
 import com.example.restservice.compositions.vitalsignscomposition.definition.BodyHeightPointInTimePointEvent;
+import com.example.restservice.compositions.vitalsignscomposition.definition.BodyWeightObservation;
+import com.example.restservice.compositions.vitalsignscomposition.definition.BodyWeightPointInTimePointEvent;
 import com.example.restservice.dto.vitalsigns.VitalSignsDTO;
-import com.example.restservice.dto.vitalsigns.definitions.BodyHeightPointInTimePointEventDto;
+import com.example.restservice.dto.vitalsigns.definitions.PointInTimePointEventDto;
 import com.nedap.archie.rm.generic.PartyIdentified;
 import com.nedap.archie.rm.generic.PartySelf;
 import org.ehrbase.openehr.sdk.generator.commons.interfaces.CompositionEntity;
@@ -43,6 +45,9 @@ public class TransformVitalSigns implements ITransformDto {
         if (nonNull(this.vitalSignsDTO.getBodyHeightObservation())) {
             composition.setBodyHeight(parseBodyHeight());
         }
+        if (nonNull(this.vitalSignsDTO.getBodyWeightObservation())) {
+            composition.setBodyWeight(parseBodyWeight());
+        }
 
         return composition;
     }
@@ -61,11 +66,11 @@ public class TransformVitalSigns implements ITransformDto {
 
     public List<BodyHeightPointInTimePointEvent> parseBodyHeightPointInTimeEvents(){
         List<BodyHeightPointInTimePointEvent> bodyHeightPointInTimePointEvents = new ArrayList<>();
-        for (BodyHeightPointInTimePointEventDto pointEvent : this.vitalSignsDTO.getBodyHeightObservation().getPointInTime()) {
+        for (PointInTimePointEventDto pointEvent : this.vitalSignsDTO.getBodyHeightObservation().getPointInTime()) {
             BodyHeightPointInTimePointEvent bodyHeightPointInTimePointEvent = new BodyHeightPointInTimePointEvent();
 
-            Double magnitude = pointEvent.getBodyHeightMagnitude();
-            String unit = pointEvent.getBodyHeightUnits();
+            Double magnitude = pointEvent.getMagnitude();
+            String unit = pointEvent.getUnits();
             String time = pointEvent.getTimeValue();
 
             this.originTimeValue = time;
@@ -75,6 +80,38 @@ public class TransformVitalSigns implements ITransformDto {
             bodyHeightPointInTimePointEvent.setTimeValue(formatToCorrectTime(time));
 
             bodyHeightPointInTimePointEvents.add(bodyHeightPointInTimePointEvent);
+        }
+
+        return bodyHeightPointInTimePointEvents;
+    }
+
+    public BodyWeightObservation parseBodyWeight() {
+        BodyWeightObservation bodyWeightObservation = new BodyWeightObservation();
+
+        bodyWeightObservation.setLanguage(Language.EN);
+        bodyWeightObservation.setSubject(new PartySelf());
+        bodyWeightObservation.setPointInTime(parseBodyWeightPointInTimeEvents());
+        // TODO Check why this timestamp is needed
+        bodyWeightObservation.setOriginValue(formatToCorrectTime(this.originTimeValue));
+
+        return bodyWeightObservation;
+    }
+    public List<BodyWeightPointInTimePointEvent> parseBodyWeightPointInTimeEvents(){
+        List<BodyWeightPointInTimePointEvent> bodyHeightPointInTimePointEvents = new ArrayList<>();
+        for (PointInTimePointEventDto pointEvent : this.vitalSignsDTO.getBodyWeightObservation().getPointInTime()) {
+            BodyWeightPointInTimePointEvent bodyWeightPointInTimePointEvent = new BodyWeightPointInTimePointEvent();
+
+            Double magnitude = pointEvent.getMagnitude();
+            String unit = pointEvent.getUnits();
+            String time = pointEvent.getTimeValue();
+
+            this.originTimeValue = time;
+
+            bodyWeightPointInTimePointEvent.setWeightMagnitude(magnitude);
+            bodyWeightPointInTimePointEvent.setWeightUnits(unit);
+            bodyWeightPointInTimePointEvent.setTimeValue(formatToCorrectTime(time));
+
+            bodyHeightPointInTimePointEvents.add(bodyWeightPointInTimePointEvent);
         }
 
         return bodyHeightPointInTimePointEvents;

@@ -23,10 +23,10 @@ PLOT_PATH = Path("data/plot")
 
 
 class Measurement(BaseModel):
-    """Data model about Body height measurement"""
+    """Data model for measurement"""
 
-    value: float = Field(..., serialization_alias="bodyHeightMagnitude")
-    units: str = Field(..., serialization_alias="bodyHeightUnits")
+    value: float = Field(..., serialization_alias="magnitude")
+    units: str = Field(..., serialization_alias="units")
     time: datetime = Field(None, serialization_alias="timeValue")
 
 
@@ -65,6 +65,7 @@ def parse_vital_signs(vital_signs_df: pd.DataFrame, vitalsigns_variables) -> Vit
         'weight': [],
         'heart_rate': []
     }
+
     for variable in vitalsigns_variables:
         vital_signs_measurement = vital_signs_df[vital_signs_df["DESCRIPTION"] == variable["name"]].squeeze()
         # measure_instance = Measure(measurement["VALUE"], measurement["UNITS"], variable["units"])
@@ -87,7 +88,6 @@ def parse_vital_signs(vital_signs_df: pd.DataFrame, vitalsigns_variables) -> Vit
     heart_rate = PointsInTime(measurements=measurements['heart_rate'])
 
     return VitalSigns(height=height, weight=weight, heart_rate=heart_rate)
-
 
 def plot_bloodpressure_over_time(ehr_id: UUID) -> None:
     """
