@@ -32,49 +32,55 @@ if [[ $1 == "externals" ]]; then
 fi
 
 if [[ $1 == "data" ]]; then
-    echo "Generate a synthetic dataset"
+    echo -e "\nGenerate a synthetic dataset"
     docker compose build demo-data
     docker compose up demo-data
 
-    echo "Exit rit.sh"
+    echo -e "\nExit rit.sh"
     exit 0
 fi
 
 if [[ $1 == "java" ]]; then
-    echo "Start Sprint boot Rest API"
-    docker compose build java-rest-demo
-    docker compose up -d proxy java-rest-demo
+    echo -e "\nStart Sprint boot Rest API"
+    docker compose build java-rest
+    docker compose up -d java-rest proxy
 
-    echo "Exit rit.sh"
+    echo -e "\nExit rit.sh"
     exit 0
 fi
 
 if [[ $1 == "data-exploration" ]]; then
-    echo "Explore synthea dataset"
+    echo -e "\nExplore synthea dataset"
     docker compose build data-exploration
     docker compose up -d proxy data-exploration
 
-    echo "Exit rit.sh"
+    echo -e "\nExit rit.sh"
     exit 0
 fi
 
 
 if [[ $1 == "demo" ]]; then
+
+    echo -e "\nStart EHRbase Rest API"
     docker compose build
     docker compose up -d ehrbase proxy
     until docker logs --tail 100 hdp-ehrbase-1 2>&1 | grep -q "Started EhrBase in";
     do
-      echo "Waiting for EhrBase"
+    echo -e "Waiting for EhrBase"
       sleep 10
     done
 
-    echo "Running etl-demo"
+    echo -e "\nStart Sprint boot Rest API"
+    docker compose build java-rest
+    docker compose up -d java-rest
+
+    echo -e "\nRunning etl-demo"
     docker compose up -d etl-demo
     # sleep 5
-    echo "Print logs for etl-demo"
+    echo -e "\nPrint logs for etl-demo"
     docker compose logs etl-demo
 
-    echo "Exit rit.sh"
+    echo -e "\nExit rit.sh"
     exit 0
 fi
 
@@ -82,11 +88,11 @@ if [[ $1 == "backend" ]]; then
     docker compose up -d ehrbase proxy
     until docker logs --tail 30 hdp-ehrbase-1 2>&1 | grep -q "Started EhrBase in";
     do
-      echo "Waiting for EhrBase"
+      echo -e "Waiting for EhrBase"
       sleep 10
     done
 
-    echo "EHRbase up and running, exiting rit.sh"
+    echo -e "\nEHRbase up and running, exiting rit.sh"
     exit 0
 fi
 
