@@ -37,12 +37,12 @@ class PointsInTime(BaseModel):
 class VitalSigns(BaseModel):
     """Data model for the vital signs"""
 
-    start_time: datetime = Field(default_factory=datetime_now, serialization_alias="startTime")
     height: PointsInTime = Field(..., serialization_alias="bodyHeightObservation")
-    # weight: Measure
-    # heart_rate: Measure
-    # blood_systolic: Measure
-    # blood_diastolic: Measure
+    weight: PointsInTime = Field(..., serialization_alias="BodyWeightObservation")
+    heart_rate: PointsInTime = Field(..., serialization_alias="HeartRateObservation")
+    # blood_systolic: PointsInTime = Field(..., serialization_alias="BloodPressureObservation")
+    # blood_diastolic: PointsInTime = Field(..., serialization_alias="BloodPressureObservation")
+    start_time: datetime = Field(default_factory=datetime_now, serialization_alias="startTime")
 
 
 def parse_vital_signs(vital_signs_df: pd.DataFrame, vitalsigns_variables) -> VitalSigns:
@@ -60,7 +60,11 @@ def parse_vital_signs(vital_signs_df: pd.DataFrame, vitalsigns_variables) -> Vit
 
     """
 
-    measurements = []
+    measurements = {
+        'height': [],
+        'weight': [],
+        'heart_rate': []
+    }
     for variable in vitalsigns_variables:
         vital_signs_measurement = vital_signs_df[vital_signs_df["DESCRIPTION"] == variable["name"]].squeeze()
         # measure_instance = Measure(measurement["VALUE"], measurement["UNITS"], variable["units"])
@@ -69,18 +73,20 @@ def parse_vital_signs(vital_signs_df: pd.DataFrame, vitalsigns_variables) -> Vit
         time = vital_signs_measurement["DATE"]
 
         if variable["name"] == "Body Height":
-            measurements.append(Measurement(value=value, units=units, time=time))
-        # if variable["name"] == "Body Weight":
-        #     vital_signs.weight = measure_instance
-        # if variable["name"] == "Heart rate":
-        #     vital_signs.heart_rate = measure_instance
+            measurements['height'].append(Measurement(value=value, units=units, time=time))
+        if variable["name"] == "Body Weight":
+            measurements['weight'].append(Measurement(value=value, units=units, time=time))
+        if variable["name"] == "Heart rate":
+            measurements['heart_rate'].append(Measurement(value=value, units=units, time=time))
         # if variable["name"] == "Systolic Blood Pressure":
         #     vital_signs.blood_systolic = measure_instance
         # if variable["name"] == "Diastolic Blood Pressure":
         #     vital_signs.blood_diastolic = measure_instance
-    height = PointsInTime(measurements=measurements)
+    height = PointsInTime(measurements=measurements['height'])
+    weight = PointsInTime(measurements=measurements['weight'])
+    heart_rate = PointsInTime(measurements=measurements['heart_rate'])
 
-    return VitalSigns(height=height)
+    return VitalSigns(height=height, weight=weight, heart_rate=heart_rate)
 
 
 def plot_bloodpressure_over_time(ehr_id: UUID) -> None:

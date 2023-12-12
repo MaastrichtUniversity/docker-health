@@ -14,8 +14,8 @@ from src.composition import datetime_now
 class Patient(BaseModel):
     """Data model for the Patient class"""
 
-    gender: str = Field(..., serialization_alias="sexAssignedAtBirth")
-    birthdate: datetime = Field(..., serialization_alias="dateOfBirth")
+    gender_code: str = Field(..., serialization_alias="sexAssignedAtBirth")
+    birth_date: datetime = Field(..., serialization_alias="dateOfBirth")
     death_date: Optional[datetime] = Field(None, serialization_alias="dateOfDeath")
     start_time: datetime = Field(default_factory=datetime_now, serialization_alias="startTime")
 
@@ -29,12 +29,12 @@ def create_patient_attribute(gender_code, birth_date, death_date) -> Patient:
         gender_code = None
 
     try:
-        birth_date = datetime.fromisoformat(birth_date).isoformat()
+        birth_date = datetime.fromisoformat(birth_date)
     except TypeError:
         birth_date = None
 
     try:
-        death_date = datetime.fromisoformat(death_date).isoformat()
+        death_date = datetime.fromisoformat(death_date)
     except TypeError:
         death_date = None
 
@@ -59,24 +59,23 @@ def parse_patient_csv(patient_df: pd.DataFrame):
 
     """
     if len(patient_df) != 1:
-        print("Need strictly one patient.")
+        print("Need strictly one patient in the dataframe.")
         return 1
     patient_df = patient_df.squeeze()
 
-    # Parse Gender (Sex assigned at birth):
-    if "GENDER" in patient_df:
+    try:
         gender_code = patient_df["GENDER"]
-    else:
+    except KeyError:
         gender_code = None
 
-    if "BIRTHDATE" in patient_df:
+    try:
         birth_date = patient_df["BIRTHDATE"]
-    else:
+    except KeyError:
         birth_date = None
 
-    if "DEATHDATE" in patient_df:
+    try:
         death_date = patient_df["DEATHDATE"]
-    else:
+    except KeyError:
         death_date = None
 
     return gender_code, birth_date, death_date
@@ -86,19 +85,19 @@ def parse_patient_json(patient_json: dict):
     """
     TO DO
     """
-    if "gender" in patient_json["attributes"]:
+    try:
         gender_code = patient_json["attributes"]["gender"]
-    else:
+    except KeyError:
         gender_code = None
 
-    if "birthdate_as_localdate" in patient_json["attributes"]:
+    try:
         birth_date = patient_json["attributes"]["birthdate_as_localdate"]
-    else:
+    except KeyError:
         birth_date = None
 
-    if "deathdate" in patient_json["attributes"]:
+    try:
         death_date = patient_json["attributes"]["deathdate"]
-    else:
+    except KeyError:
         death_date = None
 
     return gender_code, birth_date, death_date
