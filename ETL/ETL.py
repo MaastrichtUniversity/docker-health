@@ -38,12 +38,12 @@ def list_all_templates():
 def run():
     """Runs the ETL"""
 
-    INPUT_FORMAT = 'csv' # to set as an argument
+    INPUT_FORMAT = 'json' # to set as an argument
 
     TEMPLATE_PATH = Path("data/templates")
     SYNTHEA_PATH = Path(f"data/{INPUT_FORMAT}")
 
-    vitalsigns_variables = [
+    VITAL_SIGNS_VARIABLES = [
         {'name': 'Body Height', 'units': 'cm'},
         {'name': 'Body Weight', 'units': 'kg'},
         {'name': 'Heart rate', 'units': '/min'},
@@ -65,8 +65,7 @@ def run():
     print(f"ehr_id: {ehr_id}")
 
 
-    print("\n\nSTEP 3 : Extract Data")
-
+    print(f"\n\nSTEP 3 : Data extraction from {INPUT_FORMAT} input data format")
 
     if INPUT_FORMAT == 'csv':
         # Load datasets
@@ -77,35 +76,33 @@ def run():
         # all_encounters = parse_all_encounters(encounters_df)
 
         print("\nPatient..", end='\t')
-        patient_raw_data = patients_df[patients_df["Id"] == patient_id]
-        patient = create_patient_attribute(*parse_patient_csv(patient_raw_data))
+        patient_df = patients_df[patients_df["Id"] == patient_id]
+        patient = create_patient_attribute(*parse_patient_csv(patient_df))
         print(f"information extracted for a single patient: patient_id = {patient_id}")
 
         print("\nDiagnosis..", end='\t')
-        where_disorder = conditions_df.DESCRIPTION.apply(lambda x: bool(re.search('.*(disorder)', x)))
-        conditions_df = conditions_df[where_disorder]
-        patient_disorder_df = conditions_df[conditions_df["PATIENT"] == patient_id]
+        where_disorder = conditions_df["DESCRIPTION"]apply(lambda x: bool(re.search('.*(disorder)', x)))
+        patient_disorders_df = conditions_df[where_disorder][conditions_df["PATIENT"] == patient_id]
         all_disorders = []
-        for _, disorder_df in patient_disorder_df.iterrows():
+        for _, disorder_df in patient_disorders_df.iterrows():
             all_disorders.append(create_diagnosis_attribute(*parse_all_diagnosis_csv(disorder_df)))
         print(f"{len(all_disorders)} disorders reported for this patient.")
 
         print("\nVital Signs..", end='\t')
-        # patient_encounter_ids = [encounter_id for encounter_id, encounter in all_encounters.items() if
-                                 # encounter.patient_id == patient_id]
         patient_encounter_ids = encounters_df[encounters_df["PATIENT"] == patient_id]["Id"].tolist()
-        all_vitalsigns = []
+        vital_signs_df = observations_df[
+            (observations_df["ENCOUNTER"].isin(patient_encounter_ids)) & \
+            (observations_df["CATEGORY"] == "vital-signs") & \
+            (observations_df["DESCRIPTION"].isin([var["name"] for var in VITAL_SIGNS_VARIABLES]))
+        ]
+        all_vital_signs = []
         for encounter_id in patient_encounter_ids:
-            vitalsigns_df = observations_df[
-                (observations_df["ENCOUNTER"] == encounter_id) & \
-                (observations_df["CATEGORY"] == "vital-signs") & \
-                (observations_df["DESCRIPTION"].isin([v["name"] for v in vitalsigns_variables]))
-                ]
-            if vitalsigns_df.shape[0] == 0:
+            if vital_signs_df.shape[0] == 0:
                 # print(f"Encounter id {encounter_id} has no vital signs observations")
                 continue
-            all_vitalsigns.append(parse_vital_signs(vitalsigns_df, vitalsigns_variables))
-        print(f"{len(all_vitalsigns)} vital signs reported for this patient.")
+            vital_signs_enc_df = vital_signs_df[vital_signs_df['ENCOUNTER'] == encounter_id]
+            all_vital_signs.append(parse_vital_signs(vital_signs_enc_df, VITAL_SIGNS_VARIABLES))
+        print(f"{len(all_vital_signs)} vital signs reported for this patient.")
 
 
     elif INPUT_FORMAT == 'json':
@@ -129,7 +126,13 @@ def run():
         print(f"{len(all_disorders)} disorders reported for this patient.")
 
         print("\nVital Signs..")
-
+        all_vital_signs = []
+        for encounter_i, encounter in enumerate(patient_raw_data['record']['encounters']):
+            if encounter['observations'] == []:
+                continue
+            for observation_j, observation in enumerate(encounter['observations']):
+                if observation['category'] == 'vital-signs':
+                    all_vital_signs.append(parse_vital_signs_json(patient_raw_data, encounter_i, observation_j))
 
 
     print("\n\nSTEP 4 : Transform and Load compositions")
@@ -152,17 +155,13 @@ def run():
         print(f"diagnosis_composition_uuid: {diagnosis_composition_uuid}")
 
     print("\nVital Signs..")
-    for vitalsigns_i, vitalsigns in enumerate(all_vitalsigns):
+    for vitalsigns_i, vitalsigns in enumerate(all_vital_signs):
         vitalsigns_json_str = vitalsigns.model_dump_json(by_alias=True, indent=4)
         print(f"\nvital_signs {vitalsigns_i+1}: {vitalsigns_json_str}")
         vitalsigns_composition = transform_composition(vitalsigns.model_dump_json(by_alias=True), "vital_signs")
         # print(f"\ncomposition: {vitalsigns_composition}")
         vitalsigns_composition_uuid = post_composition(ehr_id, vitalsigns_composition)
         print(f"diagnosis_composition_uuid: {vitalsigns_composition_uuid}")
-
-
-
-
 
 
     # # plot_bloodpressure_over_time(ehr_id)
