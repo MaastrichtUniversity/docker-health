@@ -11,7 +11,6 @@ from src.composition import datetime_now
 
 class Measurement(BaseModel):
     """Data model for measurement"""
-
     value: float = Field(..., serialization_alias='magnitude')
     units: str = Field(..., serialization_alias='units')
     time: datetime = Field(None, serialization_alias='timeValue')
@@ -33,7 +32,52 @@ class VitalSigns(BaseModel):
     start_time: datetime = Field(default_factory=datetime_now, serialization_alias='startTime')
 
 
-def parse_vital_signs_csv(vital_signs_df: pd.DataFrame) -> VitalSigns:
+def create_vital_signs_instance(all_vital_signs_measures: list, vital_signs_units: list) -> VitalSigns:
+    """
+    check format (ISO and local terms) and create a Diagnosis attribute
+    TO DO
+    """
+    grouped_measures = {}
+
+    for measure in all_vital_signs_measures:
+        variable_name = measure['variable_name']
+
+        if variable_name not in vital_signs_units.keys():
+            continue
+        try:
+            value = float(measure['value'])
+        except (ValueError, TypeError):
+            value = None
+
+        try:
+            time = datetime.fromisoformat(measure['time']).isoformat()
+        except TypeError:
+            time = None
+
+        if vital_signs_units[variable_name] != measure['units']:
+            print("measurement units is inconsistent.", end=' ')
+            print(f"Units is in {measure['units']} but should be in {vital_signs_units[value]}.")
+            units = None
+            value = None
+            time = None
+
+        else:
+            units = str(measure['units'])
+
+        if variable_name not in grouped_measures:
+            grouped_measures[variable_name] = []
+        grouped_measures[variable_name].append(Measurement(value=value, units=units, time=time))
+
+    height = PointsInTime(measurements=grouped_measures['Body Height'])
+    weight = PointsInTime(measurements=grouped_measures['Body Weight'])
+    heart_rate = PointsInTime(measurements=grouped_measures['Heart rate'])
+    # 'Systolic Blood Pressure'
+    # 'Diastolic Blood Pressure'
+
+    return VitalSigns(height=height, weight=weight, heart_rate=heart_rate)
+
+
+def parse_vital_signs_csv(vital_signs_enc_df: pd.DataFrame):
     """
     Parse vital signs dataframe to a vital signs class
     Parameters
@@ -47,64 +91,73 @@ def parse_vital_signs_csv(vital_signs_df: pd.DataFrame) -> VitalSigns:
         Instance of VitalSigns filled with the values
 
     """
+    all_vital_signs_measures = []
+    for _, vital_sign in vital_signs_enc_df.iterrows():
+        try:
+            variable = vital_sign['DESCRIPTION']
+        except KeyError:
+            variable = None
 
-    measurements = {}
+        try:
+            value = vital_sign['VALUE']
+        except KeyError:
+            value = None
 
-    for _, vital_sign in vital_signs_df.iterrows():
-        value = vital_sign['VALUE']
-        units = vital_sign['UNITS']
-        time = vital_sign['DATE']
-        if variable in measurements:
-            measurements[vital_sign['DESCRIPTION']].append((value, units, time))
-        else:
-            measurements[vital_sign['DESCRIPTION']] = [(value, units, time)]
+        try:
+            units = vital_sign['UNITS']
+        except KeyError:
+            units = None
 
-    return variable, value, unit, start_date
+        try:
+            time = vital_sign['DATE']
+        except KeyError:
+            time = None
 
+        all_vital_signs_measures.append({
+            'variable_name': variable,
+            'value': value,
+            'units': units,
+            'time': time
+        })
 
-    #     if variable['name'] == 'Body Height':
-    #         measurements['height'].append(Measurement(value=value, units=units, time=time))
-    #     if variable['name'] == 'Body Weight':
-    #         measurements['weight'].append(Measurement(value=value, units=units, time=time))
-    #     if variable['name'] == 'Heart rate':
-    #         measurements['heart_rate'].append(Measurement(value=value, units=units, time=time))
-    #     # if variable['name'] == 'Systolic Blood Pressure':
-    #     #     vital_signs.blood_systolic = measure_instance
-    #     # if variable['name'] == 'Diastolic Blood Pressure':
-    #     #     vital_signs.blood_diastolic = measure_instance
-    # height = PointsInTime(measurements=measurements['height'])
-    # weight = PointsInTime(measurements=measurements['weight'])
-    # heart_rate = PointsInTime(measurements=measurements['heart_rate'])
-
-    return VitalSigns(height=height, weight=weight, heart_rate=heart_rate)
+    return all_vital_signs_measures
 
 
-def parse_vital_signs_json(patient_json: dict, i: int, j: int):
+def parse_vital_signs_json(patient_json: dict, i: int, list_j: list):
     """
     TODO
     """
-    try:
-        variable = patient_json['record']['encounters'][i]['observations'][j]['codes'][0]['display']
-    except KeyError:
-        variable = None
+    all_vital_signs_measures = []
+    for j in list_j:
+        try:
+            variable = patient_json['record']['encounters'][i]['observations'][j]['codes'][0]['display']
+        except KeyError:
+            variable = None
 
-    try:
-        value = patient_json['record']['encounters'][i]['observations'][j]['value']
-    except KeyError:
-        value = None
+        try:
+            value = patient_json['record']['encounters'][i]['observations'][j]['value']
+        except KeyError:
+            value = None
 
-    try:
-        unit = patient_json['record']['encounters'][i]['observations'][j]['unit']
-    except KeyError:
-        unit = None
+        try:
+            units = patient_json['record']['encounters'][i]['observations'][j]['unit']
+        except KeyError:
+            units = None
 
-    try:
-        start_date = patient_json['record']['encounters'][i]['observations'][j]['start']
-        # convert sec to an actual date! last 3 digits represent the time zone
-        start_date_sec = int(str(start_date)[:-3])
-        # tzinfo = int(str(start_date)[-3:]) # how to convert country integer code to letter code??
-        start_date = datetime.fromtimestamp(start_date_sec)
-    except KeyError:
-        start_date = None
+        try:
+            time = patient_json['record']['encounters'][i]['observations'][j]['start']
+            # convert sec to an actual date! last 3 digits represent the time zone
+            time_sec = int(str(time)[:-3])
+            # tzinfo = int(str(time)[-3:]) # how to convert country integer code to letter code??
+            time = str(datetime.fromtimestamp(time_sec))
+        except KeyError:
+            time = None
 
-    return variable, value, unit, start_date
+        all_vital_signs_measures.append({
+            'variable_name': variable,
+            'value': value,
+            'units': units,
+            'time': time
+        })
+
+    return all_vital_signs_measures
