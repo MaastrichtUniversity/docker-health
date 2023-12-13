@@ -68,7 +68,7 @@ def create_ehr(patient_id: str) -> UUID:
     """
     ehr_id = get_ehr_id_for_subject_id(patient_id)
     if ehr_id:
-        print('An EHR identifier already exists for this patient.')
+        print("An EHR identifier already exists for this patient.")
         return ehr_id
 
     url = f'{EHRBASE_BASE_URL}/ehr'

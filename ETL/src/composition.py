@@ -50,9 +50,9 @@ def post_composition(ehr_id: UUID, composition: dict) -> UUID:
     )
 
     response_json = json.loads(response.text)
-    print(f'RESPONSE: {response.status_code}')
+    print(f"RESPONSE: {response.status_code}")
     if response.ok:
-        print('Composition was successfully created')
+        print("Composition was successfully created")
         return response_json['uid']['value']
     print(f"ERROR {response_json['error']}")
     print(response_json['message'])

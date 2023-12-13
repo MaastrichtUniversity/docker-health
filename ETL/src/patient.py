@@ -59,7 +59,7 @@ def parse_patient_csv(patient_df: pd.DataFrame):
 
     """
     if len(patient_df) != 1:
-        print('Need strictly one patient in the dataframe.')
+        print("Need strictly one patient in the dataframe.")
         return 1
     patient_df = patient_df.squeeze()
 

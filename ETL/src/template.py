@@ -66,13 +66,13 @@ def post_template(filename: str) -> None:
             timeout=10
         )
 
-    print(f'RESPONSE: {response.status_code}')
+    print(f"RESPONSE: {response.status_code}")
     if response.ok:
-        print(f'Template {filename} was successfully created')
+        print(f"Template {filename} was successfully created")
     else:
         # Convert XML output text to Dictionary:
         response_text = {'error': None, 'message': None}
         for item in ET.fromstring(response.content):
             response_text[item.tag] = item.text
-        print(f'ERROR {response_text['error']}')
+        print(f"ERROR {response_text['error']}")
         print(response_text['message'])
