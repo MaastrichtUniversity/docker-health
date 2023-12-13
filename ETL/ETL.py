@@ -5,6 +5,7 @@ Create a composition per encounter using a JSON composition as an example
 Post the compositions
 """
 
+import os
 import re
 from pathlib import Path
 import json
@@ -13,7 +14,11 @@ import pandas as pd
 
 from src.template import fetch_all_templates, post_template
 from src.ehr import create_ehr, fetch_all_ehr_id
-from src.composition import post_composition, transform_composition
+from src.composition import (
+    transform_composition,
+    post_composition,
+    write_json_composition
+)
 
 from src.patient import (
     parse_patient_csv,
@@ -37,7 +42,9 @@ INPUT_FORMAT = 'json'
 
 
 TEMPLATE_PATH = Path("data/templates")
-SYNTHEA_PATH = Path(f"data/{INPUT_FORMAT}")
+SYNTHEA_PATH = Path(f"data/synthea/{INPUT_FORMAT}")
+COMPOSITION_OUTPUT_PATH = Path("outputs/compositions") / PATIENT_ID
+os.makedirs(COMPOSITION_OUTPUT_PATH, exist_ok=True)
 
 VITAL_SIGNS_UNITS = {
     'Body Height': 'cm',
@@ -162,8 +169,7 @@ def run():
                 parse_vital_signs_json(patient_json, encounter_i, list_observations_j),
                 VITAL_SIGNS_UNITS
             ))
-            # )
-            # print(encounter_i, observation_j, all_vital_signs[-1][0])
+        print(f"{len(all_vital_signs)} vital signs reported for this patient.")
 
 
     print("\n\nSTEP 4 : Transform and Load compositions")
@@ -173,6 +179,10 @@ def run():
     print(f"\npatient: {patient_json_str}")
     patient_composition = transform_composition(patient.model_dump_json(by_alias=True), 'patient')
     # print(f"\ncomposition: {patient_composition}")
+    write_json_composition(
+        composition=patient_composition,
+        json_filename=COMPOSITION_OUTPUT_PATH / f'patient.json'
+    )
     patient_composition_uuid = post_composition(ehr_id, patient_composition)
     print(f"\npatient_composition_uuid: {patient_composition_uuid}")
 
@@ -182,6 +192,10 @@ def run():
         print(f"\ndiagnosis {diagnosis_i+1}: {diagnosis_json_str}")
         diagnosis_composition = transform_composition(
             diagnosis.model_dump_json(by_alias=True), "diagnosis-demo"
+        )
+        write_json_composition(
+            composition=diagnosis_composition,
+            json_filename=COMPOSITION_OUTPUT_PATH / f'diagnosis_{diagnosis_i+1}.json'
         )
         # print(f"\ncomposition: {diagnosis_composition}")
         diagnosis_composition_uuid = post_composition(ehr_id, diagnosis_composition)
@@ -194,13 +208,18 @@ def run():
         vitalsigns_composition = transform_composition(
             vitalsigns.model_dump_json(by_alias=True), "vital_signs"
         )
+        write_json_composition(
+            composition=vitalsigns_composition,
+            json_filename=COMPOSITION_OUTPUT_PATH / f'vital_signs_{vitalsigns_i+1}.json'
+        )
         # print(f"\ncomposition: {vitalsigns_composition}")
+
         vitalsigns_composition_uuid = post_composition(ehr_id, vitalsigns_composition)
         print(f"diagnosis_composition_uuid: {vitalsigns_composition_uuid}")
 
 
     # print("\n\nSTEP 5 : Analysis insights")
-    # # plot_bloodpressure_over_time(ehr_id)
+    # plot_bloodpressure_over_time(ehr_id)
 
 
 

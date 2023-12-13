@@ -92,6 +92,13 @@ def transform_composition(composition: str, template_id: str) -> dict:
 
     return result
 
+def write_json_composition(composition: str, json_filename: str):
+    """
+    TODO
+    """
+    with open(json_filename, 'w') as file:
+        json.dump(composition, file, indent=4)
+
 
 def datetime_now() -> datetime:
     """Return current time on the NL timezone"""
