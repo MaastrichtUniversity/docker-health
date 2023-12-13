@@ -11,9 +11,9 @@ import pytz
 import requests
 
 NLTZ = pytz.timezone('Europe/Amsterdam')
-EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
-EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
-EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
+EHRBASE_USERRNAME = os.environ['EHRBASE_USERRNAME']
+EHRBASE_PASSWORD = os.environ['EHRBASE_PASSWORD']
+EHRBASE_BASE_URL = os.environ['EHRBASE_BASE_URL']
 
 
 def post_composition(ehr_id: UUID, composition: dict) -> UUID:
@@ -36,12 +36,12 @@ def post_composition(ehr_id: UUID, composition: dict) -> UUID:
     # print(json.dumps(composition))
     url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition"
     headers = {
-        "Accept": "application/json; charset=UTF-8",
-        "Prefer": "return=representation",
-        "Content-Type": "application/json",
+        'Accept': 'application/json; charset=UTF-8',
+        'Prefer': 'return=representation',
+        'Content-Type': 'application/json',
     }
     response = requests.request(
-        "POST",
+        'POST',
         url,
         headers=headers,
         data=json.dumps(composition),
@@ -50,14 +50,13 @@ def post_composition(ehr_id: UUID, composition: dict) -> UUID:
     )
 
     response_json = json.loads(response.text)
-    print(f"RESPONSE: {response.status_code}")
+    print(f'RESPONSE: {response.status_code}')
     if response.ok:
-        print(f"Composition was successfully created")
-        return response_json["uid"]["value"]
-    else:
-        print(f"ERROR {response_json['error']}")
-        print(response_json["message"])
-        return None
+        print('Composition was successfully created')
+        return response_json['uid']['value']
+    print(f"ERROR {response_json['error']}")
+    print(response_json['message'])
+    return None
 
 
 def transform_composition(composition: str, template_id: str) -> dict:
@@ -76,11 +75,11 @@ def transform_composition(composition: str, template_id: str) -> dict:
     """
     url = f"http://transform.dh.local:8080/{template_id}"
     headers = {
-        "accept": "*/*",
-        "Content-Type": "application/json",
+        'accept': '*/*',
+        'Content-Type': 'application/json',
     }
     response = requests.request(
-        "POST",
+        'POST',
         url,
         headers=headers,
         data=composition,
