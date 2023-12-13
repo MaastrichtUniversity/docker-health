@@ -14,7 +14,7 @@ EHRBASE_USERRNAME = os.environ['EHRBASE_USERRNAME']
 EHRBASE_PASSWORD = os.environ['EHRBASE_PASSWORD']
 EHRBASE_BASE_URL = os.environ['EHRBASE_BASE_URL']
 
-PLOT_PATH = Path('data/plot')
+PLOT_PATH = Path('outputs/plot')
 
 def plot_bloodpressure_over_time(ehr_id: UUID) -> None:
     """
