@@ -76,7 +76,7 @@ if [[ $1 == "demo" ]]; then
 
     echo -e "\nRunning etl-demo"
     docker compose up -d etl-demo
-    # sleep 5
+    sleep 5
     echo -e "\nPrint logs for etl-demo"
     docker compose logs etl-demo
 
