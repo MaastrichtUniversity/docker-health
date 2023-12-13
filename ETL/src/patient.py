@@ -1,6 +1,4 @@
-"""
-Functions specific to the Patient template
-"""
+
 
 from datetime import datetime
 from typing import Optional
@@ -21,9 +19,16 @@ class Patient(BaseModel):
 
 
 def create_patient_instance(gender_code, birth_date, death_date) -> Patient:
-    """
-    check format (ISO and local terms) and create a Patient attribute
-    TO DO
+    """check format (ISO and local terms) and create a Patient attribute
+
+    Parameters
+    ----------
+    
+
+    Returns
+    -------
+    Patient
+        Instance of a Patient object
     """
     if gender_code not in ['M', 'F', 'I']:  # code for Male, Female, Intersec
         gender_code = None
@@ -45,18 +50,21 @@ def create_patient_instance(gender_code, birth_date, death_date) -> Patient:
 
 
 def parse_patient_csv(patient_df: pd.DataFrame):
-    """
-    Parse a unique patient dataframe to a patient class
+    """Parse a csv file of a unique patient
+
     Parameters
     ----------
-    patient_df
-        Pandas dataframe that contains information on the patient
+    patient_df: pd.DataFrame
+        Dataframe that contains information on the patient
 
     Returns
     -------
-    Patient
-        Instance of Patient filled with the values
-
+    gender_code: str
+        The parsed gender code 
+    birth_date: str
+        The parsed date of birth 
+    death_date: str
+        The parsed date of death (optional)
     """
     if len(patient_df) != 1:
         print("Need strictly one patient in the dataframe.")
@@ -82,8 +90,21 @@ def parse_patient_csv(patient_df: pd.DataFrame):
 
 
 def parse_patient_json(patient_json: dict):
-    """
-    TO DO
+    """Parse a unique patient json file
+
+    Parameters
+    ----------
+    patient_json: dict
+        The json file that contained information on a patient, loaded as a python dict
+
+    Returns
+    -------
+    gender_code: str
+        The parsed gender code 
+    birth_date: str
+        The parsed date of birth 
+    death_date: str
+        The parsed date of death (optional)
     """
     try:
         gender_code = patient_json['attributes']['gender']

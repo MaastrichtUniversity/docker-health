@@ -10,20 +10,19 @@ from src.composition import datetime_now
 
 
 class Measurement(BaseModel):
-    """Data model for measurement"""
+    """Data model for the Measurement class"""
     value: float = Field(..., serialization_alias='magnitude')
     units: str = Field(..., serialization_alias='units')
     time: datetime = Field(None, serialization_alias='timeValue')
 
 
 class PointsInTime(BaseModel):
-    """TODO"""
+    """Data model for the PointsInTime class"""
     measurements: list[Measurement] = Field(..., serialization_alias='pointInTime')
 
 
 class VitalSigns(BaseModel):
-    """Data model for the vital signs"""
-
+    """Data model for the VitalSigns class"""
     height: PointsInTime = Field(..., serialization_alias='bodyHeightObservation')
     weight: PointsInTime = Field(..., serialization_alias='BodyWeightObservation')
     heart_rate: PointsInTime = Field(..., serialization_alias='HeartRateObservation')
@@ -32,10 +31,21 @@ class VitalSigns(BaseModel):
     start_time: datetime = Field(default_factory=datetime_now, serialization_alias='startTime')
 
 
-def create_vital_signs_instance(all_vital_signs_measures: list, vital_signs_units: list) -> VitalSigns:
-    """
-    check format (ISO and local terms) and create a Diagnosis attribute
-    TO DO
+def create_vital_signs_instance(all_vital_signs_measures: list, vital_signs_units: dict) -> VitalSigns:
+    """check ISO format and local terms of the parsed values and create a VitalSigns attribute
+
+    Parameters
+    ----------
+    all_vital_signs_measures: list
+        List containing all the parsed values, stored as a dictionary for each measurement.
+        {variable: str, value: str, unit: str, time: str}
+    vital_signs_units: dict
+        Dictionary describing the chosen units for each measurement
+
+    Returns
+    -------
+    VitalSigns
+        Instance of the VitalSigns object
     """
     grouped_measures = {}
 
@@ -78,18 +88,19 @@ def create_vital_signs_instance(all_vital_signs_measures: list, vital_signs_unit
 
 
 def parse_vital_signs_csv(vital_signs_enc_df: pd.DataFrame):
-    """
-    Parse vital signs dataframe to a vital signs class
+    """Parse a csv file of a unique diagnosis
+
     Parameters
     ----------
-    vital_signs_df
-        Pandas dataframe that contains the values for the vital signs for a single encounter
+    vital_signs_enc_df
+        Dataframe that contains information on multiple vital signs measurements
+        within the same encounter
 
     Returns
     -------
-    VitalSigns
-        Instance of VitalSigns filled with the values
-
+    all_vital_signs_measures: list
+        List containing all the parsed values, stored as a dictionary for each measurement.
+        {variable: str, value: str, unit: str, time: str}
     """
     all_vital_signs_measures = []
     for _, vital_sign in vital_signs_enc_df.iterrows():

@@ -15,8 +15,7 @@ PLOT_PATH = Path("data/plot")
 
 
 class Diagnosis(BaseModel):
-    """Data model for the diagnosis"""
-
+    """Data model for the Diagnosis class"""
     snomed_code: int = Field(..., serialization_alias='diagnosisSNOMEDCode')
     description: str = Field(..., serialization_alias='diagnosisValue')
     start_date: datetime = Field(..., serialization_alias='dateOfDiagnosisValue')
@@ -25,9 +24,23 @@ class Diagnosis(BaseModel):
 
 
 def create_diagnosis_instance(snomed_code, description, start_date, stop_date) -> Diagnosis:
-    """
-    check format (ISO and local terms) and create a Diagnosis attribute
-    TO DO
+    """check ISO format and local terms of the parsed values and create a Diagnosis attribute
+
+    Parameters
+    ----------
+    snomed_code: str
+        The parsed SNOMED-Ct code 
+    description: str
+        The parsed description of the diagnosis
+    start_date: str
+        The parsed start date of the disorder/symptoms
+    stop_date: str
+        The parsed end date of the disorder/symptoms (optional)
+
+    Returns
+    -------
+    Diagnosis
+        Instance of the Diagnosis object
     """
     try: # Do float SNOMED-ct codes exist?
         snomed_code = int(snomed_code)
@@ -60,19 +73,24 @@ def create_diagnosis_instance(snomed_code, description, start_date, stop_date) -
 
 
 def parse_all_diagnosis_csv(diagnosis_df: pd.DataFrame):
-    """
-    TO DO
-    Parse the diagnosis dataframe (all diagnosis on a single patient)
-    to dictionary of diagnosis class
+    """Parse a csv file of a unique diagnosis
+
     Parameters
     ----------
-    all_diagnosis_df
-        Pandas dataframe that contains the detailed of each diagnosis for a given patient
+    diagnosis_df: pd.DataFrame
+        Dataframe that contains information on the diagnosis
+
 
     Returns
     -------
-    diagnosis_df
-        Instance of Diagnosis filled with the values
+    snomed_code: str
+        The parsed SNOMED-Ct code 
+    description: str
+        The parsed description of the diagnosis
+    start_date: str
+        The parsed start date of the disorder/symptoms
+    stop_date: str
+        The parsed end date of the disorder/symptoms (optional)
     """
     try:
         snomed_code = diagnosis_df['CODE']
@@ -98,8 +116,23 @@ def parse_all_diagnosis_csv(diagnosis_df: pd.DataFrame):
 
 
 def parse_all_diagnosis_json(patient_json: dict, i: int, j: int):
-    """
-    TO DO
+    """Parse a unique diagnosis json file
+
+    Parameters
+    ----------
+    patient_json: dict
+        The json file that containes information on a diagnosis, loaded as a python dict
+
+    Returns
+    -------
+    snomed_code: str
+        The parsed SNOMED-Ct code 
+    description: str
+        The parsed description of the diagnosis
+    start_date: str
+        The parsed start date of the disorder/symptoms
+    stop_date: str
+        The parsed end date of the disorder/symptoms (optional)
     """
     try:
         snomed_code = patient_json['record']['encounters'][i]['conditions'][j]['codes'][0]['code']
