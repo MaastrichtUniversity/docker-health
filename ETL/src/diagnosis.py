@@ -1,7 +1,7 @@
 """
 Functions specific to the Diagnosis template
 """
-
+import sqlite3
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
@@ -126,6 +126,55 @@ def parse_all_diagnosis_json(patient_json: dict, i: int, j: int):
         stop_date_sec = int(str(stop_date)[:-3])
         # tzinfo = str(stop_date)[-3:] # how to convert country integer code to letter code??
         stop_date = str(datetime.fromtimestamp(stop_date_sec))
+    except KeyError:
+        stop_date = None
+
+    return snomed_code, description, start_date, stop_date
+
+
+def get_all_diagnosis_sql(connection: str, patient_id: str):
+    cursor = connection.cursor()
+    try:
+        select_patient_disorders_query = f"SELECT * FROM Conditions WHERE patient = ? AND description LIKE '%disorder%'"
+        cursor.execute(select_patient_disorders_query, (patient_id,))
+        result = cursor.fetchall()
+        if result:
+            # Convert each tuple in the result to a dictionary
+            column_names = ['start_date', 'end_date', 'patient_id', 'encounter_id', 'snomed_code', 'description']
+            conditions = [dict(zip(column_names, row)) for row in result]
+            return conditions
+        else:
+            print(f"No disorders found with ID {patient_id}")
+            return None
+
+    except sqlite3.Error as e:
+        print(f"SQLite error: {e}")
+        return None
+    finally:
+        cursor.close()
+
+
+def parse_diagnosis_sql(diagnosis: dict):
+    """
+    TO DO
+    """
+    try:
+        snomed_code = diagnosis["snomed_code"]
+    except KeyError:
+        snomed_code = None
+
+    try:
+        description = diagnosis["description"]
+    except KeyError:
+        description = None
+
+    try:
+        start_date = diagnosis["start_date"]
+    except KeyError:
+        start_date = None
+
+    try:
+        stop_date = diagnosis["stop_date"]
     except KeyError:
         stop_date = None
 

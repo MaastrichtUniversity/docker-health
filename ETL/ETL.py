@@ -11,6 +11,7 @@ from pathlib import Path
 import json
 import click
 import pandas as pd
+import sqlite3
 
 from src.template import fetch_all_templates, post_template
 from src.ehr import create_ehr, fetch_all_ehr_id
@@ -23,12 +24,12 @@ from src.composition import (
 from src.patient import (
     parse_patient_csv,
     parse_patient_json,
-    create_patient_instance
+    create_patient_instance, parse_patient_sql
 )
 from src.diagnosis import (
     parse_all_diagnosis_csv,
     parse_all_diagnosis_json,
-    create_diagnosis_instance
+    create_diagnosis_instance, get_all_diagnosis_sql, parse_diagnosis_sql
 )
 from src.vitalsigns import (
     parse_vital_signs_csv,
@@ -37,8 +38,8 @@ from src.vitalsigns import (
 )
 
 # arguments:
-PATIENT_ID = '0a4a74f1-4444-6921-bf87-87fe209bec2e'
-INPUT_FORMAT = 'json'
+PATIENT_ID = 'f78a8b0a-7deb-9ee5-8138-6eec00a8a6bd'
+INPUT_FORMAT = 'sql'
 
 
 TEMPLATE_PATH = Path("data/templates")
@@ -149,6 +150,25 @@ def extract_all_json():
 
     return patient, all_disorders, all_vital_signs
 
+def extract_all_sql():
+    print("\nPatient..", end='\t')
+    connection = sqlite3.connect(SYNTHEA_PATH / "patients.sqlite")
+    patient = create_patient_instance(*parse_patient_sql(connection, PATIENT_ID))
+    connection.close()
+
+    print(f"\n\nDiagnosis...")
+    connection = sqlite3.connect(SYNTHEA_PATH / "conditions.sqlite")
+    patient_diagnosis_sql = get_all_diagnosis_sql(connection, PATIENT_ID)
+    all_diagnosis = []
+    for diagnosis in patient_diagnosis_sql:
+        all_diagnosis.append(create_diagnosis_instance(*parse_diagnosis_sql(diagnosis)))
+    connection.close()
+
+    print("\nVital Signs..", end='\t')
+
+
+
+
 def transform_load(patient, all_disorders, all_vital_signs):
     """
     TODO
@@ -234,9 +254,12 @@ def run():
 
     elif INPUT_FORMAT == 'json':
         patient, all_disorders, all_vital_signs = extract_all_json()
+    elif INPUT_FORMAT == 'sql':
+        extract_all_sql()
+
 
     print("\n\nSTEP 4 : Transform and Load compositions")
-    transform_load(patient, all_disorders, all_vital_signs)
+    # transform_load(patient, all_disorders, all_vital_signs)
 
 
     # print("\n\nSTEP 5 : Analysis insights")

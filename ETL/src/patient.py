@@ -1,7 +1,7 @@
 """
 Functions specific to the Patient template
 """
-
+import sqlite3
 from datetime import datetime
 from typing import Optional
 
@@ -101,3 +101,25 @@ def parse_patient_json(patient_json: dict):
         death_date = None
 
     return gender_code, birth_date, death_date
+
+
+def parse_patient_sql(connection: str, patient_id: str):
+    cursor = connection.cursor()
+    try:
+        select_query = f"SELECT gender, birthdate, deathdate FROM Patients WHERE id = ?"
+        cursor.execute(select_query, (patient_id,))
+        result = cursor.fetchone()
+
+        if result:
+            gender, birthdate, deathdate = result
+            return gender, birthdate, deathdate
+        else:
+            print(f"No record found with ID {patient_id}")
+            return None
+
+    except sqlite3.Error as e:
+        print(f"SQLite error: {e}")
+        return None
+
+    finally:
+        cursor.close()
