@@ -116,16 +116,16 @@ def parse_all_diagnosis_json(patient_json: dict, i: int, j: int):
         # convert sec to an actual date! Last 3 digits represents the time zone
         start_date_sec = int(str(start_date)[:-3])
         # tzinfo = int(str(start_date)[-3:]) # how to convert country integer code to letter code??
-        start_date = datetime.fromtimestamp(start_date_sec)
+        start_date = str(datetime.fromtimestamp(start_date_sec))
     except KeyError:
         start_date = None
 
     try:
         stop_date = patient_json['record']['encounters'][i]['conditions'][j]['stop']
         # convert sec to an actual date! Last 3 digits represents the time zone
-        stop_date_sec = str(stop_date)[:-3]
+        stop_date_sec = int(str(stop_date)[:-3])
         # tzinfo = str(stop_date)[-3:] # how to convert country integer code to letter code??
-        stop_date = datetime.fromtimestamp(stop_date_sec)
+        stop_date = str(datetime.fromtimestamp(stop_date_sec))
     except KeyError:
         stop_date = None
 
