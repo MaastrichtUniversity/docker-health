@@ -12,9 +12,9 @@ EHRBASE_PASSWORD = os.environ['EHRBASE_PASSWORD']
 EHRBASE_BASE_URL = os.environ['EHRBASE_BASE_URL']
 
 
-def fetch_all_templates() -> None:
+def fetch_all_templates():
     """
-    Print all template available on the server
+    Print all template available on the EHRbase server
     """
     url = f"{EHRBASE_BASE_URL}/definition/template/adl1.4"
 
@@ -39,13 +39,14 @@ def fetch_all_templates() -> None:
             print(f"create_timestamp: {template['created_timestamp']}")
 
 
-def post_template(filename: str) -> None:
+def post_template(filename: str):
     """
-    Post a template to the server. The template is provided as a filename which will be loaded
+    POST a template to the EHRbase server
+
     Parameters
     ----------
     filename: str
-        Name of the template that be loaded  from disk
+        File name of the template to be loaded
     """
     url = f'{EHRBASE_BASE_URL}/definition/template/adl1.4'
 

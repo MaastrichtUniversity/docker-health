@@ -1,4 +1,6 @@
-
+"""
+Functions specific to the Patient template
+"""
 
 from datetime import datetime
 from typing import Optional
@@ -11,7 +13,6 @@ from src.composition import datetime_now
 
 class Patient(BaseModel):
     """Data model for the Patient class"""
-
     gender_code: str = Field(..., serialization_alias='sexAssignedAtBirth')
     birth_date: datetime = Field(..., serialization_alias='dateOfBirth')
     death_date: Optional[datetime] = Field(None, serialization_alias='dateOfDeath')
@@ -19,16 +20,22 @@ class Patient(BaseModel):
 
 
 def create_patient_instance(gender_code, birth_date, death_date) -> Patient:
-    """check format (ISO and local terms) and create a Patient attribute
+    """
+    check ISO format and local terms of the parsed values and create a Patient attribute
 
     Parameters
     ----------
-    
+    gender_code: str
+        The parsed gender code
+    birth_date: str
+        The parsed date of birth
+    death_date: str
+        The parsed date of death (optional)
 
     Returns
     -------
     Patient
-        Instance of a Patient object
+        Instance of the Patient object
     """
     if gender_code not in ['M', 'F', 'I']:  # code for Male, Female, Intersec
         gender_code = None
@@ -49,8 +56,9 @@ def create_patient_instance(gender_code, birth_date, death_date) -> Patient:
     return Patient(gender_code=gender_code, birth_date=birth_date, death_date=death_date)
 
 
-def parse_patient_csv(patient_df: pd.DataFrame):
-    """Parse a csv file of a unique patient
+def parse_patient_csv(patient_df: pd.DataFrame) -> (str, str, str):
+    """
+    Parse a csv file of a unique patient
 
     Parameters
     ----------
@@ -59,11 +67,11 @@ def parse_patient_csv(patient_df: pd.DataFrame):
 
     Returns
     -------
-    gender_code: str
-        The parsed gender code 
-    birth_date: str
-        The parsed date of birth 
-    death_date: str
+    str
+        The parsed gender code
+    str
+        The parsed date of birth
+    str
         The parsed date of death (optional)
     """
     if len(patient_df) != 1:
@@ -89,21 +97,22 @@ def parse_patient_csv(patient_df: pd.DataFrame):
     return gender_code, birth_date, death_date
 
 
-def parse_patient_json(patient_json: dict):
-    """Parse a unique patient json file
+def parse_patient_json(patient_json: dict) -> (str, str, str):
+    """
+    Parse a unique patient json file
 
     Parameters
     ----------
     patient_json: dict
-        The json file that contained information on a patient, loaded as a python dict
+        The json file that contains information on a patient, loaded as a python dict
 
     Returns
     -------
-    gender_code: str
-        The parsed gender code 
-    birth_date: str
-        The parsed date of birth 
-    death_date: str
+    str
+        The parsed gender code
+    str
+        The parsed date of birth
+    str
         The parsed date of death (optional)
     """
     try:

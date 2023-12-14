@@ -16,6 +16,7 @@ EHRBASE_BASE_URL = os.environ['EHRBASE_BASE_URL']
 
 PLOT_PATH = Path('outputs/plot')
 
+
 def plot_bloodpressure_over_time(ehr_id: UUID) -> None:
     """
     Plot and save a graph of systolic and diastolic bloodpressure
@@ -25,7 +26,6 @@ def plot_bloodpressure_over_time(ehr_id: UUID) -> None:
     ----------
     ehr_id: UUID
         ehr_id of the patient for which the data will be plotted
-
     """
     url = f"{EHRBASE_BASE_URL}/query/aql"
     query = f"SELECT c/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/time as time,  c/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value/magnitude as systolic ,  c/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/data[at0003]/items[at0005]/value/magnitude as diastolic FROM EHR e CONTAINS COMPOSITION c WHERE c/archetype_details/template_id/value='Vital signs' AND e/ehr_id/value='{ehr_id}'"

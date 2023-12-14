@@ -32,7 +32,8 @@ class VitalSigns(BaseModel):
 
 
 def create_vital_signs_instance(all_vital_signs_measures: list, vital_signs_units: dict) -> VitalSigns:
-    """check ISO format and local terms of the parsed values and create a VitalSigns attribute
+    """
+    check ISO format and local terms of the parsed values and create a VitalSigns attribute
 
     Parameters
     ----------
@@ -53,6 +54,7 @@ def create_vital_signs_instance(all_vital_signs_measures: list, vital_signs_unit
         variable_name = measure['variable_name']
 
         if variable_name not in vital_signs_units.keys():
+            # Keep only defined vital signs:
             continue
         try:
             value = float(measure['value'])
@@ -64,8 +66,8 @@ def create_vital_signs_instance(all_vital_signs_measures: list, vital_signs_unit
         except TypeError:
             time = None
 
-        if vital_signs_units[variable_name] != measure['units']:
-            print("measurement units is inconsistent.", end=' ')
+        if measure['units'] != vital_signs_units[variable_name]:
+            print("Units of measurement is inconsistent.", end=' ')
             print(f"Units is in {measure['units']} but should be in {vital_signs_units[value]}.")
             units = None
             value = None
@@ -87,8 +89,9 @@ def create_vital_signs_instance(all_vital_signs_measures: list, vital_signs_unit
     return VitalSigns(height=height, weight=weight, heart_rate=heart_rate)
 
 
-def parse_vital_signs_csv(vital_signs_enc_df: pd.DataFrame):
-    """Parse a csv file of a unique diagnosis
+def parse_vital_signs_csv(vital_signs_enc_df: pd.DataFrame) -> list:
+    """
+    Parse a csv file of all vital signs measurements
 
     Parameters
     ----------
@@ -98,7 +101,7 @@ def parse_vital_signs_csv(vital_signs_enc_df: pd.DataFrame):
 
     Returns
     -------
-    all_vital_signs_measures: list
+    list
         List containing all the parsed values, stored as a dictionary for each measurement.
         {variable: str, value: str, unit: str, time: str}
     """
@@ -134,9 +137,24 @@ def parse_vital_signs_csv(vital_signs_enc_df: pd.DataFrame):
     return all_vital_signs_measures
 
 
-def parse_vital_signs_json(patient_json: dict, i: int, list_j: list):
+def parse_vital_signs_json(patient_json: dict, i: int, list_j: list) -> list:
     """
-    TODO
+    Parse a csv file of all vital signs measurements
+
+    Parameters
+    ----------
+    patient_json
+        The json file that contains information on a patient, loaded as a python dict
+    i: int
+        Increment to access a given encounter
+    list_j:
+        List of increments to access all vital_signs observations
+
+    Returns
+    -------
+    list
+        List containing all the parsed values, stored as a dictionary for each measurement.
+        {variable_name: str, value: str, unit: str, time: str}
     """
     all_vital_signs_measures = []
     for j in list_j:

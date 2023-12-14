@@ -24,12 +24,13 @@ class Diagnosis(BaseModel):
 
 
 def create_diagnosis_instance(snomed_code, description, start_date, stop_date) -> Diagnosis:
-    """check ISO format and local terms of the parsed values and create a Diagnosis attribute
+    """
+    check ISO format and local terms of the parsed values and create a Diagnosis attribute
 
     Parameters
     ----------
     snomed_code: str
-        The parsed SNOMED-Ct code 
+        The parsed SNOMED-Ct code
     description: str
         The parsed description of the diagnosis
     start_date: str
@@ -72,8 +73,9 @@ def create_diagnosis_instance(snomed_code, description, start_date, stop_date) -
     )
 
 
-def parse_all_diagnosis_csv(diagnosis_df: pd.DataFrame):
-    """Parse a csv file of a unique diagnosis
+def parse_all_diagnosis_csv(diagnosis_df: pd.DataFrame) -> (str, str, str, str):
+    """
+    Parse a csv file of a unique diagnosis
 
     Parameters
     ----------
@@ -83,13 +85,13 @@ def parse_all_diagnosis_csv(diagnosis_df: pd.DataFrame):
 
     Returns
     -------
-    snomed_code: str
-        The parsed SNOMED-Ct code 
-    description: str
+    str
+        The parsed SNOMED-Ct code
+    str
         The parsed description of the diagnosis
-    start_date: str
+    str
         The parsed start date of the disorder/symptoms
-    stop_date: str
+    str
         The parsed end date of the disorder/symptoms (optional)
     """
     try:
@@ -115,23 +117,28 @@ def parse_all_diagnosis_csv(diagnosis_df: pd.DataFrame):
     return snomed_code, description, start_date, stop_date
 
 
-def parse_all_diagnosis_json(patient_json: dict, i: int, j: int):
-    """Parse a unique diagnosis json file
+def parse_all_diagnosis_json(patient_json: dict, i: int, j: int) -> (str, str, str, str):
+    """
+    Parse a unique diagnosis json file
 
     Parameters
     ----------
     patient_json: dict
-        The json file that containes information on a diagnosis, loaded as a python dict
+        The json file that contains information on a patient, loaded as a python dict
+    i: int
+        Increment to access a given encounter
+    j: int
+        Increment to access a given condition
 
     Returns
     -------
-    snomed_code: str
-        The parsed SNOMED-Ct code 
-    description: str
+    str
+        The parsed SNOMED-Ct code
+    str
         The parsed description of the diagnosis
-    start_date: str
+    str
         The parsed start date of the disorder/symptoms
-    stop_date: str
+    str
         The parsed end date of the disorder/symptoms (optional)
     """
     try:
