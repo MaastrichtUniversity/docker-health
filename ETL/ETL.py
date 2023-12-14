@@ -18,8 +18,9 @@ from src.etl import (
 )
 
 # config:
-PATIENT_ID = '0a4a74f1-4444-6921-bf87-87fe209bec2e'
-INPUT_FORMAT = 'json'
+# PATIENT_ID = '0a4a74f1-4444-6921-bf87-87fe209bec2e' # child
+PATIENT_ID = '3b1dadde-eefe-e82a-efbc-daa3c959a0c2'
+INPUT_FORMAT = 'csv'
 TEMPLATE_PATH = Path("data/templates")
 SYNTHEA_PATH = Path(f"data/synthea/{INPUT_FORMAT}")
 COMPOSITION_OUTPUT_PATH = Path("outputs/compositions") / PATIENT_ID
@@ -28,8 +29,8 @@ VITAL_SIGNS_UNITS = {
     'Body Height': 'cm',
     'Body Weight': 'kg',
     'Heart rate': '/min',
-    # {'name': 'Systolic Blood Pressure', 'units': 'mm[Hg]'},
-    # {'name': 'Diastolic Blood Pressure', 'units': 'mm[Hg]'}
+    'Systolic Blood Pressure': 'mm[Hg]',
+    'Diastolic Blood Pressure': 'mm[Hg]'
 }
 
 

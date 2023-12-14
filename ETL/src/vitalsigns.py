@@ -5,6 +5,7 @@ Functions specific to the Vital Signs template
 from datetime import datetime
 import pandas as pd
 from pydantic import BaseModel, Field
+from typing import Optional
 
 from src.composition import datetime_now
 
@@ -23,11 +24,11 @@ class PointsInTime(BaseModel):
 
 class VitalSigns(BaseModel):
     """Data model for the VitalSigns class"""
-    height: PointsInTime = Field(..., serialization_alias='bodyHeightObservation')
-    weight: PointsInTime = Field(..., serialization_alias='BodyWeightObservation')
-    heart_rate: PointsInTime = Field(..., serialization_alias='HeartRateObservation')
-    # blood_systolic: PointsInTime = Field(..., serialization_alias='BloodPressureObservation')
-    # blood_diastolic: PointsInTime = Field(..., serialization_alias='BloodPressureObservation')
+    height: Optional[PointsInTime] = Field(..., serialization_alias='bodyHeightObservation')
+    weight: Optional[PointsInTime] = Field(..., serialization_alias='BodyWeightObservation')
+    heart_rate: Optional[PointsInTime] = Field(..., serialization_alias='HeartRateObservation')
+    blood_systolic: Optional[PointsInTime] = Field(..., serialization_alias='BloodPressureObservation')
+    blood_diastolic: Optional[PointsInTime] = Field(..., serialization_alias='BloodPressureObservation')
     start_time: datetime = Field(default_factory=datetime_now, serialization_alias='startTime')
 
 
@@ -80,13 +81,21 @@ def create_vital_signs_instance(all_vital_signs_measures: list, vital_signs_unit
             grouped_measures[variable_name] = []
         grouped_measures[variable_name].append(Measurement(value=value, units=units, time=time))
 
-    height = PointsInTime(measurements=grouped_measures['Body Height'])
-    weight = PointsInTime(measurements=grouped_measures['Body Weight'])
-    heart_rate = PointsInTime(measurements=grouped_measures['Heart rate'])
-    # 'Systolic Blood Pressure'
-    # 'Diastolic Blood Pressure'
 
-    return VitalSigns(height=height, weight=weight, heart_rate=heart_rate)
+    grouped_measures_pointintime = {}
+    for var in vital_signs_units.keys():
+        try:
+            grouped_measures_pointintime[var] = PointsInTime(measurements=grouped_measures[var])
+        except KeyError:
+            grouped_measures_pointintime[var] = None
+
+    return VitalSigns(
+        height=grouped_measures_pointintime['Body Height'],
+        weight=grouped_measures_pointintime['Body Weight'],
+        heart_rate=grouped_measures_pointintime['Heart rate'],
+        blood_systolic=grouped_measures_pointintime['Systolic Blood Pressure'],
+        blood_diastolic=grouped_measures_pointintime['Diastolic Blood Pressure']
+    )
 
 
 def parse_vital_signs_csv(vital_signs_enc_df: pd.DataFrame) -> list:

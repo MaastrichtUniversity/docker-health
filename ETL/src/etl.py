@@ -113,7 +113,7 @@ def extract_all_json(patient_id, data_path, vital_signs_units) -> (Patient, list
     patient_id: str
         External patient id
     data_path: str
-        Path to the CSV files
+        Path to the JSON patient file
     vital_signs_units: dict
         Dictionary containing as keys all the vital signs variables used,
         and as values the corresponding chosen units
