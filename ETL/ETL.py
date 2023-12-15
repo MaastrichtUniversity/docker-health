@@ -34,7 +34,7 @@ from src.diagnosis import (
 from src.vitalsigns import (
     parse_vital_signs_csv,
     parse_vital_signs_json,
-    create_vital_signs_instance
+    create_vital_signs_instance, get_all_vital_signs_sql
 )
 
 # arguments:
@@ -101,6 +101,7 @@ def extract_all_csv():
             parse_vital_signs_csv(vital_signs_enc_df),
             VITAL_SIGNS_UNITS
         ))
+
     print(f"{len(all_vital_signs)} vital signs reported for this patient.")
 
     return patient, all_disorders, all_vital_signs
@@ -162,11 +163,17 @@ def extract_all_sql():
     all_diagnosis = []
     for diagnosis in patient_diagnosis_sql:
         all_diagnosis.append(create_diagnosis_instance(*parse_diagnosis_sql(diagnosis)))
-    connection.close()
+
 
     print("\nVital Signs..", end='\t')
+    connection = sqlite3.connect(SYNTHEA_PATH / "observations.sqlite")
+    vital_signs = create_vital_signs_instance(get_all_vital_signs_sql(connection, PATIENT_ID), VITAL_SIGNS_UNITS)
+    # transform load function currently expect a list
+    all_vital_signs = []
+    all_vital_signs.append(vital_signs)
+    connection.close()
 
-
+    return patient, all_diagnosis, all_vital_signs
 
 
 def transform_load(patient, all_disorders, all_vital_signs):
@@ -201,6 +208,7 @@ def transform_load(patient, all_disorders, all_vital_signs):
         print(f"diagnosis_composition_uuid: {diagnosis_composition_uuid}")
 
     print("\nVital Signs..")
+
     for vitalsigns_i, vitalsigns in enumerate(all_vital_signs):
         vitalsigns_json_str = vitalsigns.model_dump_json(by_alias=True, indent=4)
         print(f"\nvital_signs {vitalsigns_i+1}: {vitalsigns_json_str}")
@@ -251,15 +259,14 @@ def run():
     print(f"\n\nSTEP 3 : Data extraction from {INPUT_FORMAT} input data format")
     if INPUT_FORMAT == 'csv':
         patient, all_disorders, all_vital_signs = extract_all_csv()
-
     elif INPUT_FORMAT == 'json':
         patient, all_disorders, all_vital_signs = extract_all_json()
     elif INPUT_FORMAT == 'sql':
-        extract_all_sql()
+        patient, all_disorders, all_vital_signs = extract_all_sql()
 
 
     print("\n\nSTEP 4 : Transform and Load compositions")
-    # transform_load(patient, all_disorders, all_vital_signs)
+    transform_load(patient, all_disorders, all_vital_signs)
 
 
     # print("\n\nSTEP 5 : Analysis insights")

@@ -1,7 +1,7 @@
 """
 Functions specific to the Vital Signs template
 """
-
+import sqlite3
 from datetime import datetime
 import pandas as pd
 from pydantic import BaseModel, Field
@@ -159,5 +159,56 @@ def parse_vital_signs_json(patient_json: dict, i: int, list_j: list):
             'units': units,
             'time': time
         })
-
+    print(all_vital_signs_measures)
     return all_vital_signs_measures
+
+
+def get_all_vital_signs_sql(connection: sqlite3.Connection, patient_id: str):
+    cursor = connection.cursor()
+    all_vital_signs_measures = []
+    try:
+        select_patient_vital_signs_query = f"SELECT * FROM Observations WHERE patient = ? AND category = 'vital-signs'"
+        cursor.execute(select_patient_vital_signs_query, (patient_id,))
+        result = cursor.fetchall()
+        if result:
+            # Convert each tuple in the result to a dictionary
+            column_names = ['date', 'patient', 'encounter', 'category', 'code', 'description', 'value', 'units', 'type']
+            vital_signs_unparsed = [dict(zip(column_names, row)) for row in result]
+            for vital_sign in vital_signs_unparsed:
+                try:
+                    variable = vital_sign['description']
+                except KeyError:
+                    variable = None
+
+                try:
+                    value = float(vital_sign['value'])
+                except KeyError:
+                    value = None
+
+                try:
+                    units = vital_sign['units']
+                except KeyError:
+                    units = None
+
+                try:
+                    time = datetime.fromisoformat(vital_sign['date']).isoformat()
+                except KeyError:
+                    time = None
+
+                all_vital_signs_measures.append({
+                    'variable_name': variable,
+                    'value': value,
+                    'units': units,
+                    'time': time,
+                })
+
+            return all_vital_signs_measures
+        else:
+            print(f"No vital signs found with ID {patient_id}")
+            return None
+
+    except sqlite3.Error as e:
+        print(f"SQLite error: {e}")
+        return None
+    finally:
+        cursor.close()

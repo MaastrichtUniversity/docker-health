@@ -132,7 +132,7 @@ def parse_all_diagnosis_json(patient_json: dict, i: int, j: int):
     return snomed_code, description, start_date, stop_date
 
 
-def get_all_diagnosis_sql(connection: str, patient_id: str):
+def get_all_diagnosis_sql(connection: sqlite3.Connection, patient_id: str):
     cursor = connection.cursor()
     try:
         select_patient_disorders_query = f"SELECT * FROM Conditions WHERE patient = ? AND description LIKE '%disorder%'"

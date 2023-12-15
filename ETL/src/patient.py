@@ -103,7 +103,7 @@ def parse_patient_json(patient_json: dict):
     return gender_code, birth_date, death_date
 
 
-def parse_patient_sql(connection: str, patient_id: str):
+def parse_patient_sql(connection: sqlite3.Connection, patient_id: str):
     cursor = connection.cursor()
     try:
         select_query = f"SELECT gender, birthdate, deathdate FROM Patients WHERE id = ?"
