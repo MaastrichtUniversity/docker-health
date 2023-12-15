@@ -5,6 +5,7 @@ Functions specific to the Diagnosis template
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
+from xml.etree.ElementTree import Element
 
 import pandas as pd
 from pydantic import BaseModel, Field
@@ -167,6 +168,65 @@ def parse_all_diagnosis_json(patient_json: dict, i: int, j: int) -> (str, str, s
         # tzinfo = str(stop_date)[-3:] # how to convert country integer code to letter code??
         stop_date = str(datetime.fromtimestamp(stop_date_sec))
     except KeyError:
+        stop_date = None
+    except ValueError:
+        stop_date = None
+    return snomed_code, description, start_date, stop_date
+
+
+def parse_all_diagnosis_ccda(entry_xml: Element) -> (str, str, str, str):
+    """
+    Parse a unique diagnosis json file
+
+    Parameters
+    ----------
+    entry_xml: Element
+        Part of the xml tree containing the diagnosis
+
+    Returns
+    -------
+    str
+        The parsed SNOMED-Ct code
+    str
+        The parsed description of the diagnosis
+    str
+        The parsed start date of the disorder/symptoms
+    str
+        The parsed end date of the disorder/symptoms (optional)
+    """
+
+    try:
+        snomed_code = entry_xml.find("./{urn:hl7-org:v3}act/{urn:hl7-org:v3}entryRelationship/{urn:hl7-org:v3}observation/{urn:hl7-org:v3}code").attrib[
+            "code"
+        ]
+    except KeyError:
+        snomed_code = None
+    except AttributeError:
+        snomed_code = None
+
+    try:
+        description = entry_xml.find("./{urn:hl7-org:v3}act/{urn:hl7-org:v3}entryRelationship/{urn:hl7-org:v3}observation/{urn:hl7-org:v3}value").attrib['displayName']
+    except KeyError:
+        description = None
+    except AttributeError:
+        snomed_code = None
+
+    try:
+        start_date = entry_xml.find("./{urn:hl7-org:v3}act/{urn:hl7-org:v3}entryRelationship/{urn:hl7-org:v3}observation/{urn:hl7-org:v3}effectiveTime/{urn:hl7-org:v3}low").attrib['value']
+        start_date = datetime.strptime(start_date, '%Y%m%d%H%M%S')
+        start_date = datetime.isoformat(start_date)
+    except KeyError:
+        start_date = None
+    except AttributeError:
+        start_date = None
+
+    try:
+        stop_date = entry_xml.find("./{urn:hl7-org:v3}act/{urn:hl7-org:v3}entryRelationship/{urn:hl7-org:v3}observation/{urn:hl7-org:v3}effectiveTime/{urn:hl7-org:v3}high").attrib['value']
+        stop_date = datetime.strptime(stop_date, '%Y%m%d%H%M%S')
+        stop_date = datetime.isoformat(stop_date)
+    except KeyError:
+        stop_date = None
+    except AttributeError:
         stop_date = None
 
     return snomed_code, description, start_date, stop_date

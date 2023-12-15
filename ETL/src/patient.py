@@ -4,6 +4,7 @@ Functions specific to the Patient template
 
 from datetime import datetime
 from typing import Optional
+from xml.etree.ElementTree import Element
 
 import pandas as pd
 from pydantic import BaseModel, Field
@@ -128,6 +129,50 @@ def parse_patient_json(patient_json: dict) -> (str, str, str):
     try:
         death_date = patient_json['attributes']['deathdate']
     except KeyError:
+        death_date = None
+
+    return gender_code, birth_date, death_date
+
+
+def parse_patient_ccda(patient_xml: Element) -> (str, str, str):
+    """
+    Parse a unique patient cdda xml file
+
+    Parameters
+    ----------
+    patient_xml: Element
+        root element of the patient xml.etree.ElementTree parsed file
+
+    Returns
+    -------
+    str
+        The parsed gender code
+    str
+        The parsed date of birth
+    str
+        The parsed date of death (optional)
+    """
+
+    try:
+        gender_code = patient_xml.find(".//{urn:hl7-org:v3}patient/{urn:hl7-org:v3}administrativeGenderCode").attrib['code']
+    except KeyError:
+        gender_code = None
+
+    try:
+        birth_date = patient_xml.find(".//{urn:hl7-org:v3}patient/{urn:hl7-org:v3}birthTime").attrib['value']
+        birth_date = datetime.strptime(birth_date, '%Y%m%d%H%M%S')
+        birth_date = datetime.isoformat(birth_date)
+    except KeyError:
+        birth_date = None
+
+    # No real date of death, this is more a date of death certificate
+    try:
+         death_date = patient_xml.find(".//{urn:hl7-org:v3}code[@code='69409-1'].../{urn:hl7-org:v3}effectiveTime/{urn:hl7-org:v3}low").attrib['value']
+         death_date = datetime.strptime(death_date, '%Y%m%d%H%M%S')
+         death_date = datetime.isoformat(death_date)
+    except KeyError:
+        death_date = None
+    except AttributeError:
         death_date = None
 
     return gender_code, birth_date, death_date

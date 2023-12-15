@@ -199,3 +199,37 @@ def parse_vital_signs_json(patient_json: dict, i: int, list_j: list) -> list:
         })
 
     return all_vital_signs_measures
+
+
+def parse_vital_signs_ccda(observations_on_specific_date: list) -> list:
+    """
+    Parse a csv file of all vital signs measurements
+
+    Parameters
+    ----------
+    observations_on_specific_date: list of Elements
+
+    Returns
+    -------
+    list
+        List containing all the parsed values, stored as a dictionary for each measurement.
+        {variable_name: str, value: str, unit: str, time: str}
+    """
+    all_vital_signs_measures = []
+
+    for observation in observations_on_specific_date:
+        variable = observation.find(".//{urn:hl7-org:v3}code").attrib['displayName']
+        value = observation.find(".//{urn:hl7-org:v3}value").attrib['value']
+        units = observation.find(".//{urn:hl7-org:v3}value").attrib['unit']
+        time = observation.find(".//{urn:hl7-org:v3}effectiveTime").attrib['value']
+        time = datetime.strptime(time, '%Y%m%d%H%M%S')
+        time = datetime.isoformat(time)
+
+        all_vital_signs_measures.append({
+            'variable_name': variable,
+            'value': value,
+            'units': units,
+            'time': time
+        })
+
+    return all_vital_signs_measures

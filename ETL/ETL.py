@@ -14,13 +14,13 @@ from src.ehr import create_ehr, fetch_all_ehr_id
 from src.etl import (
     extract_all_csv,
     extract_all_json,
-    transform_load
+    transform_load, extract_all_ccda
 )
 
 # config:
 # PATIENT_ID = '0a4a74f1-4444-6921-bf87-87fe209bec2e' # child
 PATIENT_ID = '3b1dadde-eefe-e82a-efbc-daa3c959a0c2'
-INPUT_FORMAT = 'csv'
+INPUT_FORMAT = 'ccda'
 TEMPLATE_PATH = Path("data/templates")
 SYNTHEA_PATH = Path(f"data/synthea/{INPUT_FORMAT}")
 COMPOSITION_OUTPUT_PATH = Path("outputs/compositions") / PATIENT_ID
@@ -72,14 +72,18 @@ def run():
             data_path=SYNTHEA_PATH,
             vital_signs_units=VITAL_SIGNS_UNITS
         )
-
     elif INPUT_FORMAT == 'json':
         patient, all_disorders, all_vital_signs = extract_all_json(
             patient_id=PATIENT_ID,
             data_path=SYNTHEA_PATH,
             vital_signs_units=VITAL_SIGNS_UNITS
         )
-
+    elif INPUT_FORMAT == 'ccda':
+        patient, all_disorders, all_vital_signs = extract_all_ccda(
+            patient_id=PATIENT_ID,
+            data_path=SYNTHEA_PATH,
+            vital_signs_units=VITAL_SIGNS_UNITS
+        )
 
     print("\n\nSTEP 4 : Transform and Load compositions")
     transform_load(
