@@ -22,13 +22,18 @@ class PointsInTime(BaseModel):
     measurements: list[Measurement] = Field(..., serialization_alias='pointInTime')
 
 
+class PointsInTime(BaseModel):
+    """Data model for the PointsInTime class"""
+    measurements: list[Measurement] = Field(..., serialization_alias='pointInTime')
+
+
 class VitalSigns(BaseModel):
     """Data model for the VitalSigns class"""
-    height: Optional[PointsInTime] = Field(..., serialization_alias='bodyHeightObservation')
-    weight: Optional[PointsInTime] = Field(..., serialization_alias='BodyWeightObservation')
-    heart_rate: Optional[PointsInTime] = Field(..., serialization_alias='HeartRateObservation')
-    blood_systolic: Optional[PointsInTime] = Field(..., serialization_alias='BloodPressureObservation')
-    blood_diastolic: Optional[PointsInTime] = Field(..., serialization_alias='BloodPressureObservation')
+    height: Optional[PointsInTime] = Field(None, serialization_alias='bodyHeightObservation')
+    weight: Optional[PointsInTime] = Field(None, serialization_alias='bodyWeightObservation')
+    heart_rate: Optional[PointsInTime] = Field(None, serialization_alias='heartRateObservation')
+    blood_systolic: Optional[PointsInTime] = Field(None, serialization_alias='bloodPressureObservation')
+    blood_diastolic: Optional[PointsInTime] = Field(None, serialization_alias='bloodPressureObservation')
     start_time: datetime = Field(default_factory=datetime_now, serialization_alias='startTime')
 
 
