@@ -23,20 +23,20 @@ public class BodyWeightPointInTimePointEvent implements PointEventEntity {
    * Description: The weight of the individual.
    */
   @Path("/data[at0001]/items[at0004]/value|magnitude")
-  private Double weightMagnitude;
+  private Double bodyWeightMagnitude;
 
   /**
    * Path: Vital Signs/Body weight/Point in time/Weight
    * Description: The weight of the individual.
    */
   @Path("/data[at0001]/items[at0004]/value|units")
-  private String weightUnits;
+  private String bodyWeightUnits;
 
   /**
    * Path: Vital Signs/Body weight/history/Point in time/Simple/Weight/null_flavour
    */
   @Path("/data[at0001]/items[at0004]/null_flavour|defining_code")
-  private NullFlavour weightNullFlavourDefiningCode;
+  private NullFlavour bodyWeightNullFlavourDefiningCode;
 
   /**
    * Path: Vital Signs/Body weight/Point in time/state structure
@@ -57,28 +57,28 @@ public class BodyWeightPointInTimePointEvent implements PointEventEntity {
   @Path("/time|value")
   private TemporalAccessor timeValue;
 
-  public void setWeightMagnitude(Double weightMagnitude) {
-     this.weightMagnitude = weightMagnitude;
+  public void setBodyWeightMagnitude(Double bodyWeightMagnitude) {
+     this.bodyWeightMagnitude = bodyWeightMagnitude;
   }
 
-  public Double getWeightMagnitude() {
-     return this.weightMagnitude ;
+  public Double getBodyWeightMagnitude() {
+     return this.bodyWeightMagnitude ;
   }
 
-  public void setWeightUnits(String weightUnits) {
-     this.weightUnits = weightUnits;
+  public void setBodyWeightUnits(String bodyWeightUnits) {
+     this.bodyWeightUnits = bodyWeightUnits;
   }
 
-  public String getWeightUnits() {
-     return this.weightUnits ;
+  public String getBodyWeightUnits() {
+     return this.bodyWeightUnits ;
   }
 
-  public void setWeightNullFlavourDefiningCode(NullFlavour weightNullFlavourDefiningCode) {
-     this.weightNullFlavourDefiningCode = weightNullFlavourDefiningCode;
+  public void setBodyWeightNullFlavourDefiningCode(NullFlavour bodyWeightNullFlavourDefiningCode) {
+     this.bodyWeightNullFlavourDefiningCode = bodyWeightNullFlavourDefiningCode;
   }
 
-  public NullFlavour getWeightNullFlavourDefiningCode() {
-     return this.weightNullFlavourDefiningCode ;
+  public NullFlavour getBodyWeightNullFlavourDefiningCode() {
+     return this.bodyWeightNullFlavourDefiningCode ;
   }
 
   public void setStateStructure(ItemTree stateStructure) {

@@ -5,6 +5,8 @@ import com.example.restservice.compositions.vitalsignscomposition.definition.Bod
 import com.example.restservice.compositions.vitalsignscomposition.definition.BodyHeightPointInTimePointEvent;
 import com.example.restservice.compositions.vitalsignscomposition.definition.BodyWeightObservation;
 import com.example.restservice.compositions.vitalsignscomposition.definition.BodyWeightPointInTimePointEvent;
+import com.example.restservice.compositions.vitalsignscomposition.definition.HeartRateObservation;
+import com.example.restservice.compositions.vitalsignscomposition.definition.HeartRatePointInTimePointEvent;
 import com.example.restservice.dto.vitalsigns.VitalSignsDTO;
 import com.example.restservice.dto.vitalsigns.definitions.PointInTimePointEventDto;
 import com.nedap.archie.rm.generic.PartyIdentified;
@@ -47,6 +49,9 @@ public class TransformVitalSigns implements ITransformDto {
         }
         if (nonNull(this.vitalSignsDTO.getBodyWeightObservation())) {
             composition.setBodyWeight(parseBodyWeight());
+        }
+        if (nonNull(this.vitalSignsDTO.getHeartRateObservation())) {
+            composition.setHeartRate(parseHeartRate());
         }
 
         return composition;
@@ -97,7 +102,7 @@ public class TransformVitalSigns implements ITransformDto {
         return bodyWeightObservation;
     }
     public List<BodyWeightPointInTimePointEvent> parseBodyWeightPointInTimeEvents(){
-        List<BodyWeightPointInTimePointEvent> bodyHeightPointInTimePointEvents = new ArrayList<>();
+        List<BodyWeightPointInTimePointEvent> bodyWeightPointInTimePointEvents = new ArrayList<>();
         for (PointInTimePointEventDto pointEvent : this.vitalSignsDTO.getBodyWeightObservation().getPointInTime()) {
             BodyWeightPointInTimePointEvent bodyWeightPointInTimePointEvent = new BodyWeightPointInTimePointEvent();
 
@@ -107,14 +112,47 @@ public class TransformVitalSigns implements ITransformDto {
 
             this.originTimeValue = time;
 
-            bodyWeightPointInTimePointEvent.setWeightMagnitude(magnitude);
-            bodyWeightPointInTimePointEvent.setWeightUnits(unit);
+            bodyWeightPointInTimePointEvent.setBodyWeightMagnitude(magnitude);
+            bodyWeightPointInTimePointEvent.setBodyWeightUnits(unit);
             bodyWeightPointInTimePointEvent.setTimeValue(formatToCorrectTime(time));
 
-            bodyHeightPointInTimePointEvents.add(bodyWeightPointInTimePointEvent);
+            bodyWeightPointInTimePointEvents.add(bodyWeightPointInTimePointEvent);
         }
 
-        return bodyHeightPointInTimePointEvents;
+        return bodyWeightPointInTimePointEvents;
+    }
+
+    public HeartRateObservation parseHeartRate() {
+        HeartRateObservation heartRateObservation = new HeartRateObservation();
+
+        heartRateObservation.setLanguage(Language.EN);
+        heartRateObservation.setSubject(new PartySelf());
+        heartRateObservation.setPointInTime(parseHeartRatePointInTimeEvents());
+        // TODO Check why this timestamp is needed
+        heartRateObservation.setOriginValue(formatToCorrectTime(this.originTimeValue));
+
+        return heartRateObservation;
+    }
+
+    public List<HeartRatePointInTimePointEvent> parseHeartRatePointInTimeEvents(){
+        List<HeartRatePointInTimePointEvent> heartRatePointInTimePointEvents = new ArrayList<>();
+        for (PointInTimePointEventDto pointEvent : this.vitalSignsDTO.getHeartRateObservation().getPointInTime()) {
+            HeartRatePointInTimePointEvent heartRatePointInTimePointEvent = new HeartRatePointInTimePointEvent();
+
+            Double magnitude = pointEvent.getMagnitude();
+            String unit = pointEvent.getUnits();
+            String time = pointEvent.getTimeValue();
+
+            this.originTimeValue = time;
+
+            heartRatePointInTimePointEvent.setHeartRateMagnitude(magnitude);
+            heartRatePointInTimePointEvent.setHeartRateUnits(unit);
+            heartRatePointInTimePointEvent.setTimeValue(formatToCorrectTime(time));
+
+            heartRatePointInTimePointEvents.add(heartRatePointInTimePointEvent);
+        }
+
+        return heartRatePointInTimePointEvents;
     }
 
     @Override
