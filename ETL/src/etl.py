@@ -20,7 +20,7 @@ from src.patient import (
     Patient,
     parse_patient_csv,
     parse_patient_json,
-    create_patient_instance
+    create_patient_instance, parse_patient_ccda
 )
 from src.diagnosis import (
     Diagnosis,
@@ -33,7 +33,7 @@ from src.vitalsigns import (
     VitalSigns,
     parse_vital_signs_csv,
     parse_vital_signs_json,
-    create_vital_signs_instance
+    create_vital_signs_instance, parse_vital_signs_ccda
 )
 
 
