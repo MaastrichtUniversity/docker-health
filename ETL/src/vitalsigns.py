@@ -32,8 +32,8 @@ class VitalSigns(BaseModel):
     height: Optional[PointsInTime] = Field(None, serialization_alias='bodyHeightObservation')
     weight: Optional[PointsInTime] = Field(None, serialization_alias='bodyWeightObservation')
     heart_rate: Optional[PointsInTime] = Field(None, serialization_alias='heartRateObservation')
-    blood_systolic: Optional[PointsInTime] = Field(None, serialization_alias='bloodPressureObservation')
-    blood_diastolic: Optional[PointsInTime] = Field(None, serialization_alias='bloodPressureObservation')
+    blood_systolic: Optional[PointsInTime] = Field(None, serialization_alias='bloodPressureSystolicObservation')
+    blood_diastolic: Optional[PointsInTime] = Field(None, serialization_alias='bloodPressureDiastolicObservation')
     start_time: datetime = Field(default_factory=datetime_now, serialization_alias='startTime')
 
 

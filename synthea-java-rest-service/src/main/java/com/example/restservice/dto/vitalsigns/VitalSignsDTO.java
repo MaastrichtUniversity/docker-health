@@ -13,12 +13,17 @@ public class VitalSignsDTO {
     private ObservationDto bodyHeightObservation;
     private ObservationDto bodyWeightObservation;
     private ObservationDto heartRateObservation;
+    private ObservationDto bloodPressureSystolicObservation;
+    private ObservationDto bloodPressureDiastolicObservation;
 
-    public VitalSignsDTO(String startTime, ObservationDto bodyHeightObservation, ObservationDto bodyWeightObservation, ObservationDto heartRateObservation) {
+
+    public VitalSignsDTO(String startTime, ObservationDto bodyHeightObservation, ObservationDto bodyWeightObservation, ObservationDto heartRateObservation, ObservationDto bloodPressureSystolicObservation, ObservationDto bloodPressureDiastolicObservation) {
         this.startTime = startTime;
         this.bodyHeightObservation = bodyHeightObservation;
         this.bodyWeightObservation = bodyWeightObservation;
         this.heartRateObservation = heartRateObservation;
+        this.bloodPressureSystolicObservation = bloodPressureSystolicObservation;
+        this.bloodPressureDiastolicObservation = bloodPressureDiastolicObservation;
     }
 
     public String getStartTime() {
@@ -32,4 +37,6 @@ public class VitalSignsDTO {
         return bodyWeightObservation;
     }
     public ObservationDto getHeartRateObservation() { return heartRateObservation; }
+    public ObservationDto getBloodPressureSystolicObservation() { return bloodPressureSystolicObservation; }
+    public ObservationDto getBloodPressureDiastolicObservation() { return bloodPressureDiastolicObservation; }
 }
