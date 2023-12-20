@@ -242,7 +242,7 @@ def parse_vital_signs_ccda(observations_on_specific_date: list) -> list:
     return all_vital_signs_measures
 
 
-def parse_all_vital_signs_sql(connection: sqlite3.Connection, patient_id: str) -> list:
+def get_all_vital_signs_sql(connection: sqlite3.Connection, patient_id: str) -> pd.DataFrame:
     """
     Parse a sql file of all vital signs measurements
 
@@ -254,13 +254,12 @@ def parse_all_vital_signs_sql(connection: sqlite3.Connection, patient_id: str) -
         External patient id
 
     Returns
-    -------
-    list
-        List containing all the parsed values, stored as a dictionary for each measurement.
-        {variable_name: str, value: str, unit: str, time: str}
+    --------
+    pd.DataFrame
+        Pandas dataframe containing all vital signs (for all encounters)
+
     """
     cursor = connection.cursor()
-    all_vital_signs_measures = []
     try:
         select_patient_vital_signs_query = "SELECT * FROM Observations WHERE patient = ? AND category = 'vital-signs'"
         cursor.execute(select_patient_vital_signs_query, (patient_id,))
@@ -268,39 +267,12 @@ def parse_all_vital_signs_sql(connection: sqlite3.Connection, patient_id: str) -
         if result:
             # Convert each tuple in the result to a dictionary
             column_names = [
-                'date', 'patient', 'encounter', 'category',
-                'code', 'description', 'value', 'units', 'type'
+                'date', 'patient_id', 'encounter_id', 'category',
+                'code', 'variable_name', 'value', 'units', 'type'
             ]
-            vital_signs_unparsed = [dict(zip(column_names, row)) for row in result]
-            for vital_sign in vital_signs_unparsed:
-                try:
-                    variable = vital_sign['description']
-                except KeyError:
-                    variable = None
+            vital_signs_unparsed = pd.DataFrame([dict(zip(column_names, row)) for row in result])
+            return vital_signs_unparsed
 
-                try:
-                    value = float(vital_sign['value'])
-                except KeyError:
-                    value = None
-
-                try:
-                    units = vital_sign['units']
-                except KeyError:
-                    units = None
-
-                try:
-                    time = datetime.fromisoformat(vital_sign['date']).isoformat()
-                except KeyError:
-                    time = None
-
-                all_vital_signs_measures.append({
-                    'variable_name': variable,
-                    'value': value,
-                    'units': units,
-                    'time': time,
-                })
-
-            return all_vital_signs_measures
         print(f"No vital signs found with ID {patient_id}")
         return None
 
@@ -309,3 +281,49 @@ def parse_all_vital_signs_sql(connection: sqlite3.Connection, patient_id: str) -
         return None
     finally:
         cursor.close()
+
+def parse_all_vital_signs_sql(vital_signs_enc_df: pd.DataFrame) -> list:
+    """
+    Parse a sql file of all vital signs measurements
+
+    Parameters
+    ----------
+    vital_signs_enc_df: pd.DataFrame
+        Pandas dataframe containing all vital signs for a specific encounter
+
+    Returns
+    -------
+    list
+        List containing all the parsed values, stored as a dictionary for each measurement.
+        {variable_name: str, value: str, unit: str, time: str}
+    """
+    all_vital_signs_measures = []
+    for _, vital_sign in vital_signs_enc_df.iterrows():
+        try:
+            variable = vital_sign['variable_name']
+        except KeyError:
+            variable = None
+
+        try:
+            value = vital_sign['value']
+        except KeyError:
+            value = None
+
+        try:
+            units = vital_sign['units']
+        except KeyError:
+            units = None
+
+        try:
+            time = vital_sign['date']
+        except KeyError:
+            time = None
+
+        all_vital_signs_measures.append({
+            'variable_name': variable,
+            'value': value,
+            'units': units,
+            'time': time
+        })
+
+    return all_vital_signs_measures

@@ -9,6 +9,7 @@ import re
 import json
 import sqlite3
 import xml.etree.ElementTree as ET
+import numpy as np
 import pandas as pd
 
 from src.composition import (
@@ -38,7 +39,7 @@ from src.vitalsigns import (
     parse_vital_signs_csv,
     parse_vital_signs_json,
     parse_vital_signs_ccda,
-    parse_all_vital_signs_sql,
+    get_all_vital_signs_sql, parse_all_vital_signs_sql,
     create_vital_signs_instance
 )
 
@@ -285,14 +286,18 @@ def extract_all_sql(patient_id, data_path, vital_signs_units) -> (Patient, list[
     all_disorders = []
     for diagnosis in patient_diagnosis_sql:
         all_disorders.append(create_diagnosis_instance(*parse_diagnosis_sql(diagnosis)))
+    connection.close()
     print(f"{len(all_disorders)} disorders reported for this patient.")
 
     print("\nVital Signs..", end='\t')
     connection = sqlite3.connect(data_path / "observations.sqlite")
-    vital_signs = create_vital_signs_instance(parse_all_vital_signs_sql(connection, patient_id), vital_signs_units)
-    # transform load function currently expect a list
+    vital_signs_unparsed = get_all_vital_signs_sql(connection, patient_id)
+    encounter_ids = np.unique(vital_signs_unparsed['encounter_id'])
     all_vital_signs = []
-    all_vital_signs.append(vital_signs)
+    for encounter_id in encounter_ids:
+        vital_signs_enc_df = vital_signs_unparsed[vital_signs_unparsed['encounter_id'] == encounter_id]
+        vital_signs = create_vital_signs_instance(parse_all_vital_signs_sql(vital_signs_enc_df), vital_signs_units)
+        all_vital_signs.append(vital_signs)
     connection.close()
     print(f"{len(all_vital_signs)} vital signs reported for this patient.")
 
