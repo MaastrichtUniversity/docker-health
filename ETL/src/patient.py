@@ -1,7 +1,7 @@
 """
 Functions specific to the Patient template
 """
-
+import sqlite3
 from datetime import datetime
 from typing import Optional
 from xml.etree.ElementTree import Element
@@ -59,7 +59,7 @@ def create_patient_instance(gender_code, birth_date, death_date) -> Patient:
 
 def parse_patient_csv(patient_df: pd.DataFrame) -> (str, str, str):
     """
-    Parse a csv file of a unique patient
+    Parse a csv file for a unique patient
 
     Parameters
     ----------
@@ -152,7 +152,6 @@ def parse_patient_ccda(patient_xml: Element) -> (str, str, str):
     str
         The parsed date of death (optional)
     """
-
     try:
         gender_code = patient_xml.find(".//{urn:hl7-org:v3}patient/{urn:hl7-org:v3}administrativeGenderCode").attrib['code']
     except KeyError:
@@ -167,12 +166,52 @@ def parse_patient_ccda(patient_xml: Element) -> (str, str, str):
 
     # No real date of death, this is more a date of death certificate
     try:
-         death_date = patient_xml.find(".//{urn:hl7-org:v3}code[@code='69409-1'].../{urn:hl7-org:v3}effectiveTime/{urn:hl7-org:v3}low").attrib['value']
-         death_date = datetime.strptime(death_date, '%Y%m%d%H%M%S')
-         death_date = datetime.isoformat(death_date)
+        death_date = patient_xml.find(".//{urn:hl7-org:v3}code[@code='69409-1'].../{urn:hl7-org:v3}effectiveTime/{urn:hl7-org:v3}low").attrib['value']
+        death_date = datetime.strptime(death_date, '%Y%m%d%H%M%S')
+        death_date = datetime.isoformat(death_date)
     except KeyError:
         death_date = None
     except AttributeError:
         death_date = None
 
     return gender_code, birth_date, death_date
+
+
+def parse_patient_sql(connection: sqlite3.Connection, patient_id: str) -> (str, str, str):
+    """
+    Parse a sql file for a unique patient
+
+    Parameters
+    ----------
+    connection: sqlite3.connect
+        Connection to sql data containing all patients
+    patient_id: str
+        External patient id
+
+    Returns
+    -------
+    str
+        The parsed gender code
+    str
+        The parsed date of birth
+    str
+        The parsed date of death (optional)
+    """
+    cursor = connection.cursor()
+    try:
+        select_query = "SELECT gender, birthdate, deathdate FROM Patients WHERE id = ?"
+        cursor.execute(select_query, (patient_id,))
+        result = cursor.fetchone()
+
+        if result:
+            gender, birthdate, deathdate = result
+            return gender, birthdate, deathdate
+        print(f"No record found with ID {patient_id}")
+        return None
+
+    except sqlite3.Error as error:
+        print(f"SQLite error: {error}")
+        return None
+
+    finally:
+        cursor.close()

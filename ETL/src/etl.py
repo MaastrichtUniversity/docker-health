@@ -7,8 +7,9 @@ Load each composition to the EHRbase server.
 
 import re
 import json
-import pandas as pd
+import sqlite3
 import xml.etree.ElementTree as ET
+import pandas as pd
 
 from src.composition import (
     transform_composition,
@@ -20,20 +21,25 @@ from src.patient import (
     Patient,
     parse_patient_csv,
     parse_patient_json,
-    create_patient_instance, parse_patient_ccda
+    parse_patient_ccda,
+    parse_patient_sql,
+    create_patient_instance
 )
 from src.diagnosis import (
     Diagnosis,
     parse_all_diagnosis_csv,
     parse_all_diagnosis_json,
-    create_diagnosis_instance,
     parse_all_diagnosis_ccda,
+    get_all_diagnosis_sql, parse_diagnosis_sql,
+    create_diagnosis_instance
 )
 from src.vitalsigns import (
     VitalSigns,
     parse_vital_signs_csv,
     parse_vital_signs_json,
-    create_vital_signs_instance, parse_vital_signs_ccda
+    parse_vital_signs_ccda,
+    parse_all_vital_signs_sql,
+    create_vital_signs_instance
 )
 
 
@@ -173,7 +179,7 @@ def extract_all_json(patient_id, data_path, vital_signs_units) -> (Patient, list
 
 def extract_all_ccda(patient_id, data_path, vital_signs_units) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
-    Extract the values on a patient, its diagnosis and vital signs from a single CDDA (HL7 CDA) patient file
+    Extract the values on a patient, its diagnosis and vital signs from the CCDA XML files
 
     Parameters
     ----------
@@ -239,6 +245,55 @@ def extract_all_ccda(patient_id, data_path, vital_signs_units) -> (Patient, list
                     vital_signs_units
                 ))
 
+    print(f"{len(all_vital_signs)} vital signs reported for this patient.")
+
+    return patient, all_disorders, all_vital_signs
+
+
+def extract_all_sql(patient_id, data_path, vital_signs_units) -> (Patient, list[Diagnosis], list[VitalSigns]):
+    """
+    Extract the values on a patient, its diagnosis and vital signs from the SQL files
+
+    Parameters
+    ----------
+    patient_id: str
+        External patient id
+    data_path: str
+        Path to the SQL files
+    vital_signs_units: dict
+        Dictionary containing as keys all the vital signs variables used,
+        and as values the corresponding chosen units
+
+    Returns
+    -------
+    Patient
+        Instance of the Patient class
+    list[Diagnosis]
+        list of instances of the Diagnosis class
+    list[VitalSigns]
+        list of instances of the VitalSigns class
+    """
+    print("\nPatient..", end='\t')
+    connection = sqlite3.connect(data_path / "patients.sqlite")
+    patient = create_patient_instance(*parse_patient_sql(connection, patient_id))
+    connection.close()
+    print(f"information extracted for patient_id: {patient_id}")
+
+    print("\nDiagnosis...", end='\t')
+    connection = sqlite3.connect(data_path / "conditions.sqlite")
+    patient_diagnosis_sql = get_all_diagnosis_sql(connection, patient_id)
+    all_disorders = []
+    for diagnosis in patient_diagnosis_sql:
+        all_disorders.append(create_diagnosis_instance(*parse_diagnosis_sql(diagnosis)))
+    print(f"{len(all_disorders)} disorders reported for this patient.")
+
+    print("\nVital Signs..", end='\t')
+    connection = sqlite3.connect(data_path / "observations.sqlite")
+    vital_signs = create_vital_signs_instance(parse_all_vital_signs_sql(connection, patient_id), vital_signs_units)
+    # transform load function currently expect a list
+    all_vital_signs = []
+    all_vital_signs.append(vital_signs)
+    connection.close()
     print(f"{len(all_vital_signs)} vital signs reported for this patient.")
 
     return patient, all_disorders, all_vital_signs

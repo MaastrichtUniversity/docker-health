@@ -1,7 +1,7 @@
 """
 Functions specific to the Diagnosis template
 """
-
+import sqlite3
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
@@ -82,7 +82,6 @@ def parse_all_diagnosis_csv(diagnosis_df: pd.DataFrame) -> (str, str, str, str):
     ----------
     diagnosis_df: pd.DataFrame
         Dataframe that contains information on the diagnosis
-
 
     Returns
     -------
@@ -176,7 +175,7 @@ def parse_all_diagnosis_json(patient_json: dict, i: int, j: int) -> (str, str, s
 
 def parse_all_diagnosis_ccda(entry_xml: Element) -> (str, str, str, str):
     """
-    Parse a unique diagnosis json file
+    Parse a unique diagnosis ccda xml file
 
     Parameters
     ----------
@@ -227,6 +226,88 @@ def parse_all_diagnosis_ccda(entry_xml: Element) -> (str, str, str, str):
     except KeyError:
         stop_date = None
     except AttributeError:
+        stop_date = None
+
+    return snomed_code, description, start_date, stop_date
+
+
+def get_all_diagnosis_sql(connection: sqlite3.Connection, patient_id: str) -> list[dict]:
+    """
+    from the sql file, create a dictionary for each encountered disorder
+
+    Parameters
+    ----------
+    conection:
+        Connection to sql data containing all diagnosis
+    patient_id: str
+        External patient id
+
+    Returns
+    -------
+    list[dict]
+        List of dictionaries containing information for each disorder
+    """
+    cursor = connection.cursor()
+    try:
+        select_patient_disorders_query = "SELECT * FROM Conditions WHERE patient = ? AND description LIKE '%disorder%'"
+        cursor.execute(select_patient_disorders_query, (patient_id,))
+        result = cursor.fetchall()
+        if result:
+            # Convert each tuple in the result to a dictionary
+            column_names = [
+                'start_date', 'end_date', 'patient_id',
+                'encounter_id', 'snomed_code', 'description'
+            ]
+            conditions = [dict(zip(column_names, row)) for row in result]
+            return conditions
+        print(f"No disorders found with ID {patient_id}")
+        return None
+
+    except sqlite3.Error as error:
+        print(f"SQLite error: {error}")
+        return None
+    finally:
+        cursor.close()
+
+
+def parse_diagnosis_sql(diagnosis: dict) -> (str, str, str, str):
+    """
+    Parse a sql file of a unique diagnosis
+
+    Parameters
+    ----------
+    diagnosis: list[dict]
+        List of dictionaries containing information for each disorder
+
+    Returns
+    -------
+    str
+        The parsed SNOMED-Ct code
+    str
+        The parsed description of the diagnosis
+    str
+        The parsed start date of the disorder/symptoms
+    str
+        The parsed end date of the disorder/symptoms (optional)
+    """
+    try:
+        snomed_code = diagnosis["snomed_code"]
+    except KeyError:
+        snomed_code = None
+
+    try:
+        description = diagnosis["description"]
+    except KeyError:
+        description = None
+
+    try:
+        start_date = diagnosis["start_date"]
+    except KeyError:
+        start_date = None
+
+    try:
+        stop_date = diagnosis["stop_date"]
+    except KeyError:
         stop_date = None
 
     return snomed_code, description, start_date, stop_date

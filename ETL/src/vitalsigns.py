@@ -1,11 +1,11 @@
 """
 Functions specific to the Vital Signs template
 """
-
+import sqlite3
 from datetime import datetime
-import pandas as pd
-from pydantic import BaseModel, Field
 from typing import Optional
+from pydantic import BaseModel, Field
+import pandas as pd
 
 from src.composition import datetime_now
 
@@ -15,11 +15,6 @@ class Measurement(BaseModel):
     value: float = Field(..., serialization_alias='magnitude')
     units: str = Field(..., serialization_alias='units')
     time: datetime = Field(None, serialization_alias='timeValue')
-
-
-class PointsInTime(BaseModel):
-    """Data model for the PointsInTime class"""
-    measurements: list[Measurement] = Field(..., serialization_alias='pointInTime')
 
 
 class PointsInTime(BaseModel):
@@ -214,11 +209,12 @@ def parse_vital_signs_json(patient_json: dict, i: int, list_j: list) -> list:
 
 def parse_vital_signs_ccda(observations_on_specific_date: list) -> list:
     """
-    Parse a csv file of all vital signs measurements
+    Parse a ccda xml file of all vital signs measurements
 
     Parameters
     ----------
-    observations_on_specific_date: list of Elements
+    observations_on_specific_date: list
+        list of Elements
 
     Returns
     -------
@@ -242,5 +238,74 @@ def parse_vital_signs_ccda(observations_on_specific_date: list) -> list:
             'units': units,
             'time': time
         })
-
+    print(all_vital_signs_measures)
     return all_vital_signs_measures
+
+
+def parse_all_vital_signs_sql(connection: sqlite3.Connection, patient_id: str) -> list:
+    """
+    Parse a sql file of all vital signs measurements
+
+    Parameters
+    ----------
+    connection:
+        Connection to sql data containing all vital signs
+    patient_id: str
+        External patient id
+
+    Returns
+    -------
+    list
+        List containing all the parsed values, stored as a dictionary for each measurement.
+        {variable_name: str, value: str, unit: str, time: str}
+    """
+    cursor = connection.cursor()
+    all_vital_signs_measures = []
+    try:
+        select_patient_vital_signs_query = "SELECT * FROM Observations WHERE patient = ? AND category = 'vital-signs'"
+        cursor.execute(select_patient_vital_signs_query, (patient_id,))
+        result = cursor.fetchall()
+        if result:
+            # Convert each tuple in the result to a dictionary
+            column_names = [
+                'date', 'patient', 'encounter', 'category',
+                'code', 'description', 'value', 'units', 'type'
+            ]
+            vital_signs_unparsed = [dict(zip(column_names, row)) for row in result]
+            for vital_sign in vital_signs_unparsed:
+                try:
+                    variable = vital_sign['description']
+                except KeyError:
+                    variable = None
+
+                try:
+                    value = float(vital_sign['value'])
+                except KeyError:
+                    value = None
+
+                try:
+                    units = vital_sign['units']
+                except KeyError:
+                    units = None
+
+                try:
+                    time = datetime.fromisoformat(vital_sign['date']).isoformat()
+                except KeyError:
+                    time = None
+
+                all_vital_signs_measures.append({
+                    'variable_name': variable,
+                    'value': value,
+                    'units': units,
+                    'time': time,
+                })
+
+            return all_vital_signs_measures
+        print(f"No vital signs found with ID {patient_id}")
+        return None
+
+    except sqlite3.Error as error:
+        print(f"SQLite error: {error}")
+        return None
+    finally:
+        cursor.close()
