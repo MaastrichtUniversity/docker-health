@@ -76,9 +76,9 @@ if [[ $1 == "demo" ]]; then
 
     echo -e "\nRunning etl-demo"
     docker compose up -d etl-demo
-    sleep 5
+    # sleep 30
     echo -e "\nPrint logs for etl-demo"
-    docker compose logs etl-demo
+    docker compose logs -f etl-demo
 
     echo -e "\nExit rit.sh"
     exit 0

@@ -197,16 +197,16 @@ def extract_all_ccda(patient_id, data_path, vital_signs_units) -> (Patient, list
     # Parse patient xml file
     tree = ET.parse(f"{data_path}/{patient_id}.xml")
     # tree = ET.parse(f"/home/daniel/datahub/openEHR/docker-health/demo_data/ccda/{patient_id}.xml")
-    root = tree.getroot()
+    patient_xml = tree.getroot()
 
     print("\nPatient..", end="\t")
-    patient = create_patient_instance(*parse_patient_ccda(root))
+    patient = create_patient_instance(*parse_patient_ccda(patient_xml))
     print(f"information extracted for patient_id: {patient_id}")
 
     print("\nDiagnosis..", end="\t")
     all_disorders = []
 
-    entries = root.findall(".//{urn:hl7-org:v3}code[@code='11450-4'].../{urn:hl7-org:v3}entry")
+    entries = patient_xml.findall(".//{urn:hl7-org:v3}code[@code='11450-4'].../{urn:hl7-org:v3}entry")
     for entry in entries:
         observation = entry.find(
             "./{urn:hl7-org:v3}act/{urn:hl7-org:v3}entryRelationship/{urn:hl7-org:v3}observation/{urn:hl7-org:v3}value"
@@ -221,18 +221,18 @@ def extract_all_ccda(patient_id, data_path, vital_signs_units) -> (Patient, list
     # Only way to get some clustering is on date
 
 
-    print("\nVital Signs..")
+    print("\nVital Signs..", end='\t')
     all_vital_signs = []
 
     # get all unique dates for vital signs observations
     observation_dates = []
-    observations = root.findall(".//{urn:hl7-org:v3}organizer/{urn:hl7-org:v3}code[@code='46680005']...//{urn:hl7-org:v3}observation/{urn:hl7-org:v3}effectiveTime")
+    observations = patient_xml.findall(".//{urn:hl7-org:v3}organizer/{urn:hl7-org:v3}code[@code='46680005']...//{urn:hl7-org:v3}observation/{urn:hl7-org:v3}effectiveTime")
     for observation in observations:
         observation_dates.append(observation.attrib["value"])
     observation_dates = list(set(observation_dates))
 
     for observation_date in observation_dates:
-        observations_on_specific_date = root.findall(
+        observations_on_specific_date = patient_xml.findall(
             f".//{{urn:hl7-org:v3}}organizer/{{urn:hl7-org:v3}}code[@code='46680005']...//{{urn:hl7-org:v3}}observation/{{urn:hl7-org:v3}}effectiveTime[@value='{observation_date}']...")
         all_vital_signs.append(create_vital_signs_instance(
                     parse_vital_signs_ccda(observations_on_specific_date),

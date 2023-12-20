@@ -18,7 +18,6 @@ from src.etl import (
 )
 
 # config:
-# PATIENT_ID = '0a4a74f1-4444-6921-bf87-87fe209bec2e' # child
 PATIENT_ID = '3b1dadde-eefe-e82a-efbc-daa3c959a0c2'
 INPUT_FORMAT = 'ccda'
 TEMPLATE_PATH = Path("data/templates")
