@@ -22,13 +22,18 @@ class PointsInTime(BaseModel):
     measurements: list[Measurement] = Field(..., serialization_alias='pointInTime')
 
 
+class PointsInTime(BaseModel):
+    """Data model for the PointsInTime class"""
+    measurements: list[Measurement] = Field(..., serialization_alias='pointInTime')
+
+
 class VitalSigns(BaseModel):
     """Data model for the VitalSigns class"""
-    height: Optional[PointsInTime] = Field(..., serialization_alias='bodyHeightObservation')
-    weight: Optional[PointsInTime] = Field(..., serialization_alias='BodyWeightObservation')
-    heart_rate: Optional[PointsInTime] = Field(..., serialization_alias='HeartRateObservation')
-    blood_systolic: Optional[PointsInTime] = Field(..., serialization_alias='BloodPressureObservation')
-    blood_diastolic: Optional[PointsInTime] = Field(..., serialization_alias='BloodPressureObservation')
+    height: Optional[PointsInTime] = Field(None, serialization_alias='bodyHeightObservation')
+    weight: Optional[PointsInTime] = Field(None, serialization_alias='bodyWeightObservation')
+    heart_rate: Optional[PointsInTime] = Field(None, serialization_alias='heartRateObservation')
+    blood_systolic: Optional[PointsInTime] = Field(None, serialization_alias='bloodPressureSystolicObservation')
+    blood_diastolic: Optional[PointsInTime] = Field(None, serialization_alias='bloodPressureDiastolicObservation')
     start_time: datetime = Field(default_factory=datetime_now, serialization_alias='startTime')
 
 
@@ -167,36 +172,42 @@ def parse_vital_signs_json(patient_json: dict, i: int, list_j: list) -> list:
     """
     all_vital_signs_measures = []
     for j in list_j:
-        try:
-            variable = patient_json['record']['encounters'][i]['observations'][j]['codes'][0]['display']
-        except KeyError:
-            variable = None
+        observations = patient_json['record']['encounters'][i]['observations'][j]
+        if observations['observations'] != []: # for specifically for blood_pressure
+            observations = observations['observations']
+        else:
+            observations = [observations]
+        for observation in observations:
+            try:
+                variable = observation['codes'][0]['display']
+            except KeyError:
+                variable = None
 
-        try:
-            value = patient_json['record']['encounters'][i]['observations'][j]['value']
-        except KeyError:
-            value = None
+            try:
+                value = observation['value']
+            except KeyError:
+                value = None
 
-        try:
-            units = patient_json['record']['encounters'][i]['observations'][j]['unit']
-        except KeyError:
-            units = None
+            try:
+                units = observation['unit']
+            except KeyError:
+                units = None
 
-        try:
-            time = patient_json['record']['encounters'][i]['observations'][j]['start']
-            # convert sec to an actual date! last 3 digits represent the time zone
-            time_sec = int(str(time)[:-3])
-            # tzinfo = int(str(time)[-3:]) # how to convert country integer code to letter code??
-            time = str(datetime.fromtimestamp(time_sec))
-        except KeyError:
-            time = None
+            try:
+                time = observation['start']
+                # convert sec to an actual date! last 3 digits represent the time zone
+                time_sec = int(str(time)[:-3])
+                # tzinfo = int(str(time)[-3:]) # how to convert country integer code to letter code??
+                time = str(datetime.fromtimestamp(time_sec))
+            except KeyError:
+                time = None
 
-        all_vital_signs_measures.append({
-            'variable_name': variable,
-            'value': value,
-            'units': units,
-            'time': time
-        })
+            all_vital_signs_measures.append({
+                'variable_name': variable,
+                'value': value,
+                'units': units,
+                'time': time
+            })
 
     return all_vital_signs_measures
 

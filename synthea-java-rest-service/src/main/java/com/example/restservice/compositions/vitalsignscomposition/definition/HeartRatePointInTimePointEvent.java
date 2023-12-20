@@ -24,20 +24,20 @@ public class HeartRatePointInTimePointEvent implements PointEventEntity {
    * Description: The rate of the pulse or heart beat, measured in beats per minute.
    */
   @Path("/data[at0001]/items[at0004]/value|magnitude")
-  private Double rateMagnitude;
+  private Double heartRateMagnitude;
 
   /**
    * Path: Vital Signs/Heart rate/Point in time/Rate
    * Description: The rate of the pulse or heart beat, measured in beats per minute.
    */
   @Path("/data[at0001]/items[at0004]/value|units")
-  private String rateUnits;
+  private String heartRateUnits;
 
   /**
    * Path: Vital Signs/Heart rate/history/Point in time/structure/Rate/null_flavour
    */
   @Path("/data[at0001]/items[at0004]/null_flavour|defining_code")
-  private NullFlavour rateNullFlavourDefiningCode;
+  private NullFlavour heartRateNullFlavourDefiningCode;
 
   /**
    * Path: Vital Signs/Heart rate/Point in time/Exertion
@@ -58,28 +58,28 @@ public class HeartRatePointInTimePointEvent implements PointEventEntity {
   @Path("/time|value")
   private TemporalAccessor timeValue;
 
-  public void setRateMagnitude(Double rateMagnitude) {
-     this.rateMagnitude = rateMagnitude;
+  public void setHeartRateMagnitude(Double heartRateMagnitude) {
+     this.heartRateMagnitude = heartRateMagnitude;
   }
 
-  public Double getRateMagnitude() {
-     return this.rateMagnitude ;
+  public Double getHeartRateMagnitude() {
+     return this.heartRateMagnitude ;
   }
 
-  public void setRateUnits(String rateUnits) {
-     this.rateUnits = rateUnits;
+  public void setHeartRateUnits(String heartRateUnits) {
+     this.heartRateUnits = heartRateUnits;
   }
 
-  public String getRateUnits() {
-     return this.rateUnits ;
+  public String getHeartRateUnits() {
+     return this.heartRateUnits ;
   }
 
-  public void setRateNullFlavourDefiningCode(NullFlavour rateNullFlavourDefiningCode) {
-     this.rateNullFlavourDefiningCode = rateNullFlavourDefiningCode;
+  public void setHeartRateNullFlavourDefiningCode(NullFlavour heartRateNullFlavourDefiningCode) {
+     this.heartRateNullFlavourDefiningCode = heartRateNullFlavourDefiningCode;
   }
 
-  public NullFlavour getRateNullFlavourDefiningCode() {
-     return this.rateNullFlavourDefiningCode ;
+  public NullFlavour getHeartRateNullFlavourDefiningCode() {
+     return this.heartRateNullFlavourDefiningCode ;
   }
 
   public void setExertion(List<Cluster> exertion) {

@@ -263,9 +263,12 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
         Path the the folder saving all composition outputs
     """
     print("\nPatient..")
-    patient_json_str = patient.model_dump_json(by_alias=True, indent=4)
-    print(f"\npatient: {patient_json_str}")
-    patient_composition = transform_composition(patient.model_dump_json(by_alias=True), 'patient')
+    simplified_patient_composition = patient.model_dump_json(by_alias=True, indent=4)
+    print(f"\npatient: {simplified_patient_composition}")
+    patient_composition = transform_composition(
+        simplified_composition=simplified_patient_composition,
+        template_id='patient'
+    )
     # print(f"\ncomposition: {patient_composition}")
     write_json_composition(
         composition=patient_composition,
@@ -276,10 +279,11 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
 
     print("\nDiagnosis..")
     for diagnosis_i, diagnosis in enumerate(all_disorders):
-        diagnosis_json_str = diagnosis.model_dump_json(by_alias=True, indent=4)
-        print(f"\ndiagnosis {diagnosis_i+1}: {diagnosis_json_str}")
+        simplified_diagnosis_composition = diagnosis.model_dump_json(by_alias=True, indent=4)
+        print(f"\ndiagnosis {diagnosis_i+1}: {simplified_diagnosis_composition}")
         diagnosis_composition = transform_composition(
-            diagnosis.model_dump_json(by_alias=True), "diagnosis-demo"
+            simplified_composition=simplified_diagnosis_composition,
+            template_id="diagnosis-demo"
         )
         write_json_composition(
             composition=diagnosis_composition,
@@ -291,10 +295,11 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
 
     print("\nVital Signs..")
     for vitalsigns_i, vitalsigns in enumerate(all_vital_signs):
-        vitalsigns_json_str = vitalsigns.model_dump_json(by_alias=True, indent=4)
-        print(f"\nvital_signs {vitalsigns_i+1}: {vitalsigns_json_str}")
+        simplified_vitalsigns_composition = vitalsigns.model_dump_json(by_alias=True, indent=4)
+        print(f"\nvital_signs {vitalsigns_i+1}: {simplified_vitalsigns_composition}")
         vitalsigns_composition = transform_composition(
-            vitalsigns.model_dump_json(by_alias=True), 'vital_signs'
+            simplified_composition=simplified_vitalsigns_composition,
+            template_id='vital_signs'
         )
         write_json_composition(
             composition=vitalsigns_composition,
