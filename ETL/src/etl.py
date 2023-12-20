@@ -304,6 +304,10 @@ def extract_all_sql(patient_id, data_path, vital_signs_units) -> (Patient, list[
     return patient, all_disorders, all_vital_signs
 
 
+def extract_all_fhir(patient_id, data_path, vital_signs_units) -> (Patient, list[Diagnosis], list[VitalSigns]):
+    pass
+
+
 def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path):
     """
     Transform each data instance into a composition, and POST these compositions

@@ -327,3 +327,7 @@ def parse_all_vital_signs_sql(vital_signs_enc_df: pd.DataFrame) -> list:
         })
 
     return all_vital_signs_measures
+
+
+def parse_all_vital_signs_fhir() -> list:
+    pass

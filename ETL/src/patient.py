@@ -215,3 +215,7 @@ def parse_patient_sql(connection: sqlite3.Connection, patient_id: str) -> (str, 
 
     finally:
         cursor.close()
+
+
+def parse_patient_fhir() -> (str, str, str):
+    pass

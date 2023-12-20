@@ -16,6 +16,7 @@ from src.etl import (
     extract_all_json,
     extract_all_ccda,
     extract_all_sql,
+    # extract_all_fhir,
     transform_load
 )
 
@@ -92,6 +93,8 @@ def run():
             data_path=SYNTHEA_PATH,
             vital_signs_units=VITAL_SIGNS_UNITS
         )
+    elif INPUT_FORMAT == 'fhir':
+        pass
     else:
         print(f"{INPUT_FORMAT} is not a valid format [csv, json, ccda, sql, fhir]")
         quit()
