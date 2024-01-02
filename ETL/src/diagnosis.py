@@ -261,7 +261,7 @@ def get_all_diagnosis_sql(connection: sqlite3.Connection, patient_id: str) -> li
         result = cursor.fetchall()
         if result:
             # Convert each tuple in the result to a dictionary
-            column_names = ["start_date", "end_date", "patient_id", "encounter_id", "snomed_code", "description"]
+            column_names = ["start_date", "stop_date", "patient_id", "encounter_id", "snomed_code", "description"]
             conditions = [dict(zip(column_names, row)) for row in result]
             return conditions
         print(f"No disorders found with ID {patient_id}")
