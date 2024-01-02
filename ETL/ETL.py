@@ -23,7 +23,7 @@ from src.etl import (
 
 # config:
 PATIENT_ID = "3b1dadde-eefe-e82a-efbc-daa3c959a0c2"
-INPUT_FORMAT = "sql"
+INPUT_FORMAT = "ccda"
 TEMPLATE_PATH = Path("data/templates")
 SYNTHEA_PATH = Path(f"data/synthea/{INPUT_FORMAT}")
 COMPOSITION_OUTPUT_PATH = Path("outputs/compositions") / PATIENT_ID
@@ -54,6 +54,8 @@ def list_all_templates():
 @click.command(help="Runs all ETL from default hard coded values")
 def run():
     """Runs the ETL"""
+
+    print(f"INPUT_FORMAT : {INPUT_FORMAT}")
 
     print("\n\nSTEP 1 : POST templates")
     post_template(TEMPLATE_PATH / "vital_signs.opt")

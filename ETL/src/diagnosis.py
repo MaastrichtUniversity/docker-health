@@ -197,7 +197,7 @@ def parse_all_diagnosis_ccda(entry_xml: Element) -> (str, str, str, str):
 
     try:
         snomed_code = entry_xml.find(
-            "./{urn:hl7-org:v3}act/{urn:hl7-org:v3}entryRelationship/{urn:hl7-org:v3}observation/{urn:hl7-org:v3}code"
+            "./{urn:hl7-org:v3}act/{urn:hl7-org:v3}entryRelationship/{urn:hl7-org:v3}observation/{urn:hl7-org:v3}value"
         ).attrib["code"]
     except KeyError:
         snomed_code = None
@@ -211,7 +211,7 @@ def parse_all_diagnosis_ccda(entry_xml: Element) -> (str, str, str, str):
     except KeyError:
         description = None
     except AttributeError:
-        snomed_code = None
+        description = None
 
     try:
         start_date = entry_xml.find(
