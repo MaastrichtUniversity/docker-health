@@ -15,7 +15,7 @@ import pandas as pd
 from src.composition import (
     transform_composition,
     post_composition,
-    write_json_composition
+    write_json_composition,
 )
 
 from src.patient import (
@@ -24,23 +24,25 @@ from src.patient import (
     parse_patient_json,
     parse_patient_ccda,
     parse_patient_sql,
-    create_patient_instance
+    create_patient_instance,
 )
 from src.diagnosis import (
     Diagnosis,
     parse_all_diagnosis_csv,
     parse_all_diagnosis_json,
     parse_all_diagnosis_ccda,
-    get_all_diagnosis_sql, parse_diagnosis_sql,
-    create_diagnosis_instance
+    get_all_diagnosis_sql,
+    parse_diagnosis_sql,
+    create_diagnosis_instance,
 )
 from src.vitalsigns import (
     VitalSigns,
     parse_vital_signs_csv,
     parse_vital_signs_json,
     parse_vital_signs_ccda,
-    get_all_vital_signs_sql, parse_all_vital_signs_sql,
-    create_vital_signs_instance
+    get_all_vital_signs_sql,
+    parse_all_vital_signs_sql,
+    create_vital_signs_instance,
 )
 
 
@@ -68,46 +70,46 @@ def extract_all_csv(patient_id, data_path, vital_signs_units) -> (Patient, list[
         list of instances of the VitalSigns class
     """
     # Load datasets
-    patients_df = pd.read_csv(data_path / 'patients.csv')
-    conditions_df = pd.read_csv(data_path / 'conditions.csv')
-    observations_df = pd.read_csv(data_path / 'observations.csv')
-    encounters_df = pd.read_csv(data_path / 'encounters.csv')
+    patients_df = pd.read_csv(data_path / "patients.csv")
+    conditions_df = pd.read_csv(data_path / "conditions.csv")
+    observations_df = pd.read_csv(data_path / "observations.csv")
+    encounters_df = pd.read_csv(data_path / "encounters.csv")
     # all_encounters = parse_all_encounters(encounters_df)
 
-    print("\nPatient..", end='\t')
-    patient_df = patients_df[patients_df['Id'] == patient_id]
+    print("\nPatient..", end="\t")
+    patient_df = patients_df[patients_df["Id"] == patient_id]
     patient = create_patient_instance(*parse_patient_csv(patient_df))
     print(f"information extracted for patient_id: {patient_id}")
 
-    print("\nDiagnosis..", end='\t')
-    where_disorder = conditions_df['DESCRIPTION'].apply(
-        lambda x: bool(re.search('.*(disorder)', x))
-    )
-    patient_disorders_df = conditions_df[where_disorder][conditions_df['PATIENT'] == patient_id]
+    print("\nDiagnosis..", end="\t")
+    where_disorder = conditions_df["DESCRIPTION"].apply(lambda x: bool(re.search(".*(disorder)", x)))
+    patient_disorders_df = conditions_df[where_disorder][conditions_df["PATIENT"] == patient_id]
     all_disorders = []
     for _, disorder_df in patient_disorders_df.iterrows():
         all_disorders.append(create_diagnosis_instance(*parse_all_diagnosis_csv(disorder_df)))
     print(f"{len(all_disorders)} disorders reported for this patient.")
 
-    print("\nVital Signs..", end='\t')
-    patient_encounter_ids = encounters_df[encounters_df['PATIENT'] == patient_id]['Id'].tolist()
+    print("\nVital Signs..", end="\t")
+    patient_encounter_ids = encounters_df[encounters_df["PATIENT"] == patient_id]["Id"].tolist()
     vital_signs_df = observations_df[
-        (observations_df['ENCOUNTER'].isin(patient_encounter_ids)) & \
-        (observations_df['CATEGORY'] == 'vital-signs')
+        (observations_df["ENCOUNTER"].isin(patient_encounter_ids))
+        & (observations_df["CATEGORY"] == "vital-signs")
         # (observations_df['DESCRIPTION'].isin(VITAL_SIGNS_UNITS.keys()))
     ]
 
     all_vital_signs = []
     for encounter_id in patient_encounter_ids:
-        vital_signs_enc_df = vital_signs_df[vital_signs_df['ENCOUNTER'] == encounter_id]
+        vital_signs_enc_df = vital_signs_df[vital_signs_df["ENCOUNTER"] == encounter_id]
         if vital_signs_enc_df.shape[0] == 0:
             # print(f"Encounter id {encounter_id} has no vital signs observations")
             continue
 
-        all_vital_signs.append(create_vital_signs_instance(
-            parse_vital_signs_csv(vital_signs_enc_df),
-            vital_signs_units
-        ))
+        all_vital_signs.append(
+            create_vital_signs_instance(
+                parse_vital_signs_csv(vital_signs_enc_df),
+                vital_signs_units,
+            )
+        )
     print(f"{len(all_vital_signs)} vital signs reported for this patient.")
 
     return patient, all_disorders, all_vital_signs
@@ -137,42 +139,44 @@ def extract_all_json(patient_id, data_path, vital_signs_units) -> (Patient, list
         list of instances of the VitalSigns class
     """
     # Load json patient file as a python dictionary
-    with open(data_path / f"{patient_id}.json", encoding='utf-8') as infile:
+    with open(data_path / f"{patient_id}.json", encoding="utf-8") as infile:
         patient_json = json.load(infile)
 
-    print("\nPatient..", end='\t')
+    print("\nPatient..", end="\t")
     patient = create_patient_instance(*parse_patient_json(patient_json))
     print(f"information extracted for patient_id: {patient_id}")
 
-    print("\nDiagnosis..", end='\t')
+    print("\nDiagnosis..", end="\t")
     all_disorders = []
-    for encounter_i, encounter in enumerate(patient_json['record']['encounters']):
-        if 'conditions' in encounter:
-            for condition_j, condition in enumerate(encounter['conditions']):
-                description = condition['codes'][0]['display']
-                if not bool(re.search('.*(disorder)', description)):
+    for encounter_i, encounter in enumerate(patient_json["record"]["encounters"]):
+        if "conditions" in encounter:
+            for condition_j, condition in enumerate(encounter["conditions"]):
+                description = condition["codes"][0]["display"]
+                if not bool(re.search(".*(disorder)", description)):
                     # print("Current condition is not classified as a disorder.")
                     continue
-                all_disorders.append(create_diagnosis_instance(
-                    *parse_all_diagnosis_json(patient_json, encounter_i, condition_j))
+                all_disorders.append(
+                    create_diagnosis_instance(*parse_all_diagnosis_json(patient_json, encounter_i, condition_j))
                 )
     print(f"{len(all_disorders)} disorders reported for this patient.")
 
     print("\nVital Signs..")
     all_vital_signs = []
-    for encounter_i, encounter in enumerate(patient_json['record']['encounters']):
-        if encounter['observations'] == []:
+    for encounter_i, encounter in enumerate(patient_json["record"]["encounters"]):
+        if encounter["observations"] == []:
             # print(f"Encounter id {encounter_i} has no vital signs observations")
             continue
         list_observations_j = []
-        for observation_j, observation in enumerate(encounter['observations']):
-            if observation['category'] == 'vital-signs':
+        for observation_j, observation in enumerate(encounter["observations"]):
+            if observation["category"] == "vital-signs":
                 list_observations_j.append(observation_j)
 
-        all_vital_signs.append(create_vital_signs_instance(
-            parse_vital_signs_json(patient_json, encounter_i, list_observations_j),
-            vital_signs_units
-        ))
+        all_vital_signs.append(
+            create_vital_signs_instance(
+                parse_vital_signs_json(patient_json, encounter_i, list_observations_j),
+                vital_signs_units,
+            )
+        )
     print(f"{len(all_vital_signs)} vital signs reported for this patient.")
 
     return patient, all_disorders, all_vital_signs
@@ -223,28 +227,31 @@ def extract_all_ccda(patient_id, data_path, vital_signs_units) -> (Patient, list
         all_disorders.append(create_diagnosis_instance(*parse_all_diagnosis_ccda(entry)))
     print(f"{len(all_disorders)} disorders reported for this patient.")
 
-
     # In ccda vital sign are not clustered together.
     # Only way to get some clustering is on date
 
-
-    print("\nVital Signs..", end='\t')
+    print("\nVital Signs..", end="\t")
     all_vital_signs = []
 
     # get all unique dates for vital signs observations
     observation_dates = []
-    observations = patient_xml.findall(".//{urn:hl7-org:v3}organizer/{urn:hl7-org:v3}code[@code='46680005']...//{urn:hl7-org:v3}observation/{urn:hl7-org:v3}effectiveTime")
+    observations = patient_xml.findall(
+        ".//{urn:hl7-org:v3}organizer/{urn:hl7-org:v3}code[@code='46680005']...//{urn:hl7-org:v3}observation/{urn:hl7-org:v3}effectiveTime"
+    )
     for observation in observations:
         observation_dates.append(observation.attrib["value"])
     observation_dates = list(set(observation_dates))
 
     for observation_date in observation_dates:
         observations_on_specific_date = patient_xml.findall(
-            f".//{{urn:hl7-org:v3}}organizer/{{urn:hl7-org:v3}}code[@code='46680005']...//{{urn:hl7-org:v3}}observation/{{urn:hl7-org:v3}}effectiveTime[@value='{observation_date}']...")
-        all_vital_signs.append(create_vital_signs_instance(
-                    parse_vital_signs_ccda(observations_on_specific_date),
-                    vital_signs_units
-                ))
+            f".//{{urn:hl7-org:v3}}organizer/{{urn:hl7-org:v3}}code[@code='46680005']...//{{urn:hl7-org:v3}}observation/{{urn:hl7-org:v3}}effectiveTime[@value='{observation_date}']..."
+        )
+        all_vital_signs.append(
+            create_vital_signs_instance(
+                parse_vital_signs_ccda(observations_on_specific_date),
+                vital_signs_units,
+            )
+        )
 
     print(f"{len(all_vital_signs)} vital signs reported for this patient.")
 
@@ -274,13 +281,13 @@ def extract_all_sql(patient_id, data_path, vital_signs_units) -> (Patient, list[
     list[VitalSigns]
         list of instances of the VitalSigns class
     """
-    print("\nPatient..", end='\t')
+    print("\nPatient..", end="\t")
     connection = sqlite3.connect(data_path / "patients.sqlite")
     patient = create_patient_instance(*parse_patient_sql(connection, patient_id))
     connection.close()
     print(f"information extracted for patient_id: {patient_id}")
 
-    print("\nDiagnosis...", end='\t')
+    print("\nDiagnosis...", end="\t")
     connection = sqlite3.connect(data_path / "conditions.sqlite")
     patient_diagnosis_sql = get_all_diagnosis_sql(connection, patient_id)
     all_disorders = []
@@ -289,13 +296,13 @@ def extract_all_sql(patient_id, data_path, vital_signs_units) -> (Patient, list[
     connection.close()
     print(f"{len(all_disorders)} disorders reported for this patient.")
 
-    print("\nVital Signs..", end='\t')
+    print("\nVital Signs..", end="\t")
     connection = sqlite3.connect(data_path / "observations.sqlite")
     vital_signs_unparsed = get_all_vital_signs_sql(connection, patient_id)
-    encounter_ids = np.unique(vital_signs_unparsed['encounter_id'])
+    encounter_ids = np.unique(vital_signs_unparsed["encounter_id"])
     all_vital_signs = []
     for encounter_id in encounter_ids:
-        vital_signs_enc_df = vital_signs_unparsed[vital_signs_unparsed['encounter_id'] == encounter_id]
+        vital_signs_enc_df = vital_signs_unparsed[vital_signs_unparsed["encounter_id"] == encounter_id]
         vital_signs = create_vital_signs_instance(parse_all_vital_signs_sql(vital_signs_enc_df), vital_signs_units)
         all_vital_signs.append(vital_signs)
     connection.close()
@@ -331,12 +338,12 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     print(f"\npatient: {simplified_patient_composition}")
     patient_composition = transform_composition(
         simplified_composition=simplified_patient_composition,
-        template_id='patient'
+        template_id="patient",
     )
     # print(f"\ncomposition: {patient_composition}")
     write_json_composition(
         composition=patient_composition,
-        json_filename=output_path / 'patient.json'
+        json_filename=output_path / "patient.json",
     )
     patient_composition_uuid = post_composition(ehr_id, patient_composition)
     print(f"patient_composition_uuid: {patient_composition_uuid}")
@@ -347,11 +354,11 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
         print(f"\ndiagnosis {diagnosis_i+1}: {simplified_diagnosis_composition}")
         diagnosis_composition = transform_composition(
             simplified_composition=simplified_diagnosis_composition,
-            template_id="diagnosis-demo"
+            template_id="diagnosis-demo",
         )
         write_json_composition(
             composition=diagnosis_composition,
-            json_filename=output_path / f'diagnosis_{diagnosis_i+1}.json'
+            json_filename=output_path / f"diagnosis_{diagnosis_i+1}.json",
         )
         # print(f"\ncomposition: {diagnosis_composition}")
         diagnosis_composition_uuid = post_composition(ehr_id, diagnosis_composition)
@@ -363,11 +370,11 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
         print(f"\nvital_signs {vitalsigns_i+1}: {simplified_vitalsigns_composition}")
         vitalsigns_composition = transform_composition(
             simplified_composition=simplified_vitalsigns_composition,
-            template_id='vital_signs'
+            template_id="vital_signs",
         )
         write_json_composition(
             composition=vitalsigns_composition,
-            json_filename=output_path / f'vital_signs_{vitalsigns_i+1}.json'
+            json_filename=output_path / f"vital_signs_{vitalsigns_i+1}.json",
         )
         # print(f"\ncomposition: {vitalsigns_composition}")
         vitalsigns_composition_uuid = post_composition(ehr_id, vitalsigns_composition)

@@ -7,9 +7,9 @@ import json
 import xml.etree.ElementTree as ET
 import requests
 
-EHRBASE_USERRNAME = os.environ['EHRBASE_USERRNAME']
-EHRBASE_PASSWORD = os.environ['EHRBASE_PASSWORD']
-EHRBASE_BASE_URL = os.environ['EHRBASE_BASE_URL']
+EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
+EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
+EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 
 
 def fetch_all_templates():
@@ -19,16 +19,16 @@ def fetch_all_templates():
     url = f"{EHRBASE_BASE_URL}/definition/template/adl1.4"
 
     headers = {
-        'Accept': 'application/json',
-        'Prefer': 'return=minimal',
+        "Accept": "application/json",
+        "Prefer": "return=minimal",
     }
 
     response = requests.request(
-        'GET',
+        "GET",
         url,
         headers=headers,
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
-        timeout=10
+        timeout=10,
     )
     if response.ok:
         response_json = json.loads(response.text)
@@ -48,23 +48,23 @@ def post_template(filename: str):
     filename: str
         File name of the template to be loaded
     """
-    url = f'{EHRBASE_BASE_URL}/definition/template/adl1.4'
+    url = f"{EHRBASE_BASE_URL}/definition/template/adl1.4"
 
     headers = {
-        'Accept': 'application/xml',
-        'Prefer': 'return=minimal',
-        'Content-Type': 'application/xml'
+        "Accept": "application/xml",
+        "Prefer": "return=minimal",
+        "Content-Type": "application/xml",
     }
 
     print(filename)
-    with open(filename, 'rb') as payload:
+    with open(filename, "rb") as payload:
         response = requests.request(
-            'POST',
+            "POST",
             url,
             headers=headers,
             data=payload.read(),
             auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
-            timeout=10
+            timeout=10,
         )
 
     print(f"RESPONSE: {response.status_code}")
@@ -72,8 +72,8 @@ def post_template(filename: str):
         print(f"Template {filename} was successfully created")
     else:
         # Convert XML output text to Dictionary:
-        response_text = {'error': None, 'message': None}
+        response_text = {"error": None, "message": None}
         for item in ET.fromstring(response.content):
             response_text[item.tag] = item.text
         print(f"ERROR {response_text['error']}")
-        print(response_text['message'])
+        print(response_text["message"])

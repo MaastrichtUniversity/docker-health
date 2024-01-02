@@ -17,23 +17,23 @@ from src.etl import (
     extract_all_ccda,
     extract_all_sql,
     # extract_all_fhir,
-    transform_load
+    transform_load,
 )
 
 
 # config:
-PATIENT_ID = '3b1dadde-eefe-e82a-efbc-daa3c959a0c2'
-INPUT_FORMAT = 'sql'
+PATIENT_ID = "3b1dadde-eefe-e82a-efbc-daa3c959a0c2"
+INPUT_FORMAT = "sql"
 TEMPLATE_PATH = Path("data/templates")
 SYNTHEA_PATH = Path(f"data/synthea/{INPUT_FORMAT}")
 COMPOSITION_OUTPUT_PATH = Path("outputs/compositions") / PATIENT_ID
 os.makedirs(COMPOSITION_OUTPUT_PATH, exist_ok=True)
 VITAL_SIGNS_UNITS = {
-    'Body Height': 'cm',
-    'Body Weight': 'kg',
-    'Heart rate': '/min',
-    'Systolic Blood Pressure': 'mm[Hg]',
-    'Diastolic Blood Pressure': 'mm[Hg]'
+    "Body Height": "cm",
+    "Body Weight": "kg",
+    "Heart rate": "/min",
+    "Systolic Blood Pressure": "mm[Hg]",
+    "Diastolic Blood Pressure": "mm[Hg]",
 }
 
 
@@ -56,49 +56,46 @@ def run():
     """Runs the ETL"""
 
     print("\n\nSTEP 1 : POST templates")
-    post_template(TEMPLATE_PATH / 'vital_signs.opt')
-    post_template(TEMPLATE_PATH / 'patient.opt')
-    post_template(TEMPLATE_PATH / 'diagnosis_demo.opt')
+    post_template(TEMPLATE_PATH / "vital_signs.opt")
+    post_template(TEMPLATE_PATH / "patient.opt")
+    post_template(TEMPLATE_PATH / "diagnosis_demo.opt")
     # fetch_all_templates()
-
 
     print(f"\n\nSTEP 2 : Create EHR for the patient_id {PATIENT_ID}")
     global EHR_ID
     EHR_ID = create_ehr(PATIENT_ID)
     print(f"ehr_id: {EHR_ID}")
 
-
     print(f"\n\nSTEP 3 : Data extraction from {INPUT_FORMAT} input data format")
-    if INPUT_FORMAT == 'csv':
+    if INPUT_FORMAT == "csv":
         patient, all_disorders, all_vital_signs = extract_all_csv(
             patient_id=PATIENT_ID,
             data_path=SYNTHEA_PATH,
-            vital_signs_units=VITAL_SIGNS_UNITS
+            vital_signs_units=VITAL_SIGNS_UNITS,
         )
-    elif INPUT_FORMAT == 'json':
+    elif INPUT_FORMAT == "json":
         patient, all_disorders, all_vital_signs = extract_all_json(
             patient_id=PATIENT_ID,
             data_path=SYNTHEA_PATH,
-            vital_signs_units=VITAL_SIGNS_UNITS
+            vital_signs_units=VITAL_SIGNS_UNITS,
         )
-    elif INPUT_FORMAT == 'ccda':
+    elif INPUT_FORMAT == "ccda":
         patient, all_disorders, all_vital_signs = extract_all_ccda(
             patient_id=PATIENT_ID,
             data_path=SYNTHEA_PATH,
-            vital_signs_units=VITAL_SIGNS_UNITS
+            vital_signs_units=VITAL_SIGNS_UNITS,
         )
-    elif INPUT_FORMAT == 'sql':
+    elif INPUT_FORMAT == "sql":
         patient, all_disorders, all_vital_signs = extract_all_sql(
             patient_id=PATIENT_ID,
             data_path=SYNTHEA_PATH,
-            vital_signs_units=VITAL_SIGNS_UNITS
+            vital_signs_units=VITAL_SIGNS_UNITS,
         )
-    elif INPUT_FORMAT == 'fhir':
+    elif INPUT_FORMAT == "fhir":
         pass
     else:
         print(f"{INPUT_FORMAT} is not a valid format [csv, json, ccda, sql, fhir]")
         quit()
-
 
     print("\n\nSTEP 4 : Transform and Load compositions")
     transform_load(
@@ -106,9 +103,8 @@ def run():
         all_disorders=all_disorders,
         all_vital_signs=all_vital_signs,
         ehr_id=EHR_ID,
-        output_path=COMPOSITION_OUTPUT_PATH
+        output_path=COMPOSITION_OUTPUT_PATH,
     )
-
 
     # print("\n\nSTEP 5 : Analysis insights")
     # plot_bloodpressure_over_time(ehr_id)
@@ -117,6 +113,7 @@ def run():
 @click.group()
 def cli():
     pass
+
 
 cli.add_command(run)
 cli.add_command(list_all_templates)

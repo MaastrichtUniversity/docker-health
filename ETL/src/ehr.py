@@ -8,9 +8,9 @@ from typing import List
 from uuid import UUID
 import requests
 
-EHRBASE_USERRNAME = os.environ['EHRBASE_USERRNAME']
-EHRBASE_PASSWORD = os.environ['EHRBASE_PASSWORD']
-EHRBASE_BASE_URL = os.environ['EHRBASE_BASE_URL']
+EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
+EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
+EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 
 
 def get_ehr_id_for_patient_id(patient_id: str) -> None | UUID:
@@ -29,11 +29,11 @@ def get_ehr_id_for_patient_id(patient_id: str) -> None | UUID:
     None
         If the patient does not have an ehr
     """
-    url = f'{EHRBASE_BASE_URL}/ehr'
-    myparams = {'subject_id': patient_id, 'subject_namespace': 'datahub'}
+    url = f"{EHRBASE_BASE_URL}/ehr"
+    myparams = {"subject_id": patient_id, "subject_namespace": "datahub"}
     headers = {
-        'Accept': 'application/json',
-        'Prefer': 'return=minimal',
+        "Accept": "application/json",
+        "Prefer": "return=minimal",
     }
 
     response = requests.request(
@@ -42,7 +42,7 @@ def get_ehr_id_for_patient_id(patient_id: str) -> None | UUID:
         headers=headers,
         params=myparams,
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
-        timeout=10
+        timeout=10,
     )
 
     if response.status_code == 404:
@@ -50,6 +50,7 @@ def get_ehr_id_for_patient_id(patient_id: str) -> None | UUID:
 
     response_json = json.loads(response.text)
     return response_json["ehr_id"]["value"]
+
 
 def fetch_all_ehr_id() -> List[UUID]:
     """
@@ -60,23 +61,23 @@ def fetch_all_ehr_id() -> List[UUID]:
     list[UUID]
         list of ehr_id available on the EHRbase server
     """
-    url = f'{EHRBASE_BASE_URL}/query/aql'
-    query = 'SELECT e/ehr_id/value as ehr_id FROM EHR e'
+    url = f"{EHRBASE_BASE_URL}/query/aql"
+    query = "SELECT e/ehr_id/value as ehr_id FROM EHR e"
     headers = {
-        'Accept': 'application/json',
-        'Prefer': 'return=representation',
+        "Accept": "application/json",
+        "Prefer": "return=representation",
     }
     response = requests.request(
-        'GET',
+        "GET",
         url,
         headers=headers,
-        params={'q': query},
+        params={"q": query},
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
-        timeout=10
+        timeout=10,
     )
     if response.ok:
         response_json = json.loads(response.text)
-        return response_json['rows']
+        return response_json["rows"]
     return []
 
 
@@ -100,29 +101,25 @@ def create_ehr(patient_id: str) -> UUID:
         print("An EHR identifier already exists for this patient.")
         return ehr_id
 
-    url = f'{EHRBASE_BASE_URL}/ehr'
+    url = f"{EHRBASE_BASE_URL}/ehr"
     id_payload = {
-        '_type': 'EHR_STATUS',
-        'archetype_node_id': 'openEHR-EHR-EHR_STATUS.generic.v1',
-        'name': {'value': 'EHR Status'},
-        'subject': {
-            'external_ref': {
-                'id': {'_type': 'GENERIC_ID', 'value': patient_id, 'scheme': 'DataHub'},
-                'namespace': 'datahub',
-                'type': 'PERSON',
+        "_type": "EHR_STATUS",
+        "archetype_node_id": "openEHR-EHR-EHR_STATUS.generic.v1",
+        "name": {"value": "EHR Status"},
+        "subject": {
+            "external_ref": {
+                "id": {"_type": "GENERIC_ID", "value": patient_id, "scheme": "DataHub"},
+                "namespace": "datahub",
+                "type": "PERSON",
             }
         },
-        'is_modifiable': True,
-        'is_queryable': True,
+        "is_modifiable": True,
+        "is_queryable": True,
     }
 
-    headers = {
-        'Accept': 'application/json',
-        'Prefer': 'return=representation',
-        'Content-Type': 'application/json'
-    }
+    headers = {"Accept": "application/json", "Prefer": "return=representation", "Content-Type": "application/json"}
     response = requests.request(
-        'POST',
+        "POST",
         url,
         data=json.dumps(id_payload),
         headers=headers,
@@ -131,4 +128,4 @@ def create_ehr(patient_id: str) -> UUID:
     )
     response_json = json.loads(response.text)
 
-    return response_json['ehr_id']['value']
+    return response_json["ehr_id"]["value"]
