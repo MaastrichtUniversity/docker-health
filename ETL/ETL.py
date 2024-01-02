@@ -26,7 +26,7 @@ PATIENT_ID = "3b1dadde-eefe-e82a-efbc-daa3c959a0c2"
 INPUT_FORMAT = "sql"
 TEMPLATE_PATH = Path("data/templates")
 SYNTHEA_PATH = Path(f"data/synthea/{INPUT_FORMAT}")
-COMPOSITION_OUTPUT_PATH = Path("outputs/compositions") / PATIENT_ID
+COMPOSITION_OUTPUT_PATH = Path("outputs/compositions") / PATIENT_ID / INPUT_FORMAT
 os.makedirs(COMPOSITION_OUTPUT_PATH, exist_ok=True)
 VITAL_SIGNS_UNITS = {
     "Body Height": "cm",
