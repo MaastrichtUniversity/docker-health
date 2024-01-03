@@ -25,6 +25,7 @@ from src.patient import (
     parse_patient_ccda,
     parse_patient_sql,
     create_patient_instance,
+    parse_patient_fhir,
 )
 from src.diagnosis import (
     Diagnosis,
@@ -312,7 +313,44 @@ def extract_all_sql(patient_id, data_path, vital_signs_units) -> (Patient, list[
 
 
 def extract_all_fhir(patient_id, data_path, vital_signs_units) -> (Patient, list[Diagnosis], list[VitalSigns]):
-    pass
+    """
+    Extract the values on a patient, its diagnosis and vital signs from a single fhir JSON patient file
+
+    Parameters
+    ----------
+    patient_id: str
+        External patient id
+    data_path: str
+        Path to the fhir JSON patient file
+    vital_signs_units: dict
+        Dictionary containing as keys all the vital signs variables used,
+        and as values the corresponding chosen units
+
+    Returns
+    -------
+    Patient
+        Instance of the Patient class
+    list[Diagnosis]
+        list of instances of the Diagnosis class
+    list[VitalSigns]
+        list of instances of the VitalSigns class
+    """
+    # Load json patient file as a python dictionary
+    with open(f"{data_path}/{patient_id}.json", encoding="utf-8") as infile:
+        patient_json = json.load(infile)
+
+    print("\nPatient..", end="\t")
+
+    patient = parse_patient_fhir(patient_json)
+    print(f"information extracted for patient_id: {patient_id}")
+
+    print("\nDiagnosis..", end="\t")
+    all_disorders = []
+
+    print("\nVital Signs..")
+    all_vital_signs = []
+
+    return patient, all_disorders, all_vital_signs
 
 
 def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path):

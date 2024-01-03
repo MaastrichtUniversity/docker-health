@@ -16,14 +16,14 @@ from src.etl import (
     extract_all_json,
     extract_all_ccda,
     extract_all_sql,
-    # extract_all_fhir,
+    extract_all_fhir,
     transform_load,
 )
 
 
 # config:
 PATIENT_ID = "3b1dadde-eefe-e82a-efbc-daa3c959a0c2"
-INPUT_FORMAT = "sql"
+INPUT_FORMAT = "fhir"
 TEMPLATE_PATH = Path("data/templates")
 SYNTHEA_PATH = Path(f"data/synthea/{INPUT_FORMAT}")
 COMPOSITION_OUTPUT_PATH = Path("outputs/compositions") / PATIENT_ID / INPUT_FORMAT
@@ -54,8 +54,6 @@ def list_all_templates():
 @click.command(help="Runs all ETL from default hard coded values")
 def run():
     """Runs the ETL"""
-
-    print(f"INPUT_FORMAT : {INPUT_FORMAT}")
 
     print("\n\nSTEP 1 : POST templates")
     post_template(TEMPLATE_PATH / "vital_signs.opt")
@@ -94,7 +92,11 @@ def run():
             vital_signs_units=VITAL_SIGNS_UNITS,
         )
     elif INPUT_FORMAT == "fhir":
-        pass
+        patient, all_disorders, all_vital_signs = extract_all_fhir(
+            patient_id=PATIENT_ID,
+            data_path=SYNTHEA_PATH,
+            vital_signs_units=VITAL_SIGNS_UNITS,
+        )
     else:
         print(f"{INPUT_FORMAT} is not a valid format [csv, json, ccda, sql, fhir]")
         quit()

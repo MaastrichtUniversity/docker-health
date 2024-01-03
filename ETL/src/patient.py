@@ -222,5 +222,49 @@ def parse_patient_sql(connection: sqlite3.Connection, patient_id: str) -> (str, 
         cursor.close()
 
 
-def parse_patient_fhir() -> (str, str, str):
-    pass
+def parse_patient_fhir(patient_json: dict) -> Patient:
+    """
+    Parse a unique patient fhir(json) file
+
+    Parameters
+    ----------
+    patient_json: dict
+        The json file that contains information on a patient, loaded as a python dict
+
+    Returns
+    -------
+    str
+        The parsed gender code
+    str
+        The parsed date of birth
+    str
+        The parsed date of death (optional)
+    """
+    patient_entry = {}
+
+    for entry in patient_json["entry"]:
+        if entry["resource"]["resourceType"] == "Patient":
+            patient_entry = entry
+
+    gender_code = {
+        "male": "M",
+        "female": "F",
+    }
+
+    try:
+        gender = patient_entry["resource"]["gender"]
+        gender_code = gender_code[gender]
+    except KeyError:
+        gender_code = None
+
+    try:
+        birth_date = patient_entry["resource"]["birthDate"]
+    except KeyError:
+        birth_date = None
+
+    try:
+        death_date = patient_entry["resource"]["deceasedDateTime"]
+    except KeyError:
+        death_date = None
+
+    return create_patient_instance(gender_code, birth_date, death_date)
