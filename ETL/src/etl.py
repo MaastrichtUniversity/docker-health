@@ -35,6 +35,7 @@ from src.diagnosis import (
     get_all_diagnosis_sql,
     parse_diagnosis_sql,
     create_diagnosis_instance,
+    parse_diagnosis_fhir,
 )
 from src.vitalsigns import (
     VitalSigns,
@@ -346,6 +347,14 @@ def extract_all_fhir(patient_id, data_path, vital_signs_units) -> (Patient, list
 
     print("\nDiagnosis..", end="\t")
     all_disorders = []
+    for entry in patient_json["entry"]:
+        if "Condition" in entry["resource"]["resourceType"]:
+            description = entry["resource"]["code"]["text"]
+            if not bool(re.search(".*(disorder)", description)):
+                # print("Current condition is not classified as a disorder.")
+                continue
+            all_disorders.append(parse_diagnosis_fhir(entry["resource"]))
+    print(f"{len(all_disorders)} disorders reported for this patient.")
 
     print("\nVital Signs..")
     all_vital_signs = []

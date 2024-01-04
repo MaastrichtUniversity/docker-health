@@ -315,3 +315,42 @@ def parse_diagnosis_sql(diagnosis: dict) -> (str, str, str, str):
         stop_date = None
 
     return snomed_code, description, start_date, stop_date
+
+
+def parse_diagnosis_fhir(condition: dict) -> Diagnosis:
+    """
+    Parse a unique pre-filtered condition resource
+
+    Parameters
+    ----------
+    condition: dict
+        The pre-filtered condition resource
+
+    Returns
+    -------
+    Diagnosis
+        Instance of the Diagnosis object
+    """
+    try:
+        for code in condition["code"]["coding"]:
+            if "http://snomed.info/sct" in code["system"]:
+                snomed_code = int(code["code"])
+                description = code["display"]
+                break
+    except KeyError:
+        snomed_code = None
+        description = None
+
+    try:
+        start_date = condition["onsetDateTime"]
+    except KeyError:
+        start_date = None
+
+    try:
+        stop_date = condition["abatementDateTime"]
+    except KeyError:
+        stop_date = None
+    except ValueError:
+        stop_date = None
+
+    return create_diagnosis_instance(snomed_code, description, start_date, stop_date)

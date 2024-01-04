@@ -233,18 +233,15 @@ def parse_patient_fhir(patient_json: dict) -> Patient:
 
     Returns
     -------
-    str
-        The parsed gender code
-    str
-        The parsed date of birth
-    str
-        The parsed date of death (optional)
+    Patient
+        Instance of the Patient object
     """
     patient_entry = {}
 
     for entry in patient_json["entry"]:
         if entry["resource"]["resourceType"] == "Patient":
             patient_entry = entry
+            break
 
     gender_code = {
         "male": "M",
