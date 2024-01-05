@@ -340,5 +340,104 @@ def parse_all_vital_signs_sql(vital_signs_enc_df: pd.DataFrame) -> list:
     return all_vital_signs_measures
 
 
-def parse_all_vital_signs_fhir() -> list:
-    pass
+def parse_all_vital_signs_fhir(observations, vital_signs_units) -> VitalSigns:
+    """
+    Parse the list of resource observation entries
+
+    Parameters
+    ----------
+    observations
+        The list of vital sign observations to parse.
+    vital_signs_units: dict
+        Dictionary describing the chosen units for each measurement
+
+    Returns
+    -------
+    VitalSigns
+        Instance of the VitalSigns object
+    """
+
+    all_vital_signs_measures = []
+    for observation in observations:
+        try:
+            variable = observation["code"]["text"]
+        except KeyError:
+            variable = None
+
+        try:
+            time = observation["effectiveDateTime"]
+        except KeyError:
+            time = None
+
+        if "valueQuantity" in observation:
+            get_observation_value_units(observation, all_vital_signs_measures, variable, time)
+        else:
+            get_blood_pressure_observation_value_units(observation, all_vital_signs_measures, time)
+
+    return create_vital_signs_instance(all_vital_signs_measures, vital_signs_units)
+
+
+def get_observation_value_units(observation: dict, all_vital_signs_measures: list, variable: str, time: str):
+    """
+    Retrieve the value and units of the vital sign observation. Then append it to the output list.
+
+    Parameters
+    ----------
+    observation: dict
+        A vital sign observation to parse.
+    all_vital_signs_measures: list
+        The output list
+    variable: str
+        Display name of the vital sign code
+    time: str
+        Datetime
+    """
+    try:
+        value = observation["valueQuantity"]["value"]
+    except KeyError:
+        value = None
+
+    try:
+        units = observation["valueQuantity"]["unit"]
+    except KeyError:
+        units = None
+
+    all_vital_signs_measures.append(
+        {
+            "variable_name": variable,
+            "value": value,
+            "units": units,
+            "time": time,
+        }
+    )
+
+
+def get_blood_pressure_observation_value_units(observation: dict, all_vital_signs_measures: list, time: str):
+    """
+    Blood pressure observation follows a different data structure.
+
+    Parameters
+    ----------
+    observation: dict
+        A vital sign observation to parse.
+    all_vital_signs_measures: list
+        The output list
+    time: str
+        Datetime
+    """
+    try:
+        for component in observation["component"]:
+            variable = component["code"]["text"]
+            value = component["valueQuantity"]["value"]
+            units = component["valueQuantity"]["unit"]
+
+            all_vital_signs_measures.append(
+                {
+                    "variable_name": variable,
+                    "value": value,
+                    "units": units,
+                    "time": time,
+                }
+            )
+    except KeyError:
+        print("Current observation is not expected.")

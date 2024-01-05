@@ -45,6 +45,7 @@ from src.vitalsigns import (
     get_all_vital_signs_sql,
     parse_all_vital_signs_sql,
     create_vital_signs_instance,
+    parse_all_vital_signs_fhir,
 )
 
 
@@ -347,6 +348,7 @@ def extract_all_fhir(patient_id, data_path, vital_signs_units) -> (Patient, list
 
     print("\nDiagnosis..", end="\t")
     all_disorders = []
+    encounters = {}
     for entry in patient_json["entry"]:
         if "Condition" in entry["resource"]["resourceType"]:
             description = entry["resource"]["code"]["text"]
@@ -354,10 +356,22 @@ def extract_all_fhir(patient_id, data_path, vital_signs_units) -> (Patient, list
                 # print("Current condition is not classified as a disorder.")
                 continue
             all_disorders.append(parse_diagnosis_fhir(entry["resource"]))
+
+        if "Observation" in entry["resource"]["resourceType"]:
+            observation = entry["resource"]
+            if observation["category"][0]["coding"][0]["code"] == "vital-signs":
+                encounter_id = observation["encounter"]["reference"]
+                if encounter_id not in encounters:
+                    encounters[encounter_id] = [observation]
+                else:
+                    encounters[encounter_id].append(observation)
+
     print(f"{len(all_disorders)} disorders reported for this patient.")
 
     print("\nVital Signs..")
     all_vital_signs = []
+    for observations in encounters.values():
+        all_vital_signs.append(parse_all_vital_signs_fhir(observations, vital_signs_units))
 
     return patient, all_disorders, all_vital_signs
 
