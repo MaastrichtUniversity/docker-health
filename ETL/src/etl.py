@@ -86,7 +86,7 @@ def extract_all_csv(patient_id, data_path, vital_signs_units) -> (Patient, list[
 
     print("\nDiagnosis..", end="\t")
     where_disorder = conditions_df["DESCRIPTION"].apply(lambda x: bool(re.search(".*(disorder)", x)))
-    patient_disorders_df = conditions_df[where_disorder][conditions_df["PATIENT"] == patient_id]
+    patient_disorders_df = conditions_df[where_disorder].query("PATIENT == @patient_id")
     all_disorders = []
     for _, disorder_df in patient_disorders_df.iterrows():
         all_disorders.append(create_diagnosis_instance(*parse_all_diagnosis_csv(disorder_df)))
