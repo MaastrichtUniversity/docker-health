@@ -157,7 +157,9 @@ def parse_all_diagnosis_json(patient_json: dict, i: int, j: int) -> (str, str, s
         # convert sec to an actual date! Last 3 digits represents the time zone
         start_date_sec = int(str(start_date)[:-3])
         # tzinfo = int(str(start_date)[-3:]) # how to convert country integer code to letter code??
-        start_date = str(datetime.fromtimestamp(start_date_sec))
+        start_date = datetime.fromtimestamp(start_date_sec)
+        start_date = datetime.isoformat(start_date.astimezone())
+
     except KeyError:
         start_date = None
 
@@ -166,7 +168,8 @@ def parse_all_diagnosis_json(patient_json: dict, i: int, j: int) -> (str, str, s
         # convert sec to an actual date! Last 3 digits represents the time zone
         stop_date_sec = int(str(stop_date)[:-3])
         # tzinfo = str(stop_date)[-3:] # how to convert country integer code to letter code??
-        stop_date = str(datetime.fromtimestamp(stop_date_sec))
+        stop_date = datetime.fromtimestamp(stop_date_sec)
+        stop_date = datetime.isoformat(stop_date.astimezone())
     except KeyError:
         stop_date = None
     except ValueError:
@@ -218,7 +221,7 @@ def parse_all_diagnosis_ccda(entry_xml: Element) -> (str, str, str, str):
             "./{urn:hl7-org:v3}act/{urn:hl7-org:v3}entryRelationship/{urn:hl7-org:v3}observation/{urn:hl7-org:v3}effectiveTime/{urn:hl7-org:v3}low"
         ).attrib["value"]
         start_date = datetime.strptime(start_date, "%Y%m%d%H%M%S")
-        start_date = datetime.isoformat(start_date)
+        start_date = datetime.isoformat(start_date.astimezone())
     except KeyError:
         start_date = None
     except AttributeError:
@@ -229,7 +232,7 @@ def parse_all_diagnosis_ccda(entry_xml: Element) -> (str, str, str, str):
             "./{urn:hl7-org:v3}act/{urn:hl7-org:v3}entryRelationship/{urn:hl7-org:v3}observation/{urn:hl7-org:v3}effectiveTime/{urn:hl7-org:v3}high"
         ).attrib["value"]
         stop_date = datetime.strptime(stop_date, "%Y%m%d%H%M%S")
-        stop_date = datetime.isoformat(stop_date)
+        stop_date = datetime.isoformat(stop_date.astimezone())
     except KeyError:
         stop_date = None
     except AttributeError:

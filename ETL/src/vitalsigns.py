@@ -190,7 +190,8 @@ def parse_vital_signs_json(patient_json: dict, i: int, list_j: list) -> list:
                 # convert sec to an actual date! last 3 digits represent the time zone
                 time_sec = int(str(time)[:-3])
                 # tzinfo = int(str(time)[-3:]) # how to convert country integer code to letter code??
-                time = str(datetime.fromtimestamp(time_sec))
+                time = datetime.fromtimestamp(time_sec)
+                time = datetime.isoformat(time.astimezone())
             except KeyError:
                 time = None
 
@@ -229,8 +230,7 @@ def parse_vital_signs_ccda(observations_on_specific_date: list) -> list:
         units = observation.find(".//{urn:hl7-org:v3}value").attrib["unit"]
         time = observation.find(".//{urn:hl7-org:v3}effectiveTime").attrib["value"]
         time = datetime.strptime(time, "%Y%m%d%H%M%S")
-        time = datetime.isoformat(time)
-
+        time = datetime.isoformat(time.astimezone())
         all_vital_signs_measures.append(
             {
                 "variable_name": variable,
@@ -239,7 +239,6 @@ def parse_vital_signs_ccda(observations_on_specific_date: list) -> list:
                 "time": time,
             }
         )
-    print(all_vital_signs_measures)
     return all_vital_signs_measures
 
 
