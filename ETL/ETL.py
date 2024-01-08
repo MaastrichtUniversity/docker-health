@@ -23,7 +23,7 @@ from src.etl import (
 
 # config:
 PATIENT_ID = "3b1dadde-eefe-e82a-efbc-daa3c959a0c2"
-INPUT_FORMAT = "fhir"
+INPUT_FORMAT = "sql"
 TEMPLATE_PATH = Path("data/templates")
 SYNTHEA_PATH = Path(f"data/synthea/{INPUT_FORMAT}")
 COMPOSITION_OUTPUT_PATH = Path("outputs/compositions") / PATIENT_ID / INPUT_FORMAT
