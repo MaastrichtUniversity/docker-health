@@ -47,8 +47,8 @@ def list_all_templates():
     fetch_all_templates()
 
 
-@click.command(help="Runs all ETL from default hard coded values")
-@click.argument('input_format')
+@click.command(help="Runs all ETL for a single patient. [Accepted input_format: csv, sql, json, ccda, fhir]")
+@click.argument("input_format")
 def run(input_format):
     """Runs the ETL"""
     synthea_path = Path(f"data/synthea/{input_format}")
