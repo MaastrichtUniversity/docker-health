@@ -17,6 +17,7 @@ from src.composition import (
     post_composition,
     write_json_composition,
     update_composition,
+    delete_composition,
 )
 
 from src.patient import (
@@ -392,15 +393,19 @@ def switch_patient_sex(patient, ehr_id, patient_composition_id, output_path):
         Composition UUID, containing the host and version (UUID::host::version)
     output_path: str
         Path the the folder saving all composition outputs
+
+    Returns
+    -------
+    UUID
+        New patient composition UUID
     """
-    print("\nSwitch patient sex at birth..")
     if patient.gender_code == "M":
         patient.gender_code = "F"
     elif patient.gender_code == "F":
         patient.gender_code = "M"
 
     simplified_patient_composition = patient.model_dump_json(by_alias=True, indent=4)
-    print(f"\npatient: {simplified_patient_composition}")
+    print(f"patient: {simplified_patient_composition}")
     patient_composition = transform_composition(
         simplified_composition=simplified_patient_composition,
         template_id="patient",
@@ -412,6 +417,8 @@ def switch_patient_sex(patient, ehr_id, patient_composition_id, output_path):
     )
     patient_composition_uuid = update_composition(ehr_id, patient_composition_id, patient_composition)
     print(f"patient_composition_uuid: {patient_composition_uuid}")
+
+    return patient_composition_uuid
 
 
 def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path):
@@ -445,13 +452,20 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
         json_filename=output_path / "patient.json",
     )
     patient_composition_uuid = post_composition(ehr_id, patient_composition)
-    print(f"patient_composition_uuid: {patient_composition_uuid}")
 
-    switch_patient_sex(
+    print("\nSwitch patient sex at birth..")
+    patient_composition_uuid = switch_patient_sex(
         patient=patient,
         ehr_id=ehr_id,
         patient_composition_id=patient_composition_uuid,
         output_path=output_path)
+
+    print("\nDelete patient composition..")
+    delete_composition(
+        ehr_id=ehr_id,
+        versioned_composition_id=patient_composition_uuid
+    ) 
+
 
     # print("\nDiagnosis..")
     # for diagnosis_i, diagnosis in enumerate(all_disorders):
