@@ -74,7 +74,7 @@ public class TransformService {
         this.transform();
         this.validateComposition();
 
-        this.load();
+//        this.load();
 
         return this.convertToJson();
     }

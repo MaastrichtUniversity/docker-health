@@ -1,194 +1,442 @@
 """
 Functions specific to the Vital Signs template
 """
-
-import os
-import json
-from pathlib import Path
+import sqlite3
 from datetime import datetime
-from uuid import UUID
-import requests
-from pydantic import BaseModel
-
+from typing import Optional
+from pydantic import BaseModel, Field
 import pandas as pd
-import matplotlib.pyplot as plt
+
+from src.composition import datetime_now
 
 
-EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
-EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
-EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
+class Measurement(BaseModel):
+    """Data model for the Measurement class"""
 
-PLOT_PATH = Path("data/plot")
+    value: float = Field(..., serialization_alias="magnitude")
+    units: str = Field(..., serialization_alias="units")
+    time: datetime = Field(None, serialization_alias="timeValue")
+
+
+class PointsInTime(BaseModel):
+    """Data model for the PointsInTime class"""
+
+    measurements: list[Measurement] = Field(..., serialization_alias="pointInTime")
 
 
 class VitalSigns(BaseModel):
-    """Data model for the vital signs"""
+    """Data model for the VitalSigns class"""
 
-    systolic: float
-    diastolic: float
-    time: datetime
-    bmi: float
-    height: float
-    weight: float
-    heart_rate: float
-    respiration_rate: float
+    height: Optional[PointsInTime] = Field(None, serialization_alias="bodyHeightObservation")
+    weight: Optional[PointsInTime] = Field(None, serialization_alias="bodyWeightObservation")
+    heart_rate: Optional[PointsInTime] = Field(None, serialization_alias="heartRateObservation")
+    blood_systolic: Optional[PointsInTime] = Field(None, serialization_alias="bloodPressureSystolicObservation")
+    blood_diastolic: Optional[PointsInTime] = Field(None, serialization_alias="bloodPressureDiastolicObservation")
+    start_time: datetime = Field(default_factory=datetime_now, serialization_alias="startTime")
 
-def parse_vital_signs(vital_signs: pd.DataFrame) -> VitalSigns:
+
+def create_vital_signs_instance(all_vital_signs_measures: list, vital_signs_units: dict) -> VitalSigns:
     """
-    Parse vital signs dataframe to a vital signs class
+    check ISO format and local terms of the parsed values and create a VitalSigns attribute
+
     Parameters
     ----------
-    vital_signs
-        Pandas dataframe that contains the values for the vital signs
+    all_vital_signs_measures: list
+        List containing all the parsed values, stored as a dictionary for each measurement.
+        {variable: str, value: str, unit: str, time: str}
+    vital_signs_units: dict
+        Dictionary describing the chosen units for each measurement
 
     Returns
     -------
     VitalSigns
-        Instance of VitalSigns filled with the values
-
+        Instance of the VitalSigns object
     """
-    results = VitalSigns
-    results.systolic = vital_signs[vital_signs["DESCRIPTION"] == "Systolic Blood Pressure"]["VALUE"].values[0]
-    results.diastolic = vital_signs[vital_signs["DESCRIPTION"] == "Diastolic Blood Pressure"]["VALUE"].values[0]
-    results.time = vital_signs[vital_signs["DESCRIPTION"] == "Systolic Blood Pressure"]["DATE"].values[0]
-    results.bmi = vital_signs[vital_signs["DESCRIPTION"] == "Body mass index (BMI) [Ratio]"]["VALUE"].values[0]
-    results.height = vital_signs[vital_signs["DESCRIPTION"] == "Body Height"]["VALUE"].values[0]
-    results.weight = vital_signs[vital_signs["DESCRIPTION"] == "Body Weight"]["VALUE"].values[0]
-    results.heart_rate = vital_signs[vital_signs["DESCRIPTION"] == "Heart rate"]["VALUE"].values[0]
-    results.respiration_rate = vital_signs[vital_signs["DESCRIPTION"] == "Respiratory rate"]["VALUE"].values[0]
-    return results
+    grouped_measures = {}
 
-def update_composition_vital_signs(composition: dict, vital_signs: VitalSigns) -> dict:
-    """
-    Update the composition with the values from the vital signs dataframe
-    Values:
-        - Systolic Blood Pressure
-        - Diastolic Blood Pressure
-        - Time of measurement
-        - Body mass index
-        - Body Height
-        - Body Weight
-        - Heart rate
-        - Respiratory rate
+    for measure in all_vital_signs_measures:
+        variable_name = measure["variable_name"]
 
-    Parameters
-    ----------
-    composition: dict
-        The composition for which the values need to be updated
-    vital_signs: VitalSigns
-        Contains all vital signs values
+        if variable_name not in vital_signs_units.keys():
+            # Keep only defined vital signs:
+            continue
+        try:
+            value = float(measure["value"])
+        except (ValueError, TypeError):
+            value = None
 
-    Returns
-    -------
-    dict
-        Updated composition
-    """
+        try:
+            time = datetime.fromisoformat(measure["time"]).isoformat()
+        except TypeError:
+            time = None
 
-    for index, item in enumerate(composition["content"]):
-        # Update bloodpressure
-        if item["archetype_details"]["archetype_id"]["value"] == "openEHR-EHR-OBSERVATION.blood_pressure.v2":
-            composition["content"][index]["data"]["origin"]["value"] = vital_signs.time
-            composition["content"][index]["data"]["events"][0]["time"]["value"] = vital_signs.time
-            # Hard coded the order
-            composition["content"][index]["data"]["events"][0]["data"]["items"][0]["value"][
-                "magnitude"
-            ] = vital_signs.systolic
-            composition["content"][index]["data"]["events"][0]["data"]["items"][1]["value"][
-                "magnitude"
-            ] = vital_signs.diastolic
-        # update BMI
-        if item["archetype_details"]["archetype_id"]["value"] == "openEHR-EHR-OBSERVATION.body_mass_index.v2":
-            composition["content"][index]["data"]["origin"]["value"] = vital_signs.time
-            composition["content"][index]["data"]["events"][0]["time"]["value"] = vital_signs.time
-            # Hard coded the order
-            composition["content"][index]["data"]["events"][0]["data"]["items"][0]["value"][
-                "magnitude"
-            ] = vital_signs.bmi
-        # Update height
-        if item["archetype_details"]["archetype_id"]["value"] == "openEHR-EHR-OBSERVATION.height.v2":
-            composition["content"][index]["data"]["origin"]["value"] = vital_signs.time
-            composition["content"][index]["data"]["events"][0]["time"]["value"] = vital_signs.time
-            # Hard coded the order
-            composition["content"][index]["data"]["events"][0]["data"]["items"][0]["value"][
-                "magnitude"
-            ] = vital_signs.height
-        # Update weight
-        if item["archetype_details"]["archetype_id"]["value"] == "openEHR-EHR-OBSERVATION.body_weight.v2":
-            composition["content"][index]["data"]["origin"]["value"] = vital_signs.time
-            composition["content"][index]["data"]["events"][0]["time"]["value"] = vital_signs.time
-            # Hard coded the order
-            composition["content"][index]["data"]["events"][0]["data"]["items"][0]["value"][
-                "magnitude"
-            ] = vital_signs.weight
+        if measure["units"] != vital_signs_units[variable_name]:
+            print("Units of measurement is inconsistent.", end=" ")
+            print(f"Units is in {measure['units']} but should be in {vital_signs_units[value]}.")
+            units = None
+            value = None
+            time = None
 
-        # Update heart rate
-        if item["archetype_details"]["archetype_id"]["value"] == "openEHR-EHR-OBSERVATION.pulse.v2":
-            composition["content"][index]["data"]["origin"]["value"] = vital_signs.time
-            composition["content"][index]["data"]["events"][0]["time"]["value"] = vital_signs.time
-            # Hard coded the order
-            composition["content"][index]["data"]["events"][0]["data"]["items"][0]["value"][
-                "magnitude"
-            ] = vital_signs.heart_rate
+        else:
+            units = str(measure["units"])
 
-        # Update respiration rate
-        if item["archetype_details"]["archetype_id"]["value"] == "openEHR-EHR-OBSERVATION.respiration.v2":
-            composition["content"][index]["data"]["origin"]["value"] = vital_signs.time
-            composition["content"][index]["data"]["events"][0]["time"]["value"] = vital_signs.time
-            # Hard coded the order
-            composition["content"][index]["data"]["events"][0]["data"]["items"][0]["value"][
-                "magnitude"
-            ] = vital_signs.respiration_rate
+        if variable_name not in grouped_measures:
+            grouped_measures[variable_name] = []
+        grouped_measures[variable_name].append(Measurement(value=value, units=units, time=time))
 
-    return composition
+    grouped_measures_pointintime = {}
+    for var in vital_signs_units.keys():
+        try:
+            grouped_measures_pointintime[var] = PointsInTime(measurements=grouped_measures[var])
+        except KeyError:
+            grouped_measures_pointintime[var] = None
 
-def remove_pulse_oximetry_from_composition(composition: dict) -> dict:
-    """
-    Remove pulse oximetry observation from composition
-    Parameters
-    ----------
-    composition: dict
-        The composition for which the values need to be removed
-
-    Returns
-    -------
-    dict
-        Updated composition
-    """
-    for index, item in enumerate(composition["content"]):
-        if item["archetype_details"]["archetype_id"]["value"] == "openEHR-EHR-OBSERVATION.pulse_oximetry.v1":
-            del composition["content"][index]
-    return composition
-
-def plot_bloodpressure_over_time(ehr_id: UUID) -> None:
-    """
-    Plot and save a graph of systolic and diastolic bloodpressure for a given patient using the vital signs template
-
-    Parameters
-    ----------
-    ehr_id: UUID
-        ehr_id of the patient for which the data will be plotted
-
-    """
-    url = f"{EHRBASE_BASE_URL}/query/aql"
-    query = f"SELECT c/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/time as time,  c/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value/magnitude as systolic ,  c/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/data[at0003]/items[at0005]/value/magnitude as diastolic FROM EHR e CONTAINS COMPOSITION c WHERE c/archetype_details/template_id/value='Vital signs' AND e/ehr_id/value='{ehr_id}'"
-    headers = {
-        "Accept": "application/json",
-        "Prefer": "return=representation",
-    }
-    response = requests.request(
-        "GET", url, headers=headers, params={"q": query},
-        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD), timeout=10
+    return VitalSigns(
+        height=grouped_measures_pointintime["Body Height"],
+        weight=grouped_measures_pointintime["Body Weight"],
+        heart_rate=grouped_measures_pointintime["Heart rate"],
+        blood_systolic=grouped_measures_pointintime["Systolic Blood Pressure"],
+        blood_diastolic=grouped_measures_pointintime["Diastolic Blood Pressure"],
     )
-    response_json = json.loads(response.text)
-    dataframe = pd.DataFrame(columns=["Time", "Systolic", "Diastolic"])
 
-    for row in response_json["rows"]:
-        dataframe.loc[len(dataframe)] = [row[0]["value"], row[1], row[2]]
 
-    dataframe["Time"] = pd.to_datetime(dataframe["Time"])
-    dataframe = dataframe.sort_values(by="Time")
-    dataframe.set_index("Time", inplace=True)
-    dataframe.plot()
+def parse_vital_signs_csv(vital_signs_enc_df: pd.DataFrame) -> list:
+    """
+    Parse a csv file of all vital signs measurements
 
-    plt.savefig(PLOT_PATH / f"{ehr_id}_bloodpressure_over_time.png")
-    plt.close()
+    Parameters
+    ----------
+    vital_signs_enc_df
+        Dataframe that contains information on multiple vital signs measurements
+        within the same encounter
+
+    Returns
+    -------
+    list
+        List containing all the parsed values, stored as a dictionary for each measurement.
+        {variable: str, value: str, unit: str, time: str}
+    """
+    all_vital_signs_measures = []
+    for _, vital_sign in vital_signs_enc_df.iterrows():
+        try:
+            variable = vital_sign["DESCRIPTION"]
+        except KeyError:
+            variable = None
+
+        try:
+            value = vital_sign["VALUE"]
+        except KeyError:
+            value = None
+
+        try:
+            units = vital_sign["UNITS"]
+        except KeyError:
+            units = None
+
+        try:
+            time = vital_sign["DATE"]
+        except KeyError:
+            time = None
+
+        all_vital_signs_measures.append({"variable_name": variable, "value": value, "units": units, "time": time})
+
+    return all_vital_signs_measures
+
+
+def parse_vital_signs_json(patient_json: dict, i: int, list_j: list) -> list:
+    """
+    Parse a csv file of all vital signs measurements
+
+    Parameters
+    ----------
+    patient_json
+        The json file that contains information on a patient, loaded as a python dict
+    i: int
+        Increment to access a given encounter
+    list_j:
+        List of increments to access all vital_signs observations
+
+    Returns
+    -------
+    list
+        List containing all the parsed values, stored as a dictionary for each measurement.
+        {variable_name: str, value: str, unit: str, time: str}
+    """
+    all_vital_signs_measures = []
+    for j in list_j:
+        observations = patient_json["record"]["encounters"][i]["observations"][j]
+        if observations["observations"] != []:  # for specifically for blood_pressure
+            observations = observations["observations"]
+        else:
+            observations = [observations]
+        for observation in observations:
+            try:
+                variable = observation["codes"][0]["display"]
+            except KeyError:
+                variable = None
+
+            try:
+                value = observation["value"]
+            except KeyError:
+                value = None
+
+            try:
+                units = observation["unit"]
+            except KeyError:
+                units = None
+
+            try:
+                time = observation["start"]
+                # convert sec to an actual date! last 3 digits represent the time zone
+                time_sec = int(str(time)[:-3])
+                # tzinfo = int(str(time)[-3:]) # how to convert country integer code to letter code??
+                time = datetime.fromtimestamp(time_sec)
+                time = datetime.isoformat(time.astimezone())
+            except KeyError:
+                time = None
+
+            all_vital_signs_measures.append(
+                {
+                    "variable_name": variable,
+                    "value": value,
+                    "units": units,
+                    "time": time,
+                }
+            )
+
+    return all_vital_signs_measures
+
+
+def parse_vital_signs_ccda(observations_on_specific_date: list) -> list:
+    """
+    Parse a ccda xml file of all vital signs measurements
+
+    Parameters
+    ----------
+    observations_on_specific_date: list
+        list of Elements
+
+    Returns
+    -------
+    list
+        List containing all the parsed values, stored as a dictionary for each measurement.
+        {variable_name: str, value: str, unit: str, time: str}
+    """
+    all_vital_signs_measures = []
+
+    for observation in observations_on_specific_date:
+        variable = observation.find(".//{urn:hl7-org:v3}code").attrib["displayName"]
+        value = observation.find(".//{urn:hl7-org:v3}value").attrib["value"]
+        units = observation.find(".//{urn:hl7-org:v3}value").attrib["unit"]
+        time = observation.find(".//{urn:hl7-org:v3}effectiveTime").attrib["value"]
+        time = datetime.strptime(time, "%Y%m%d%H%M%S")
+        time = datetime.isoformat(time.astimezone())
+        all_vital_signs_measures.append(
+            {
+                "variable_name": variable,
+                "value": value,
+                "units": units,
+                "time": time,
+            }
+        )
+    return all_vital_signs_measures
+
+
+def get_all_vital_signs_sql(connection: sqlite3.Connection, patient_id: str) -> pd.DataFrame:
+    """
+    Parse a sql file of all vital signs measurements
+
+    Parameters
+    ----------
+    connection:
+        Connection to sql data containing all vital signs
+    patient_id: str
+        External patient id
+
+    Returns
+    --------
+    pd.DataFrame
+        Pandas dataframe containing all vital signs (for all encounters)
+
+    """
+    cursor = connection.cursor()
+    try:
+        select_patient_vital_signs_query = "SELECT * FROM Observations WHERE patient = ? AND category = 'vital-signs'"
+        cursor.execute(select_patient_vital_signs_query, (patient_id,))
+        result = cursor.fetchall()
+        if result:
+            # Convert each tuple in the result to a dictionary
+            column_names = [
+                "date",
+                "patient_id",
+                "encounter_id",
+                "category",
+                "code",
+                "variable_name",
+                "value",
+                "units",
+                "type",
+            ]
+            vital_signs_unparsed = pd.DataFrame([dict(zip(column_names, row)) for row in result])
+            return vital_signs_unparsed
+
+        print(f"No vital signs found with ID {patient_id}")
+        return None
+
+    except sqlite3.Error as error:
+        print(f"SQLite error: {error}")
+        return None
+    finally:
+        cursor.close()
+
+
+def parse_all_vital_signs_sql(vital_signs_enc_df: pd.DataFrame) -> list:
+    """
+    Parse a sql file of all vital signs measurements
+
+    Parameters
+    ----------
+    vital_signs_enc_df: pd.DataFrame
+        Pandas dataframe containing all vital signs for a specific encounter
+
+    Returns
+    -------
+    list
+        List containing all the parsed values, stored as a dictionary for each measurement.
+        {variable_name: str, value: str, unit: str, time: str}
+    """
+    all_vital_signs_measures = []
+    for _, vital_sign in vital_signs_enc_df.iterrows():
+        try:
+            variable = vital_sign["variable_name"]
+        except KeyError:
+            variable = None
+
+        try:
+            value = vital_sign["value"]
+        except KeyError:
+            value = None
+
+        try:
+            units = vital_sign["units"]
+        except KeyError:
+            units = None
+
+        try:
+            time = vital_sign["date"]
+        except KeyError:
+            time = None
+
+        all_vital_signs_measures.append(
+            {
+                "variable_name": variable,
+                "value": value,
+                "units": units,
+                "time": time,
+            }
+        )
+
+    return all_vital_signs_measures
+
+
+def parse_all_vital_signs_fhir(observations, vital_signs_units) -> VitalSigns:
+    """
+    Parse the list of resource observation entries
+
+    Parameters
+    ----------
+    observations
+        The list of vital sign observations to parse.
+    vital_signs_units: dict
+        Dictionary describing the chosen units for each measurement
+
+    Returns
+    -------
+    VitalSigns
+        Instance of the VitalSigns object
+    """
+
+    all_vital_signs_measures = []
+    for observation in observations:
+        try:
+            variable = observation["code"]["text"]
+        except KeyError:
+            variable = None
+
+        try:
+            time = observation["effectiveDateTime"]
+        except KeyError:
+            time = None
+
+        if "valueQuantity" in observation:
+            get_observation_value_units(observation, all_vital_signs_measures, variable, time)
+        else:
+            get_blood_pressure_observation_value_units(observation, all_vital_signs_measures, time)
+
+    return create_vital_signs_instance(all_vital_signs_measures, vital_signs_units)
+
+
+def get_observation_value_units(observation: dict, all_vital_signs_measures: list, variable: str, time: str):
+    """
+    Retrieve the value and units of the vital sign observation. Then append it to the output list.
+
+    Parameters
+    ----------
+    observation: dict
+        A vital sign observation to parse.
+    all_vital_signs_measures: list
+        The output list
+    variable: str
+        Display name of the vital sign code
+    time: str
+        Datetime
+    """
+    try:
+        value = observation["valueQuantity"]["value"]
+    except KeyError:
+        value = None
+
+    try:
+        units = observation["valueQuantity"]["unit"]
+    except KeyError:
+        units = None
+
+    all_vital_signs_measures.append(
+        {
+            "variable_name": variable,
+            "value": value,
+            "units": units,
+            "time": time,
+        }
+    )
+
+
+def get_blood_pressure_observation_value_units(observation: dict, all_vital_signs_measures: list, time: str):
+    """
+    Blood pressure observation follows a different data structure.
+
+    Parameters
+    ----------
+    observation: dict
+        A vital sign observation to parse.
+    all_vital_signs_measures: list
+        The output list
+    time: str
+        Datetime
+    """
+    try:
+        for component in observation["component"]:
+            variable = component["code"]["text"]
+            value = component["valueQuantity"]["value"]
+            units = component["valueQuantity"]["unit"]
+
+            all_vital_signs_measures.append(
+                {
+                    "variable_name": variable,
+                    "value": value,
+                    "units": units,
+                    "time": time,
+                }
+            )
+    except KeyError:
+        print("Current observation is not expected.")

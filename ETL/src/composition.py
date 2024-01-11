@@ -1,52 +1,81 @@
 """
-Functions to POST a composition to EHRbase
+Functions to transform and POST a composition to the EHRbase
 """
 
-import os
 import json
+import os
 from datetime import datetime
 from uuid import UUID
+
+import pytz
 import requests
 
+NLTZ = pytz.timezone("Europe/Amsterdam")
 EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
 EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
 EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 
-def load_composition_example(filename: str) -> dict:
+
+def datetime_now() -> datetime:
+    """Return current time on the NL time zone"""
+    return datetime.now(NLTZ)
+
+
+def transform_composition(simplified_composition: str, template_id: str) -> dict:
     """
-    Load an example composition and parse it to a python dictionary
+    POST a simplified JSON composition to the Transformation REST API service
+    and return the transformed composition according to the EHR standards
+
     Parameters
     ----------
-    filename: str
-        Name of file which stores the composition
+    simplified_composition: str
+        Simplified JSON composition to transform
+    template_id: str
+        Identifier of the template to use for the transformation
 
     Returns
     -------
     dict
-        Parsed composition
-
+        The transformed composition fitting EHR standards
     """
-    with open(filename, "rb") as file:
-        return json.load(file)
+    url = f"http://transform.dh.local:8080/{template_id}"
+    headers = {
+        "accept": "*/*",
+        "Content-Type": "application/json",
+    }
+    response = requests.request(
+        "POST",
+        url,
+        headers=headers,
+        data=simplified_composition,
+        timeout=10,
+    )
 
-def post_composition(ehr_id: UUID, composition: dict) -> UUID:
+    composition = response.json()
+    # print(json.dumps(composition, indent=4))
+
+    return composition
+
+
+def post_composition(ehr_id: UUID, composition: dict) -> UUID | None:
     """
-    Post a composition to the server
+    POST a composition to the EHRbase server
+
     Parameters
     ----------
     ehr_id: UUID
-        ehr_id for patient
+        EHR id of a given patient
     composition: dict
-        Compistion to be posted
-
+        Composition to be posted
 
     Returns
     -------
     UUID
-        versioned id for this composition
-
+        versioned id of the composition, if response.ok is True
+    None
+        if reponse.ok is False
     """
-    print(json.dumps(composition))
+    # print(json.dumps(composition))
     url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition"
     headers = {
         "Accept": "application/json; charset=UTF-8",
@@ -61,37 +90,27 @@ def post_composition(ehr_id: UUID, composition: dict) -> UUID:
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
+
     response_json = json.loads(response.text)
+    print(f"RESPONSE: {response.status_code}")
+    if response.ok:
+        print("Composition was successfully created")
+        return response_json["uid"]["value"]
+    print(f"ERROR {response_json['error']}")
+    print(response_json["message"])
+    return None
 
-    return response_json["uid"]["value"]
 
-def update_composition_high_level(composition: dict, start_time: datetime, end_time: datetime) -> dict:
+def write_json_composition(composition: str, json_filename: str):
     """
-    Update the composition with:
-        - territory
-        - composer
-        - encounter start time
-        - encounter end time
+    Write a JSON composition to a file
 
     Parameters
     ----------
     composition: dict
-        Composition that needs to be updated
-    start_time: datetime
-        Start time of the encounter
-    end_time: datetime
-        End ime of the encounter
-
-    Returns
-    -------
-    dict
-        Updated composition
+        Composition to be posted
+    json_filename: str
+        Name of the file to create
     """
-    # set territory
-    composition["territory"]["code_string"] = "NL"
-    # set composer
-    composition["composer"]["name"] = "DataHub"
-    # set start time
-    composition["context"]["start_time"]["value"] = start_time
-    composition["context"]["end_time"] = {"value": end_time}
-    return composition
+    with open(json_filename, "w", encoding="utf-8") as file:
+        json.dump(composition, file, indent=4)

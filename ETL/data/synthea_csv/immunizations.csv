@@ -1,8 +1,0 @@
-DATE,PATIENT,ENCOUNTER,CODE,DESCRIPTION,BASE_COST
-2014-10-15T20:29:31Z,a2f7ab19-64e1-6fb3-7232-413f04c55100,3b892818-49cf-8fd2-9fbb-a45addab4819,140,Influenza  seasonal  injectable  preservative free,136.00
-2014-10-15T20:29:31Z,a2f7ab19-64e1-6fb3-7232-413f04c55100,3b892818-49cf-8fd2-9fbb-a45addab4819,113,Td (adult)  5 Lf tetanus toxoid  preservative free  adsorbed,136.00
-2014-10-15T20:29:31Z,a2f7ab19-64e1-6fb3-7232-413f04c55100,3b892818-49cf-8fd2-9fbb-a45addab4819,43,Hep B  adult,136.00
-2014-10-15T20:29:31Z,a2f7ab19-64e1-6fb3-7232-413f04c55100,3b892818-49cf-8fd2-9fbb-a45addab4819,114,meningococcal MCV4P,136.00
-2017-10-18T20:29:31Z,a2f7ab19-64e1-6fb3-7232-413f04c55100,f160d3af-a37f-66b2-bafc-b940ee258e8a,140,Influenza  seasonal  injectable  preservative free,136.00
-2020-10-21T20:29:31Z,a2f7ab19-64e1-6fb3-7232-413f04c55100,435b6f3b-56db-311b-7a3e-811486151189,140,Influenza  seasonal  injectable  preservative free,136.00
-2021-03-10T20:29:31Z,a2f7ab19-64e1-6fb3-7232-413f04c55100,eac430b8-76b9-cc08-91de-423e4b14d658,212,SARS-COV-2 (COVID-19) vaccine  vector non-replicating  recombinant spike protein-Ad26  preservative free  0.5 mL,136.00

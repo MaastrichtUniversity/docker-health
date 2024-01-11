@@ -10,12 +10,14 @@ import com.nedap.archie.rm.generic.PartySelf;
 import com.nedap.archie.rm.support.identification.TerminologyId;
 import org.ehrbase.openehr.sdk.generator.commons.interfaces.CompositionEntity;
 import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.Language;
+import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.NullFlavour;
 import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.Setting;
 import org.ehrbase.openehr.sdk.generator.commons.shareddefinition.Territory;
 
 import java.util.Collections;
 
 import static com.example.restservice.transform.Formatters.formatToCorrectTime;
+import static java.util.Objects.nonNull;
 
 public class TransformDiagnosis implements ITransformDto {
 
@@ -33,7 +35,6 @@ public class TransformDiagnosis implements ITransformDto {
         composition.setSettingDefiningCode(Setting.HOME);
         composition.setLanguage(Language.EN);
         composition.setTerritory(Territory.NL);
-        composition.setEndTimeValue(formatToCorrectTime(this.diagnosisDemoDTO.getEndTime()));
         composition.setStartTimeValue(formatToCorrectTime(this.diagnosisDemoDTO.getStartTime()));
         composition.setComposer(new PartyIdentified(null, "DataHub", null));
 
@@ -42,7 +43,13 @@ public class TransformDiagnosis implements ITransformDto {
         DiagnosisEvaluation diagnosisEvaluation = new DiagnosisEvaluation();
         diagnosisEvaluation.setSubject(new PartySelf());
         diagnosisEvaluation.setLanguage(Language.NL);
-        diagnosisEvaluation.setDateOfDiagnosisValue(formatToCorrectTime(this.diagnosisDemoDTO.getDateClinicallyRecognised()));
+        diagnosisEvaluation.setDateOfDiagnosisValue(formatToCorrectTime(this.diagnosisDemoDTO.getDateOfDiagnosisValue()));
+
+        if (nonNull(this.diagnosisDemoDTO.getDateOfResolutionValue())) {
+            diagnosisEvaluation.setDateOfResolutionValue(formatToCorrectTime(this.diagnosisDemoDTO.getDateOfResolutionValue()));
+        } else {
+            diagnosisEvaluation.setDateOfResolutionNullFlavourDefiningCode(NullFlavour.NOT_APPLICABLE);
+        }
 
 
         DvCodedText dvCodedText = new DvCodedText();

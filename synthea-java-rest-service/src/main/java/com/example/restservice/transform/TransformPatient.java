@@ -58,11 +58,11 @@ public class TransformPatient implements ITransformDto {
 
         // Gender at birth
         GenderEvaluation genderEvaluation = new GenderEvaluation();
-        if (Objects.equals(this.patientDTO.getSexAssignedAtBirth(), "Male")) {
+        if (Objects.equals(this.patientDTO.getSexAssignedAtBirth(), SexAssignedAtBirthDefiningCode.MALE.getCode())) {
             genderEvaluation.setSexAssignedAtBirthDefiningCode(SexAssignedAtBirthDefiningCode.MALE);
-        } else if (Objects.equals(this.patientDTO.getSexAssignedAtBirth(), "Female")) {
+        } else if (Objects.equals(this.patientDTO.getSexAssignedAtBirth(), SexAssignedAtBirthDefiningCode.FEMALE.getCode())) {
             genderEvaluation.setSexAssignedAtBirthDefiningCode(SexAssignedAtBirthDefiningCode.FEMALE);
-        } else if (Objects.equals(this.patientDTO.getSexAssignedAtBirth(), "Intersex")) {
+        } else if (Objects.equals(this.patientDTO.getSexAssignedAtBirth(), SexAssignedAtBirthDefiningCode.INTERSEX.getCode())) {
             genderEvaluation.setSexAssignedAtBirthDefiningCode(SexAssignedAtBirthDefiningCode.INTERSEX);
         } else {
             genderEvaluation.setSexAssignedAtBirthNullFlavourDefiningCode(NullFlavour.UNKNOWN);
