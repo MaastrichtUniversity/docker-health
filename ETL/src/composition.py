@@ -71,7 +71,8 @@ def post_composition(ehr_id: UUID, composition: dict) -> UUID | None:
     Returns
     -------
     UUID
-        versioned id of the composition, if response.ok is True
+        if response.ok is True:
+        Versioned id of the composition, containing the host and version (UUID::host::version)
     None
         if reponse.ok is False
     """
@@ -99,6 +100,94 @@ def post_composition(ehr_id: UUID, composition: dict) -> UUID | None:
     print(f"ERROR {response_json['error']}")
     print(response_json["message"])
     return None
+
+
+def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composition: dict) -> UUID | None:
+    """
+    PUT (update) a previously posted composition in the EHRbase server
+
+    Parameters
+    ----------
+    ehr_id: UUID
+        EHR id of a given patient
+    versioned_composition_id: UUID
+        Composition UUID, containing the host and version (UUID::host::version)
+    new_composition: dict
+        Updated composition
+
+    Returns
+    -------
+    UUID
+        versioned id of the composition, if response.ok is True
+    None
+        if reponse.ok is False
+    """
+    # print(json.dumps(composition))
+    composition_uuid, host, version = versioned_composition_id.split("::")
+
+    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition/{composition_uuid}?openehrVersion={version}"
+    headers = {
+        "If-Match": versioned_composition_id,
+        "Accept": "application/json; charset=UTF-8",
+        "Prefer": "return=representation",
+        "Content-Type": "application/json",
+        "openEHR-AUDIT_DETAILS": "None", # Not sure about the purpose of this header
+    }
+    response = requests.request(
+        "PUT",
+        url,
+        headers=headers,
+        data=json.dumps(new_composition),
+        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        timeout=10,
+    )
+
+    response_json = json.loads(response.text)
+    print(f"RESPONSE: {response.status_code}")
+    if response.ok:
+        print("Update composition was successfully created")
+        return response_json["uid"]["value"]
+    print(f"ERROR {response_json['error']}")
+    print(response_json["message"])
+    return None
+
+
+def delete_composition(ehr_id: UUID, versioned_composition_id: UUID) -> UUID | None:
+    """
+    DELETE a previously posted composition in the EHRbase server
+
+    Parameters
+    ----------
+    ehr_id: UUID
+        EHR id of a given patient
+    versioned_composition_id: UUID
+        Composition UUID, containing the host and version (UUID::host::version)
+        Must be the last version
+    """
+    # print(json.dumps(composition))
+    composition_uuid, host, version = versioned_composition_id.split("::")
+        # check if this is the lastest version !
+
+    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition/{versioned_composition_id}"
+    headers = {
+        "openEHR-AUDIT_DETAILS": "None", # Not sure about the purpose of this header
+    }
+    response = requests.request(
+        "DELETE",
+        url,
+        headers=headers,
+        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        timeout=10,
+    )
+    print(response)
+
+    # Script below cannot work since the status codes are undocumented /!\
+    # response_json = json.loads(response.text)
+    # print(f"RESPONSE: {response.status_code}")
+    # if response.ok:
+    #     print("Composition was successfully deleted")
+    # print(f"ERROR {response_json['error']}")
+    # print(response_json["message"])
 
 
 def write_json_composition(composition: str, json_filename: str):

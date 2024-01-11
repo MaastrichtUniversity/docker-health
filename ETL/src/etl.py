@@ -16,6 +16,8 @@ from src.composition import (
     transform_composition,
     post_composition,
     write_json_composition,
+    update_composition,
+    delete_composition,
 )
 
 from src.patient import (
@@ -377,6 +379,48 @@ def extract_all_fhir(patient_id, data_path, vital_signs_units) -> (Patient, list
     return patient, all_disorders, all_vital_signs
 
 
+def switch_patient_sex(patient, ehr_id, patient_composition_id, output_path):
+    """
+    Switch the sex assigned at birth of the patient.
+
+    Parameters
+    ----------
+    patient: Patient
+        Instance of the Patient class
+    ehr_id: UUID
+        ehr_id for the given patient id
+    patient_composition_id: UUID
+        Composition UUID, containing the host and version (UUID::host::version)
+    output_path: str
+        Path the the folder saving all composition outputs
+
+    Returns
+    -------
+    UUID
+        New patient composition UUID
+    """
+    if patient.gender_code == "M":
+        patient.gender_code = "F"
+    elif patient.gender_code == "F":
+        patient.gender_code = "M"
+
+    simplified_patient_composition = patient.model_dump_json(by_alias=True, indent=4)
+    print(f"patient: {simplified_patient_composition}")
+    patient_composition = transform_composition(
+        simplified_composition=simplified_patient_composition,
+        template_id="patient",
+    )
+    # print(f"\ncomposition: {patient_composition}")
+    write_json_composition(
+        composition=patient_composition,
+        json_filename=output_path / "patient_updated.json",
+    )
+    patient_composition_uuid = update_composition(ehr_id, patient_composition_id, patient_composition)
+    print(f"patient_composition_uuid: {patient_composition_uuid}")
+
+    return patient_composition_uuid
+
+
 def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path):
     """
     Transform each data instance into a composition, and POST these compositions
@@ -408,36 +452,49 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
         json_filename=output_path / "patient.json",
     )
     patient_composition_uuid = post_composition(ehr_id, patient_composition)
-    print(f"patient_composition_uuid: {patient_composition_uuid}")
 
-    print("\nDiagnosis..")
-    for diagnosis_i, diagnosis in enumerate(all_disorders):
-        simplified_diagnosis_composition = diagnosis.model_dump_json(by_alias=True, indent=4)
-        print(f"\ndiagnosis {diagnosis_i+1}: {simplified_diagnosis_composition}")
-        diagnosis_composition = transform_composition(
-            simplified_composition=simplified_diagnosis_composition,
-            template_id="diagnosis-demo",
-        )
-        write_json_composition(
-            composition=diagnosis_composition,
-            json_filename=output_path / f"diagnosis_{diagnosis_i+1}.json",
-        )
-        # print(f"\ncomposition: {diagnosis_composition}")
-        diagnosis_composition_uuid = post_composition(ehr_id, diagnosis_composition)
-        print(f"diagnosis_composition_uuid: {diagnosis_composition_uuid}")
+    print("\nSwitch patient sex at birth..")
+    patient_composition_uuid = switch_patient_sex(
+        patient=patient,
+        ehr_id=ehr_id,
+        patient_composition_id=patient_composition_uuid,
+        output_path=output_path)
 
-    print("\nVital Signs..")
-    for vitalsigns_i, vitalsigns in enumerate(all_vital_signs):
-        simplified_vitalsigns_composition = vitalsigns.model_dump_json(by_alias=True, indent=4)
-        print(f"\nvital_signs {vitalsigns_i+1}: {simplified_vitalsigns_composition}")
-        vitalsigns_composition = transform_composition(
-            simplified_composition=simplified_vitalsigns_composition,
-            template_id="vital_signs",
-        )
-        write_json_composition(
-            composition=vitalsigns_composition,
-            json_filename=output_path / f"vital_signs_{vitalsigns_i+1}.json",
-        )
-        # print(f"\ncomposition: {vitalsigns_composition}")
-        vitalsigns_composition_uuid = post_composition(ehr_id, vitalsigns_composition)
-        print(f"vitalsigns_composition_uuid: {vitalsigns_composition_uuid}")
+    print("\nDelete patient composition..")
+    delete_composition(
+        ehr_id=ehr_id,
+        versioned_composition_id=patient_composition_uuid
+    ) 
+
+
+    # print("\nDiagnosis..")
+    # for diagnosis_i, diagnosis in enumerate(all_disorders):
+    #     simplified_diagnosis_composition = diagnosis.model_dump_json(by_alias=True, indent=4)
+    #     print(f"\ndiagnosis {diagnosis_i+1}: {simplified_diagnosis_composition}")
+    #     diagnosis_composition = transform_composition(
+    #         simplified_composition=simplified_diagnosis_composition,
+    #         template_id="diagnosis-demo",
+    #     )
+    #     write_json_composition(
+    #         composition=diagnosis_composition,
+    #         json_filename=output_path / f"diagnosis_{diagnosis_i+1}.json",
+    #     )
+    #     # print(f"\ncomposition: {diagnosis_composition}")
+    #     diagnosis_composition_uuid = post_composition(ehr_id, diagnosis_composition)
+    #     print(f"diagnosis_composition_uuid: {diagnosis_composition_uuid}")
+
+    # print("\nVital Signs..")
+    # for vitalsigns_i, vitalsigns in enumerate(all_vital_signs):
+    #     simplified_vitalsigns_composition = vitalsigns.model_dump_json(by_alias=True, indent=4)
+    #     print(f"\nvital_signs {vitalsigns_i+1}: {simplified_vitalsigns_composition}")
+    #     vitalsigns_composition = transform_composition(
+    #         simplified_composition=simplified_vitalsigns_composition,
+    #         template_id="vital_signs",
+    #     )
+    #     write_json_composition(
+    #         composition=vitalsigns_composition,
+    #         json_filename=output_path / f"vital_signs_{vitalsigns_i+1}.json",
+    #     )
+    #     # print(f"\ncomposition: {vitalsigns_composition}")
+    #     vitalsigns_composition_uuid = post_composition(ehr_id, vitalsigns_composition)
+    #     print(f"vitalsigns_composition_uuid: {vitalsigns_composition_uuid}")
