@@ -419,17 +419,21 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     for diagnosis_i, diagnosis in enumerate(all_disorders):
         simplified_diagnosis_composition = diagnosis.model_dump_json(by_alias=True, indent=4)
         print(f"\ndiagnosis {diagnosis_i+1}: {simplified_diagnosis_composition}")
-        diagnosis_composition = transform_composition(
-            simplified_composition=simplified_diagnosis_composition,
-            template_id="diagnosis-demo",
-        )
-        write_json_composition(
-            composition=diagnosis_composition,
-            json_filename=output_path / f"diagnosis_{diagnosis_i+1}.json",
-        )
-        # print(f"\ncomposition: {diagnosis_composition}")
-        diagnosis_composition_uuid = post_composition(ehr_id, diagnosis_composition)
-        print(f"diagnosis_composition_uuid: {diagnosis_composition_uuid}")
+
+        if not query_diagnosis_composition(ehr_id, diagnosis):
+            diagnosis_composition = transform_composition(
+                simplified_composition=simplified_diagnosis_composition,
+                template_id="diagnosis-demo",
+            )
+            write_json_composition(
+                composition=diagnosis_composition,
+                json_filename=output_path / f"diagnosis_{diagnosis_i+1}.json",
+            )
+            # print(f"\ncomposition: {diagnosis_composition}")
+            diagnosis_composition_uuid = post_composition(ehr_id, diagnosis_composition)
+            print(f"diagnosis_composition_uuid: {diagnosis_composition_uuid}")
+        else:
+            print(f"Skip transform_load for {ehr_id}")
 
     print("\nVital Signs..")
     for vitalsigns_i, vitalsigns in enumerate(all_vital_signs):
