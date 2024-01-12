@@ -37,6 +37,7 @@ from src.diagnosis import (
     create_diagnosis_instance,
     parse_diagnosis_fhir,
 )
+from src.query import query_patient_composition
 from src.vitalsigns import (
     VitalSigns,
     parse_vital_signs_csv,
@@ -393,22 +394,26 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     ehr_id: UUID
         ehr_id for the given patient id
     output_path: str
-        Path the the folder saving all composition outputs
+        Path the folder saving all composition outputs
     """
     print("\nPatient..")
     simplified_patient_composition = patient.model_dump_json(by_alias=True, indent=4)
     print(f"\npatient: {simplified_patient_composition}")
-    patient_composition = transform_composition(
-        simplified_composition=simplified_patient_composition,
-        template_id="patient",
-    )
-    # print(f"\ncomposition: {patient_composition}")
-    write_json_composition(
-        composition=patient_composition,
-        json_filename=output_path / "patient.json",
-    )
-    patient_composition_uuid = post_composition(ehr_id, patient_composition)
-    print(f"patient_composition_uuid: {patient_composition_uuid}")
+
+    if not query_patient_composition(ehr_id, patient):
+        patient_composition = transform_composition(
+            simplified_composition=simplified_patient_composition,
+            template_id="patient",
+        )
+        # print(f"\ncomposition: {patient_composition}")
+        write_json_composition(
+            composition=patient_composition,
+            json_filename=output_path / "patient.json",
+        )
+        patient_composition_uuid = post_composition(ehr_id, patient_composition)
+        print(f"patient_composition_uuid: {patient_composition_uuid}")
+    else:
+        print(f"Skip transform_load for {ehr_id}")
 
     print("\nDiagnosis..")
     for diagnosis_i, diagnosis in enumerate(all_disorders):
