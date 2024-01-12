@@ -37,7 +37,7 @@ from src.diagnosis import (
     create_diagnosis_instance,
     parse_diagnosis_fhir,
 )
-from src.query import query_patient_composition
+from src.query import query_patient_composition, query_diagnosis_composition
 from src.vitalsigns import (
     VitalSigns,
     parse_vital_signs_csv,
