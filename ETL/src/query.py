@@ -22,20 +22,15 @@ def query_patient_composition(ehr_id: UUID, patient: Patient) -> bool:
     patient: Patient
         Data object to check
     """
-    gender_code = {
-        "M": "Male",
-        "F": "Female",
-    }
-
     url = f"{EHRBASE_BASE_URL}/query/aql"
     query = (
-        f"SELECT c/uid/value, "
-        f"c/content[openEHR-EHR-EVALUATION.death_summary.v1]/data[at0001]/items[at0092]/null_flavour/value "
+        f"SELECT c/uid/value as composition_uuid, "
+        f"c/content[openEHR-EHR-EVALUATION.death_summary.v1]/data[at0001]/items[at0092]/null_flavour/value as dateOfDeath "
         f"FROM EHR e[ehr_id/value='{ehr_id}'] "
         f"CONTAINS COMPOSITION c "
         f"WHERE c/archetype_details/template_id/value='patient' "
         f"AND c/content[openEHR-EHR-EVALUATION.birth_summary.v0]/data[at0001]/items[at0004]/value/value='{patient.birth_date.isoformat()}' "
-        f"AND  c/content[openEHR-EHR-EVALUATION.gender.v1]/data[at0002]/items[at0019]/value/value='{gender_code[patient.gender_code]}'"
+        f"AND  c/content[openEHR-EHR-EVALUATION.gender.v1]/data[at0002]/items[at0019]/value/defining_code/code_string='{patient.gender_code}'"
     )
     # AND c/content[openEHR-EHR-EVALUATION.death_summary.v1]/data[at0001]/items[at0092]/null_flavour/value='{patient.death_date}'
     headers = {
