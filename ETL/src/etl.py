@@ -18,6 +18,8 @@ from src.composition import (
     write_json_composition,
     update_composition,
     delete_composition,
+    get_all_versioned_composition_uuids,
+    get_composition_at_version
 )
 
 from src.patient import (
@@ -49,6 +51,7 @@ from src.vitalsigns import (
     create_vital_signs_instance,
     parse_all_vital_signs_fhir,
 )
+
 
 
 def extract_all_csv(patient_id, data_path, vital_signs_units) -> (Patient, list[Diagnosis], list[VitalSigns]):
@@ -453,6 +456,10 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     )
     patient_composition_uuid = post_composition(ehr_id, patient_composition)
 
+    # Getting versioned ob ject uuid for retrieving all versions
+    composition_uuid, host, version = patient_composition_uuid.split("::")
+    print(f"\n Versioned object uuid: {composition_uuid}")
+
     print("\nSwitch patient sex at birth..")
     patient_composition_uuid = switch_patient_sex(
         patient=patient,
@@ -460,11 +467,22 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
         patient_composition_id=patient_composition_uuid,
         output_path=output_path)
 
-    print("\nDelete patient composition..")
-    delete_composition(
+    # print("\nDelete patient composition..")
+    # delete_composition(
+    #     ehr_id=ehr_id,
+    #     versioned_composition_id=patient_composition_uuid
+    # )
+
+    print("\nShow the composition at its oldest version")
+    versioned_composition_uuids = get_all_versioned_composition_uuids(
         ehr_id=ehr_id,
-        versioned_composition_id=patient_composition_uuid
-    ) 
+        composition_id=composition_uuid
+    )
+    print(get_composition_at_version(
+        ehr_id=ehr_id,
+        versioned_composition_id=versioned_composition_uuids[0]
+    ))
+
 
 
     # print("\nDiagnosis..")

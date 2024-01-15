@@ -203,3 +203,92 @@ def write_json_composition(composition: str, json_filename: str):
     """
     with open(json_filename, "w", encoding="utf-8") as file:
         json.dump(composition, file, indent=4)
+
+
+def get_all_versioned_composition_uuids(ehr_id: UUID, composition_id: UUID) -> list | None:
+    """
+        Retrieve all the versioned composition UUIDs, containing the host and version information.
+        Ordered by oldest version first, latest version last.
+
+        Parameters
+        ----------
+        ehr_id: UUID
+            EHR id of a given patient
+        composition_id: UUID
+            Base composition UUID without the host and version
+
+        Returns
+        -------
+        list
+            if response.ok is True:
+            A list of versioned composition UUIDs in the format UUID::host::version,
+            ordered from the oldest version to the latest version.
+        None
+            if reponse.ok is False
+        """
+
+    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/versioned_composition/{composition_id}/revision_history"
+    headers = {
+        "Accept": "application/json; charset=UTF-8",
+    }
+    response = requests.request(
+        "GET",
+        url,
+        headers=headers,
+        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        timeout=10,
+    )
+
+    response_json = json.loads(response.text)
+
+    if response.ok:
+        versioned_composition_uuids = []
+        for item in response_json:
+            versioned_composition_uuids.append(item['version_id']['value'])
+        return versioned_composition_uuids
+    else:
+        print(f"ERROR {response_json['error']}")
+        return None
+
+
+def get_composition_at_version(ehr_id: UUID, versioned_composition_id: str) -> str | None:
+    """
+        Get a composition at it's specific version.
+        Parameters
+        ----------
+        versioned_composition_id: str
+            Versioned composition UUID in the format UUID::host::version,
+        ehr_id: UUID
+            EHR id of a given patient
+        Returns
+        -------
+        composition: str
+            The composition value as string
+        None
+            If there was an error or the composition has been deleted
+        """
+
+    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition/{versioned_composition_id}"
+    headers = {
+        "Accept": "application/json; charset=UTF-8",
+    }
+    response = requests.request(
+        "GET",
+        url,
+        headers=headers,
+        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        timeout=10,
+    )
+
+    if response.status_code == 200:
+        composition = response.json()
+        return composition
+    elif response.status_code == 204:
+        print(f"The composition has been deleted")
+        return None
+    else:
+        response_json = response.json()
+        print(f"ERROR {response_json['error']}")
+        return None
+
+
