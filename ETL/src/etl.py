@@ -37,7 +37,7 @@ from src.diagnosis import (
     create_diagnosis_instance,
     parse_diagnosis_fhir,
 )
-from src.query import query_patient_composition, query_diagnosis_composition
+from src.query import query_patient_composition, query_diagnosis_composition, query_vital_signs_composition
 from src.vitalsigns import (
     VitalSigns,
     parse_vital_signs_csv,
@@ -439,14 +439,17 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     for vitalsigns_i, vitalsigns in enumerate(all_vital_signs):
         simplified_vitalsigns_composition = vitalsigns.model_dump_json(by_alias=True, indent=4)
         print(f"\nvital_signs {vitalsigns_i+1}: {simplified_vitalsigns_composition}")
-        vitalsigns_composition = transform_composition(
-            simplified_composition=simplified_vitalsigns_composition,
-            template_id="vital_signs",
-        )
-        write_json_composition(
-            composition=vitalsigns_composition,
-            json_filename=output_path / f"vital_signs_{vitalsigns_i+1}.json",
-        )
-        # print(f"\ncomposition: {vitalsigns_composition}")
-        vitalsigns_composition_uuid = post_composition(ehr_id, vitalsigns_composition)
-        print(f"vitalsigns_composition_uuid: {vitalsigns_composition_uuid}")
+        if vitalsigns.height and not query_vital_signs_composition(ehr_id, vitalsigns):
+            vitalsigns_composition = transform_composition(
+                simplified_composition=simplified_vitalsigns_composition,
+                template_id="vital_signs",
+            )
+            write_json_composition(
+                composition=vitalsigns_composition,
+                json_filename=output_path / f"vital_signs_{vitalsigns_i+1}.json",
+            )
+            # print(f"\ncomposition: {vitalsigns_composition}")
+            vitalsigns_composition_uuid = post_composition(ehr_id, vitalsigns_composition)
+            print(f"vitalsigns_composition_uuid: {vitalsigns_composition_uuid}")
+        else:
+            print(f"Skip transform_load for {ehr_id}")

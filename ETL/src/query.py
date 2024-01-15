@@ -10,6 +10,7 @@ import requests
 from src.diagnosis import Diagnosis
 from src.ehr import EHRBASE_BASE_URL, EHRBASE_USERRNAME, EHRBASE_PASSWORD
 from src.patient import Patient
+from src.vitalsigns import VitalSigns
 
 
 def query_patient_composition(ehr_id: UUID, patient: Patient) -> bool:
@@ -80,6 +81,53 @@ def query_diagnosis_composition(ehr_id: UUID, diagnosis: Diagnosis) -> bool:
         f"AND c/content[openEHR-EHR-EVALUATION.problem_diagnosis.v1]/data[at0001]/items[at0002]/value/value='{diagnosis.description}' "
         f"AND c/content[openEHR-EHR-EVALUATION.problem_diagnosis.v1]/data[at0001]/items[at0003]/value/value='{diagnosis.start_date.strftime('%Y-%m-%dT%H:%M:%S')}' "
         f"AND c/content[openEHR-EHR-EVALUATION.problem_diagnosis.v1]/data[at0001]/items[at0030]/value/value='{diagnosis.stop_date.strftime('%Y-%m-%dT%H:%M:%S')}' "
+    )
+    headers = {
+        "Accept": "application/json",
+        "Prefer": "return=representation",
+    }
+    response = requests.request(
+        "GET", url, headers=headers, params={"q": query}, auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD), timeout=10
+    )
+    duplicate = False
+    if response.status_code == 200:
+        response_json = json.loads(response.text)
+        # print(f"\nresponse_json: {json.dumps(response_json, indent=4)}")
+
+        if response_json["rows"]:
+            print(f"DUPLICATE\tDiagnosis composition data already exist with UUID: {response_json['rows'][0]}'")
+            duplicate = True
+
+    return duplicate
+
+
+def query_vital_signs_composition(ehr_id: UUID, vital_signs: VitalSigns) -> bool:
+    """
+    Query the OpenEHR server to know if the vital signs data already exist in a composition.
+
+    Parameters
+    ----------
+    ehr_id: UUID
+        patient ehr_id to query
+    vital_signs: VitalSigns
+        Data object to check
+    """
+    url = f"{EHRBASE_BASE_URL}/query/aql"
+    query = (
+        f"SELECT c/uid/value as composition_uuid, "
+        f"c/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/magnitude as weight, "
+        f"c/content[openEHR-EHR-OBSERVATION.height.v2]/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/magnitude as height, "
+        f"c/content[openEHR-EHR-OBSERVATION.pulse.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/magnitude as heart, "
+        f"c/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value/magnitude as systolic, "
+        f"c/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/data[at0003]/items[at0005]/value/magnitude as diastolic "
+        f"FROM EHR e[ehr_id/value='{ehr_id}'] "
+        f"CONTAINS COMPOSITION c "
+        f"WHERE c/archetype_details/template_id/value='vital_signs' "
+        f"AND c/content[openEHR-EHR-OBSERVATION.height.v2]/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/magnitude={vital_signs.height.measurements[0].value}"
+        f"AND c/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/magnitude={vital_signs.weight.measurements[0].value} "
+        f"AND c/content[openEHR-EHR-OBSERVATION.pulse.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/magnitude={vital_signs.heart_rate.measurements[0].value} "
+        f"AND c/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value/magnitude={vital_signs.blood_systolic.measurements[0].value} "
+        f"AND c/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/data[at0003]/items[at0005]/value/magnitude={vital_signs.blood_diastolic.measurements[0].value}"
     )
     headers = {
         "Accept": "application/json",
