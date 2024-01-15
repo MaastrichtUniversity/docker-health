@@ -97,7 +97,7 @@ def post_composition(ehr_id: UUID, composition: dict) -> UUID | None:
     if response.ok:
         print("Composition was successfully created")
         return response_json["uid"]["value"]
-    print(f"ERROR {response_json['error']}")
+    print(f"ERROR: {response_json['error']}")
     print(response_json["message"])
     return None
 
@@ -123,7 +123,7 @@ def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composi
         if reponse.ok is False
     """
     # print(json.dumps(composition))
-    composition_uuid, host, version = versioned_composition_id.split("::")
+    composition_uuid, _, version = versioned_composition_id.split("::")
 
     url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition/{composition_uuid}?openehrVersion={version}"
     headers = {
@@ -147,28 +147,26 @@ def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composi
     if response.ok:
         print("Update composition was successfully created")
         return response_json["uid"]["value"]
-    print(f"ERROR {response_json['error']}")
+    print(f"ERROR: {response_json['error']}")
     print(response_json["message"])
     return None
 
 
-def delete_composition(ehr_id: UUID, versioned_composition_id: UUID) -> UUID | None:
+def delete_composition(ehr_id: UUID, base_composition_uuid: UUID) -> UUID | None:
     """
     DELETE a previously posted composition in the EHRbase server
 
     Parameters
     ----------
     ehr_id: UUID
-        EHR id of a given patient
-    versioned_composition_id: UUID
-        Composition UUID, containing the host and version (UUID::host::version)
-        Must be the last version
+        EHR uuid of a given patient
+    base_composition_uuid: UUID
+        Composition uuid without the host and version
     """
-    # print(json.dumps(composition))
-    composition_uuid, host, version = versioned_composition_id.split("::")
-        # check if this is the lastest version !
+    # find the lastest version
+    lastest_versioned_composition_id = get_all_versioned_composition_uuids(ehr_id, base_composition_uuid)[-1]
 
-    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition/{versioned_composition_id}"
+    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition/{lastest_versioned_composition_id}"
     headers = {
         "openEHR-AUDIT_DETAILS": "None", # Not sure about the purpose of this header
     }
@@ -179,55 +177,43 @@ def delete_composition(ehr_id: UUID, versioned_composition_id: UUID) -> UUID | N
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
-    print(response)
 
-    # Script below cannot work since the status codes are undocumented /!\
-    # response_json = json.loads(response.text)
-    # print(f"RESPONSE: {response.status_code}")
-    # if response.ok:
-    #     print("Composition was successfully deleted")
-    # print(f"ERROR {response_json['error']}")
-    # print(response_json["message"])
+    # code error undocumented in EHRbase
+    status_code = response.status_code
+    print(f"RESPONSE: {status_code}")
+    if status_code == 204:
+        print("Composition was successfully deleted")
+    elif status_code == 400:
+        print("ERROR: Bad Request\nURL could not be parsed, or composition already deleted")
+    elif status_code == 404:
+        print("ERROR: Not Found\nehr_id and/or composition_id do not exist")
+    elif status_code == 409:
+        print("ERROR: Conflict\nversioned_composition_id does not match the latest version")
 
 
-def write_json_composition(composition: str, json_filename: str):
+def get_all_versioned_composition_uuids(ehr_id: UUID, base_composition_uuid: UUID) -> list | None:
     """
-    Write a JSON composition to a file
+    Retrieve all the versioned composition UUIDs in the format UUID::host::version.
+    Ordered from the oldest to the latest version.
 
     Parameters
     ----------
-    composition: dict
-        Composition to be posted
-    json_filename: str
-        Name of the file to create
+    ehr_id: UUID
+        EHR id of a given patient
+    base_composition_uuid: UUID
+        Base composition UUID without the host and version
+
+    Returns
+    -------
+    list
+        if response.ok is True:
+        A list of versioned composition UUIDs in the format UUID::host::version,
+        ordered from the oldest to the latest version.
+    None
+        if reponse.ok is False
     """
-    with open(json_filename, "w", encoding="utf-8") as file:
-        json.dump(composition, file, indent=4)
 
-
-def get_all_versioned_composition_uuids(ehr_id: UUID, composition_id: UUID) -> list | None:
-    """
-        Retrieve all the versioned composition UUIDs, containing the host and version information.
-        Ordered by oldest version first, latest version last.
-
-        Parameters
-        ----------
-        ehr_id: UUID
-            EHR id of a given patient
-        composition_id: UUID
-            Base composition UUID without the host and version
-
-        Returns
-        -------
-        list
-            if response.ok is True:
-            A list of versioned composition UUIDs in the format UUID::host::version,
-            ordered from the oldest version to the latest version.
-        None
-            if reponse.ok is False
-        """
-
-    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/versioned_composition/{composition_id}/revision_history"
+    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/versioned_composition/{base_composition_uuid}/revision_history"
     headers = {
         "Accept": "application/json; charset=UTF-8",
     }
@@ -246,27 +232,29 @@ def get_all_versioned_composition_uuids(ehr_id: UUID, composition_id: UUID) -> l
         for item in response_json:
             versioned_composition_uuids.append(item['version_id']['value'])
         return versioned_composition_uuids
-    else:
-        print(f"ERROR {response_json['error']}")
-        return None
+    print(f"ERROR: {response_json['error']}")
+    print(response_json["message"])
+    return None
 
 
 def get_composition_at_version(ehr_id: UUID, versioned_composition_id: str) -> str | None:
     """
-        Get a composition at it's specific version.
-        Parameters
-        ----------
-        versioned_composition_id: str
-            Versioned composition UUID in the format UUID::host::version,
-        ehr_id: UUID
-            EHR id of a given patient
-        Returns
-        -------
-        composition: str
-            The composition value as string
-        None
-            If there was an error or the composition has been deleted
-        """
+    Get a composition at it's specific version.
+
+    Parameters
+    ----------
+    versioned_composition_id: str
+        Versioned composition UUID in the format UUID::host::version,
+    ehr_id: UUID
+        EHR id of a given patient
+
+    Returns
+    -------
+    str
+        The composition value as a string if response.ok is True
+    None
+        if response.ok is False
+    """
 
     url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition/{versioned_composition_id}"
     headers = {
@@ -280,15 +268,29 @@ def get_composition_at_version(ehr_id: UUID, versioned_composition_id: str) -> s
         timeout=10,
     )
 
-    if response.status_code == 200:
+    # code error undocumented in EHRbase
+    status_code = response.status_code
+    print(f"RESPONSE: {status_code}")
+    if status_code == 200:
         composition = response.json()
         return composition
-    elif response.status_code == 204:
-        print(f"The composition has been deleted")
-        return None
-    else:
-        response_json = response.json()
-        print(f"ERROR {response_json['error']}")
-        return None
+    elif status_code == 204:
+        print("ERROR: No Content\nThe composition has been deleted")
+    elif status_code == 404:
+        print("ERROR: Not Found\nehr_id and/or composition_id do not exist")
+    return None
 
 
+def write_json_composition(composition: str, json_filename: str):
+    """
+    Write a JSON composition to a file
+
+    Parameters
+    ----------
+    composition: dict
+        Composition to be posted
+    json_filename: str
+        Name of the file to create
+    """
+    with open(json_filename, "w", encoding="utf-8") as file:
+        json.dump(composition, file, indent=4)

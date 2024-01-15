@@ -456,28 +456,41 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     )
     patient_composition_uuid = post_composition(ehr_id, patient_composition)
 
-    # Getting versioned ob ject uuid for retrieving all versions
-    composition_uuid, host, version = patient_composition_uuid.split("::")
-    print(f"\n Versioned object uuid: {composition_uuid}")
+    print("\nSwitch patient sex at birth..")
+    patient_composition_uuid = switch_patient_sex(
+        patient=patient,
+        ehr_id=ehr_id,
+        patient_composition_id=patient_composition_uuid,
+        output_path=output_path
+    )
 
     print("\nSwitch patient sex at birth..")
     patient_composition_uuid = switch_patient_sex(
         patient=patient,
         ehr_id=ehr_id,
         patient_composition_id=patient_composition_uuid,
-        output_path=output_path)
+        output_path=output_path
+    )
 
-    # print("\nDelete patient composition..")
-    # delete_composition(
-    #     ehr_id=ehr_id,
-    #     versioned_composition_id=patient_composition_uuid
-    # )
+    # Getting versioned object uuid for deletion and retrieving all versions
+    base_composition_uuid, _, _ = patient_composition_uuid.split("::")
+    print(f"\nBase composition UUID: {base_composition_uuid}")
 
-    print("\nShow the composition at its oldest version")
+    print("\nDelete patient composition..")
+    delete_composition(
+        ehr_id=ehr_id,
+        base_composition_uuid=base_composition_uuid
+    )
+    # Composition is now "deactivated", it shouldn't be updated or retrieved
+
+    print("\nAll versions of this composition:")
     versioned_composition_uuids = get_all_versioned_composition_uuids(
         ehr_id=ehr_id,
-        composition_id=composition_uuid
+        base_composition_uuid=base_composition_uuid
     )
+    print(*versioned_composition_uuids, sep='\n')
+
+    print("\nShow the first version of this composition:")
     print(get_composition_at_version(
         ehr_id=ehr_id,
         versioned_composition_id=versioned_composition_uuids[0]
