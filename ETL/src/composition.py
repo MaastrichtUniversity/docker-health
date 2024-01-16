@@ -152,7 +152,7 @@ def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composi
     return None
 
 
-def delete_composition(ehr_id: UUID, base_composition_uuid: UUID) -> UUID | None:
+def delete_composition(ehr_id: UUID, versioned_composition_id: str):
     """
     DELETE a previously posted composition in the EHRbase server
 
@@ -160,11 +160,11 @@ def delete_composition(ehr_id: UUID, base_composition_uuid: UUID) -> UUID | None
     ----------
     ehr_id: UUID
         EHR uuid of a given patient
-    base_composition_uuid: UUID
-        Composition uuid without the host and version
+    versioned_composition_id: UUID
+        Composition uuid in the format UUID::host::version.
     """
     # find the latest version
-    latest_versioned_composition_id = get_all_versioned_composition_uuids(ehr_id, base_composition_uuid)[-1]
+    latest_versioned_composition_id = get_all_versioned_composition_uuids(ehr_id, versioned_composition_id)[-1]
 
     url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition/{latest_versioned_composition_id}"
     headers = {
@@ -191,7 +191,7 @@ def delete_composition(ehr_id: UUID, base_composition_uuid: UUID) -> UUID | None
         print("ERROR: Conflict\nversioned_composition_id does not match the latest version")
 
 
-def get_all_versioned_composition_uuids(ehr_id: UUID, base_composition_uuid: UUID) -> list | None:
+def get_all_versioned_composition_uuids(ehr_id: UUID, versioned_composition_id: str) -> list | None:
     """
     Retrieve all the versioned composition UUIDs in the format UUID::host::version.
     Ordered from the oldest to the latest version.
@@ -200,7 +200,7 @@ def get_all_versioned_composition_uuids(ehr_id: UUID, base_composition_uuid: UUI
     ----------
     ehr_id: UUID
         EHR id of a given patient
-    base_composition_uuid: UUID
+    versioned_composition_id: UUID
         Base composition UUID without the host and version
 
     Returns
@@ -212,7 +212,7 @@ def get_all_versioned_composition_uuids(ehr_id: UUID, base_composition_uuid: UUI
     None
         if reponse.ok is False
     """
-
+    base_composition_uuid, _, _ = versioned_composition_id.split("::")
     url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/versioned_composition/{base_composition_uuid}/revision_history"
     headers = {
         "Accept": "application/json; charset=UTF-8",

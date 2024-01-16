@@ -443,7 +443,7 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     ehr_id: UUID
         ehr_id for the given patient id
     output_path: str
-        Path the the folder saving all composition outputs
+        Path to the folder saving all composition outputs
     """
     print("\nPatient..")
     simplified_patient_composition = patient.model_dump_json(by_alias=True, indent=4)
@@ -475,21 +475,17 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
         output_path=output_path
     )
 
-    # Getting versioned object uuid for deletion and retrieving all versions
-    base_composition_uuid, _, _ = patient_composition_uuid.split("::")
-    print(f"\nBase composition UUID: {base_composition_uuid}")
-
     print("\nDelete patient composition..")
     delete_composition(
         ehr_id=ehr_id,
-        base_composition_uuid=base_composition_uuid
+        versioned_composition_id=patient_composition_uuid
     )
     # Composition is now "deactivated", it shouldn't be updated or retrieved
 
     print("\nAll versions of this composition:")
     versioned_composition_uuids = get_all_versioned_composition_uuids(
         ehr_id=ehr_id,
-        base_composition_uuid=base_composition_uuid
+        versioned_composition_id=patient_composition_uuid
     )
     print(*versioned_composition_uuids, sep='\n')
 
@@ -534,3 +530,4 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     print("\nAll compositions posted for this patient [template_id, composition_uuid, time]:")
     all_compositions = retrieve_all_compositions_from_ehr(ehr_id)
     print(*all_compositions, sep="\n")
+
