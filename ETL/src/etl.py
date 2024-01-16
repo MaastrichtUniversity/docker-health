@@ -52,7 +52,7 @@ from src.vitalsigns import (
     parse_all_vital_signs_fhir,
 )
 from src.query import (
-    retireve_all_compositions_from_ehr
+    retrieve_all_compositions_from_ehr
 )
 
 
@@ -532,5 +532,5 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
         print(f"vitalsigns_composition_uuid: {vitalsigns_composition_uuid}")
 
     print("\nAll compositions posted for this patient [template_id, composition_uuid, time]:")
-    all_compostions = retireve_all_compositions_from_ehr(ehr_id)
-    print(*all_compostions, sep="\n")
+    all_compositions = retrieve_all_compositions_from_ehr(ehr_id)
+    print(*all_compositions, sep="\n")

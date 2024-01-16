@@ -8,11 +8,12 @@ import requests
 
 from src.ehr import EHRBASE_BASE_URL, EHRBASE_USERRNAME, EHRBASE_PASSWORD
 
-def retireve_all_compositions_from_ehr(ehr_id: UUID) -> list:
+
+def retrieve_all_compositions_from_ehr(ehr_id: UUID) -> list:
     """
     Retrieve all compositions stored for a unique ehr_id and return
     a list of all composition containing the template_id, start_time and base_composition_id
-    (showing the lastest version)
+    (showing the latest version)
 
     Parameters
     ----------
@@ -26,13 +27,13 @@ def retireve_all_compositions_from_ehr(ehr_id: UUID) -> list:
         For each composition, the template_id, start_time and base_composition_id are returned
     """
     url = f"{EHRBASE_BASE_URL}/query/aql"
-	
+
     query = (
         f"SELECT c/name/value, c/context/start_time/value, c/uid/value  "
         f"FROM EHR e[ehr_id/value='{ehr_id}'] "
         f"CONTAINS COMPOSITION c "
         f"ORDER BY c/context/start_time/value ASC"
-	)
+    )
 
     headers = {
         "Accept": "application/json",
