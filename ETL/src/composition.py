@@ -163,10 +163,10 @@ def delete_composition(ehr_id: UUID, base_composition_uuid: UUID) -> UUID | None
     base_composition_uuid: UUID
         Composition uuid without the host and version
     """
-    # find the lastest version
-    lastest_versioned_composition_id = get_all_versioned_composition_uuids(ehr_id, base_composition_uuid)[-1]
+    # find the latest version
+    latest_versioned_composition_id = get_all_versioned_composition_uuids(ehr_id, base_composition_uuid)[-1]
 
-    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition/{lastest_versioned_composition_id}"
+    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition/{latest_versioned_composition_id}"
     headers = {
         "openEHR-AUDIT_DETAILS": "None", # Not sure about the purpose of this header
     }
