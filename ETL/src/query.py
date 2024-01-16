@@ -12,7 +12,7 @@ from src.ehr import EHRBASE_BASE_URL, EHRBASE_USERRNAME, EHRBASE_PASSWORD
 def retrieve_all_compositions_from_ehr(ehr_id: UUID) -> list:
     """
     Retrieve all compositions stored for a unique ehr_id and return
-    a list of all composition containing the template_id, start_time and base_composition_id
+    a list of all composition containing the template_id, start_time and versioned_composition_id
     (showing the latest version)
 
     Parameters
@@ -24,7 +24,7 @@ def retrieve_all_compositions_from_ehr(ehr_id: UUID) -> list:
     -------
     list
         List of retrieved compositions for this patient. List ordered by start_time values
-        For each composition, the template_id, start_time and base_composition_id are returned
+        For each composition, the template_id, start_time and versioned_composition_id are returned
     """
     url = f"{EHRBASE_BASE_URL}/query/aql"
 
