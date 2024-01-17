@@ -57,6 +57,10 @@ from src.query import (
     check_duplicate_vital_signs_composition,
     retrieve_all_compositions_from_ehr,
 )
+from src.ehr import (
+    get_ehr_status,
+    change_ehr_status_name
+)
 
 
 def extract_all_csv(patient_id, data_path, vital_signs_units) -> (Patient, list[Diagnosis], list[VitalSigns]):
@@ -536,3 +540,11 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     print("\nAll compositions posted for this patient [template_id, composition_uuid, time]:")
     all_compositions = retrieve_all_compositions_from_ehr(ehr_id)
     print(*all_compositions, sep="\n")
+
+    print("\nGet ehr_status...")
+    print(get_ehr_status(ehr_id))
+
+    print("\nChange name of ehr_status...")
+    print(change_ehr_status_name(ehr_id, "DataHub"))
+
+

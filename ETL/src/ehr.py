@@ -159,3 +159,67 @@ def get_ehr_status(ehr_id: UUID) -> dict:
     ehr_status = json.loads(response.text)
 
     return ehr_status
+
+
+def update_ehr_status(ehr_id: UUID, versioned_ehr_id: UUID, new_ehr_status: dict) -> dict:
+    """
+    Retrieves a version of the EHR_STATUS associated with the EHR identified by ehr_id.
+
+    Parameters
+    ----------
+    ehr_id: UUID
+        EHR id of a given patient
+    versioned_ehr_id
+    new_ehr_status
+
+    Returns
+    -------
+    dict
+        ehr_status
+    """
+
+    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/ehr_status"
+
+    headers = {
+        "If-Match": versioned_ehr_id,
+        "Accept": "application/json; charset=UTF-8",
+        "Prefer": "return=representation",
+        "Content-Type": "application/json",
+    }
+    response = requests.request(
+        "PUT",
+        url,
+        headers=headers,
+        data=json.dumps(new_ehr_status),
+        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        timeout=10,
+    )
+    updated_ehr_status = json.loads(response.text)
+
+    return updated_ehr_status
+
+
+def change_ehr_status_name(ehr_id: UUID, name: str) -> dict:
+    """
+    Retrieves a version of the EHR_STATUS associated with the EHR identified by ehr_id.
+
+    Parameters
+    ----------
+    name
+    ehr_id: UUID
+        EHR id of a given patient
+    versioned_ehr_id
+    new_ehr_status
+
+    Returns
+    -------
+    dict
+        ehr_status
+    """
+
+    ehr_status = get_ehr_status(ehr_id)
+    ehr_status["name"]["value"] = name
+
+    posted_ehr_status = update_ehr_status(ehr_id, ehr_status["uid"]["value"], ehr_status)
+
+    return posted_ehr_status
