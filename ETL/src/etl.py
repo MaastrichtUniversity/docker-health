@@ -449,10 +449,8 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     """
     print("\nPatient..")
     simplified_patient_composition = patient.model_dump_json(by_alias=True, indent=4)
-    print(f"\npatient: {simplified_patient_composition}")
-
-
     if not check_duplicate_patient_composition(ehr_id, patient):
+        print(f"\npatient: {simplified_patient_composition}")
         patient_composition = transform_composition(
             simplified_composition=simplified_patient_composition,
             template_id="patient",
@@ -465,48 +463,47 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
         patient_composition_uuid = post_composition(ehr_id, patient_composition)
         print(f"patient_composition_uuid: {patient_composition_uuid}")
 
-    print("\nSwitch patient sex at birth..")
-    patient_composition_uuid = switch_patient_sex(
-        patient=patient,
-        ehr_id=ehr_id,
-        patient_composition_id=patient_composition_uuid,
-        output_path=output_path
-    )
+    # print("\nSwitch patient sex at birth..")
+    # patient_composition_uuid = switch_patient_sex(
+    #     patient=patient,
+    #     ehr_id=ehr_id,
+    #     patient_composition_id=patient_composition_uuid,
+    #     output_path=output_path
+    # )
 
-    print("\nSwitch patient sex at birth..")
-    patient_composition_uuid = switch_patient_sex(
-        patient=patient,
-        ehr_id=ehr_id,
-        patient_composition_id=patient_composition_uuid,
-        output_path=output_path
-    )
+    # print("\nSwitch patient sex at birth..")
+    # patient_composition_uuid = switch_patient_sex(
+    #     patient=patient,
+    #     ehr_id=ehr_id,
+    #     patient_composition_id=patient_composition_uuid,
+    #     output_path=output_path
+    # )
 
-    print("\nDelete patient composition..")
-    delete_composition(
-        ehr_id=ehr_id,
-        versioned_composition_id=patient_composition_uuid
-    )
-    # Composition is now "deactivated", it shouldn't be updated or retrieved
+    # print("\nDelete patient composition..")
+    # delete_composition(
+    #     ehr_id=ehr_id,
+    #     versioned_composition_id=patient_composition_uuid
+    # )
+    # # Composition is now "deactivated", it shouldn't be updated or retrieved
 
-    print("\nAll versions of this composition:")
-    versioned_composition_uuids = get_all_versioned_composition_uuids(
-        ehr_id=ehr_id,
-        versioned_composition_id=patient_composition_uuid
-    )
-    print(*versioned_composition_uuids, sep='\n')
+    # print("\nAll versions of this composition:")
+    # versioned_composition_uuids = get_all_versioned_composition_uuids(
+    #     ehr_id=ehr_id,
+    #     versioned_composition_id=patient_composition_uuid
+    # )
+    # print(*versioned_composition_uuids, sep='\n')
 
-    print("\nShow the first version of this composition:")
-    print(get_composition_at_version(
-        ehr_id=ehr_id,
-        versioned_composition_id=versioned_composition_uuids[0]
-    ))
+    # print("\nShow the first version of this composition:")
+    # print(get_composition_at_version(
+    #     ehr_id=ehr_id,
+    #     versioned_composition_id=versioned_composition_uuids[0]
+    # ))
 
     print("\nDiagnosis..")
     for diagnosis_i, diagnosis in enumerate(all_disorders):
         simplified_diagnosis_composition = diagnosis.model_dump_json(by_alias=True, indent=4)
-        print(f"\ndiagnosis {diagnosis_i+1}: {simplified_diagnosis_composition}")
-
         if not check_duplicate_diagnosis_composition(ehr_id, diagnosis):
+            print(f"\ndiagnosis {diagnosis_i+1}: {simplified_diagnosis_composition}")
             diagnosis_composition = transform_composition(
                 simplified_composition=simplified_diagnosis_composition,
                 template_id="diagnosis-demo",
@@ -522,10 +519,8 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     print("\nVital Signs..")
     for vitalsigns_i, vitalsigns in enumerate(all_vital_signs):
         simplified_vitalsigns_composition = vitalsigns.model_dump_json(by_alias=True, indent=4)
-        print(f"\nvital_signs {vitalsigns_i+1}: {simplified_vitalsigns_composition}")
-        print(vitalsigns.height)
-
         if vitalsigns.height and not check_duplicate_vital_signs_composition(ehr_id, vitalsigns):
+            print(f"\nvital_signs {vitalsigns_i+1}: {simplified_vitalsigns_composition}")
             vitalsigns_composition = transform_composition(
                 simplified_composition=simplified_vitalsigns_composition,
                 template_id="vital_signs",
