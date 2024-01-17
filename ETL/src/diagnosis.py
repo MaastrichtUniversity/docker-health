@@ -8,7 +8,7 @@ from typing import Optional
 from xml.etree.ElementTree import Element
 
 import pandas as pd
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_serializer
 
 from src.composition import datetime_now
 
@@ -23,6 +23,19 @@ class Diagnosis(BaseModel):
     start_date: datetime = Field(..., serialization_alias="dateOfDiagnosisValue")
     stop_date: Optional[datetime] = Field(None, serialization_alias="dateOfResolutionValue")
     start_time: datetime = Field(default_factory=datetime_now, serialization_alias="startTime")
+
+    @field_serializer("start_date")
+    def serialize_start_date(self, dt: datetime, _info):
+        return serialize_dt(dt)
+
+    @field_serializer("stop_date")
+    def serialize_stop_date(self, dt: datetime, _info):
+        return serialize_dt(dt)
+
+
+def serialize_dt(dt: datetime):
+    dt_formatted = dt.strftime("%Y-%m-%dT%H:%M:%S")
+    return dt_formatted
 
 
 def create_diagnosis_instance(snomed_code, description, start_date, stop_date) -> Diagnosis:

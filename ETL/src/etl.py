@@ -41,6 +41,7 @@ from src.diagnosis import (
     create_diagnosis_instance,
     parse_diagnosis_fhir,
 )
+from src.query import query_patient_composition, query_diagnosis_composition, query_vital_signs_composition
 from src.vitalsigns import (
     VitalSigns,
     parse_vital_signs_csv,
@@ -443,21 +444,31 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     ehr_id: UUID
         ehr_id for the given patient id
     output_path: str
+<<<<<<< HEAD
         Path to the folder saving all composition outputs
+=======
+        Path the folder saving all composition outputs
+>>>>>>> DHHDP-87
     """
     print("\nPatient..")
     simplified_patient_composition = patient.model_dump_json(by_alias=True, indent=4)
     print(f"\npatient: {simplified_patient_composition}")
-    patient_composition = transform_composition(
-        simplified_composition=simplified_patient_composition,
-        template_id="patient",
-    )
-    # print(f"\ncomposition: {patient_composition}")
-    write_json_composition(
-        composition=patient_composition,
-        json_filename=output_path / "patient.json",
-    )
-    patient_composition_uuid = post_composition(ehr_id, patient_composition)
+
+
+    if not query_patient_composition(ehr_id, patient):
+        patient_composition = transform_composition(
+            simplified_composition=simplified_patient_composition,
+            template_id="patient",
+        )
+        # print(f"\ncomposition: {patient_composition}")
+        write_json_composition(
+            composition=patient_composition,
+            json_filename=output_path / "patient.json",
+        )
+        patient_composition_uuid = post_composition(ehr_id, patient_composition)
+        print(f"patient_composition_uuid: {patient_composition_uuid}")
+    else:
+        print(f"Skip transform_load for {ehr_id}")
 
     print("\nSwitch patient sex at birth..")
     patient_composition_uuid = switch_patient_sex(
@@ -499,35 +510,41 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     for diagnosis_i, diagnosis in enumerate(all_disorders):
         simplified_diagnosis_composition = diagnosis.model_dump_json(by_alias=True, indent=4)
         print(f"\ndiagnosis {diagnosis_i+1}: {simplified_diagnosis_composition}")
-        diagnosis_composition = transform_composition(
-            simplified_composition=simplified_diagnosis_composition,
-            template_id="diagnosis-demo",
-        )
-        write_json_composition(
-            composition=diagnosis_composition,
-            json_filename=output_path / f"diagnosis_{diagnosis_i+1}.json",
-        )
-        # print(f"\ncomposition: {diagnosis_composition}")
-        diagnosis_composition_uuid = post_composition(ehr_id, diagnosis_composition)
-        print(f"diagnosis_composition_uuid: {diagnosis_composition_uuid}")
+
+        if not query_diagnosis_composition(ehr_id, diagnosis):
+            diagnosis_composition = transform_composition(
+                simplified_composition=simplified_diagnosis_composition,
+                template_id="diagnosis-demo",
+            )
+            write_json_composition(
+                composition=diagnosis_composition,
+                json_filename=output_path / f"diagnosis_{diagnosis_i+1}.json",
+            )
+            # print(f"\ncomposition: {diagnosis_composition}")
+            diagnosis_composition_uuid = post_composition(ehr_id, diagnosis_composition)
+            print(f"diagnosis_composition_uuid: {diagnosis_composition_uuid}")
+        else:
+            print(f"Skip transform_load for {ehr_id}")
 
     print("\nVital Signs..")
     for vitalsigns_i, vitalsigns in enumerate(all_vital_signs):
         simplified_vitalsigns_composition = vitalsigns.model_dump_json(by_alias=True, indent=4)
         print(f"\nvital_signs {vitalsigns_i+1}: {simplified_vitalsigns_composition}")
-        vitalsigns_composition = transform_composition(
-            simplified_composition=simplified_vitalsigns_composition,
-            template_id="vital_signs",
-        )
-        write_json_composition(
-            composition=vitalsigns_composition,
-            json_filename=output_path / f"vital_signs_{vitalsigns_i+1}.json",
-        )
-        # print(f"\ncomposition: {vitalsigns_composition}")
-        vitalsigns_composition_uuid = post_composition(ehr_id, vitalsigns_composition)
-        print(f"vitalsigns_composition_uuid: {vitalsigns_composition_uuid}")
+        if vitalsigns.height and not query_vital_signs_composition(ehr_id, vitalsigns):
+            vitalsigns_composition = transform_composition(
+                simplified_composition=simplified_vitalsigns_composition,
+                template_id="vital_signs",
+            )
+            write_json_composition(
+                composition=vitalsigns_composition,
+                json_filename=output_path / f"vital_signs_{vitalsigns_i+1}.json",
+            )
+            # print(f"\ncomposition: {vitalsigns_composition}")
+            vitalsigns_composition_uuid = post_composition(ehr_id, vitalsigns_composition)
+            print(f"vitalsigns_composition_uuid: {vitalsigns_composition_uuid}")
+        else:
+            print(f"Skip transform_load for {ehr_id}")
 
     print("\nAll compositions posted for this patient [template_id, composition_uuid, time]:")
     all_compositions = retrieve_all_compositions_from_ehr(ehr_id)
     print(*all_compositions, sep="\n")
-
