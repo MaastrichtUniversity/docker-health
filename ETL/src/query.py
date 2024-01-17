@@ -50,7 +50,7 @@ def retrieve_all_compositions_from_ehr(ehr_id: UUID) -> list:
     print("No posted compositions for this patient")
     return None
 
-def query_patient_composition(ehr_id: UUID, patient: Patient) -> bool:
+def check_duplicate_patient_composition(ehr_id: UUID, patient: Patient) -> bool:
     """
     Query the OpenEHR server to know if the patient data already exist in a composition.
 
@@ -97,7 +97,7 @@ def query_patient_composition(ehr_id: UUID, patient: Patient) -> bool:
     return duplicate
 
 
-def query_diagnosis_composition(ehr_id: UUID, diagnosis: Diagnosis) -> bool:
+def check_duplicate_diagnosis_composition(ehr_id: UUID, diagnosis: Diagnosis) -> bool:
     """
     Query the OpenEHR server to know if the diagnosis data already exist in a composition.
 
@@ -138,7 +138,7 @@ def query_diagnosis_composition(ehr_id: UUID, diagnosis: Diagnosis) -> bool:
     return duplicate
 
 
-def query_vital_signs_composition(ehr_id: UUID, vital_signs: VitalSigns) -> bool:
+def check_duplicate_vital_signs_composition(ehr_id: UUID, vital_signs: VitalSigns) -> bool:
     """
     Query the OpenEHR server to know if the vital signs data already exist in a composition.
 
