@@ -129,3 +129,33 @@ def create_ehr(patient_id: str) -> UUID:
     response_json = json.loads(response.text)
 
     return response_json["ehr_id"]["value"]
+
+
+def get_ehr_status(ehr_id: UUID) -> dict:
+    """
+    Retrieves a version of the EHR_STATUS associated with the EHR identified by ehr_id.
+
+    Parameters
+    ----------
+    ehr_id: UUID
+        EHR id of a given patient
+
+    Returns
+    -------
+    dict
+        ehr_status
+    """
+
+    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/ehr_status"
+
+    headers = {"Accept": "application/json"}
+    response = requests.request(
+        "GET",
+        url,
+        headers=headers,
+        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        timeout=10,
+    )
+    ehr_status = json.loads(response.text)
+
+    return ehr_status
