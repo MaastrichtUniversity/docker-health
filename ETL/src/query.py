@@ -6,9 +6,9 @@ import json
 from uuid import UUID
 import requests
 
-from src.diagnosis import Diagnosis
 from src.ehr import EHRBASE_BASE_URL, EHRBASE_USERRNAME, EHRBASE_PASSWORD
 from src.patient import Patient
+from src.diagnosis import Diagnosis
 from src.vitalsigns import VitalSigns
 
 
@@ -52,14 +52,19 @@ def retrieve_all_compositions_from_ehr(ehr_id: UUID) -> list:
 
 def check_duplicate_patient_composition(ehr_id: UUID, patient: Patient) -> bool:
     """
-    Query the OpenEHR server to know if the patient data already exist in a composition.
+    Query the OpenEHR server to know if the given patient data already exist in a composition.
 
     Parameters
     ----------
     ehr_id: UUID
         patient ehr_id to query
     patient: Patient
-        Data object to check
+        Instance of the Patient object
+
+    Returns
+    -------
+    bool
+        Boolean value, if true the composition is duplicated for this ehr_id and given Patient data
     """
     url = f"{EHRBASE_BASE_URL}/query/aql"
     query = (
@@ -88,10 +93,8 @@ def check_duplicate_patient_composition(ehr_id: UUID, patient: Patient) -> bool:
             "composition_uuid": response_json["rows"][0][0],
             "dateOfDeath": response_json["rows"][0][1],
         }
-        # print(f"\nresult_json: {json.dumps(result, indent=4)}")
-
         if "composition_uuid" in result and result["dateOfDeath"] is None:
-            print(f"DUPLICATE\tPatient composition data already exist with UUID: {result['composition_uuid']}'")
+            print(f"DUPLICATE\tComposition found for this ehr_id and this data with composition_uuid={result['composition_uuid']}'")
             duplicate = True
 
     return duplicate
@@ -99,14 +102,19 @@ def check_duplicate_patient_composition(ehr_id: UUID, patient: Patient) -> bool:
 
 def check_duplicate_diagnosis_composition(ehr_id: UUID, diagnosis: Diagnosis) -> bool:
     """
-    Query the OpenEHR server to know if the diagnosis data already exist in a composition.
+    Query the OpenEHR server to know if the given diagnosis data already exist in a composition.
 
     Parameters
     ----------
     ehr_id: UUID
         patient ehr_id to query
     diagnosis: Diagnosis
-        Data object to check
+        Instance of the Diagnosis object
+
+    Returns
+    -------
+    bool
+        Boolean value, if true the composition is duplicated for this ehr_id and given Diagnosis data
     """
     url = f"{EHRBASE_BASE_URL}/query/aql"
     query = (
@@ -132,7 +140,7 @@ def check_duplicate_diagnosis_composition(ehr_id: UUID, diagnosis: Diagnosis) ->
         # print(f"\nresponse_json: {json.dumps(response_json, indent=4)}")
 
         if response_json["rows"]:
-            print(f"DUPLICATE\tDiagnosis composition data already exist with UUID: {response_json['rows'][0]}'")
+            print(f"DUPLICATE\tComposition found for this ehr_id and this data with composition_uuid={response_json['rows'][0][0]}'")
             duplicate = True
 
     return duplicate
@@ -140,14 +148,19 @@ def check_duplicate_diagnosis_composition(ehr_id: UUID, diagnosis: Diagnosis) ->
 
 def check_duplicate_vital_signs_composition(ehr_id: UUID, vital_signs: VitalSigns) -> bool:
     """
-    Query the OpenEHR server to know if the vital signs data already exist in a composition.
+    Query the OpenEHR server to know if the given vital signs data already exist in a composition.
 
     Parameters
     ----------
     ehr_id: UUID
         patient ehr_id to query
     vital_signs: VitalSigns
-        Data object to check
+        Instance of the VitalSigns object
+
+    Returns
+    -------
+    bool
+        Boolean value, if true the composition is duplicated for this ehr_id and given VitalSigns data
     """
     url = f"{EHRBASE_BASE_URL}/query/aql"
     query = (
@@ -179,7 +192,7 @@ def check_duplicate_vital_signs_composition(ehr_id: UUID, vital_signs: VitalSign
         # print(f"\nresponse_json: {json.dumps(response_json, indent=4)}")
 
         if response_json["rows"]:
-            print(f"DUPLICATE\tDiagnosis composition data already exist with UUID: {response_json['rows'][0]}'")
+            print(f"DUPLICATE\tComposition found for this ehr_id and this data with composition_uuid={response_json['rows'][0][0]}'")
             duplicate = True
 
     return duplicate
