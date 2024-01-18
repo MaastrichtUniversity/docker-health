@@ -234,3 +234,82 @@ def update_ehr_modifiability_status(ehr_id: UUID, is_modifiable: bool) -> UUID |
             return posted_ehr_status["uid"]["value"]
 
     return None
+
+
+def get_all_versioned_ehr_status_uuids(ehr_id: UUID) -> list | None:
+    """
+    Retrieve all versioned EHR status UUIDs in the format UUID::host::version,
+    ordered from the oldest to the latest version.
+
+    Parameters
+    ----------
+    ehr_id: UUID
+        EHR id of a given patient.
+
+    Returns
+    -------
+    list or None
+        If the response is successful, returns a list of versioned EHR status UUIDs
+        If the response is unsuccessful, returns None.
+    """
+
+    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/versioned_ehr_status/revision_history"
+    headers = {
+        "Accept": "application/json; charset=UTF-8",
+    }
+    response = requests.request(
+        "GET",
+        url,
+        headers=headers,
+        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        timeout=10,
+    )
+
+    response_json = json.loads(response.text)
+
+    if response.ok:
+        versioned_ehr_status_uuids = []
+        for item in response_json:
+            versioned_ehr_status_uuids.append(item['version_id']['value'])
+        return versioned_ehr_status_uuids
+    print(f"ERROR: {response_json['error']}")
+    print(response_json["message"])
+    return None
+
+
+def get_ehr_status_at_version(ehr_id: UUID, versioned_ehr_status_id: UUID) -> dict | None:
+    """
+    Retrieve the EHR status at a specific version for a given EHR.
+
+    Parameters
+    ----------
+    versioned_ehr_status_id: UUID
+        Versioned EHR status UUID in the format UUID::host::version.
+    ehr_id: UUID
+        EHR id of a given patient.
+
+    Returns
+    -------
+    str or None
+        If the response is successful, the ehr status as a string is returned.
+        If the response is unsuccessful, None is returned.
+    """
+
+    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/ehr_status/{versioned_ehr_status_id}"
+    headers = {
+        "Accept": "application/json; charset=UTF-8",
+    }
+    response = requests.request(
+        "GET",
+        url,
+        headers=headers,
+        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        timeout=10,
+    )
+
+    response_json = json.loads(response.text)
+    if response.ok:
+        return response_json
+    print(f"ERROR: {response_json['error']}")
+    print(response_json["message"])
+    return None

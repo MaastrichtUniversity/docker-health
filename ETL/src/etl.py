@@ -59,7 +59,9 @@ from src.query import (
 )
 from src.ehr import (
     get_ehr_status,
-    update_ehr_modifiability_status
+    update_ehr_modifiability_status,
+    get_all_versioned_ehr_status_uuids,
+    get_ehr_status_at_version
 )
 
 
@@ -455,8 +457,15 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     print("\nGet ehr_status...")
     print(get_ehr_status(ehr_id))
 
-    print("\nAllow to modify EHR..")
-    print(update_ehr_modifiability_status(ehr_id, True))
+    # print("\nAllow to modify EHR..")
+    # print(update_ehr_modifiability_status(ehr_id, True))
+
+    # print("\nGet EHR status versions..")
+    # print(get_all_versioned_ehr_status_uuids(ehr_id))
+
+    first_ehr_status_id = get_all_versioned_ehr_status_uuids(ehr_id)[0]
+    print("\nGet first EHR status..")
+    print(get_ehr_status_at_version(ehr_id, first_ehr_status_id))
 
     print("\nPatient..")
     simplified_patient_composition = patient.model_dump_json(by_alias=True, indent=4)
