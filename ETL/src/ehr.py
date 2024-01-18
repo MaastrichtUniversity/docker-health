@@ -199,27 +199,25 @@ def update_ehr_status(ehr_id: UUID, versioned_ehr_id: UUID, new_ehr_status: dict
     return updated_ehr_status
 
 
-def change_ehr_status_name(ehr_id: UUID, name: str) -> dict:
+def update_ehr_modifiability_status(ehr_id: UUID, is_modifiable: bool) -> UUID:
     """
-    Retrieves a version of the EHR_STATUS associated with the EHR identified by ehr_id.
+    Update the modifiability status of an Electronic Health Record (EHR).
 
     Parameters
     ----------
-    name
     ehr_id: UUID
-        EHR id of a given patient
-    versioned_ehr_id
-    new_ehr_status
+        EHR id of a given patient.
+    is_modifiable: bool
+        Flag to allow or disallow modifying the EHR.
 
     Returns
     -------
-    dict
-        ehr_status
+    UUID
+        Updated EHR status uuid.
     """
-
     ehr_status = get_ehr_status(ehr_id)
-    ehr_status["name"]["value"] = name
+    ehr_status["is_modifiable"] = is_modifiable
 
     posted_ehr_status = update_ehr_status(ehr_id, ehr_status["uid"]["value"], ehr_status)
 
-    return posted_ehr_status
+    return posted_ehr_status["uid"]["value"]

@@ -59,7 +59,7 @@ from src.query import (
 )
 from src.ehr import (
     get_ehr_status,
-    change_ehr_status_name
+    update_ehr_modifiability_status
 )
 
 
@@ -451,6 +451,13 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     output_path: str
         Path to the folder saving all composition outputs
     """
+
+    print("\nGet ehr_status...")
+    print(get_ehr_status(ehr_id))
+
+    print("\nAllow to modify EHR..")
+    print(update_ehr_modifiability_status(ehr_id, True))
+
     print("\nPatient..")
     simplified_patient_composition = patient.model_dump_json(by_alias=True, indent=4)
     if not check_duplicate_patient_composition(ehr_id, patient):
@@ -474,7 +481,7 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     #     patient_composition_id=patient_composition_uuid,
     #     output_path=output_path
     # )
-
+    #
     # print("\nSwitch patient sex at birth..")
     # patient_composition_uuid = switch_patient_sex(
     #     patient=patient,
@@ -482,26 +489,29 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     #     patient_composition_id=patient_composition_uuid,
     #     output_path=output_path
     # )
-
+    #
     # print("\nDelete patient composition..")
     # delete_composition(
     #     ehr_id=ehr_id,
     #     versioned_composition_id=patient_composition_uuid
     # )
     # # Composition is now "deactivated", it shouldn't be updated or retrieved
-
+    #
     # print("\nAll versions of this composition:")
     # versioned_composition_uuids = get_all_versioned_composition_uuids(
     #     ehr_id=ehr_id,
     #     versioned_composition_id=patient_composition_uuid
     # )
     # print(*versioned_composition_uuids, sep='\n')
-
+    #
     # print("\nShow the first version of this composition:")
     # print(get_composition_at_version(
     #     ehr_id=ehr_id,
     #     versioned_composition_id=versioned_composition_uuids[0]
     # ))
+
+
+
 
     print("\nDiagnosis..")
     for diagnosis_i, diagnosis in enumerate(all_disorders):
@@ -541,10 +551,6 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     all_compositions = retrieve_all_compositions_from_ehr(ehr_id)
     print(*all_compositions, sep="\n")
 
-    print("\nGet ehr_status...")
-    print(get_ehr_status(ehr_id))
 
-    print("\nChange name of ehr_status...")
-    print(change_ehr_status_name(ehr_id, "DataHub"))
 
 
