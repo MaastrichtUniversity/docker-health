@@ -8,7 +8,7 @@ from typing import List
 from uuid import UUID
 import requests
 
-EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
+EHRBASE_USERNAME = os.environ["EHRBASE_USERNAME"]
 EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
 EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 
@@ -41,7 +41,7 @@ def get_ehr_id_for_patient_id(patient_id: str) -> None | UUID:
         url,
         headers=headers,
         params=myparams,
-        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
 
@@ -72,7 +72,7 @@ def fetch_all_ehr_id() -> List[UUID]:
         url,
         headers=headers,
         params={"q": query},
-        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
     if response.ok:
@@ -123,7 +123,7 @@ def create_ehr(patient_id: str) -> UUID:
         url,
         data=json.dumps(id_payload),
         headers=headers,
-        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
     print(f"RESPONSE: {response.status_code}")

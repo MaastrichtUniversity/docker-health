@@ -47,7 +47,7 @@ services:
       - ./ETL/ETL.py:/code/ETL.py
       - ./ETL/src:/code/src
     environment:
-      EHRBASE_USERRNAME: user
+      EHRBASE_USERNAME: user
       EHRBASE_PASSWORD: foobar
       EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
     networks:

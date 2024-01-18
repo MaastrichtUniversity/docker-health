@@ -10,7 +10,7 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 
-EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
+EHRBASE_USERNAME = os.environ["EHRBASE_USERNAME"]
 EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
 EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 
@@ -34,7 +34,7 @@ def plot_bloodpressure_over_time(ehr_id: UUID) -> None:
         "Prefer": "return=representation",
     }
     response = requests.request(
-        "GET", url, headers=headers, params={"q": query}, auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD), timeout=10
+        "GET", url, headers=headers, params={"q": query}, auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD), timeout=10
     )
     response_json = json.loads(response.text)
     dataframe = pd.DataFrame(columns=["Time", "Systolic", "Diastolic"])

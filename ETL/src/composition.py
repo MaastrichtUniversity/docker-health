@@ -12,7 +12,7 @@ import pytz
 import requests
 
 NLTZ = pytz.timezone("Europe/Amsterdam")
-EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
+EHRBASE_USERNAME = os.environ["EHRBASE_USERNAME"]
 EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
 EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 
@@ -100,7 +100,7 @@ def post_composition(ehr_id: UUID, composition: dict, write_composition: bool, j
         url,
         headers=headers,
         data=json.dumps(composition),
-        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
 
@@ -144,7 +144,7 @@ def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composi
         url,
         headers=headers,
         data=json.dumps(new_composition),
-        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
 
@@ -178,7 +178,7 @@ def delete_composition(ehr_id: UUID, versioned_composition_id: str):
         "DELETE",
         url,
         headers=headers,
-        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
 
@@ -225,7 +225,7 @@ def get_all_versioned_composition_uuids(ehr_id: UUID, versioned_composition_id: 
         "GET",
         url,
         headers=headers,
-        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
 
@@ -268,7 +268,7 @@ def get_composition_at_version(ehr_id: UUID, versioned_composition_id: str) -> s
         "GET",
         url,
         headers=headers,
-        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
 

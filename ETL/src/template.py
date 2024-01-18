@@ -7,7 +7,7 @@ import json
 import xml.etree.ElementTree as ET
 import requests
 
-EHRBASE_USERRNAME = os.environ["EHRBASE_USERRNAME"]
+EHRBASE_USERNAME = os.environ["EHRBASE_USERNAME"]
 EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
 EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 
@@ -27,7 +27,7 @@ def fetch_all_templates():
         "GET",
         url,
         headers=headers,
-        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
     if response.ok:
@@ -62,7 +62,7 @@ def post_template(filename: str):
             url,
             headers=headers,
             data=payload.read(),
-            auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+            auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD),
             timeout=10,
         )
 

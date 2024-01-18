@@ -6,7 +6,7 @@ import json
 from uuid import UUID
 import requests
 
-from src.ehr import EHRBASE_BASE_URL, EHRBASE_USERRNAME, EHRBASE_PASSWORD
+from src.ehr import EHRBASE_BASE_URL, EHRBASE_USERNAME, EHRBASE_PASSWORD
 from src.patient import Patient
 from src.diagnosis import Diagnosis
 from src.vitalsigns import VitalSigns
@@ -40,7 +40,7 @@ def retrieve_all_compositions_from_ehr(ehr_id: UUID) -> list:
         "Prefer": "return=representation",
     }
     response = requests.request(
-        "GET", url, headers=headers, params={"q": query}, auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD), timeout=10
+        "GET", url, headers=headers, params={"q": query}, auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD), timeout=10
     )
 
     response_json = json.loads(response.text)
@@ -82,7 +82,7 @@ def check_duplicate_patient_composition(ehr_id: UUID, patient: Patient) -> bool:
         "Prefer": "return=representation",
     }
     response = requests.request(
-        "GET", url, headers=headers, params={"q": query}, auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD), timeout=10
+        "GET", url, headers=headers, params={"q": query}, auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD), timeout=10
     )
     duplicate = False
     if response.status_code == 200:
@@ -132,7 +132,7 @@ def check_duplicate_diagnosis_composition(ehr_id: UUID, diagnosis: Diagnosis) ->
         "Prefer": "return=representation",
     }
     response = requests.request(
-        "GET", url, headers=headers, params={"q": query}, auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD), timeout=10
+        "GET", url, headers=headers, params={"q": query}, auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD), timeout=10
     )
     duplicate = False
     if response.status_code == 200:
@@ -184,7 +184,7 @@ def check_duplicate_vital_signs_composition(ehr_id: UUID, vital_signs: VitalSign
         "Prefer": "return=representation",
     }
     response = requests.request(
-        "GET", url, headers=headers, params={"q": query}, auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD), timeout=10
+        "GET", url, headers=headers, params={"q": query}, auth=(EHRBASE_USERNAME, EHRBASE_PASSWORD), timeout=10
     )
     duplicate = False
     if response.status_code == 200:
