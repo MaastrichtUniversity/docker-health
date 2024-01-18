@@ -157,8 +157,11 @@ def get_ehr_status(ehr_id: UUID) -> dict:
         timeout=10,
     )
     ehr_status = json.loads(response.text)
+    if response.ok:
+        return ehr_status
 
-    return ehr_status
+    print(f"ERROR: {ehr_status['error']}")
+    print(ehr_status["message"])
 
 
 def update_ehr_status(ehr_id: UUID, versioned_ehr_id: UUID, new_ehr_status: dict) -> dict:
@@ -194,12 +197,17 @@ def update_ehr_status(ehr_id: UUID, versioned_ehr_id: UUID, new_ehr_status: dict
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
+
     updated_ehr_status = json.loads(response.text)
 
-    return updated_ehr_status
+    if response.ok:
+        return updated_ehr_status
+
+    print(f"ERROR: {updated_ehr_status['error']}")
+    print(updated_ehr_status["message"])
 
 
-def update_ehr_modifiability_status(ehr_id: UUID, is_modifiable: bool) -> UUID:
+def update_ehr_modifiability_status(ehr_id: UUID, is_modifiable: bool) -> UUID | None:
     """
     Update the modifiability status of an Electronic Health Record (EHR).
 
@@ -214,10 +222,15 @@ def update_ehr_modifiability_status(ehr_id: UUID, is_modifiable: bool) -> UUID:
     -------
     UUID
         Updated EHR status uuid.
+    None
+        If something went wrong
     """
     ehr_status = get_ehr_status(ehr_id)
-    ehr_status["is_modifiable"] = is_modifiable
 
-    posted_ehr_status = update_ehr_status(ehr_id, ehr_status["uid"]["value"], ehr_status)
+    if ehr_status:
+        ehr_status["is_modifiable"] = is_modifiable
+        posted_ehr_status = update_ehr_status(ehr_id, ehr_status["uid"]["value"], ehr_status)
+        if posted_ehr_status:
+            return posted_ehr_status["uid"]["value"]
 
-    return posted_ehr_status["uid"]["value"]
+    return None
