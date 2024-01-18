@@ -6,6 +6,7 @@ import json
 import os
 from datetime import datetime
 from uuid import UUID
+from pathlib import Path
 
 import pytz
 import requests
@@ -57,7 +58,22 @@ def transform_composition(simplified_composition: str, template_id: str) -> dict
     return composition
 
 
-def post_composition(ehr_id: UUID, composition: dict) -> UUID | None:
+def write_json_composition(composition: str, json_filename: str):
+    """
+    Write a JSON composition to a file
+
+    Parameters
+    ----------
+    composition: dict
+        Composition to be posted
+    json_filename: str
+        Name of the file to create
+    """
+    with open(json_filename, "w", encoding="utf-8") as file:
+        json.dump(composition, file, indent=4)
+
+
+def post_composition(ehr_id: UUID, composition: dict, write_composition: bool, json_filename: Path):
     """
     POST a composition to the EHRbase server
 
@@ -67,14 +83,10 @@ def post_composition(ehr_id: UUID, composition: dict) -> UUID | None:
         EHR id of a given patient
     composition: dict
         Composition to be posted
-
-    Returns
-    -------
-    UUID
-        if response.ok is True:
-        Versioned id of the composition, containing the host and version (UUID::host::version)
-    None
-        if reponse.ok is False
+    write_composition: bool
+        if True, the composition is saved into a file
+    json_filename: Path
+        filename where the composition is saved
     """
     # print(json.dumps(composition))
     url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition"
@@ -95,14 +107,15 @@ def post_composition(ehr_id: UUID, composition: dict) -> UUID | None:
     response_json = json.loads(response.text)
     print(f"RESPONSE: {response.status_code}")
     if response.ok:
-        print("Composition was successfully created")
-        return response_json["uid"]["value"]
-    print(f"ERROR: {response_json['error']}")
-    print(response_json["message"])
-    return None
+        print(f"Composition was successfully created with UUID: {response_json["uid"]["value"]}")
+        if write_composition:
+            write_json_composition(composition=composition, json_filename=json_filename)
+    else:
+        print(f"ERROR: {response_json['error']}")
+        print(response_json["message"])
 
 
-def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composition: dict) -> UUID | None:
+def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composition: dict):
     """
     PUT (update) a previously posted composition in the EHRbase server
 
@@ -114,13 +127,6 @@ def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composi
         Composition UUID, containing the host and version (UUID::host::version)
     new_composition: dict
         Updated composition
-
-    Returns
-    -------
-    UUID
-        versioned id of the composition, if response.ok is True
-    None
-        if reponse.ok is False
     """
     # print(json.dumps(composition))
     composition_uuid, _, version = versioned_composition_id.split("::")
@@ -145,11 +151,9 @@ def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composi
     response_json = json.loads(response.text)
     print(f"RESPONSE: {response.status_code}")
     if response.ok:
-        print("Update composition was successfully created")
-        return response_json["uid"]["value"]
+        print(f"Update composition was successfully created with UUID: {response_json["uid"]["value"]}")
     print(f"ERROR: {response_json['error']}")
     print(response_json["message"])
-    return None
 
 
 def delete_composition(ehr_id: UUID, versioned_composition_id: str):
@@ -279,18 +283,3 @@ def get_composition_at_version(ehr_id: UUID, versioned_composition_id: str) -> s
     elif status_code == 404:
         print("ERROR: Not Found\nehr_id and/or composition_id do not exist")
     return None
-
-
-def write_json_composition(composition: str, json_filename: str):
-    """
-    Write a JSON composition to a file
-
-    Parameters
-    ----------
-    composition: dict
-        Composition to be posted
-    json_filename: str
-        Name of the file to create
-    """
-    with open(json_filename, "w", encoding="utf-8") as file:
-        json.dump(composition, file, indent=4)

@@ -9,9 +9,13 @@ import re
 import json
 import sqlite3
 import xml.etree.ElementTree as ET
+from uuid import UUID
+from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from src.template import post_template, fetch_all_templates
+from src.ehr import create_ehr, fetch_all_ehr_id
 from src.composition import (
     transform_composition,
     post_composition,
@@ -21,7 +25,6 @@ from src.composition import (
     get_all_versioned_composition_uuids,
     get_composition_at_version
 )
-
 from src.patient import (
     Patient,
     parse_patient_csv,
@@ -59,15 +62,15 @@ from src.query import (
 )
 
 
-def extract_all_csv(patient_id, data_path, vital_signs_units) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_csv(patient_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from the CSV files
 
     Parameters
     ----------
-    patient_id: str
+    patient_id: UUID
         External patient id
-    data_path: str
+    data_path: Path
         Path to the CSV files
     vital_signs_units: dict
         Dictionary containing as keys all the vital signs variables used,
@@ -128,15 +131,15 @@ def extract_all_csv(patient_id, data_path, vital_signs_units) -> (Patient, list[
     return patient, all_disorders, all_vital_signs
 
 
-def extract_all_json(patient_id, data_path, vital_signs_units) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_json(patient_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from a single JSON patient file
 
     Parameters
     ----------
-    patient_id: str
+    patient_id: UUID
         External patient id
-    data_path: str
+    data_path: Path
         Path to the JSON patient file
     vital_signs_units: dict
         Dictionary containing as keys all the vital signs variables used,
@@ -173,7 +176,7 @@ def extract_all_json(patient_id, data_path, vital_signs_units) -> (Patient, list
                 )
     print(f"{len(all_disorders)} disorders reported for this patient.")
 
-    print("\nVital Signs..")
+    print("\nVital Signs..", end="\t")
     all_vital_signs = []
     for encounter_i, encounter in enumerate(patient_json["record"]["encounters"]):
         if encounter["observations"] == []:
@@ -195,15 +198,15 @@ def extract_all_json(patient_id, data_path, vital_signs_units) -> (Patient, list
     return patient, all_disorders, all_vital_signs
 
 
-def extract_all_ccda(patient_id, data_path, vital_signs_units) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_ccda(patient_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from the CCDA XML files
 
     Parameters
     ----------
-    patient_id: str
+    patient_id: UUID
         External patient id
-    data_path: str
+    data_path: Path
         Path to the CDDA patient file
     vital_signs_units: dict
         Dictionary containing as keys all the vital signs variables used,
@@ -271,15 +274,15 @@ def extract_all_ccda(patient_id, data_path, vital_signs_units) -> (Patient, list
     return patient, all_disorders, all_vital_signs
 
 
-def extract_all_sql(patient_id, data_path, vital_signs_units) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_sql(patient_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from the SQL files
 
     Parameters
     ----------
-    patient_id: str
+    patient_id: UUID
         External patient id
-    data_path: str
+    data_path: Path
         Path to the SQL files
     vital_signs_units: dict
         Dictionary containing as keys all the vital signs variables used,
@@ -325,15 +328,15 @@ def extract_all_sql(patient_id, data_path, vital_signs_units) -> (Patient, list[
     return patient, all_disorders, all_vital_signs
 
 
-def extract_all_fhir(patient_id, data_path, vital_signs_units) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_fhir(patient_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from a single fhir JSON patient file
 
     Parameters
     ----------
-    patient_id: str
+    patient_id: UUID
         External patient id
-    data_path: str
+    data_path: Path
         Path to the fhir JSON patient file
     vital_signs_units: dict
         Dictionary containing as keys all the vital signs variables used,
@@ -379,7 +382,7 @@ def extract_all_fhir(patient_id, data_path, vital_signs_units) -> (Patient, list
 
     print(f"{len(all_disorders)} disorders reported for this patient.")
 
-    print("\nVital Signs..")
+    print("\nVital Signs..", end="\t")
     all_vital_signs = []
     for observations in encounters.values():
         all_vital_signs.append(parse_all_vital_signs_fhir(observations, vital_signs_units))
@@ -387,49 +390,33 @@ def extract_all_fhir(patient_id, data_path, vital_signs_units) -> (Patient, list
     return patient, all_disorders, all_vital_signs
 
 
-def switch_patient_sex(patient, ehr_id, patient_composition_id, output_path):
+def load_ehr_template(patient_id: UUID, template_filenames: list) -> UUID:
     """
-    Switch the sex assigned at birth of the patient.
+    Load EHR and template(s) into the EHRbase
 
     Parameters
     ----------
-    patient: Patient
-        Instance of the Patient class
-    ehr_id: UUID
-        ehr_id for the given patient id
-    patient_composition_id: UUID
-        Composition UUID, containing the host and version (UUID::host::version)
-    output_path: str
-        Path the the folder saving all composition outputs
+    patient_id: UUID
+        External patient id
+    template_filenames: list
+        List containing the path to the template files
 
     Returns
     -------
     UUID
-        New patient composition UUID
+        ehr_id of the given patient id
     """
-    if patient.gender_code == "M":
-        patient.gender_code = "F"
-    elif patient.gender_code == "F":
-        patient.gender_code = "M"
+    print("\nCreate EHR:")
+    ehr_id = create_ehr(patient_id)
 
-    simplified_patient_composition = patient.model_dump_json(by_alias=True, indent=4)
-    print(f"patient: {simplified_patient_composition}")
-    patient_composition = transform_composition(
-        simplified_composition=simplified_patient_composition,
-        template_id="patient",
-    )
-    # print(f"\ncomposition: {patient_composition}")
-    write_json_composition(
-        composition=patient_composition,
-        json_filename=output_path / "patient_updated.json",
-    )
-    patient_composition_uuid = update_composition(ehr_id, patient_composition_id, patient_composition)
-    print(f"patient_composition_uuid: {patient_composition_uuid}")
+    print("\nPost templates:")
+    for template_filename in template_filenames:
+        post_template(template_filename)
 
-    return patient_composition_uuid
+    return ehr_id
 
 
-def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path):
+def transform_post_compositions(patient: Patient, all_disorders: list[Diagnosis], all_vital_signs: list[VitalSigns], ehr_id: UUID, write_composition: bool, output_path: Path):
     """
     Transform each data instance into a composition, and POST these compositions
     to the EHRbase server
@@ -443,26 +430,104 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     all_vital_signs: list[VitalSigns]
         list of instances of the VitalSigns class
     ehr_id: UUID
-        ehr_id for the given patient id
+        ehr_id of the given patient id
     output_path: str
         Path to the folder saving all composition outputs
+    write_composition: bool
+        Save the json composition in a file
     """
     print("\nPatient..")
-    simplified_patient_composition = patient.model_dump_json(by_alias=True, indent=4)
     if not check_duplicate_patient_composition(ehr_id, patient):
-        print(f"\npatient: {simplified_patient_composition}")
+        patient_data_object = patient.model_dump_json(by_alias=True, indent=4)
+        print(f"\npatient: {patient_data_object}")
         patient_composition = transform_composition(
-            simplified_composition=simplified_patient_composition,
+            simplified_composition=patient_data_object,
             template_id="patient",
         )
-        # print(f"\ncomposition: {patient_composition}")
-        write_json_composition(
+        post_composition(
+            ehr_id=ehr_id,
             composition=patient_composition,
+            write_composition=write_composition,
             json_filename=output_path / "patient.json",
         )
-        patient_composition_uuid = post_composition(ehr_id, patient_composition)
-        print(f"patient_composition_uuid: {patient_composition_uuid}")
 
+    print("\nDiagnosis..")
+    for diagnosis_i, diagnosis in enumerate(all_disorders):
+        if check_duplicate_diagnosis_composition(ehr_id, diagnosis):
+            continue
+        diagnosis_data_object = diagnosis.model_dump_json(by_alias=True, indent=4)
+        print(f"\ndiagnosis {diagnosis_i+1}: {diagnosis_data_object}")
+        diagnosis_composition = transform_composition(
+            simplified_composition=diagnosis_data_object,
+            template_id="diagnosis-demo",
+        )
+        post_composition(
+            ehr_id=ehr_id,
+            composition=diagnosis_composition,
+            write_composition=write_composition,
+            json_filename=output_path / f"diagnosis_{diagnosis_i+1}.json",
+        )
+
+    print("\nVital Signs..")
+    for vitalsigns_i, vitalsigns in enumerate(all_vital_signs):
+        if not vitalsigns.height or check_duplicate_vital_signs_composition(ehr_id, vitalsigns):
+            continue
+        vitalsigns_data_object = vitalsigns.model_dump_json(by_alias=True, indent=4)
+        print(f"\nvital_signs {vitalsigns_i+1}: {vitalsigns_data_object}")
+        vitalsigns_composition = transform_composition(
+            simplified_composition=vitalsigns_data_object,
+            template_id="vital_signs",
+        )
+        post_composition(
+            ehr_id=ehr_id,
+            composition=vitalsigns_composition,
+            write_composition=write_composition,
+            json_filename=output_path / f"vital_signs_{vitalsigns_i+1}.json",
+        )
+
+
+# def switch_patient_sex(patient, ehr_id, patient_composition_id, output_path):
+#     """
+#     Switch the sex assigned at birth of the patient.
+
+#     Parameters
+#     ----------
+#     patient: Patient
+#         Instance of the Patient class
+#     ehr_id: UUID
+#         ehr_id of the given patient id
+#     patient_composition_id: UUID
+#         Composition UUID, containing the host and version (UUID::host::version)
+#     output_path: str
+#         Path the the folder saving all composition outputs
+
+#     Returns
+#     -------
+#     UUID
+#         New patient composition UUID
+#     """
+#     if patient.gender_code == "M":
+#         patient.gender_code = "F"
+#     elif patient.gender_code == "F":
+#         patient.gender_code = "M"
+
+#     simplified_patient_composition = patient.model_dump_json(by_alias=True, indent=4)
+#     print(f"patient: {simplified_patient_composition}")
+#     patient_composition = transform_composition(
+#         simplified_composition=simplified_patient_composition,
+#         template_id="patient",
+#     )
+#     # print(f"\ncomposition: {patient_composition}")
+#     write_json_composition(
+#         composition=patient_composition,
+#         json_filename=output_path / "patient_updated.json",
+#     )
+#     update_composition(ehr_id, patient_composition_id, patient_composition)
+
+#     return patient_composition_uuid
+
+# TO DO:
+# def test():
     # print("\nSwitch patient sex at birth..")
     # patient_composition_uuid = switch_patient_sex(
     #     patient=patient,
@@ -499,40 +564,6 @@ def transform_load(patient, all_disorders, all_vital_signs, ehr_id, output_path)
     #     versioned_composition_id=versioned_composition_uuids[0]
     # ))
 
-    print("\nDiagnosis..")
-    for diagnosis_i, diagnosis in enumerate(all_disorders):
-        simplified_diagnosis_composition = diagnosis.model_dump_json(by_alias=True, indent=4)
-        if not check_duplicate_diagnosis_composition(ehr_id, diagnosis):
-            print(f"\ndiagnosis {diagnosis_i+1}: {simplified_diagnosis_composition}")
-            diagnosis_composition = transform_composition(
-                simplified_composition=simplified_diagnosis_composition,
-                template_id="diagnosis-demo",
-            )
-            write_json_composition(
-                composition=diagnosis_composition,
-                json_filename=output_path / f"diagnosis_{diagnosis_i+1}.json",
-            )
-            # print(f"\ncomposition: {diagnosis_composition}")
-            diagnosis_composition_uuid = post_composition(ehr_id, diagnosis_composition)
-            print(f"diagnosis_composition_uuid: {diagnosis_composition_uuid}")
-
-    print("\nVital Signs..")
-    for vitalsigns_i, vitalsigns in enumerate(all_vital_signs):
-        simplified_vitalsigns_composition = vitalsigns.model_dump_json(by_alias=True, indent=4)
-        if vitalsigns.height and not check_duplicate_vital_signs_composition(ehr_id, vitalsigns):
-            print(f"\nvital_signs {vitalsigns_i+1}: {simplified_vitalsigns_composition}")
-            vitalsigns_composition = transform_composition(
-                simplified_composition=simplified_vitalsigns_composition,
-                template_id="vital_signs",
-            )
-            write_json_composition(
-                composition=vitalsigns_composition,
-                json_filename=output_path / f"vital_signs_{vitalsigns_i+1}.json",
-            )
-            # print(f"\ncomposition: {vitalsigns_composition}")
-            vitalsigns_composition_uuid = post_composition(ehr_id, vitalsigns_composition)
-            print(f"vitalsigns_composition_uuid: {vitalsigns_composition_uuid}")
-
-    print("\nAll compositions posted for this patient [template_id, composition_uuid, time]:")
-    all_compositions = retrieve_all_compositions_from_ehr(ehr_id)
-    print(*all_compositions, sep="\n")
+    # print("\nAll compositions posted for this patient [template_id, start_time, composition_uuid]:")
+    # all_compositions = retrieve_all_compositions_from_ehr(ehr_id)
+    # print(*all_compositions, sep="\n")
