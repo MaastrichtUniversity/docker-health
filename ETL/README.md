@@ -1,30 +1,21 @@
-# Pre-steps (Not required)
+# Health Data Plateform -- ETL
 
-- Downloaded Vital Signs template from https://ckm.openehr.org/ckm/templates/1013.26.380
+ETL python service to communicate with the EHRbase API.
 
-    Rename file to `vital_signs.opt`
+The `run [input_format]` command permits the extraction, tranformation (using a Java REST API) and loading of openEHR compositions.
+Available `input_format` are csv, json, fhir, ccda and sql.
 
+## Help function
 
--   Generate example composition trough https://github.com/ppazos/openEHR-OPT
-
-    `./opt.sh ingen vital_signs.opt . 1 json`
-
--   Generate synthea sample set for single patient
-    ```
-    exporter.hospital.fhir.export = false
-    exporter.practitioner.fhir.export = false
-    exporter.csv.export = true
-    exporter.fhir.export = false
-    generate.default_population =  1
-    generate.only_alive_patients = true
-    exporter.csv.folder_per_run = true
-    exporter.baseDirectory = /tmp/synthea_output
-    ```
-
-# Python
-Packages required
 ```
-requests
-pandas
-matplotlib
+python ETL.py --help
+Usage: ETL.py [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  get-all-ehr-id      Get all EHR ID on a specific openEHR instance
+  list-all-templates  Print all template available on the server
+  run                 Runs all ETL for a single patient.
 ```

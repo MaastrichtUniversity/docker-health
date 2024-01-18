@@ -1,6 +1,13 @@
-# Docker-health
+# Health Data Plateform
 
-Main repository for the HDP project.
+Setting-up a core clinical data repository to store data from different formats using openEHR specifications.
+
+This service is based on:
+- Synthea, a tool to generate synthetic patients
+- EHRbase API, a clinical data repository implementing the openEHR Reference Model
+- Java REST API, an EHRbase's SDK permitting the transformation of data objects into valid openEHR compositions
+- Jupyter notebook for an initial data exploration
+
 The current services:
 - EHRbase
 - ETL-demo
@@ -29,115 +36,36 @@ Update the credentials in `./ehrbase/.env.ehrbase`
 ./rit.sh externals checkout develop
 ```
 
-## Create the synthetic dataset
+## Generate synthetic dataset
+
+Synthetic patient generator using Synthea with n=1000 patients.
 
 ```
 ./rit.sh data
 ```
 
-## Start the data  exploration Jupyter notebook
+## Start the data exploration Jupyter notebook
 
 ```
 ./rit.sh data-exploration
 ```
-open browser and goto [jupyter.local.dh.unimaas.nl](jupyter.local.dh.unimaas.nl)
+open browser and go to [jupyter.local.dh.unimaas.nl](jupyter.local.dh.unimaas.nl)
 
 ## Start the EHRbase backend
+
+EHRbase provides a standard-based backend for interoperable clinical applications, implementing the latest version of the openEHR Reference Model and the Archetype Definition Language (AQL).
 
 ```
 ./rit.sh backend
 ```
 
+## Run the ETL demo
 
-## Run ETL demo
-
-**WIP**
+Extract the synthetic data using csv files, Transform the data into valid compositions by using a java-rest API and Load the compositions into the EHRbase.
 
 ```
 ./rit.sh demo
 ```
-
-# Run the java rest synthea demo
-
-```
-docker compose build java-rest-demo
-docker compose up java-rest-demo
-```
-
-Swagger interface is now at http://localhost:8081/swagger-ui/index.html
-or http://javarest.local.dh.unimaas.nl/swagger-ui/index.html
-
-## diagnosis
-```
-curl -X 'POST' \
-  'http://localhost:8081/diagnosis-demo' \
-  -H 'accept: */*' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "startTime": "2011-10-18T20:29:31Z",
-  "endTime": "2010-10-18T20:29:31Z",
-  "dateClinicallyRecognised": "2017-10-18T20:29:31Z",
-  "diagnosisValue": "Anemia (disorder)",
-  "diagnosisSNOMEDCode": "271737000"
-}'
-```
-
-## patient
-```
-curl -X 'POST' \
-  'http://localhost:8081/patient' \
-  -H 'accept: */*' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "startTime": "2011-10-18T20:29:31Z",
-    "sexAssignedAtBirth": "Male",
-    "dateOfBirth": "2000-10-18T20:29:31Z",
-    "dateOfDeath": "2000-10-18T20:29:31Z"
-}'
-
-```
-
-
-## vital_signs
-
-Minimum
-```
-curl -X 'POST' \
-  'http://localhost:8081/vital_signs' \
-  -H 'accept: */*' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "startTime": "2011-10-18T20:29:31Z"
-}'
-```
-
-Extended
-```
-curl -X 'POST' \
-  'http://localhost:8081/vital_signs' \
-  -H 'accept: */*' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "startTime": "2011-10-18T20:29:31Z",
-  "bodyHeightObservation": {
-    "pointInTime": [
-      {
-        "magnitude": 185,
-        "units": "cm",
-        "timeValue": "1999-12-18T04:05:06Z"
-      },
-      {
-        "magnitude": 173,
-        "units": "cm",
-        "timeValue": "2023-12-18T01:02:03Z"
-      }	
-    ]
-  }
-}'
-```
-
-Will return a valid composition
-
 
 ## Kill the whole stack
 
@@ -161,5 +89,5 @@ Options:
 Commands:
   get-all-ehr-id      Get all EHR ID on a specific openEHR instance
   list-all-templates  Print all template available on the server
-  run                 Runs all ETL from default hard coded values
+  run                 Runs all ETL for a single patient.
 ```
