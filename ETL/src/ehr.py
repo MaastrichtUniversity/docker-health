@@ -98,7 +98,7 @@ def create_ehr(patient_id: str) -> UUID:
     """
     ehr_id = get_ehr_id_for_patient_id(patient_id)
     if ehr_id:
-        print("An EHR identifier already exists for this patient.")
+        print(f"An EHR identifier already exists for this patient with UUID: {ehr_id}")
         return ehr_id
 
     url = f"{EHRBASE_BASE_URL}/ehr"
@@ -126,9 +126,11 @@ def create_ehr(patient_id: str) -> UUID:
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
+    print(f"RESPONSE: {response.status_code}")
     response_json = json.loads(response.text)
-
-    return response_json["ehr_id"]["value"]
+    ehr_id = response_json["ehr_id"]["value"]
+    print(f"EHR successfully created for this patient with UUID: {ehr_id}")
+    return ehr_id
 
 
 def get_ehr_status(ehr_id: UUID) -> dict:
