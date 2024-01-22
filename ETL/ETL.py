@@ -26,6 +26,7 @@ from src.ehr import fetch_all_ehr_id
 # config:
 CONFIG = {
     "patient_id": "3b1dadde-eefe-e82a-efbc-daa3c959a0c2",
+    "subject_namespace": "datahub",
     "template_filenames": [
         Path("data/templates/patient.opt"),
         Path("data/templates/diagnosis_demo.opt"),
@@ -105,7 +106,8 @@ def run(input_format):
     )
 
     test_versioning_functions(
-        ehr_id=CONFIG["ehr_id"],
+        patient_id=CONFIG["patient_id"],
+        subject_namespace=CONFIG["subject_namespace"], 
         patient=patient,
         write_composition=CONFIG["write_composition"],
         output_path=CONFIG["composition_output_path"],

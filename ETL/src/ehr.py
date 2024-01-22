@@ -133,9 +133,45 @@ def create_ehr(patient_id: str) -> UUID:
     return ehr_id
 
 
+def get_ehr_summary(subject_id: UUID, subject_namespace: str) -> dict | None:
+    """
+    Get the EHR summary by the subject id. EHR summary contains information on
+    the system_id, ehr_id, ehr_status and time_created.
+
+    Parameters
+    ----------
+    subject_id: UUID
+        External id of the given subject
+    subject_namespace: str
+        Namespace of the given subject
+
+    Returns
+    -------
+    dict | None
+        the EHR summary
+    """
+    url = f"{EHRBASE_BASE_URL}/ehr?subject_id={subject_id}&subject_namespace={subject_namespace}"
+
+    headers = {"Accept": "application/json"}
+    response = requests.request(
+        "GET",
+        url,
+        headers=headers,
+        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        timeout=10,
+    )
+    response_json = json.loads(response.text)
+    if response.ok:
+        return response_json
+
+    print(f"ERROR: {response_json['error']}")
+    print(response_json["message"])
+    return None
+
+
 def get_ehr_status(ehr_id: UUID) -> dict | None:
     """
-    Retrieves a version of the EHR_STATUS associated with the EHR identified by ehr_id.
+    Retrieves the latest version the EHR_STATUS for a given ehr_id.
 
     Parameters
     ----------
@@ -144,10 +180,9 @@ def get_ehr_status(ehr_id: UUID) -> dict | None:
 
     Returns
     -------
-    dict
-        ehr_status
+    dict | None
+        the EHR status or None if response.ok is False
     """
-
     url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/ehr_status"
 
     headers = {"Accept": "application/json"}
@@ -158,36 +193,66 @@ def get_ehr_status(ehr_id: UUID) -> dict | None:
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
-    ehr_status = json.loads(response.text)
+    response_json = json.loads(response.text)
     if response.ok:
-        return ehr_status
+        return response_json
 
-    print(f"ERROR: {ehr_status['error']}")
-    print(ehr_status["message"])
+    print(f"ERROR: {response_json['error']}")
+    print(response_json["message"])
     return None
 
 
-def update_ehr_status(ehr_id: UUID, versioned_ehr_id: UUID, new_ehr_status: dict) -> dict | None:
+def get_ehr_status_at_version(ehr_id: UUID, versioned_ehr_status_id: str) -> dict | None:
     """
-    Retrieves a version of the EHR_STATUS associated with the EHR identified by ehr_id.
+    Retrieve the EHR status at a specific version for a given EHR.
 
     Parameters
     ----------
     ehr_id: UUID
         EHR id of a given patient
-    versioned_ehr_id
-    new_ehr_status
+    versioned_ehr_status_id: str
+        Versioned EHR status UUID in the format UUID::host::version.
 
     Returns
     -------
-    dict
-        ehr_status
+    str or None
+        If the response is successful, the ehr status as a string is returned.
+        If the response is unsuccessful, None is returned.
     """
+    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/ehr_status/{versioned_ehr_status_id}"
+    headers = {"Accept": "application/json; charset=UTF-8"}
+    response = requests.request(
+        "GET",
+        url,
+        headers=headers,
+        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
+        timeout=10,
+    )
+    response_json = json.loads(response.text)
+    if response.ok:
+        return response_json
+    print(f"ERROR: {response_json['error']}")
+    print(response_json["message"])
+    return None
 
+
+def update_ehr_status(ehr_id: UUID, versioned_ehr_status_id: str, new_ehr_status: dict):
+    """
+    Retrieves the EHR_STATUS associated with the given versioned ehr_id.
+
+    Parameters
+    ----------
+    ehr_id: UUID
+        EHR id of a given patient
+    versioned_ehr_status_id: str
+        versioned EHR_STATUS id containing the UUID, host and version (UUID::host::version)
+    new_ehr_status:
+        Updated ehr status
+    """
     url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/ehr_status"
 
     headers = {
-        "If-Match": versioned_ehr_id,
+        "If-Match": versioned_ehr_status_id,
         "Accept": "application/json; charset=UTF-8",
         "Prefer": "return=representation",
         "Content-Type": "application/json",
@@ -201,46 +266,54 @@ def update_ehr_status(ehr_id: UUID, versioned_ehr_id: UUID, new_ehr_status: dict
         timeout=10,
     )
 
-    updated_ehr_status = json.loads(response.text)
+    response_json = json.loads(response.text)
 
     if response.ok:
-        return updated_ehr_status
+        print(f"EHR status was successfully updated with UUID: {response_json["uid"]["value"]}")
+    else:
+        print(f"ERROR: {response_json['error']}")
+        print(response_json["message"])
 
-    print(f"ERROR: {updated_ehr_status['error']}")
-    print(updated_ehr_status["message"])
-    return None
 
-
-def update_ehr_modifiability_status(ehr_id: UUID, is_modifiable: bool) -> UUID | None:
+def update_ehr_is_modifiable(ehr_id: UUID, is_modifiable: bool):
     """
-    Update the modifiability status of an Electronic Health Record (EHR).
+    Update the modifiability status of an EHR.
 
     Parameters
     ----------
     ehr_id: UUID
-        EHR id of a given patient.
+        EHR id of a given patient
     is_modifiable: bool
-        Flag to allow or disallow modifying the EHR.
-
-    Returns
-    -------
-    UUID
-        Updated EHR status uuid.
-    None
-        If something went wrong
+        Flag to allowing or not the modifiability of the EHR
     """
     ehr_status = get_ehr_status(ehr_id)
-
+    versioned_ehr_status_id = ehr_status["uid"]["value"]
     if ehr_status:
         ehr_status["is_modifiable"] = is_modifiable
-        posted_ehr_status = update_ehr_status(ehr_id, ehr_status["uid"]["value"], ehr_status)
-        if posted_ehr_status:
-            return posted_ehr_status["uid"]["value"]
-
-    return None
+        update_ehr_status(ehr_id, versioned_ehr_status_id, ehr_status)
+        print(f"is_queryable set to {is_modifiable}")
 
 
-def get_all_versioned_ehr_status_uuids(ehr_id: UUID) -> list | None:
+def update_ehr_is_queryable(ehr_id: UUID, is_queryable: bool):
+    """
+    Update the queryability status of an EHR.
+
+    Parameters
+    ----------
+    ehr_id: UUID
+        EHR id of a given patient
+    is_queryable: bool
+        Flag to allowing or not the modifiability of the EHR
+    """
+    ehr_status = get_ehr_status(ehr_id)
+    versioned_ehr_status_id = ehr_status["uid"]["value"]
+    if ehr_status:
+        ehr_status["is_queryable"] = is_queryable
+        update_ehr_status(ehr_id, versioned_ehr_status_id, ehr_status)
+        print(f"is_queryable set to {is_queryable}")
+
+
+def get_all_versioned_ehr_status_ids(ehr_id: UUID) -> list | None:
     """
     Retrieve all versioned EHR status UUIDs in the format UUID::host::version,
     ordered from the oldest to the latest version.
@@ -274,46 +347,8 @@ def get_all_versioned_ehr_status_uuids(ehr_id: UUID) -> list | None:
     if response.ok:
         versioned_ehr_status_uuids = []
         for item in response_json:
-            versioned_ehr_status_uuids.append(item['version_id']['value'])
+            versioned_ehr_status_uuids.append(item["version_id"]["value"])
         return versioned_ehr_status_uuids
-    print(f"ERROR: {response_json['error']}")
-    print(response_json["message"])
-    return None
-
-
-def get_ehr_status_at_version(ehr_id: UUID, versioned_ehr_status_id: UUID) -> dict | None:
-    """
-    Retrieve the EHR status at a specific version for a given EHR.
-
-    Parameters
-    ----------
-    versioned_ehr_status_id: UUID
-        Versioned EHR status UUID in the format UUID::host::version.
-    ehr_id: UUID
-        EHR id of a given patient.
-
-    Returns
-    -------
-    str or None
-        If the response is successful, the ehr status as a string is returned.
-        If the response is unsuccessful, None is returned.
-    """
-
-    url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/ehr_status/{versioned_ehr_status_id}"
-    headers = {
-        "Accept": "application/json; charset=UTF-8",
-    }
-    response = requests.request(
-        "GET",
-        url,
-        headers=headers,
-        auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
-        timeout=10,
-    )
-
-    response_json = json.loads(response.text)
-    if response.ok:
-        return response_json
     print(f"ERROR: {response_json['error']}")
     print(response_json["message"])
     return None

@@ -60,9 +60,11 @@ from src.query import (
     retrieve_all_compositions_from_ehr,
 )
 from src.ehr import (
+    get_ehr_summary,
     get_ehr_status,
-    update_ehr_modifiability_status,
-    get_all_versioned_ehr_status_uuids,
+    update_ehr_is_modifiable,
+    update_ehr_is_queryable,
+    get_all_versioned_ehr_status_ids,
     get_ehr_status_at_version,
 )
 
@@ -532,30 +534,45 @@ def switch_patient_sex(patient: Patient, ehr_id: UUID, patient_composition_id: s
     )
 
 
-def test_versioning_functions(ehr_id: UUID, patient: Patient, write_composition:bool, output_path: Path):
+def test_versioning_functions(patient_id: UUID, subject_namespace: str, patient: Patient, write_composition:bool, output_path: Path):
     """
     test functions related to getting and updating EHR status / composition
     """
     print("\n\nTESTS on EHR status versioning")
 
-    print("\nGet ehr_status...")
-    print(get_ehr_status(ehr_id))
+    print("\nGet ehr_status..")
+    ehr_summary = get_ehr_summary(subject_id=patient_id, subject_namespace=subject_namespace)
+    ehr_id = ehr_summary["ehr_id"]["value"]
 
-    print("\nAllow to modify EHR..")
-    print(update_ehr_modifiability_status(ehr_id, True))
+    # ehr_status = ehr_summary["ehr_status"]
+    ehr_status = get_ehr_status(ehr_id=ehr_id)
+    print(ehr_status)
+    versioned_ehr_id = ehr_status["uid"]["value"]
+    print(f"EHR id: {ehr_id}")
+    print(f"EHR status id: {versioned_ehr_id}")
 
-    print("\nGet EHR status versions..")
-    print(get_all_versioned_ehr_status_uuids(ehr_id))
+    print("\nAllow modifiability of an EHR..")
+    update_ehr_is_modifiable(ehr_id=ehr_id, is_modifiable=True)
 
-    first_ehr_status_id = get_all_versioned_ehr_status_uuids(ehr_id)[0]
-    print("\nGet first EHR status..")
-    print(get_ehr_status_at_version(ehr_id, first_ehr_status_id))
+    print("\nAllow queryability of an EHR..")
+    update_ehr_is_queryable(ehr_id=ehr_id, is_queryable=True)
+
+    print("\nAll versions of this EHR:")
+    all_versioned_ehr_ids = get_all_versioned_ehr_status_ids(ehr_id=ehr_id)
+    print(*all_versioned_ehr_ids, sep="\n")
+
+    print("\nGet first version EHR status:")
+    print(get_ehr_status_at_version(ehr_id=ehr_id, versioned_ehr_status_id=all_versioned_ehr_ids[0]))
+
+    print("\nGet last version EHR status:")
+    print(get_ehr_status_at_version(ehr_id=ehr_id, versioned_ehr_status_id=all_versioned_ehr_ids[-1]))
+
 
 
     print("\n\nTESTS on composition versioning")
 
     print("\nAll compositions posted for this patient [template_id, start_time, composition_uuid]:")
-    all_compositions = retrieve_all_compositions_from_ehr(ehr_id)
+    all_compositions = retrieve_all_compositions_from_ehr(ehr_id=ehr_id)
     print(*all_compositions, sep="\n")
 
     print("\nSwitch patient sex at birth..")
@@ -588,14 +605,14 @@ def test_versioning_functions(ehr_id: UUID, patient: Patient, write_composition:
     # Composition is now "deactivated", it shouldn't be updated or retrieved
 
     print("\nAll versions of this composition:")
-    versioned_composition_uuids = get_all_versioned_composition_uuids(
+    all_versioned_composition_uuids = get_all_versioned_composition_uuids(
         ehr_id=ehr_id,
         versioned_composition_id=patient_composition_uuid
     )
-    print(*versioned_composition_uuids, sep='\n')
+    print(*all_versioned_composition_uuids, sep="\n")
 
     print("\nShow the first version of this composition:")
     print(get_composition_at_version(
         ehr_id=ehr_id,
-        versioned_composition_id=versioned_composition_uuids[0]
+        versioned_composition_id=all_versioned_composition_uuids[0]
     ))
