@@ -69,7 +69,9 @@ from src.ehr import (
 )
 
 
-def extract_all_csv(subject_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_csv(
+    subject_id: UUID, data_path: Path, vital_signs_units: dict
+) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from the CSV files
 
@@ -138,7 +140,9 @@ def extract_all_csv(subject_id: UUID, data_path: Path, vital_signs_units: dict) 
     return patient, all_disorders, all_vital_signs
 
 
-def extract_all_json(subject_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_json(
+    subject_id: UUID, data_path: Path, vital_signs_units: dict
+) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from a single JSON patient file
 
@@ -205,7 +209,9 @@ def extract_all_json(subject_id: UUID, data_path: Path, vital_signs_units: dict)
     return patient, all_disorders, all_vital_signs
 
 
-def extract_all_ccda(subject_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_ccda(
+    subject_id: UUID, data_path: Path, vital_signs_units: dict
+) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from the CCDA XML files
 
@@ -281,7 +287,9 @@ def extract_all_ccda(subject_id: UUID, data_path: Path, vital_signs_units: dict)
     return patient, all_disorders, all_vital_signs
 
 
-def extract_all_sql(subject_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_sql(
+    subject_id: UUID, data_path: Path, vital_signs_units: dict
+) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from the SQL files
 
@@ -335,7 +343,9 @@ def extract_all_sql(subject_id: UUID, data_path: Path, vital_signs_units: dict) 
     return patient, all_disorders, all_vital_signs
 
 
-def extract_all_fhir(subject_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_fhir(
+    subject_id: UUID, data_path: Path, vital_signs_units: dict
+) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from a single fhir JSON patient file
 
@@ -423,7 +433,14 @@ def load_ehr_template(subject_id: UUID, template_filenames: list) -> UUID:
     return ehr_id
 
 
-def transform_post_compositions(patient: Patient, all_disorders: list[Diagnosis], all_vital_signs: list[VitalSigns], ehr_id: UUID, write_composition: bool, output_path: Path):
+def transform_post_compositions(
+    patient: Patient,
+    all_disorders: list[Diagnosis],
+    all_vital_signs: list[VitalSigns],
+    ehr_id: UUID,
+    write_composition: bool,
+    output_path: Path,
+):
     """
     Transform each data instance into a composition, and POST these compositions
     to the EHRbase server
@@ -494,7 +511,9 @@ def transform_post_compositions(patient: Patient, all_disorders: list[Diagnosis]
         )
 
 
-def switch_patient_sex(patient: Patient, ehr_id: UUID, patient_composition_id: str, write_composition:bool, output_path: Path):
+def switch_patient_sex(
+    patient: Patient, ehr_id: UUID, patient_composition_id: UUID, write_composition: bool, output_path: Path
+):
     """
     Switch the sex assigned at birth of the subject.
 
@@ -504,10 +523,12 @@ def switch_patient_sex(patient: Patient, ehr_id: UUID, patient_composition_id: s
         Instance of the Patient class
     ehr_id: UUID
         ehr_id of the given subject id
-    patient_composition_id: str
+    patient_composition_id: UUID
         Composition UUID, containing the host and version (UUID::host::version)
+    write_composition: bool
+        if True, the composition is saved into a file
     output_path: str
-        Path the the folder saving all composition outputs
+        Path the folder saving all composition outputs
 
     Returns
     -------
@@ -534,7 +555,9 @@ def switch_patient_sex(patient: Patient, ehr_id: UUID, patient_composition_id: s
     )
 
 
-def test_versioning_functions(subject_id: UUID, subject_namespace: str, patient: Patient, write_composition:bool, output_path: Path):
+def test_versioning_functions(
+    subject_id: UUID, subject_namespace: str, patient: Patient, write_composition: bool, output_path: Path
+):
     """
     test functions related to getting and updating EHR status / composition
     """
@@ -567,8 +590,6 @@ def test_versioning_functions(subject_id: UUID, subject_namespace: str, patient:
     print("\nGet last version EHR status:")
     print(get_ehr_status_at_version(ehr_id=ehr_id, versioned_ehr_status_id=all_versioned_ehr_ids[-1]))
 
-
-
     print("\n\nTESTS on composition versioning")
 
     print("\nAll compositions posted for this patient [template_id, start_time, composition_uuid]:")
@@ -586,7 +607,7 @@ def test_versioning_functions(subject_id: UUID, subject_namespace: str, patient:
         ehr_id=ehr_id,
         patient_composition_id=patient_composition_uuid,
         write_composition=write_composition,
-        output_path=output_path
+        output_path=output_path,
     )
 
     print("\nSwitch patient sex at birth..")
@@ -600,28 +621,30 @@ def test_versioning_functions(subject_id: UUID, subject_namespace: str, patient:
         ehr_id=ehr_id,
         patient_composition_id=patient_composition_uuid,
         write_composition=write_composition,
-        output_path=output_path
+        output_path=output_path,
     )
 
     print("\nDelete patient composition..")
     delete_composition(
         ehr_id=ehr_id,
-        versioned_composition_id=patient_composition_uuid
+        versioned_composition_id=patient_composition_uuid,
     )
     # Composition is now "deactivated", it shouldn't be updated or retrieved
 
     print("\nAll versions of this composition:")
     all_versioned_composition_uuids = get_all_versioned_composition_uuids(
         ehr_id=ehr_id,
-        versioned_composition_id=patient_composition_uuid
+        versioned_composition_id=patient_composition_uuid,
     )
     print(*all_versioned_composition_uuids, sep="\n")
 
     print("\nShow the first version of this composition:")
-    print(get_composition_at_version(
-        ehr_id=ehr_id,
-        versioned_composition_id=all_versioned_composition_uuids[0]
-    ))
+    print(
+        get_composition_at_version(
+            ehr_id=ehr_id,
+            versioned_composition_id=all_versioned_composition_uuids[0],
+        )
+    )
 
     print("\nAll compositions posted for this patient [template_id, start_time, composition_uuid]:")
     all_compositions = retrieve_all_compositions_from_ehr(ehr_id=ehr_id)

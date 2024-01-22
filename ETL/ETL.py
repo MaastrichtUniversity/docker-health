@@ -84,13 +84,11 @@ def run(input_format):
         print(f"{CONFIG['input_format']} is not a valid format [csv, json, ccda, sql, fhir]")
         quit()
 
-
     print("\n\nLOAD EHR and templates into the EHRbase")
     CONFIG["ehr_id"] = load_ehr_template(
         subject_id=CONFIG["subject_id"],
         template_filenames=CONFIG["template_filenames"],
     )
-
 
     print("\n\nTRANSFORM data classes into openEHR compositions and LOAD compositions")
     CONFIG["composition_output_path"] = Path("outputs/compositions") / CONFIG["subject_id"] / CONFIG["input_format"]

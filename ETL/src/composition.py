@@ -112,7 +112,9 @@ def post_composition(ehr_id: UUID, composition: dict, write_composition: bool, j
         print(response_json["message"])
 
 
-def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composition: dict, write_composition: bool, json_filename: Path):
+def update_composition(
+    ehr_id: UUID, versioned_composition_id: UUID, new_composition: dict, write_composition: bool, json_filename: Path
+):
     """
     PUT (update) a previously posted composition in the EHRbase server
 
@@ -124,6 +126,10 @@ def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composi
         Composition UUID, containing the host and version (UUID::host::version)
     new_composition: dict
         Updated composition
+    write_composition: bool
+        if True, the composition is saved into a file
+    json_filename: Path
+        filename where the composition is saved
     """
     # print(json.dumps(composition))
     composition_uuid, _, version = versioned_composition_id.split("::")
@@ -134,7 +140,7 @@ def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composi
         "Accept": "application/json; charset=UTF-8",
         "Prefer": "return=representation",
         "Content-Type": "application/json",
-        "openEHR-AUDIT_DETAILS": "None", # Not sure about the purpose of this header
+        "openEHR-AUDIT_DETAILS": "None",  # Not sure about the purpose of this header
     }
     response = requests.request(
         method="PUT",
@@ -172,7 +178,7 @@ def delete_composition(ehr_id: UUID, versioned_composition_id: str):
 
     url = f"{EHRBASE_BASE_URL}/ehr/{ehr_id}/composition/{latest_versioned_composition_id}"
     headers = {
-        "openEHR-AUDIT_DETAILS": "None", # Not sure about the purpose of this header
+        "openEHR-AUDIT_DETAILS": "None",  # Not sure about the purpose of this header
     }
     response = requests.request(
         method="DELETE",
@@ -231,7 +237,7 @@ def get_all_versioned_composition_uuids(ehr_id: UUID, versioned_composition_id: 
     if response.ok:
         versioned_composition_uuids = []
         for item in response_json:
-            versioned_composition_uuids.append(item['version_id']['value'])
+            versioned_composition_uuids.append(item["version_id"]["value"])
         return versioned_composition_uuids
     print(f"ERROR: {response_json['error']}")
     print(response_json["message"])

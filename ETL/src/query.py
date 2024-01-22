@@ -55,6 +55,7 @@ def retrieve_all_compositions_from_ehr(ehr_id: UUID) -> list:
     print("No posted compositions for this patient")
     return None
 
+
 def check_duplicate_patient_composition(ehr_id: UUID, patient: Patient) -> bool:
     """
     Query the OpenEHR server to know if the given patient data already exist in a composition.
@@ -104,7 +105,10 @@ def check_duplicate_patient_composition(ehr_id: UUID, patient: Patient) -> bool:
             "dateOfDeath": response_json["rows"][0][1],
         }
         if "composition_uuid" in result and result["dateOfDeath"] is None:
-            print(f"DUPLICATE\tComposition found for this specific ehr_id and the given data with UUID: {result['composition_uuid']}'")
+            print(
+                f"DUPLICATE\tComposition found for this specific ehr_id and the given data with UUID: "
+                f"{result['composition_uuid']}'"
+            )
             duplicate = True
 
     return duplicate
@@ -155,7 +159,10 @@ def check_duplicate_diagnosis_composition(ehr_id: UUID, diagnosis: Diagnosis) ->
         # print(f"\nresponse_json: {json.dumps(response_json, indent=4)}")
 
         if response_json["rows"]:
-            print(f"DUPLICATE\tComposition found for this specific ehr_id and the given data with UUID: {response_json['rows'][0][0]}'")
+            print(
+                f"DUPLICATE\tComposition found for this specific ehr_id and the given data with UUID: "
+                f"{response_json['rows'][0][0]}'"
+            )
             duplicate = True
 
     return duplicate
@@ -212,7 +219,10 @@ def check_duplicate_vital_signs_composition(ehr_id: UUID, vital_signs: VitalSign
         # print(f"\nresponse_json: {json.dumps(response_json, indent=4)}")
 
         if response_json["rows"]:
-            print(f"DUPLICATE\tComposition found for this specific ehr_id and the given data with UUID: {response_json['rows'][0][0]}'")
+            print(
+                f"DUPLICATE\tComposition found for this specific ehr_id and the given data with UUID: "
+                f"{response_json['rows'][0][0]}'"
+            )
             duplicate = True
 
     return duplicate
