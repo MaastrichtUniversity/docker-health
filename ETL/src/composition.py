@@ -115,7 +115,7 @@ def post_composition(ehr_id: UUID, composition: dict, write_composition: bool, j
         print(response_json["message"])
 
 
-def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composition: dict):
+def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composition: dict, write_composition: bool, json_filename: Path):
     """
     PUT (update) a previously posted composition in the EHRbase server
 
@@ -151,9 +151,12 @@ def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composi
     response_json = json.loads(response.text)
     print(f"RESPONSE: {response.status_code}")
     if response.ok:
-        print(f"Update composition was successfully created with UUID: {response_json["uid"]["value"]}")
-    print(f"ERROR: {response_json['error']}")
-    print(response_json["message"])
+        print(f"Composition was successfully created with UUID: {response_json["uid"]["value"]}")
+        if write_composition:
+            write_json_composition(composition=new_composition, json_filename=json_filename)
+    else:
+        print(f"ERROR: {response_json['error']}")
+        print(response_json["message"])
 
 
 def delete_composition(ehr_id: UUID, versioned_composition_id: str):

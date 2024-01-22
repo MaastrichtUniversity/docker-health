@@ -17,6 +17,7 @@ from src.etl import (
     extract_all_fhir,
     load_ehr_template,
     transform_post_compositions,
+    test_versioning_functions,
 )
 from src.template import fetch_all_templates
 from src.ehr import fetch_all_ehr_id
@@ -99,6 +100,13 @@ def run(input_format):
         all_disorders=all_disorders,
         all_vital_signs=all_vital_signs,
         ehr_id=CONFIG["ehr_id"],
+        write_composition=CONFIG["write_composition"],
+        output_path=CONFIG["composition_output_path"],
+    )
+
+    test_versioning_functions(
+        ehr_id=CONFIG["ehr_id"],
+        patient=patient,
         write_composition=CONFIG["write_composition"],
         output_path=CONFIG["composition_output_path"],
     )

@@ -14,16 +14,15 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from src.template import post_template, fetch_all_templates
-from src.ehr import create_ehr, fetch_all_ehr_id
+from src.template import post_template
+from src.ehr import create_ehr
 from src.composition import (
     transform_composition,
     post_composition,
-    write_json_composition,
     update_composition,
     delete_composition,
     get_all_versioned_composition_uuids,
-    get_composition_at_version
+    get_composition_at_version,
 )
 from src.patient import (
     Patient,
@@ -493,98 +492,110 @@ def transform_post_compositions(patient: Patient, all_disorders: list[Diagnosis]
         )
 
 
-# def switch_patient_sex(patient, ehr_id, patient_composition_id, output_path):
-#     """
-#     Switch the sex assigned at birth of the patient.
+def switch_patient_sex(patient: Patient, ehr_id: UUID, patient_composition_id: str, write_composition:bool, output_path: Path):
+    """
+    Switch the sex assigned at birth of the patient.
 
-#     Parameters
-#     ----------
-#     patient: Patient
-#         Instance of the Patient class
-#     ehr_id: UUID
-#         ehr_id of the given patient id
-#     patient_composition_id: UUID
-#         Composition UUID, containing the host and version (UUID::host::version)
-#     output_path: str
-#         Path the the folder saving all composition outputs
+    Parameters
+    ----------
+    patient: Patient
+        Instance of the Patient class
+    ehr_id: UUID
+        ehr_id of the given patient id
+    patient_composition_id: str
+        Composition UUID, containing the host and version (UUID::host::version)
+    output_path: str
+        Path the the folder saving all composition outputs
 
-#     Returns
-#     -------
-#     UUID
-#         New patient composition UUID
-#     """
-#     if patient.gender_code == "M":
-#         patient.gender_code = "F"
-#     elif patient.gender_code == "F":
-#         patient.gender_code = "M"
+    Returns
+    -------
+    UUID
+        New patient composition UUID
+    """
+    if patient.gender_code == "M":
+        patient.gender_code = "F"
+    elif patient.gender_code == "F":
+        patient.gender_code = "M"
 
-#     simplified_patient_composition = patient.model_dump_json(by_alias=True, indent=4)
-#     print(f"patient: {simplified_patient_composition}")
-#     patient_composition = transform_composition(
-#         simplified_composition=simplified_patient_composition,
-#         template_id="patient",
-#     )
-#     # print(f"\ncomposition: {patient_composition}")
-#     write_json_composition(
-#         composition=patient_composition,
-#         json_filename=output_path / "patient_updated.json",
-#     )
-#     update_composition(ehr_id, patient_composition_id, patient_composition)
+    simplified_patient_composition = patient.model_dump_json(by_alias=True, indent=4)
+    print(f"patient: {simplified_patient_composition}")
+    patient_composition = transform_composition(
+        simplified_composition=simplified_patient_composition,
+        template_id="patient",
+    )
+    update_composition(
+        ehr_id=ehr_id,
+        versioned_composition_id=patient_composition_id,
+        new_composition=patient_composition,
+        write_composition=write_composition,
+        json_filename=output_path / "patient_updated.json",
+    )
 
-#     return patient_composition_uuid
 
-# TO DO:
-# def test():
+def test_versioning_functions(ehr_id: UUID, patient: Patient, write_composition:bool, output_path: Path):
+    """
+    test functions related to getting and updating EHR status / composition
+    """
+    print("\n\nTESTS on EHR status versioning")
 
     print("\nGet ehr_status...")
     print(get_ehr_status(ehr_id))
 
-    # print("\nAllow to modify EHR..")
-    # print(update_ehr_modifiability_status(ehr_id, True))
+    print("\nAllow to modify EHR..")
+    print(update_ehr_modifiability_status(ehr_id, True))
 
-    # print("\nGet EHR status versions..")
-    # print(get_all_versioned_ehr_status_uuids(ehr_id))
+    print("\nGet EHR status versions..")
+    print(get_all_versioned_ehr_status_uuids(ehr_id))
 
     first_ehr_status_id = get_all_versioned_ehr_status_uuids(ehr_id)[0]
     print("\nGet first EHR status..")
     print(get_ehr_status_at_version(ehr_id, first_ehr_status_id))
 
-    # print("\nSwitch patient sex at birth..")
-    # patient_composition_uuid = switch_patient_sex(
-    #     patient=patient,
-    #     ehr_id=ehr_id,
-    #     patient_composition_id=patient_composition_uuid,
-    #     output_path=output_path
-    # )
-    #
-    # print("\nSwitch patient sex at birth..")
-    # patient_composition_uuid = switch_patient_sex(
-    #     patient=patient,
-    #     ehr_id=ehr_id,
-    #     patient_composition_id=patient_composition_uuid,
-    #     output_path=output_path
-    # )
-    #
-    # print("\nDelete patient composition..")
-    # delete_composition(
-    #     ehr_id=ehr_id,
-    #     versioned_composition_id=patient_composition_uuid
-    # )
-    # # Composition is now "deactivated", it shouldn't be updated or retrieved
-    #
-    # print("\nAll versions of this composition:")
-    # versioned_composition_uuids = get_all_versioned_composition_uuids(
-    #     ehr_id=ehr_id,
-    #     versioned_composition_id=patient_composition_uuid
-    # )
-    # print(*versioned_composition_uuids, sep='\n')
-    #
-    # print("\nShow the first version of this composition:")
-    # print(get_composition_at_version(
-    #     ehr_id=ehr_id,
-    #     versioned_composition_id=versioned_composition_uuids[0]
-    # ))
 
-    # print("\nAll compositions posted for this patient [template_id, start_time, composition_uuid]:")
-    # all_compositions = retrieve_all_compositions_from_ehr(ehr_id)
-    # print(*all_compositions, sep="\n")
+    print("\n\nTESTS on composition versioning")
+
+    print("\nAll compositions posted for this patient [template_id, start_time, composition_uuid]:")
+    all_compositions = retrieve_all_compositions_from_ehr(ehr_id)
+    print(*all_compositions, sep="\n")
+
+    print("\nSwitch patient sex at birth..")
+    patient_composition_uuid = all_compositions[-1][-1]
+    print(patient_composition_uuid)
+    switch_patient_sex(
+        patient=patient,
+        ehr_id=ehr_id,
+        patient_composition_id=patient_composition_uuid,
+        write_composition=write_composition,
+        output_path=output_path
+    )
+
+    all_compositions = retrieve_all_compositions_from_ehr(ehr_id)
+    patient_composition_uuid = all_compositions[-1][-1]
+    print("\nSwitch patient sex at birth..")
+    switch_patient_sex(
+        patient=patient,
+        ehr_id=ehr_id,
+        patient_composition_id=patient_composition_uuid,
+        write_composition=write_composition,
+        output_path=output_path
+    )
+
+    print("\nDelete patient composition..")
+    delete_composition(
+        ehr_id=ehr_id,
+        versioned_composition_id=patient_composition_uuid
+    )
+    # Composition is now "deactivated", it shouldn't be updated or retrieved
+
+    print("\nAll versions of this composition:")
+    versioned_composition_uuids = get_all_versioned_composition_uuids(
+        ehr_id=ehr_id,
+        versioned_composition_id=patient_composition_uuid
+    )
+    print(*versioned_composition_uuids, sep='\n')
+
+    print("\nShow the first version of this composition:")
+    print(get_composition_at_version(
+        ehr_id=ehr_id,
+        versioned_composition_id=versioned_composition_uuids[0]
+    ))
