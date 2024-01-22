@@ -154,7 +154,7 @@ def update_composition(
     response_json = json.loads(response.text)
     print(f"RESPONSE: {response.status_code}")
     if response.ok:
-        print(f"Composition was successfully updated with UUID: {response_json["uid"]["value"]}")
+        print(f"Composition was successfully updated with UUID: {response_json['uid']['value']}")
         if write_composition:
             write_json_composition(composition=new_composition, json_filename=json_filename)
     else:
