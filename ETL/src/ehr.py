@@ -133,7 +133,7 @@ def create_ehr(patient_id: str) -> UUID:
     return ehr_id
 
 
-def get_ehr_status(ehr_id: UUID) -> dict:
+def get_ehr_status(ehr_id: UUID) -> dict | None:
     """
     Retrieves a version of the EHR_STATUS associated with the EHR identified by ehr_id.
 
@@ -164,9 +164,10 @@ def get_ehr_status(ehr_id: UUID) -> dict:
 
     print(f"ERROR: {ehr_status['error']}")
     print(ehr_status["message"])
+    return None
 
 
-def update_ehr_status(ehr_id: UUID, versioned_ehr_id: UUID, new_ehr_status: dict) -> dict:
+def update_ehr_status(ehr_id: UUID, versioned_ehr_id: UUID, new_ehr_status: dict) -> dict | None:
     """
     Retrieves a version of the EHR_STATUS associated with the EHR identified by ehr_id.
 
@@ -207,6 +208,7 @@ def update_ehr_status(ehr_id: UUID, versioned_ehr_id: UUID, new_ehr_status: dict
 
     print(f"ERROR: {updated_ehr_status['error']}")
     print(updated_ehr_status["message"])
+    return None
 
 
 def update_ehr_modifiability_status(ehr_id: UUID, is_modifiable: bool) -> UUID | None:
