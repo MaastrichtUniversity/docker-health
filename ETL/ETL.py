@@ -25,7 +25,7 @@ from src.ehr import fetch_all_ehr_id
 
 # config:
 CONFIG = {
-    "patient_id": "3b1dadde-eefe-e82a-efbc-daa3c959a0c2",
+    "subject_id": "3b1dadde-eefe-e82a-efbc-daa3c959a0c2",
     "subject_namespace": "datahub",
     "template_filenames": [
         Path("data/templates/patient.opt"),
@@ -53,31 +53,31 @@ def run(input_format):
     print(f"\n\nEXTRACT data from {CONFIG['input_format']} input data format")
     if CONFIG["input_format"] == "csv":
         patient, all_disorders, all_vital_signs = extract_all_csv(
-            patient_id=CONFIG["patient_id"],
+            subject_id=CONFIG["subject_id"],
             data_path=CONFIG["synthea_path"],
             vital_signs_units=CONFIG["vital_signs_units"],
         )
     elif CONFIG["input_format"] == "json":
         patient, all_disorders, all_vital_signs = extract_all_json(
-            patient_id=CONFIG["patient_id"],
+            subject_id=CONFIG["subject_id"],
             data_path=CONFIG["synthea_path"],
             vital_signs_units=CONFIG["vital_signs_units"],
         )
     elif CONFIG["input_format"] == "ccda":
         patient, all_disorders, all_vital_signs = extract_all_ccda(
-            patient_id=CONFIG["patient_id"],
+            subject_id=CONFIG["subject_id"],
             data_path=CONFIG["synthea_path"],
             vital_signs_units=CONFIG["vital_signs_units"],
         )
     elif CONFIG["input_format"] == "sql":
         patient, all_disorders, all_vital_signs = extract_all_sql(
-            patient_id=CONFIG["patient_id"],
+            subject_id=CONFIG["subject_id"],
             data_path=CONFIG["synthea_path"],
             vital_signs_units=CONFIG["vital_signs_units"],
         )
     elif CONFIG["input_format"] == "fhir":
         patient, all_disorders, all_vital_signs = extract_all_fhir(
-            patient_id=CONFIG["patient_id"],
+            subject_id=CONFIG["subject_id"],
             data_path=CONFIG["synthea_path"],
             vital_signs_units=CONFIG["vital_signs_units"],
         )
@@ -88,13 +88,13 @@ def run(input_format):
 
     print("\n\nLOAD EHR and templates into the EHRbase")
     CONFIG["ehr_id"] = load_ehr_template(
-        patient_id=CONFIG["patient_id"],
+        subject_id=CONFIG["subject_id"],
         template_filenames=CONFIG["template_filenames"],
     )
 
 
     print("\n\nTRANSFORM data classes into openEHR compositions and LOAD compositions")
-    CONFIG["composition_output_path"] = Path("outputs/compositions") / CONFIG["patient_id"] / CONFIG["input_format"]
+    CONFIG["composition_output_path"] = Path("outputs/compositions") / CONFIG["subject_id"] / CONFIG["input_format"]
     os.makedirs(CONFIG["composition_output_path"], exist_ok=True)
     transform_post_compositions(
         patient=patient,
@@ -106,7 +106,7 @@ def run(input_format):
     )
 
     test_versioning_functions(
-        patient_id=CONFIG["patient_id"],
+        subject_id=CONFIG["subject_id"],
         subject_namespace=CONFIG["subject_namespace"], 
         patient=patient,
         write_composition=CONFIG["write_composition"],

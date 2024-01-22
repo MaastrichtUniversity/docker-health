@@ -13,14 +13,14 @@ EHRBASE_PASSWORD = os.environ["EHRBASE_PASSWORD"]
 EHRBASE_BASE_URL = os.environ["EHRBASE_BASE_URL"]
 
 
-def get_ehr_id_for_patient_id(patient_id: str) -> None | UUID:
+def get_ehr_id_for_subject_id(subject_id: str) -> None | UUID:
     """
-    Get the ehr_id for a patient given the patient external id
+    Get the ehr_id for a patient given the subject external id
 
     Parameters
     ----------
-    patient_id: str
-        External patient id
+    subject_id: str
+        External subject id
 
     Returns
     -------
@@ -30,7 +30,7 @@ def get_ehr_id_for_patient_id(patient_id: str) -> None | UUID:
         If the patient does not have an ehr
     """
     url = f"{EHRBASE_BASE_URL}/ehr"
-    myparams = {"subject_id": patient_id, "subject_namespace": "datahub"}
+    myparams = {"subject_id": subject_id, "subject_namespace": "datahub"}
     headers = {
         "Accept": "application/json",
         "Prefer": "return=minimal",
@@ -81,22 +81,22 @@ def fetch_all_ehr_id() -> List[UUID]:
     return []
 
 
-def create_ehr(patient_id: str) -> UUID:
+def create_ehr(subject_id: str) -> UUID:
     """
-    Check if patient_id is already registered, if so return existing ehr_id
+    Check if subject_id is already registered, if so return existing ehr_id
     If the patient is new, register an ehr and return the ehr_id
 
     Parameters
     ----------
-    patient_id: str
-        External identifier for the patient
+    subject_id: str
+        External identifier for the subject
 
     Returns
     -------
     UUID
-        ehr_id for the given patient id
+        ehr_id for the given subject id
     """
-    ehr_id = get_ehr_id_for_patient_id(patient_id)
+    ehr_id = get_ehr_id_for_subject_id(subject_id)
     if ehr_id:
         print(f"An EHR identifier already exists for this patient with UUID: {ehr_id}")
         return ehr_id
@@ -108,7 +108,7 @@ def create_ehr(patient_id: str) -> UUID:
         "name": {"value": "EHR Status"},
         "subject": {
             "external_ref": {
-                "id": {"_type": "GENERIC_ID", "value": patient_id, "scheme": "DataHub"},
+                "id": {"_type": "GENERIC_ID", "value": subject_id, "scheme": "DataHub"},
                 "namespace": "datahub",
                 "type": "PERSON",
             }
@@ -176,7 +176,7 @@ def get_ehr_status(ehr_id: UUID) -> dict | None:
     Parameters
     ----------
     ehr_id: UUID
-        EHR id of a given patient
+        EHR id of a given subject
 
     Returns
     -------
@@ -209,7 +209,7 @@ def get_ehr_status_at_version(ehr_id: UUID, versioned_ehr_status_id: str) -> dic
     Parameters
     ----------
     ehr_id: UUID
-        EHR id of a given patient
+        EHR id of a given subject
     versioned_ehr_status_id: str
         Versioned EHR status UUID in the format UUID::host::version.
 
@@ -243,7 +243,7 @@ def update_ehr_status(ehr_id: UUID, versioned_ehr_status_id: str, new_ehr_status
     Parameters
     ----------
     ehr_id: UUID
-        EHR id of a given patient
+        EHR id of a given subject
     versioned_ehr_status_id: str
         versioned EHR_STATUS id containing the UUID, host and version (UUID::host::version)
     new_ehr_status:
@@ -282,7 +282,7 @@ def update_ehr_is_modifiable(ehr_id: UUID, is_modifiable: bool):
     Parameters
     ----------
     ehr_id: UUID
-        EHR id of a given patient
+        EHR id of a given subject
     is_modifiable: bool
         Flag to allowing or not the modifiability of the EHR
     """
@@ -301,7 +301,7 @@ def update_ehr_is_queryable(ehr_id: UUID, is_queryable: bool):
     Parameters
     ----------
     ehr_id: UUID
-        EHR id of a given patient
+        EHR id of a given subject
     is_queryable: bool
         Flag to allowing or not the modifiability of the EHR
     """
@@ -321,7 +321,7 @@ def get_all_versioned_ehr_status_ids(ehr_id: UUID) -> list | None:
     Parameters
     ----------
     ehr_id: UUID
-        EHR id of a given patient.
+        EHR id of a given subject
 
     Returns
     -------

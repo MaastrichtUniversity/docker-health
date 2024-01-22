@@ -69,14 +69,14 @@ from src.ehr import (
 )
 
 
-def extract_all_csv(patient_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_csv(subject_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from the CSV files
 
     Parameters
     ----------
-    patient_id: UUID
-        External patient id
+    subject_id: UUID
+        External subject id
     data_path: Path
         Path to the CSV files
     vital_signs_units: dict
@@ -100,20 +100,20 @@ def extract_all_csv(patient_id: UUID, data_path: Path, vital_signs_units: dict) 
     # all_encounters = parse_all_encounters(encounters_df)
 
     print("\nPatient..", end="\t")
-    patient_df = patients_df[patients_df["Id"] == patient_id]
+    patient_df = patients_df[patients_df["Id"] == subject_id]
     patient = create_patient_instance(*parse_patient_csv(patient_df))
-    print(f"information extracted for patient_id: {patient_id}")
+    print(f"information extracted for subject_id: {subject_id}")
 
     print("\nDiagnosis..", end="\t")
     where_disorder = conditions_df["DESCRIPTION"].apply(lambda x: bool(re.search(".*(disorder)", x)))
-    patient_disorders_df = conditions_df[where_disorder].query("PATIENT == @patient_id")
+    patient_disorders_df = conditions_df[where_disorder].query("PATIENT == @subject_id")
     all_disorders = []
     for _, disorder_df in patient_disorders_df.iterrows():
         all_disorders.append(create_diagnosis_instance(*parse_all_diagnosis_csv(disorder_df)))
     print(f"{len(all_disorders)} disorders reported for this patient.")
 
     print("\nVital Signs..", end="\t")
-    patient_encounter_ids = encounters_df[encounters_df["PATIENT"] == patient_id]["Id"].tolist()
+    patient_encounter_ids = encounters_df[encounters_df["PATIENT"] == subject_id]["Id"].tolist()
     vital_signs_df = observations_df[
         (observations_df["ENCOUNTER"].isin(patient_encounter_ids))
         & (observations_df["CATEGORY"] == "vital-signs")
@@ -138,14 +138,14 @@ def extract_all_csv(patient_id: UUID, data_path: Path, vital_signs_units: dict) 
     return patient, all_disorders, all_vital_signs
 
 
-def extract_all_json(patient_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_json(subject_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from a single JSON patient file
 
     Parameters
     ----------
-    patient_id: UUID
-        External patient id
+    subject_id: UUID
+        External subject id
     data_path: Path
         Path to the JSON patient file
     vital_signs_units: dict
@@ -162,12 +162,12 @@ def extract_all_json(patient_id: UUID, data_path: Path, vital_signs_units: dict)
         list of instances of the VitalSigns class
     """
     # Load json patient file as a python dictionary
-    with open(data_path / f"{patient_id}.json", encoding="utf-8") as infile:
+    with open(data_path / f"{subject_id}.json", encoding="utf-8") as infile:
         patient_json = json.load(infile)
 
     print("\nPatient..", end="\t")
     patient = create_patient_instance(*parse_patient_json(patient_json))
-    print(f"information extracted for patient_id: {patient_id}")
+    print(f"information extracted for subject_id: {subject_id}")
 
     print("\nDiagnosis..", end="\t")
     all_disorders = []
@@ -205,14 +205,14 @@ def extract_all_json(patient_id: UUID, data_path: Path, vital_signs_units: dict)
     return patient, all_disorders, all_vital_signs
 
 
-def extract_all_ccda(patient_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_ccda(subject_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from the CCDA XML files
 
     Parameters
     ----------
-    patient_id: UUID
-        External patient id
+    subject_id: UUID
+        External subject id
     data_path: Path
         Path to the CDDA patient file
     vital_signs_units: dict
@@ -229,13 +229,13 @@ def extract_all_ccda(patient_id: UUID, data_path: Path, vital_signs_units: dict)
         list of instances of the VitalSigns class
     """
     # Parse patient xml file
-    tree = ET.parse(f"{data_path}/{patient_id}.xml")
-    # tree = ET.parse(f"/home/daniel/datahub/openEHR/docker-health/demo_data/ccda/{patient_id}.xml")
+    tree = ET.parse(f"{data_path}/{subject_id}.xml")
+    # tree = ET.parse(f"/home/daniel/datahub/openEHR/docker-health/demo_data/ccda/{subject_id}.xml")
     patient_xml = tree.getroot()
 
     print("\nPatient..", end="\t")
     patient = create_patient_instance(*parse_patient_ccda(patient_xml))
-    print(f"information extracted for patient_id: {patient_id}")
+    print(f"information extracted for subject_id: {subject_id}")
 
     print("\nDiagnosis..", end="\t")
     all_disorders = []
@@ -281,14 +281,14 @@ def extract_all_ccda(patient_id: UUID, data_path: Path, vital_signs_units: dict)
     return patient, all_disorders, all_vital_signs
 
 
-def extract_all_sql(patient_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_sql(subject_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from the SQL files
 
     Parameters
     ----------
-    patient_id: UUID
-        External patient id
+    subject_id: UUID
+        External subject id
     data_path: Path
         Path to the SQL files
     vital_signs_units: dict
@@ -306,13 +306,13 @@ def extract_all_sql(patient_id: UUID, data_path: Path, vital_signs_units: dict) 
     """
     print("\nPatient..", end="\t")
     connection = sqlite3.connect(data_path / "patients.sqlite")
-    patient = create_patient_instance(*parse_patient_sql(connection, patient_id))
+    patient = create_patient_instance(*parse_patient_sql(connection, subject_id))
     connection.close()
-    print(f"information extracted for patient_id: {patient_id}")
+    print(f"information extracted for subject_id: {subject_id}")
 
     print("\nDiagnosis...", end="\t")
     connection = sqlite3.connect(data_path / "conditions.sqlite")
-    patient_diagnosis_sql = get_all_diagnosis_sql(connection, patient_id)
+    patient_diagnosis_sql = get_all_diagnosis_sql(connection, subject_id)
     all_disorders = []
     for diagnosis in patient_diagnosis_sql:
         all_disorders.append(create_diagnosis_instance(*parse_diagnosis_sql(diagnosis)))
@@ -321,7 +321,7 @@ def extract_all_sql(patient_id: UUID, data_path: Path, vital_signs_units: dict) 
 
     print("\nVital Signs..", end="\t")
     connection = sqlite3.connect(data_path / "observations.sqlite")
-    vital_signs_unparsed = get_all_vital_signs_sql(connection, patient_id)
+    vital_signs_unparsed = get_all_vital_signs_sql(connection, subject_id)
     encounter_ids, inds = np.unique(vital_signs_unparsed["encounter_id"], return_index=True)
     encounter_ids = encounter_ids[np.argsort(inds)]
     all_vital_signs = []
@@ -335,14 +335,14 @@ def extract_all_sql(patient_id: UUID, data_path: Path, vital_signs_units: dict) 
     return patient, all_disorders, all_vital_signs
 
 
-def extract_all_fhir(patient_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
+def extract_all_fhir(subject_id: UUID, data_path: Path, vital_signs_units: dict) -> (Patient, list[Diagnosis], list[VitalSigns]):
     """
     Extract the values on a patient, its diagnosis and vital signs from a single fhir JSON patient file
 
     Parameters
     ----------
-    patient_id: UUID
-        External patient id
+    subject_id: UUID
+        External subject id
     data_path: Path
         Path to the fhir JSON patient file
     vital_signs_units: dict
@@ -359,13 +359,13 @@ def extract_all_fhir(patient_id: UUID, data_path: Path, vital_signs_units: dict)
         list of instances of the VitalSigns class
     """
     # Load json patient file as a python dictionary
-    with open(f"{data_path}/{patient_id}.json", encoding="utf-8") as infile:
+    with open(f"{data_path}/{subject_id}.json", encoding="utf-8") as infile:
         patient_json = json.load(infile)
 
     print("\nPatient..", end="\t")
 
     patient = parse_patient_fhir(patient_json)
-    print(f"information extracted for patient_id: {patient_id}")
+    print(f"information extracted for subject_id: {subject_id}")
 
     print("\nDiagnosis..", end="\t")
     all_disorders = []
@@ -397,24 +397,24 @@ def extract_all_fhir(patient_id: UUID, data_path: Path, vital_signs_units: dict)
     return patient, all_disorders, all_vital_signs
 
 
-def load_ehr_template(patient_id: UUID, template_filenames: list) -> UUID:
+def load_ehr_template(subject_id: UUID, template_filenames: list) -> UUID:
     """
     Load EHR and template(s) into the EHRbase
 
     Parameters
     ----------
-    patient_id: UUID
-        External patient id
+    subject_id: UUID
+        External subject id
     template_filenames: list
         List containing the path to the template files
 
     Returns
     -------
     UUID
-        ehr_id of the given patient id
+        ehr_id of the given subject id
     """
     print("\nCreate EHR:")
-    ehr_id = create_ehr(patient_id)
+    ehr_id = create_ehr(subject_id)
 
     print("\nPost templates:")
     for template_filename in template_filenames:
@@ -437,7 +437,7 @@ def transform_post_compositions(patient: Patient, all_disorders: list[Diagnosis]
     all_vital_signs: list[VitalSigns]
         list of instances of the VitalSigns class
     ehr_id: UUID
-        ehr_id of the given patient id
+        ehr_id of the given subject id
     output_path: str
         Path to the folder saving all composition outputs
     write_composition: bool
@@ -496,14 +496,14 @@ def transform_post_compositions(patient: Patient, all_disorders: list[Diagnosis]
 
 def switch_patient_sex(patient: Patient, ehr_id: UUID, patient_composition_id: str, write_composition:bool, output_path: Path):
     """
-    Switch the sex assigned at birth of the patient.
+    Switch the sex assigned at birth of the subject.
 
     Parameters
     ----------
     patient: Patient
         Instance of the Patient class
     ehr_id: UUID
-        ehr_id of the given patient id
+        ehr_id of the given subject id
     patient_composition_id: str
         Composition UUID, containing the host and version (UUID::host::version)
     output_path: str
@@ -534,14 +534,14 @@ def switch_patient_sex(patient: Patient, ehr_id: UUID, patient_composition_id: s
     )
 
 
-def test_versioning_functions(patient_id: UUID, subject_namespace: str, patient: Patient, write_composition:bool, output_path: Path):
+def test_versioning_functions(subject_id: UUID, subject_namespace: str, patient: Patient, write_composition:bool, output_path: Path):
     """
     test functions related to getting and updating EHR status / composition
     """
     print("\n\nTESTS on EHR status versioning")
 
     print("\nGet ehr_status..")
-    ehr_summary = get_ehr_summary(subject_id=patient_id, subject_namespace=subject_namespace)
+    ehr_summary = get_ehr_summary(subject_id=subject_id, subject_namespace=subject_namespace)
     ehr_id = ehr_summary["ehr_id"]["value"]
 
     # ehr_status = ehr_summary["ehr_status"]
