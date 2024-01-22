@@ -21,7 +21,10 @@ export COMPOSE_PROJECT_NAME
 
 # specify externals for this project
 externals="externals/dh-demodata https://github.com/MaastrichtUniversity/dh-demodata.git
-externals/hdp-models https://github.com/MaastrichtUniversity/hdp-models.git"
+externals/hdp-models https://github.com/MaastrichtUniversity/hdp-models.git
+externals/dh-hdp-java-rest https://github.com/MaastrichtUniversity/dh-hdp-java-rest.git
+externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
+externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git"
 
 
 # do the required action in case of externals or exec
