@@ -24,8 +24,8 @@ def fetch_all_templates():
     }
 
     response = requests.request(
-        "GET",
-        url,
+        method="GET",
+        url=url,
         headers=headers,
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
         timeout=10,
@@ -58,8 +58,8 @@ def post_template(filename: str):
 
     with open(filename, "rb") as payload:
         response = requests.request(
-            "POST",
-            url,
+            method="POST",
+            url=url,
             headers=headers,
             data=payload.read(),
             auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),

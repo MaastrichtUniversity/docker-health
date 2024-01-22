@@ -38,7 +38,7 @@ def serialize_dt(dt: datetime):
     return dt_formatted
 
 
-def create_diagnosis_instance(snomed_code, description, start_date, stop_date) -> Diagnosis:
+def create_diagnosis_instance(snomed_code: str, description: str, start_date: str, stop_date: str) -> Diagnosis:
     """
     check ISO format and local terms of the parsed values and create a Diagnosis attribute
 
@@ -254,7 +254,7 @@ def parse_all_diagnosis_ccda(entry_xml: Element) -> (str, str, str, str):
     return snomed_code, description, start_date, stop_date
 
 
-def get_all_diagnosis_sql(connection: sqlite3.Connection, patient_id: str) -> list[dict]:
+def get_all_diagnosis_sql(connection: sqlite3.Connection, subject_id: str) -> list[dict]:
     """
     from the sql file, create a dictionary for each encountered disorder
 
@@ -262,7 +262,7 @@ def get_all_diagnosis_sql(connection: sqlite3.Connection, patient_id: str) -> li
     ----------
     conection:
         Connection to sql data containing all diagnosis
-    patient_id: str
+    subject_id: str
         External patient id
 
     Returns
@@ -273,14 +273,14 @@ def get_all_diagnosis_sql(connection: sqlite3.Connection, patient_id: str) -> li
     cursor = connection.cursor()
     try:
         select_patient_disorders_query = "SELECT * FROM Conditions WHERE patient = ? AND description LIKE '%disorder%'"
-        cursor.execute(select_patient_disorders_query, (patient_id,))
+        cursor.execute(select_patient_disorders_query, (subject_id,))
         result = cursor.fetchall()
         if result:
             # Convert each tuple in the result to a dictionary
             column_names = ["start_date", "stop_date", "patient_id", "encounter_id", "snomed_code", "description"]
             conditions = [dict(zip(column_names, row)) for row in result]
             return conditions
-        print(f"No disorders found with ID {patient_id}")
+        print(f"No disorders found with ID {subject_id}")
         return None
 
     except sqlite3.Error as error:

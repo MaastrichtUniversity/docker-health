@@ -23,7 +23,6 @@ from src.template import fetch_all_templates
 from src.ehr import fetch_all_ehr_id
 
 
-# config:
 CONFIG = {
     "subject_id": "3b1dadde-eefe-e82a-efbc-daa3c959a0c2",
     "subject_namespace": "datahub",
@@ -107,7 +106,7 @@ def run(input_format):
 
     test_versioning_functions(
         subject_id=CONFIG["subject_id"],
-        subject_namespace=CONFIG["subject_namespace"], 
+        subject_namespace=CONFIG["subject_namespace"],
         patient=patient,
         write_composition=CONFIG["write_composition"],
         output_path=CONFIG["composition_output_path"],

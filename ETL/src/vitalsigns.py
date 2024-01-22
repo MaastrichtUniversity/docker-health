@@ -242,7 +242,7 @@ def parse_vital_signs_ccda(observations_on_specific_date: list) -> list:
     return all_vital_signs_measures
 
 
-def get_all_vital_signs_sql(connection: sqlite3.Connection, patient_id: str) -> pd.DataFrame:
+def get_all_vital_signs_sql(connection: sqlite3.Connection, subject_id: str) -> pd.DataFrame:
     """
     Parse a sql file of all vital signs measurements
 
@@ -250,8 +250,8 @@ def get_all_vital_signs_sql(connection: sqlite3.Connection, patient_id: str) -> 
     ----------
     connection:
         Connection to sql data containing all vital signs
-    patient_id: str
-        External patient id
+    subject_id: str
+        External subject id
 
     Returns
     --------
@@ -262,7 +262,7 @@ def get_all_vital_signs_sql(connection: sqlite3.Connection, patient_id: str) -> 
     cursor = connection.cursor()
     try:
         select_patient_vital_signs_query = "SELECT * FROM Observations WHERE patient = ? AND category = 'vital-signs'"
-        cursor.execute(select_patient_vital_signs_query, (patient_id,))
+        cursor.execute(select_patient_vital_signs_query, (subject_id,))
         result = cursor.fetchall()
         if result:
             # Convert each tuple in the result to a dictionary
@@ -280,7 +280,7 @@ def get_all_vital_signs_sql(connection: sqlite3.Connection, patient_id: str) -> 
             vital_signs_unparsed = pd.DataFrame([dict(zip(column_names, row)) for row in result])
             return vital_signs_unparsed
 
-        print(f"No vital signs found with ID {patient_id}")
+        print(f"No vital signs found with ID {subject_id}")
         return None
 
     except sqlite3.Error as error:
@@ -339,7 +339,7 @@ def parse_all_vital_signs_sql(vital_signs_enc_df: pd.DataFrame) -> list:
     return all_vital_signs_measures
 
 
-def parse_all_vital_signs_fhir(observations, vital_signs_units) -> VitalSigns:
+def parse_all_vital_signs_fhir(observations: list, vital_signs_units: dict) -> VitalSigns:
     """
     Parse the list of resource observation entries
 

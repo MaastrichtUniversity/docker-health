@@ -45,16 +45,14 @@ def transform_composition(simplified_composition: str, template_id: str) -> dict
         "Content-Type": "application/json",
     }
     response = requests.request(
-        "POST",
-        url,
+        method="POST",
+        url=url,
         headers=headers,
         data=simplified_composition,
         timeout=10,
     )
-
     composition = response.json()
     # print(json.dumps(composition, indent=4))
-
     return composition
 
 
@@ -96,18 +94,17 @@ def post_composition(ehr_id: UUID, composition: dict, write_composition: bool, j
         "Content-Type": "application/json",
     }
     response = requests.request(
-        "POST",
-        url,
+        method="POST",
+        url=url,
         headers=headers,
         data=json.dumps(composition),
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
-
     response_json = json.loads(response.text)
     print(f"RESPONSE: {response.status_code}")
     if response.ok:
-        print(f"Composition was successfully created with UUID: {response_json["uid"]["value"]}")
+        print(f"Composition was successfully created with UUID: {response_json['uid']['value']}")
         if write_composition:
             write_json_composition(composition=composition, json_filename=json_filename)
     else:
@@ -140,8 +137,8 @@ def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composi
         "openEHR-AUDIT_DETAILS": "None", # Not sure about the purpose of this header
     }
     response = requests.request(
-        "PUT",
-        url,
+        method="PUT",
+        url=url,
         headers=headers,
         data=json.dumps(new_composition),
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
@@ -151,7 +148,7 @@ def update_composition(ehr_id: UUID, versioned_composition_id: UUID, new_composi
     response_json = json.loads(response.text)
     print(f"RESPONSE: {response.status_code}")
     if response.ok:
-        print(f"Composition was successfully created with UUID: {response_json["uid"]["value"]}")
+        print(f"Composition was successfully updated with UUID: {response_json["uid"]["value"]}")
         if write_composition:
             write_json_composition(composition=new_composition, json_filename=json_filename)
     else:
@@ -178,13 +175,12 @@ def delete_composition(ehr_id: UUID, versioned_composition_id: str):
         "openEHR-AUDIT_DETAILS": "None", # Not sure about the purpose of this header
     }
     response = requests.request(
-        "DELETE",
-        url,
+        method="DELETE",
+        url=url,
         headers=headers,
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
-
     # code error undocumented in EHRbase
     status_code = response.status_code
     print(f"RESPONSE: {status_code}")
@@ -225,15 +221,13 @@ def get_all_versioned_composition_uuids(ehr_id: UUID, versioned_composition_id: 
         "Accept": "application/json; charset=UTF-8",
     }
     response = requests.request(
-        "GET",
-        url,
+        method="GET",
+        url=url,
         headers=headers,
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
-
     response_json = json.loads(response.text)
-
     if response.ok:
         versioned_composition_uuids = []
         for item in response_json:
@@ -268,13 +262,12 @@ def get_composition_at_version(ehr_id: UUID, versioned_composition_id: str) -> s
         "Accept": "application/json; charset=UTF-8",
     }
     response = requests.request(
-        "GET",
-        url,
+        method="GET",
+        url=url,
         headers=headers,
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
         timeout=10,
     )
-
     # code error undocumented in EHRbase
     status_code = response.status_code
     print(f"RESPONSE: {status_code}")

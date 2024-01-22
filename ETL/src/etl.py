@@ -576,8 +576,11 @@ def test_versioning_functions(subject_id: UUID, subject_namespace: str, patient:
     print(*all_compositions, sep="\n")
 
     print("\nSwitch patient sex at birth..")
-    patient_composition_uuid = all_compositions[-1][-1]
-    print(patient_composition_uuid)
+    all_compositions = retrieve_all_compositions_from_ehr(ehr_id)
+    for composition in all_compositions:
+        if composition[0] == "Patient":
+            patient_composition_uuid = composition[-1]
+            break
     switch_patient_sex(
         patient=patient,
         ehr_id=ehr_id,
@@ -586,9 +589,12 @@ def test_versioning_functions(subject_id: UUID, subject_namespace: str, patient:
         output_path=output_path
     )
 
-    all_compositions = retrieve_all_compositions_from_ehr(ehr_id)
-    patient_composition_uuid = all_compositions[-1][-1]
     print("\nSwitch patient sex at birth..")
+    patient_composition_uuids = get_all_versioned_composition_uuids(
+        ehr_id=ehr_id,
+        versioned_composition_id=patient_composition_uuid,
+    )
+    patient_composition_uuid = patient_composition_uuids[-1]
     switch_patient_sex(
         patient=patient,
         ehr_id=ehr_id,
@@ -616,3 +622,7 @@ def test_versioning_functions(subject_id: UUID, subject_namespace: str, patient:
         ehr_id=ehr_id,
         versioned_composition_id=all_versioned_composition_uuids[0]
     ))
+
+    print("\nAll compositions posted for this patient [template_id, start_time, composition_uuid]:")
+    all_compositions = retrieve_all_compositions_from_ehr(ehr_id=ehr_id)
+    print(*all_compositions, sep="\n")
