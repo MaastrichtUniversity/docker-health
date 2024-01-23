@@ -1,4 +1,4 @@
-# Health Data Plateform
+# Health Data Platform
 
 Setting-up a core clinical data repository to store data from different formats using openEHR specifications.
 
