@@ -1,4 +1,4 @@
-version: '3.6'
+version: "3.6"
 services:
   proxy:
     image: jwilder/nginx-proxy:0.9.3
@@ -13,8 +13,8 @@ services:
     build:
       context: ./externals/dh-hdp-java-rest
       dockerfile: Dockerfile
-#    volumes:
-#      - ./externals/dh-hdp-java-rest/src:/code/src
+    #    volumes:
+    #      - ./externals/dh-hdp-java-rest/src:/code/src
     environment:
       VIRTUAL_HOST: javarest.local.dh.unimaas.nl
       DIAGNOSIS_SEM_VER: 0.4.0
@@ -87,8 +87,8 @@ services:
       - 5432:5432
     networks:
       - hdp-dh-net
-#    volumes:
-#      - ./ehrbase/.pgdata:/var/lib/postgresql/data
+    #    volumes:
+    #      - ./externals/dh-hdp-etl/ehrbase/.pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
