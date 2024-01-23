@@ -38,16 +38,16 @@ services:
       - ./demo_data:/opt/output
   etl-demo:
     build:
-      context: ./externals/dh-hdp-etl/ETL
+      context: ./externals/dh-hdp-etl
       dockerfile: Dockerfile
     image: etl_demo
     volumes:
       - ./externals/hdp-models/templates:/code/data/templates
       - ./demo_data:/code/data/synthea
-      - ./externals/dh-hdp-etl/ETL/outputs:/code/outputs
+      - ./externals/dh-hdp-etl/outputs:/code/outputs
       # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-etl/ETL/ETL.py:/code/ETL.py
-      - ./externals/dh-hdp-etl/ETL/src:/code/src
+      - ./externals/dh-hdp-etl/ETL.py:/code/ETL.py
+      - ./externals/dh-hdp-etl/src:/code/src
     environment:
       EHRBASE_USERNAME: user
       EHRBASE_PASSWORD: foobar
