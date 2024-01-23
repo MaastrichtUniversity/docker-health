@@ -24,8 +24,8 @@ def fetch_all_templates():
     }
 
     response = requests.request(
-        "GET",
-        url,
+        method="GET",
+        url=url,
         headers=headers,
         auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
         timeout=10,
@@ -33,7 +33,7 @@ def fetch_all_templates():
     if response.ok:
         response_json = json.loads(response.text)
         for template in response_json:
-            print(f"concept: {template['concept']}")
+            print(f"\nconcept: {template['concept']}")
             print(f"template_id: {template['template_id']}")
             print(f"archetype_id: {template['archetype_id']}")
             print(f"create_timestamp: {template['created_timestamp']}")
@@ -56,11 +56,10 @@ def post_template(filename: str):
         "Content-Type": "application/xml",
     }
 
-    print(filename)
     with open(filename, "rb") as payload:
         response = requests.request(
-            "POST",
-            url,
+            method="POST",
+            url=url,
             headers=headers,
             data=payload.read(),
             auth=(EHRBASE_USERRNAME, EHRBASE_PASSWORD),
@@ -75,5 +74,5 @@ def post_template(filename: str):
         response_text = {"error": None, "message": None}
         for item in ET.fromstring(response.content):
             response_text[item.tag] = item.text
-        print(f"ERROR {response_text['error']}")
+        print(f"ERROR: {response_text['error']}")
         print(response_text["message"])

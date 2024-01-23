@@ -21,7 +21,7 @@ class Patient(BaseModel):
     start_time: datetime = Field(default_factory=datetime_now, serialization_alias="startTime")
 
 
-def create_patient_instance(gender_code, birth_date, death_date) -> Patient:
+def create_patient_instance(gender_code: str, birth_date: str, death_date: str) -> Patient:
     """
     check ISO format and local terms of the parsed values and create a Patient attribute
 
@@ -182,16 +182,16 @@ def parse_patient_ccda(patient_xml: Element) -> (str, str, str):
     return gender_code, birth_date, death_date
 
 
-def parse_patient_sql(connection: sqlite3.Connection, patient_id: str) -> (str, str, str):
+def parse_patient_sql(connection: sqlite3.Connection, subject_id: str) -> (str, str, str):
     """
-    Parse a sql file for a unique patient
+    Parse a sql file for a unique subject
 
     Parameters
     ----------
     connection: sqlite3.connect
         Connection to sql data containing all patients
-    patient_id: str
-        External patient id
+    subject_id: str
+        External subject id
 
     Returns
     -------
@@ -205,13 +205,13 @@ def parse_patient_sql(connection: sqlite3.Connection, patient_id: str) -> (str, 
     cursor = connection.cursor()
     try:
         select_query = "SELECT gender, birthdate, deathdate FROM Patients WHERE id = ?"
-        cursor.execute(select_query, (patient_id,))
+        cursor.execute(select_query, (subject_id,))
         result = cursor.fetchone()
 
         if result:
             gender, birthdate, deathdate = result
             return gender, birthdate, deathdate
-        print(f"No record found with ID {patient_id}")
+        print(f"No record found with ID {subject_id}")
         return None
 
     except sqlite3.Error as error:
