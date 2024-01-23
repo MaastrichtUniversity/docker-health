@@ -56,7 +56,7 @@ services:
       - hdp-dh-net
   data-exploration:
     image: quay.io/jupyter/datascience-notebook:2023-10-31
-    command: "start-notebook.sh --ServerApp.token="
+    command: "start-notebook.sh --ServerApp.token=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7"
     environment:
       VIRTUAL_HOST: jupyter.local.dh.unimaas.nl
     ports:
