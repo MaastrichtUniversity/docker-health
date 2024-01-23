@@ -14,9 +14,9 @@ The current services:
 
 # Add this virtual host entry in your /etc/hosts file
 ```
-127.0.0.1	ehrbase.local.dh.unimaas.nl
-127.0.0.1	jupyter.local.dh.unimaas.nl
-127.0.0.1	javarest.local.dh.unimaas.nl
+127.0.0.1 ehrbase.local.dh.unimaas.nl
+127.0.0.1 jupyter.local.dh.unimaas.nl
+127.0.0.1 javarest.local.dh.unimaas.nl
 ```
 
 Go to your browser and try this:
