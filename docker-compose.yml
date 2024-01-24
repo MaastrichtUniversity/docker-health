@@ -20,7 +20,7 @@ services:
         aliases:
           - ehrbase.dh.local
     env_file:
-      - ./externals/dh-hdp-etl/ehrbase/.env.ehrbase
+      - ./ehrbase/.env.ehrbase
     restart: on-failure
   ehrdb:
     image: ehrbase/ehrbase-postgres:13.4.v2
@@ -29,7 +29,7 @@ services:
     networks:
       - hdp-dh-net
     #    volumes:
-    #      - ./externals/dh-hdp-etl/ehrbase/.pgdata:/var/lib/postgresql/data
+    #      - ./ehrbase/.pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
