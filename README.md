@@ -1,16 +1,13 @@
 # Health Data Platform
 
-Setting-up a core clinical data repository to store data from different formats using openEHR specifications.
+Setting-up a core clinical data repository to store data from different formats using [openEHR specifications](https://specifications.openehr.org/) and [EHRbase API](https://ehrbase.org/about-ehrbase/).
 
-This service is based on:
-- Synthea, a tool to generate synthetic patients
-- EHRbase API, a clinical data repository implementing the openEHR Reference Model
-- Java REST API, an EHRbase's SDK permitting the transformation of data objects into valid openEHR compositions
-- Jupyter notebook for an initial data exploration
-
-The current services:
-- EHRbase
-- ETL-demo
+This service is based on repositories:
+- [dh-hdp-demodata](https://github.com/MaastrichtUniversity/dh-hdp-demodata): Simulation of hospital data
+- [dh-hdp-templates](https://github.com/MaastrichtUniversity/dh-hdp-templates): Custom-made openEHR templates
+- [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl): ETL Python script
+- [dh-hdp-java-rest](https://github.com/MaastrichtUniversity/dh-hdp-java-rest): Java REST API for data class transformation into openEHR compositions
+- [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks): Jupyter notebooks for an initial data exploration
 
 # Add this virtual host entry in your /etc/hosts file
 ```
