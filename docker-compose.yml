@@ -37,7 +37,7 @@ services:
       EHRBASE_PASSWORD_ADMIN: ehrbase
       EHRBASE_USER: ehrbase_restricted
       EHRBASE_PASSWORD: ehrbase_restricted
-  java-rest:
+  transform-rest:
     build:
       context: ./externals/dh-hdp-java-rest
       dockerfile: Dockerfile

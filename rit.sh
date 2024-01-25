@@ -45,8 +45,8 @@ fi
 
 if [[ $1 == "java" ]]; then
     echo -e "\nStart Sprint boot Rest API"
-    docker compose build java-rest
-    docker compose up -d java-rest proxy
+    docker compose build transform-rest
+    docker compose up -d transform-rest proxy
 
     echo -e "\nExit rit.sh"
     exit 0
@@ -74,8 +74,8 @@ if [[ $1 == "demo" ]]; then
     done
 
     echo -e "\nStart Sprint boot Rest API"
-    docker compose build java-rest
-    docker compose up -d java-rest
+    docker compose build transform-rest
+    docker compose up -d transform-rest
 
     echo -e "\nRunning etl-demo"
     docker compose up -d etl-demo
