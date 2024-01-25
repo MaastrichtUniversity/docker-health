@@ -10,7 +10,7 @@ services:
     networks:
       - hdp-dh-net
   ehrbase:
-    image: ehrbase/ehrbase:0.31.0
+    image: ehrbase/ehrbase:0.32.0
     depends_on:
       - ehrdb
     ports:
