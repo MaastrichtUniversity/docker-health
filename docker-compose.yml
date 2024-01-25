@@ -44,7 +44,7 @@ services:
     #    volumes:
     #      - ./externals/dh-hdp-java-rest/src:/code/src
     environment:
-      VIRTUAL_HOST: javarest.local.dh.unimaas.nl
+      VIRTUAL_HOST: transform.local.dh.unimaas.nl
       DIAGNOSIS_SEM_VER: 0.4.0
       PATIENT_SEM_VER: 0.2.0
       VITAL_SIGNS_SEM_VER: 0.2.0
@@ -72,8 +72,9 @@ services:
       EHRBASE_USERNAME: user
       EHRBASE_PASSWORD: foobar
       EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
-      SPRING_SECURITY_USERNAME: user
-      SPRING_SECURITY_PASSWORD: foobar
+      TRANSFORM_SPRING_BASE_URL: "http://transform.dh.local:8080"
+      TRANSFORM_SPRING_USERNAME: user
+      TRANSFORM_SPRING_PASSWORD: foobar
     networks:
       - hdp-dh-net
   demo-data:
