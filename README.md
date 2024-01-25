@@ -13,7 +13,7 @@ This service is based on repositories:
 ```
 127.0.0.1 ehrbase.local.dh.unimaas.nl
 127.0.0.1 jupyter.local.dh.unimaas.nl
-127.0.0.1 javarest.local.dh.unimaas.nl
+127.0.0.1 transform.local.dh.unimaas.nl
 ```
 
 Go to your browser and try this:
