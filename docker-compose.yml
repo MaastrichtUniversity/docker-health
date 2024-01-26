@@ -39,10 +39,10 @@ services:
       EHRBASE_PASSWORD: ehrbase_restricted
   transform-rest:
     build:
-      context: ./externals/dh-hdp-java-rest
+      context: ./externals/dh-hdp-transform-rest
       dockerfile: Dockerfile
     #    volumes:
-    #      - ./externals/dh-hdp-java-rest/src:/code/src
+    #      - ./externals/dh-hdp-transform-rest/src:/code/src
     environment:
       VIRTUAL_HOST: transform.local.dh.unimaas.nl
       DIAGNOSIS_SEM_VER: 0.4.0

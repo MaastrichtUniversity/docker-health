@@ -6,7 +6,7 @@ This service is based on repositories:
 - [dh-hdp-demodata](https://github.com/MaastrichtUniversity/dh-hdp-demodata): Simulation of hospital data
 - [dh-hdp-templates](https://github.com/MaastrichtUniversity/dh-hdp-templates): Custom-made openEHR templates
 - [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl): ETL Python script
-- [dh-hdp-java-rest](https://github.com/MaastrichtUniversity/dh-hdp-java-rest): Java REST API for data class transformation into openEHR compositions
+- [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest): Java REST API for data class transformation into openEHR compositions
 - [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks): Jupyter notebooks for an initial data exploration
 
 # Add this virtual host entry in your /etc/hosts file

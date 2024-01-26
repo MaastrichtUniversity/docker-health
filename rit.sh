@@ -22,7 +22,7 @@ export COMPOSE_PROJECT_NAME
 # specify externals for this project
 externals="externals/dh-hdp-demodata https://github.com/MaastrichtUniversity/dh-hdp-demodata.git
 externals/dh-hdp-templates https://github.com/MaastrichtUniversity/dh-hdp-templates.git
-externals/dh-hdp-java-rest https://github.com/MaastrichtUniversity/dh-hdp-java-rest.git
+externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-transform-rest.git
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git"
 
@@ -43,7 +43,7 @@ if [[ $1 == "data" ]]; then
     exit 0
 fi
 
-if [[ $1 == "java" ]]; then
+if [[ $1 == "transform" ]]; then
     echo -e "\nStart Sprint boot Rest API"
     docker compose build transform-rest
     docker compose up -d transform-rest proxy
