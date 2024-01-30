@@ -14,6 +14,8 @@ elif [[ ${ARGS} = *"--verbose "* ]] || [[ ${ARGS} = *"-v "* ]]; then
    ARGS="${ARGS/-v /}"
 fi
 
+# set RIT_ENV if not set already
+env_selector
 
 # Set the prefix for the project
 COMPOSE_PROJECT_NAME="hdp"

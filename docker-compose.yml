@@ -44,7 +44,7 @@ services:
     #    volumes:
     #      - ./externals/dh-hdp-transform-rest/src:/code/src
     environment:
-      VIRTUAL_HOST: transform.local.dh.unimaas.nl
+      VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
       DIAGNOSIS_SEM_VER: 0.4.0
       PATIENT_SEM_VER: 0.2.0
       VITAL_SIGNS_SEM_VER: 0.2.0
@@ -88,7 +88,7 @@ services:
     image: quay.io/jupyter/datascience-notebook:2023-10-31
     command: "start-notebook.sh --ServerApp.token=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7"
     environment:
-      VIRTUAL_HOST: jupyter.local.dh.unimaas.nl
+      VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
       CHOWN_EXTRA: "/home/jovyan/notebooks"
       CHOWN_EXTRA_OPTS: "-R"
     user:

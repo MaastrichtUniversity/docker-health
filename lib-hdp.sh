@@ -144,3 +144,38 @@ function run_repo_action {
     done <<< "$rra_externals"
 
 }
+
+#==============================================================================
+#
+# Syntax        env_selector <envs>
+#
+# Params        <envs>  List of possible envs in format <name><tab><hostname><tab><description>
+#
+# Description   Set the correct value to RIT_ENV based on the host-name where
+#               the script is running
+#
+# Changes
+# 10-07-18 | R.Niesten | Initial version
+#==============================================================================
+function env_selector {
+    log $DBG "${FUNCNAME[0]} $@"
+    if [[ -z $RIT_ENV ]]; then
+        RIT_ENV="local"
+
+        set +e
+        while read -r env; do
+            env=($env)
+            if [[ $HOSTNAME == ${env[1]} ]]; then
+                RIT_ENV=${env[0]}
+                log $INF "\e[32m======== Environment selector ======================"
+                log $INF "Running on host ${env[1]}"
+                log $INF "Setting environment for ${env[2]}"
+                log $INF "RIT_ENV set to $RIT_ENV"
+                log $INF "====================================================\033[0m"
+            fi
+        done <<< "$envs"
+
+    fi
+
+    export RIT_ENV
+}
