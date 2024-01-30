@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# In case of a new server, it needs to be added here!
+export envs="
+tst fhml-srv016 tst-docker-hdp"
+
 export ERR=1
 export WRN=2
 export INF=3
