@@ -1,7 +1,0 @@
-requests
-pandas
-matplotlib
-pydantic
-ipython
-click==8.1.7
-

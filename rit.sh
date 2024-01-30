@@ -20,8 +20,11 @@ COMPOSE_PROJECT_NAME="hdp"
 export COMPOSE_PROJECT_NAME
 
 # specify externals for this project
-externals="externals/dh-demodata https://github.com/MaastrichtUniversity/dh-demodata.git
-externals/hdp-models https://github.com/MaastrichtUniversity/hdp-models.git"
+externals="externals/dh-hdp-demodata https://github.com/MaastrichtUniversity/dh-hdp-demodata.git
+externals/dh-hdp-templates https://github.com/MaastrichtUniversity/dh-hdp-templates.git
+externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-transform-rest.git
+externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
+externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git"
 
 
 # do the required action in case of externals or exec
@@ -40,10 +43,10 @@ if [[ $1 == "data" ]]; then
     exit 0
 fi
 
-if [[ $1 == "java" ]]; then
+if [[ $1 == "transform" ]]; then
     echo -e "\nStart Sprint boot Rest API"
-    docker compose build java-rest
-    docker compose up -d java-rest proxy
+    docker compose build transform-rest
+    docker compose up -d transform-rest proxy
 
     echo -e "\nExit rit.sh"
     exit 0
@@ -71,8 +74,8 @@ if [[ $1 == "demo" ]]; then
     done
 
     echo -e "\nStart Sprint boot Rest API"
-    docker compose build java-rest
-    docker compose up -d java-rest
+    docker compose build transform-rest
+    docker compose up -d transform-rest
 
     echo -e "\nRunning etl-demo"
     docker compose up -d etl-demo

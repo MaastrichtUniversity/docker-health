@@ -1,4 +1,4 @@
-version: '3.6'
+version: "3.6"
 services:
   proxy:
     image: jwilder/nginx-proxy:0.9.3
@@ -9,65 +9,8 @@ services:
       - "443:443"
     networks:
       - hdp-dh-net
-  java-rest:
-    build:
-      context: ./synthea-java-rest-service
-      dockerfile: Dockerfile
-    environment:
-      VIRTUAL_HOST: javarest.local.dh.unimaas.nl
-      DIAGNOSIS_SEM_VER: 0.4.0
-      PATIENT_SEM_VER: 0.2.0
-      VITAL_SIGNS_SEM_VER: 0.2.0
-      EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/"
-      EHRBASE_USERNAME: user
-      EHRBASE_PASSWORD: foobar
-    ports:
-      - 8081:8080
-    networks:
-      hdp-dh-net:
-        aliases:
-          - transform.dh.local
-  demo-data:
-    build:
-      context: ./externals/dh-demodata
-      dockerfile: Dockerfile
-    image: demo_data
-    volumes:
-      - ./demo_data:/opt/output
-  etl-demo:
-    build:
-      context: ./ETL
-      dockerfile: Dockerfile
-    image: etl_demo
-    volumes:
-      - ./externals/hdp-models/templates:/code/data/templates
-      - ./demo_data:/code/data/synthea
-      - ./ETL/outputs:/code/outputs
-      # Volume binds to auto-reload the code inside the container
-      - ./ETL/ETL.py:/code/ETL.py
-      - ./ETL/src:/code/src
-    environment:
-      EHRBASE_USERRNAME: user
-      EHRBASE_PASSWORD: foobar
-      EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
-    networks:
-      - hdp-dh-net
-  data-exploration:
-    image: quay.io/jupyter/datascience-notebook:2023-10-31
-    command: "start-notebook.sh --ServerApp.token="
-    environment:
-      VIRTUAL_HOST: jupyter.local.dh.unimaas.nl
-    ports:
-      - 8888:8888
-    volumes:
-      - ./demo_data/csv:/home/jovyan/data
-      - ./notebooks/:/home/jovyan/notebooks
-    networks:
-      hdp-dh-net:
-        aliases:
-          - jupyter.dh.local
   ehrbase:
-    image: ehrbase/ehrbase:0.31.0
+    image: ehrbase/ehrbase:0.32.0
     depends_on:
       - ehrdb
     ports:
@@ -77,7 +20,7 @@ services:
         aliases:
           - ehrbase.dh.local
     env_file:
-      - ehrbase/.env.ehrbase
+      - ./ehrbase/.env.ehrbase
     restart: on-failure
   ehrdb:
     image: ehrbase/ehrbase-postgres:13.4.v2
@@ -85,8 +28,8 @@ services:
       - 5432:5432
     networks:
       - hdp-dh-net
-#    volumes:
-#      - ./ehrbase/.pgdata:/var/lib/postgresql/data
+    #    volumes:
+    #      - ./ehrbase/.pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -94,6 +37,71 @@ services:
       EHRBASE_PASSWORD_ADMIN: ehrbase
       EHRBASE_USER: ehrbase_restricted
       EHRBASE_PASSWORD: ehrbase_restricted
+  transform-rest:
+    build:
+      context: ./externals/dh-hdp-transform-rest
+      dockerfile: Dockerfile
+    #    volumes:
+    #      - ./externals/dh-hdp-transform-rest/src:/code/src
+    environment:
+      VIRTUAL_HOST: transform.local.dh.unimaas.nl
+      DIAGNOSIS_SEM_VER: 0.4.0
+      PATIENT_SEM_VER: 0.2.0
+      VITAL_SIGNS_SEM_VER: 0.2.0
+      SPRING_SECURITY_USERNAME: user
+      SPRING_SECURITY_PASSWORD: foobar
+    ports:
+      - 8081:8080
+    networks:
+      hdp-dh-net:
+        aliases:
+          - transform.dh.local
+  etl-demo:
+    build:
+      context: ./externals/dh-hdp-etl
+      dockerfile: Dockerfile
+    image: etl_demo
+    volumes:
+      - ./externals/dh-hdp-templates/templates:/code/data/templates
+      - ./demo_data:/code/data/synthea
+      - ./externals/dh-hdp-etl/outputs:/code/outputs
+      # Volume binds to auto-reload the code inside the container
+      - ./externals/dh-hdp-etl/ETL.py:/code/ETL.py
+      - ./externals/dh-hdp-etl/src:/code/src
+    environment:
+      EHRBASE_USERNAME: user
+      EHRBASE_PASSWORD: foobar
+      EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
+      TRANSFORM_SPRING_BASE_URL: "http://transform.dh.local:8080"
+      TRANSFORM_SPRING_USERNAME: user
+      TRANSFORM_SPRING_PASSWORD: foobar
+    networks:
+      - hdp-dh-net
+  demo-data:
+    build:
+      context: ./externals/dh-hdp-demodata
+      dockerfile: Dockerfile
+    image: demo_data
+    volumes:
+      - ./demo_data:/opt/output
+  data-exploration:
+    image: quay.io/jupyter/datascience-notebook:2023-10-31
+    command: "start-notebook.sh --ServerApp.token=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7"
+    environment:
+      VIRTUAL_HOST: jupyter.local.dh.unimaas.nl
+      CHOWN_EXTRA: "/home/jovyan/notebooks"
+      CHOWN_EXTRA_OPTS: "-R"
+    user:
+      root
+    ports:
+      - 8888:8888
+    volumes:
+      - ./demo_data/csv:/home/jovyan/data
+      - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
+    networks:
+      hdp-dh-net:
+        aliases:
+          - jupyter.dh.local
 
 networks:
   hdp-dh-net: {}
