@@ -44,6 +44,7 @@ if [[ $1 == "data" ]]; then
 fi
 
 if [[ $1 == "transform" ]]; then
+    docker build -t hdp_templates ./externals/dh-hdp-templates/
     echo -e "\nStart Sprint boot Rest API"
     docker compose build transform-rest
     docker compose up -d transform-rest proxy
@@ -63,7 +64,7 @@ fi
 
 
 if [[ $1 == "demo" ]]; then
-
+    docker build -t hdp_templates ./externals/dh-hdp-templates/
     echo -e "\nStart EHRbase Rest API"
     docker compose build
     docker compose up -d ehrbase proxy
