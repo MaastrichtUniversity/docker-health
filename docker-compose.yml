@@ -62,7 +62,6 @@ services:
       dockerfile: Dockerfile
     image: etl_demo
     volumes:
-      - ./externals/dh-hdp-templates/templates:/code/data/templates
       - ./demo_data:/code/data/synthea
       - ./externals/dh-hdp-etl/outputs:/code/outputs
       # Volume binds to auto-reload the code inside the container
