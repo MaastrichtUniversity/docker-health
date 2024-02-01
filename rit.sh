@@ -14,9 +14,11 @@ elif [[ ${ARGS} = *"--verbose "* ]] || [[ ${ARGS} = *"-v "* ]]; then
    ARGS="${ARGS/-v /}"
 fi
 
+# set RIT_ENV if not set already
+env_selector
 
 # Set the prefix for the project
-COMPOSE_PROJECT_NAME="hdp"
+COMPOSE_PROJECT_NAME="dev-hdp"
 export COMPOSE_PROJECT_NAME
 
 # specify externals for this project
@@ -68,7 +70,7 @@ if [[ $1 == "demo" ]]; then
     echo -e "\nStart EHRbase Rest API"
     docker compose build
     docker compose up -d ehrbase proxy
-    until docker logs --tail 100 hdp-ehrbase-1 2>&1 | grep -q "Started EhrBase in";
+    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
     do
     echo -e "Waiting for EhrBase"
       sleep 10
@@ -90,7 +92,7 @@ fi
 
 if [[ $1 == "backend" ]]; then
     docker compose up -d ehrbase proxy
-    until docker logs --tail 30 hdp-ehrbase-1 2>&1 | grep -q "Started EhrBase in";
+    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
     do
       echo -e "Waiting for EhrBase"
       sleep 10
