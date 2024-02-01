@@ -16,12 +16,6 @@ This service is based on repositories:
 127.0.0.1 transform.local.dh.unimaas.nl
 ```
 
-Go to your browser and try this:
-```
-http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html
-SECURITY_AUTHUSER=user
-SECURITY_AUTHPASSWORD=foobar
-```
 Update the credentials in `./ehrbase/.env.ehrbase`
 
 # Run the stack
@@ -46,7 +40,7 @@ Synthetic patient generator using Synthea with n=1000 patients.
 ```
 ./rit.sh data-exploration
 ```
-open browser and go to [jupyter.local.dh.unimaas.nl](jupyter.local.dh.unimaas.nl)
+open browser and go to [jupyter.local.dh.unimaas.nl](http://jupyter.local.dh.unimaas.nl)
 
 ## Start the EHRbase backend
 
@@ -54,6 +48,13 @@ EHRbase provides a standard-based backend for interoperable clinical application
 
 ```
 ./rit.sh backend
+```
+
+Go to your browser and try this:
+```
+http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html
+SECURITY_AUTHUSER=user
+SECURITY_AUTHPASSWORD=foobar
 ```
 
 ## Run the ETL demo
