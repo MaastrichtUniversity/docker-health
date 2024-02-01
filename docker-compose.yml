@@ -14,7 +14,7 @@ services:
     depends_on:
       - ehrdb
     ports:
-      - 8080:8080
+      - "8080:8080"
     networks:
       hdp-dh-net:
         aliases:
@@ -25,7 +25,7 @@ services:
   ehrdb:
     image: ehrbase/ehrbase-postgres:13.4.v2
     ports:
-      - 5432:5432
+      - "5432:5432"
     networks:
       - hdp-dh-net
     #    volumes:
@@ -41,6 +41,7 @@ services:
     build:
       context: ./externals/dh-hdp-transform-rest
       dockerfile: Dockerfile
+    image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}
     #    volumes:
     #      - ./externals/dh-hdp-transform-rest/src:/code/src
     environment:
@@ -51,7 +52,7 @@ services:
       SPRING_SECURITY_USERNAME: user
       SPRING_SECURITY_PASSWORD: foobar
     ports:
-      - 8081:8080
+      - "8081:8080"
     networks:
       hdp-dh-net:
         aliases:
@@ -60,7 +61,7 @@ services:
     build:
       context: ./externals/dh-hdp-etl
       dockerfile: Dockerfile
-    image: etl_demo
+    image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
     volumes:
       - ./externals/dh-hdp-templates/templates:/code/data/templates
       - ./demo_data:/code/data/synthea
@@ -81,12 +82,12 @@ services:
     build:
       context: ./externals/dh-hdp-demodata
       dockerfile: Dockerfile
-    image: demo_data
+    image: ${ENV_REGISTRY_HOST}/docker-health/demo-data:${ENV_TAG}
     volumes:
       - ./demo_data:/opt/output
   data-exploration:
     image: quay.io/jupyter/datascience-notebook:2023-10-31
-    command: "start-notebook.sh --ServerApp.token=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7"
+    command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
     environment:
       VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
       CHOWN_EXTRA: "/home/jovyan/notebooks"
@@ -94,7 +95,7 @@ services:
     user:
       root
     ports:
-      - 8888:8888
+      - "8888:8888"
     volumes:
       - ./demo_data/csv:/home/jovyan/data
       - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
