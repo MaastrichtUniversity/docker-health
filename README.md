@@ -16,8 +16,6 @@ This service is based on repositories:
 127.0.0.1 transform.local.dh.unimaas.nl
 ```
 
-Update the credentials in `./ehrbase/.env.ehrbase`
-
 # Run the stack
 
 ## Clone the external repositories
@@ -56,6 +54,7 @@ http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html
 SECURITY_AUTHUSER=user
 SECURITY_AUTHPASSWORD=foobar
 ```
+Update the credentials in `./ehrbase/.env.ehrbase`
 
 ## Run the ETL demo
 
