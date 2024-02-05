@@ -23,7 +23,7 @@ export COMPOSE_PROJECT_NAME
 
 # specify externals for this project
 externals="externals/dh-hdp-demodata https://github.com/MaastrichtUniversity/dh-hdp-demodata.git
-externals/dh-hdp-templates https://github.com/MaastrichtUniversity/dh-hdp-templates.git
+externals/dh-hdp-templates https://github.com/datahubgmail/dh-hdp-templates.git
 externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-transform-rest.git
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git"
@@ -46,6 +46,7 @@ if [[ $1 == "data" ]]; then
 fi
 
 if [[ $1 == "transform" ]]; then
+    docker build -t hdp_templates ./externals/dh-hdp-templates/
     echo -e "\nStart Sprint boot Rest API"
     docker compose build transform-rest
     docker compose up -d transform-rest proxy
@@ -65,7 +66,7 @@ fi
 
 
 if [[ $1 == "demo" ]]; then
-
+    docker build -t hdp_templates ./externals/dh-hdp-templates/
     echo -e "\nStart EHRbase Rest API"
     docker compose build
     docker compose up -d ehrbase proxy

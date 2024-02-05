@@ -63,7 +63,6 @@ services:
       dockerfile: Dockerfile
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
     volumes:
-      - ./externals/dh-hdp-templates/templates:/code/data/templates
       - ./demo_data:/code/data/synthea
       - ./externals/dh-hdp-etl/outputs:/code/outputs
       # Volume binds to auto-reload the code inside the container
@@ -76,6 +75,9 @@ services:
       TRANSFORM_SPRING_BASE_URL: "http://transform.dh.local:8080"
       TRANSFORM_SPRING_USERNAME: user
       TRANSFORM_SPRING_PASSWORD: foobar
+      DIAGNOSIS_SEM_VER: 0.4.0
+      PATIENT_SEM_VER: 0.2.0
+      VITAL_SIGNS_SEM_VER: 0.2.0
     networks:
       - hdp-dh-net
   demo-data:
