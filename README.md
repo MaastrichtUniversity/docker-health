@@ -57,6 +57,14 @@ SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
 ./rit.sh backend
 ```
 
+Go to your browser and try this:
+```
+http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html
+SECURITY_AUTHUSER=user
+SECURITY_AUTHPASSWORD=foobar
+```
+Update the credentials in `./ehrbase/.env.ehrbase`
+
 ## Run the ETL demo
 
 Extract the synthetic data using csv files, Transform the data into valid EHRbase compositions by using a java REST API and Load the compositions into EHRbase.
