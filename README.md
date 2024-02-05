@@ -1,6 +1,7 @@
 # Health Data Platform
 
-Setting-up a core clinical data repository to store data from different formats using [openEHR specifications](https://specifications.openehr.org/) and [EHRbase API](https://ehrbase.org/about-ehrbase/).
+Setting-up a core clinical data repository to store data from different formats using [openEHR specifications](https://specifications.openehr.org/) and the [EHRbase API](https://ehrbase.org/about-ehrbase/).
+EHRbase provides a standard-based backend for interoperable clinical applications, implementing the latest version of the openEHR Reference Model and the Archetype Definition Language (AQL).
 
 This service is based on repositories:
 - [dh-hdp-demodata](https://github.com/MaastrichtUniversity/dh-hdp-demodata): Simulation of hospital data
@@ -16,9 +17,8 @@ This service is based on repositories:
 127.0.0.1 transform.local.dh.unimaas.nl
 ```
 
-Go to your browser and try this:
+After up and running the stack, open your browser and try [http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html](http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html) with the following credentials:
 ```
-http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html
 SECURITY_AUTHUSER=user
 SECURITY_AUTHPASSWORD=foobar
 ```
@@ -46,11 +46,12 @@ Synthetic patient generator using Synthea with n=1000 patients.
 ```
 ./rit.sh data-exploration
 ```
-open browser and go to [jupyter.local.dh.unimaas.nl](jupyter.local.dh.unimaas.nl)
+Open your browser and try [http://jupyter.local.dh.unimaas.nl](http://jupyter.local.dh.unimaas.nl) using the following token:
+```
+SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
+```
 
 ## Start the EHRbase backend
-
-EHRbase provides a standard-based backend for interoperable clinical applications, implementing the latest version of the openEHR Reference Model and the Archetype Definition Language (AQL).
 
 ```
 ./rit.sh backend
@@ -58,7 +59,7 @@ EHRbase provides a standard-based backend for interoperable clinical application
 
 ## Run the ETL demo
 
-Extract the synthetic data using csv files, Transform the data into valid compositions by using a java-rest API and Load the compositions into the EHRbase.
+Extract the synthetic data using csv files, Transform the data into valid EHRbase compositions by using a java REST API and Load the compositions into EHRbase.
 
 ```
 ./rit.sh demo
@@ -68,23 +69,4 @@ Extract the synthetic data using csv files, Transform the data into valid compos
 
 ```
 ./rit.sh down
-```
-
-
-# Specified command-lines
-```
-docker exec -it hdp-etl-demo-1 bash
-```
-
-```
-python ETL.py --help
-Usage: ETL.py [OPTIONS] COMMAND [ARGS]...
-
-Options:
-  --help  Show this message and exit.
-
-Commands:
-  get-all-ehr-id      Get all EHR ID on a specific openEHR instance
-  list-all-templates  Print all template available on the server
-  run                 Runs all ETL for a single patient.
 ```
