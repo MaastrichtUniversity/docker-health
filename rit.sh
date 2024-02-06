@@ -15,6 +15,13 @@ elif [[ ${ARGS} = *"--verbose "* ]] || [[ ${ARGS} = *"-v "* ]]; then
    ARGS="${ARGS/-v /}"
 fi
 
+# import variables from .env file
+if [ -f .env ]; then
+  export $(echo $(cat .env | sed 's/#.*//g'| xargs) | envsubst)
+fi
+# hdp-templates image requires to be pre-built
+HDP_TEMPLATES_IMAGE_NAME="${ENV_REGISTRY_HOST}/docker-health/hdp_templates:${ENV_TAG}"
+
 # set RIT_ENV if not set already
 env_selector
 
