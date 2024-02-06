@@ -41,6 +41,8 @@ services:
     build:
       context: ./externals/dh-hdp-transform-rest
       dockerfile: Dockerfile
+      args:
+        HDP_TEMPLATES_IMAGE_NAME: ${ENV_REGISTRY_HOST}/docker-health/hdp_templates:${ENV_TAG}
     image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}
     #    volumes:
     #      - ./externals/dh-hdp-transform-rest/src:/code/src
@@ -61,6 +63,8 @@ services:
     build:
       context: ./externals/dh-hdp-etl
       dockerfile: Dockerfile
+      args:
+        HDP_TEMPLATES_IMAGE_NAME: ${ENV_REGISTRY_HOST}/docker-health/hdp_templates:${ENV_TAG}
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
     volumes:
       - ./demo_data:/code/data/synthea

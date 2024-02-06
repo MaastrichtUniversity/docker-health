@@ -14,6 +14,13 @@ elif [[ ${ARGS} = *"--verbose "* ]] || [[ ${ARGS} = *"-v "* ]]; then
    ARGS="${ARGS/-v /}"
 fi
 
+# import variables from .env file
+if [ -f .env ]; then
+  export $(echo $(cat .env | sed 's/#.*//g'| xargs) | envsubst)
+fi
+# hdp-templates image requires to be pre-built
+HDP_TEMPLATES_IMAGE_NAME="${ENV_REGISTRY_HOST}/docker-health/hdp_templates:${ENV_TAG}"
+
 # set RIT_ENV if not set already
 env_selector
 
@@ -46,7 +53,7 @@ if [[ $1 == "data" ]]; then
 fi
 
 if [[ $1 == "transform" ]]; then
-    docker build -t hdp_templates ./externals/dh-hdp-templates/
+    docker build -t ${HDP_TEMPLATES_IMAGE_NAME} ./externals/dh-hdp-templates/
     echo -e "\nStart Sprint boot Rest API"
     docker compose build transform-rest
     docker compose up -d transform-rest proxy
@@ -66,7 +73,7 @@ fi
 
 
 if [[ $1 == "demo" ]]; then
-    docker build -t hdp_templates ./externals/dh-hdp-templates/
+    docker build -t ${HDP_TEMPLATES_IMAGE_NAME} ./externals/dh-hdp-templates/
     echo -e "\nStart EHRbase Rest API"
     docker compose build
     docker compose up -d ehrbase proxy
