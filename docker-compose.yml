@@ -92,18 +92,18 @@ services:
     volumes:
       - ./demo_data:/opt/output
   data-exploration:
-    image: quay.io/jupyter/datascience-notebook:2023-10-31
+    build:
+      context: ./externals/dh-hdp-notebooks
+      dockerfile: Dockerfile
+    image: ${ENV_REGISTRY_HOST}/docker-health/data-exploration:${ENV_TAG}
     command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
     environment:
       VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
-      CHOWN_EXTRA: "/home/jovyan/notebooks"
-      CHOWN_EXTRA_OPTS: "-R"
-    user:
-      root
     ports:
       - "8888:8888"
     volumes:
       - ./demo_data/csv:/home/jovyan/data
+      # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
     networks:
       hdp-dh-net:
