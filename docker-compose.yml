@@ -1,7 +1,10 @@
 version: "3.6"
 services:
   proxy:
-    image: jwilder/nginx-proxy:0.9.3
+    image: jwilder/nginx-proxy:${ENV_TAG_PROXY}
+    environment:
+      # otherwise logstash will keep sending its own logs to itself over and over
+      LOGSPOUT: ignore
     volumes:
       - /etc/ssl/certs:/etc/nginx/certs/
       - /var/run/docker.sock:/tmp/docker.sock:ro
