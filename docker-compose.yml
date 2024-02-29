@@ -26,6 +26,9 @@ services:
           - ehrbase.dh.local
     env_file:
       - ./ehrbase/.env.ehrbase
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     restart: on-failure
   ehrdb:
     image: ehrbase/ehrbase-postgres:13.4.v2
@@ -33,7 +36,9 @@ services:
       - "5432:5432"
     networks:
       - hdp-dh-net
-    #    volumes:
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     #      - ./ehrbase/.pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
@@ -49,7 +54,9 @@ services:
       args:
         - HDP_TEMPLATES_IMAGE_NAME
     image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}
-    #    volumes:
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     #      - ./externals/dh-hdp-transform-rest/src:/code/src
     environment:
       VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
@@ -72,6 +79,8 @@ services:
         - HDP_TEMPLATES_IMAGE_NAME
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - ./demo_data:/code/data/synthea
       - ./externals/dh-hdp-etl/outputs:/code/outputs
       # Volume binds to auto-reload the code inside the container
@@ -107,6 +116,8 @@ services:
     ports:
       - "8888:8888"
     volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - ./demo_data/csv:/home/jovyan/data
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
