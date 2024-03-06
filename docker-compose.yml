@@ -1,7 +1,10 @@
 version: "3.6"
 services:
   proxy:
-    image: jwilder/nginx-proxy:0.9.3
+    image: jwilder/nginx-proxy:${ENV_TAG_PROXY}
+    environment:
+      # otherwise logstash will keep sending its own logs to itself over and over
+      LOGSPOUT: ignore
     volumes:
       - /etc/ssl/certs:/etc/nginx/certs/
       - /var/run/docker.sock:/tmp/docker.sock:ro
@@ -23,6 +26,9 @@ services:
           - ehrbase.dh.local
     env_file:
       - ./ehrbase/.env.ehrbase
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     restart: on-failure
   ehrdb:
     image: ehrbase/ehrbase-postgres:13.4.v2
@@ -30,9 +36,12 @@ services:
       - "5432:5432"
     networks:
       - hdp-dh-net
-    #    volumes:
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     #      - ./ehrbase/.pgdata:/var/lib/postgresql/data
     environment:
+      LOGSTASH_TAGS: EHR_DB
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       EHRBASE_USER_ADMIN: ehrbase
@@ -46,10 +55,13 @@ services:
       args:
         - HDP_TEMPLATES_IMAGE_NAME
     image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}
-    #    volumes:
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     #      - ./externals/dh-hdp-transform-rest/src:/code/src
     environment:
       VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
+      LOGSTASH_TAGS: TRANSFORM_REST
       DIAGNOSIS_SEM_VER: 0.4.0
       PATIENT_SEM_VER: 0.2.0
       VITAL_SIGNS_SEM_VER: 0.2.0
@@ -69,12 +81,15 @@ services:
         - HDP_TEMPLATES_IMAGE_NAME
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - ./demo_data:/code/data/synthea
       - ./externals/dh-hdp-etl/outputs:/code/outputs
       # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-etl/ETL.py:/code/ETL.py
+      - ./externals/dh-hdp-etl/etl.py:/code/etl.py
       - ./externals/dh-hdp-etl/src:/code/src
     environment:
+      LOGSTASH_TAGS: ETL_DEMO
       EHRBASE_USERNAME: user
       EHRBASE_PASSWORD: foobar
       EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
@@ -101,9 +116,12 @@ services:
     command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
     environment:
       VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
+      LOGSTASH_TAGS: DATA_EXPLORATION
     ports:
       - "8888:8888"
     volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - ./demo_data/csv:/home/jovyan/data
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
