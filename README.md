@@ -30,7 +30,7 @@ Update the credentials in `./ehrbase/.env.ehrbase`
 
 ```
 ./rit.sh externals clone
-./rit.sh externals checkout develop
+./rit.sh externals checkout 2024.1
 ```
 
 ## Generate synthetic dataset
