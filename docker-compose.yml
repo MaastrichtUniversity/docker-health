@@ -106,6 +106,8 @@ services:
       context: ./externals/dh-hdp-demodata
       dockerfile: Dockerfile
     image: ${ENV_REGISTRY_HOST}/docker-health/demo-data:${ENV_TAG}
+    environment:
+      LOGSPOUT: ignore
     volumes:
       - ./demo_data:/opt/output
   data-exploration:
@@ -116,7 +118,7 @@ services:
     command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
     environment:
       VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
-      LOGSTASH_TAGS: DATA_EXPLORATION
+      LOGSPOUT: ignore
     ports:
       - "8888:8888"
     volumes:
