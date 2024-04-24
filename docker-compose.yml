@@ -58,6 +58,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
+      - ./filebeat/logs/transform-rest:/var/log
     #      - ./externals/dh-hdp-transform-rest/src:/code/src
     environment:
       VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
@@ -85,11 +86,10 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - ./demo_data:/code/data/synthea
       - ./externals/dh-hdp-etl/outputs:/code/outputs
-      - ./logs:/code/logs
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
       - ./externals/dh-hdp-etl/src:/code/src
-      - ./filebeat/logs:/code/logs
+      - ./filebeat/logs/etl-demo:/code/logs
     environment:
       LOGSTASH_TAGS: ETL_DEMO
       LOGSPOUT: ignore
