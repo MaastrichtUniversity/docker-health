@@ -32,3 +32,6 @@ externals/*
 demo_data/
 outputs
 notebooks/.ipynb_checkpoints
+
+# logs
+filebeat/logs

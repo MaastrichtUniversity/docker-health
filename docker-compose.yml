@@ -88,8 +88,10 @@ services:
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
       - ./externals/dh-hdp-etl/src:/code/src
+      - ./filebeat/logs:/code/logs
     environment:
       LOGSTASH_TAGS: ETL_DEMO
+      LOGSPOUT: ignore
       EHRBASE_USERNAME: user
       EHRBASE_PASSWORD: foobar
       EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
@@ -131,6 +133,19 @@ services:
       hdp-dh-net:
         aliases:
           - jupyter.dh.local
+  filebeat:
+    build:
+      context: ./filebeat
+      dockerfile: Dockerfile
+    environment:
+      LOGSPOUT: ignore
+    volumes:
+      - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml:ro
+      - ./filebeat/logs:/usr/share/logs/
+    networks:
+      hdp-dh-net:
+        aliases:
+          - filebeat.dh.local
 
 networks:
   hdp-dh-net: {}

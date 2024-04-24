@@ -1,0 +1,14 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/etl-demo-logs.log
+
+    #Tags
+    tags: ["ETL-DEMO"]
+
+# Disable filebeat monitoring
+logging.metrics.enabled: false
+
+output.logstash:
+  hosts: ["elk.dh.local:5044"]
