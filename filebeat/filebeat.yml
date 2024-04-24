@@ -2,10 +2,11 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/etl-demo.log
+      - /usr/share/logs/etl-demo/etl-demo.log
+      - /usr/share/logs/transform-rest/transform-rest.log
 
     #Tags
-    tags: ["ETL_DEMO"]
+    tags: ["ETL_DEMO", "TRANSFORM_REST"]
 
 # Disable filebeat monitoring
 logging.metrics.enabled: false
