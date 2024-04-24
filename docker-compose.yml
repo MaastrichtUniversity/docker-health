@@ -30,7 +30,7 @@ services:
       - java
       - -jar
       - -Dspring.profiles.active=docker
-      - -Dlogging.file.name=/var/log/ehrbase.txt
+      - -Dlogging.file.name=/var/log/ehrbase.log
       - ehrbase.jar
     volumes:
       - /etc/localtime:/etc/localtime:ro
