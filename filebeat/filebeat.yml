@@ -15,6 +15,14 @@ filebeat.inputs:
     #Tags
     tags: ["TRANSFORM_REST"]
 
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/ehrbase/ehrbase.log
+
+    #Tags
+    tags: [ "EHRBASE" ]
+
 # Disable filebeat monitoring
 logging.metrics.enabled: false
 

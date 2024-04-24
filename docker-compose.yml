@@ -26,9 +26,16 @@ services:
           - ehrbase.dh.local
     env_file:
       - ./ehrbase/.env.ehrbase
+    entrypoint:
+      - java
+      - -jar
+      - -Dspring.profiles.active=docker
+      - -Dlogging.file.name=/var/log/ehrbase.txt
+      - ehrbase.jar
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
+      - ./filebeat/logs/ehrbase:/var/log
     restart: on-failure
   ehrdb:
     image: ehrbase/ehrbase-postgres:13.4.v2
@@ -149,4 +156,13 @@ services:
           - filebeat.dh.local
 
 networks:
-  hdp-dh-net: {}
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.30.1.0/24"
+  hdp-dh-net:
+   ipam:
+      driver: default
+      config:
+        - subnet: "172.31.1.0/24"
