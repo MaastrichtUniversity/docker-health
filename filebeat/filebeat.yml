@@ -5,7 +5,7 @@ filebeat.inputs:
       - /usr/share/logs/etl-demo.log
 
     #Tags
-    tags: ["ETL-DEMO"]
+    tags: ["ETL_DEMO"]
 
 # Disable filebeat monitoring
 logging.metrics.enabled: false
