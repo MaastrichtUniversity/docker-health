@@ -2,7 +2,7 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/etl-demo-logs.log
+      - /usr/share/logs/etl-demo.log
 
     #Tags
     tags: ["ETL-DEMO"]
