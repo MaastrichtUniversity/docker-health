@@ -3,12 +3,12 @@ services:
   proxy:
     image: jwilder/nginx-proxy:${ENV_TAG_PROXY}
     environment:
+      TZ: Europe/Amsterdam
       # otherwise logstash will keep sending its own logs to itself over and over
       LOGSPOUT: ignore
     volumes:
       - /etc/ssl/certs:/etc/nginx/certs/
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - /etc/localtime:/etc/localtime:ro
     ports:
       - "80:80"
       - "443:443"
@@ -16,6 +16,8 @@ services:
       - hdp-dh-net
   ehrbase:
     image: ehrbase/ehrbase:0.32.0
+    environment:
+      TZ: Europe/Amsterdam
     depends_on:
       - ehrdb
     ports:
@@ -33,8 +35,6 @@ services:
       - -Dlogging.file.name=/var/log/ehrbase.log
       - ehrbase.jar
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ./filebeat/logs/ehrbase:/var/log
     restart: on-failure
   ehrdb:
@@ -43,11 +43,8 @@ services:
       - "5432:5432"
     networks:
       - hdp-dh-net
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
-    #      - ./ehrbase/.pgdata:/var/lib/postgresql/data
     environment:
+      TZ: Europe/Amsterdam
       LOGSTASH_TAGS: EHR_DB
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -63,11 +60,10 @@ services:
         - HDP_TEMPLATES_IMAGE_NAME
     image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ./filebeat/logs/transform-rest:/var/log
     #      - ./externals/dh-hdp-transform-rest/src:/code/src
     environment:
+      TZ: Europe/Amsterdam
       VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
       LOGSTASH_TAGS: TRANSFORM_REST
       DIAGNOSIS_SEM_VER: 0.4.0
@@ -89,8 +85,6 @@ services:
         - HDP_TEMPLATES_IMAGE_NAME
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ./demo_data:/code/data/synthea
       - ./externals/dh-hdp-etl/outputs:/code/outputs
       # Volume binds to auto-reload the code inside the container
@@ -98,6 +92,7 @@ services:
       - ./externals/dh-hdp-etl/src:/code/src
       - ./filebeat/logs/etl-demo:/code/logs
     environment:
+      TZ: Europe/Amsterdam
       LOGSTASH_TAGS: ETL_DEMO
       LOGSPOUT: ignore
       EHRBASE_USERNAME: user
@@ -127,13 +122,12 @@ services:
     image: ${ENV_REGISTRY_HOST}/docker-health/data-exploration:${ENV_TAG}
     command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
     environment:
+      TZ: Europe/Amsterdam
       VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
       LOGSPOUT: ignore
     ports:
       - "8888:8888"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ./demo_data/csv:/home/jovyan/data
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
@@ -146,6 +140,7 @@ services:
       context: ./filebeat
       dockerfile: Dockerfile
     environment:
+      TZ: Europe/Amsterdam
       LOGSPOUT: ignore
     volumes:
       - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml:ro
