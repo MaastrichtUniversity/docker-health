@@ -2,6 +2,9 @@
 .idea
 *.png
 
+# CA certificates
+filebeat/certs/
+
 ## Cherry picked python gitignore from: https://github.com/github/gitignore/blob/main/Python.gitignore
 
 # Byte-compiled / optimized / DLL files

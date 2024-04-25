@@ -145,6 +145,7 @@ services:
     volumes:
       - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml:ro
       - ./filebeat/logs:/usr/share/logs/
+      - ./filebeat/certs:/etc/certs:ro
     networks:
       hdp-dh-net:
         aliases:
