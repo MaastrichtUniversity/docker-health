@@ -49,8 +49,8 @@ fi
 if [[ $1 == "transform" ]]; then
     docker build -t "${HDP_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
     echo -e "\nStart Sprint boot Rest API"
-    docker compose build transform-rest
-    docker compose up -d transform-rest proxy
+    docker compose build transform-rest proxy filebeat
+    docker compose up -d transform-rest proxy filebeat
 
     echo -e "\nExit rit.sh"
     exit 0
@@ -58,8 +58,8 @@ fi
 
 if [[ $1 == "data-exploration" ]]; then
     echo -e "\nExplore synthea dataset"
-    docker compose build data-exploration
-    docker compose up -d proxy data-exploration
+    docker compose build data-exploration proxy filebeat
+    docker compose up -d data-exploration proxy filebeat
 
     echo -e "\nExit rit.sh"
     exit 0
