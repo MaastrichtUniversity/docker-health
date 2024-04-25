@@ -70,7 +70,7 @@ if [[ $1 == "demo" ]]; then
     docker build -t "${HDP_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
     echo -e "\nStart EHRbase Rest API"
     docker compose build
-    docker compose up -d ehrbase proxy
+    docker compose up -d ehrbase proxy filebeat
     until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
     do
     echo -e "Waiting for EhrBase"
@@ -92,7 +92,7 @@ if [[ $1 == "demo" ]]; then
 fi
 
 if [[ $1 == "backend" ]]; then
-    docker compose up -d ehrbase proxy
+    docker compose up -d ehrbase proxy filebeat
     until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
     do
       echo -e "Waiting for EhrBase"
