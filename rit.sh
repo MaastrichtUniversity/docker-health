@@ -58,8 +58,8 @@ fi
 
 if [[ $1 == "data-exploration" ]]; then
     echo -e "\nExplore synthea dataset"
-    docker compose build data-exploration proxy filebeat
-    docker compose up -d data-exploration proxy filebeat
+    docker compose build data-exploration proxy
+    docker compose up -d data-exploration proxy
 
     echo -e "\nExit rit.sh"
     exit 0
