@@ -10,6 +10,10 @@ This service is based on repositories:
 - [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest): Java REST API for data class transformation into openEHR compositions
 - [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks): Jupyter notebooks for an initial data exploration
 
+# Encryption between filebeat and elk
+
+CA certificates need to be manually stored in folder `filebeat/certs`
+
 # Add this virtual host entry in your /etc/hosts file
 ```
 127.0.0.1 ehrbase.local.dh.unimaas.nl
