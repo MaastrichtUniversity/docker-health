@@ -1,11 +1,11 @@
 Id,ALCOHOL_GEBRUIKSTATUS,START_DATE,STOP_DATE,HOEVEELHEID_VALUE,HOEVEELHEID_UNIT,TOELICHTING
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Drinkt alcohol,2011-01-01,NULL,2,year,drinkt jaarlijks
-6ad5591f-896a-4c1c-4421-8c43633fa91b,Drinkt momenteel geen alcohol,2012-01-01,2013-01-01,0,NULL,drinkt op het moment niet
-6ad5591f-896a-4c1c-4421-8c43633fa91c,Drinkt alcohol,2014-01-01,NULL,6,week,drinkt weekelijks
-6ad5591f-896a-4c1c-4421-8c43633fa91d,Levenslang niet drinker van alcohol,NULL,NULL,0,NULL,nog nooit gedronken
-6ad5591f-896a-4c1c-4421-8c43633fa91e,Drinkt alcohol,2011-01-01,NULL,2,month,drinkt maandelijks
-6ad5591f-896a-4c1c-4421-8c43633fa91f,Drinkt alcohol,2011-01-01,NULL,2,week,drinkt wekelijks
-6ad5591f-896a-4c1c-4421-8c43633fa91g,Dronk vroeger alcohol,2015-01-01,2016-01-01,0,NULL,vroeger gedronken
-6ad5591f-896a-4c1c-4421-8c43633fa91h,Drinkt momenteel geen alcohol,2017-01-01,2018-01-01,0,NULL,NULL
-6ad5591f-896a-4c1c-4421-8c43633fa91i,Levenslang niet drinker van alcohol,NULL,NULL,0,NULL,drinkt nooit
-6ad5591f-896a-4c1c-4421-8c43633fa91j,Drinkt alcohol,2019-01-01,NULL,1,week,drinkt wekelijks
+6ad5591f-896a-4c1c-4421-8c43633fa91a,Drinkt alcohol,2011-01-01,,2,year,drinkt jaarlijks
+6ad5591f-896a-4c1c-4421-8c43633fa91b,Drinkt momenteel geen alcohol,2012-01-01,2013-01-01,0,,drinkt op het moment niet
+6ad5591f-896a-4c1c-4421-8c43633fa91c,Drinkt alcohol,2014-01-01,,6,week,drinkt weekelijks
+6ad5591f-896a-4c1c-4421-8c43633fa91d,Levenslang niet drinker van alcohol,,,0,,nog nooit gedronken
+6ad5591f-896a-4c1c-4421-8c43633fa91e,Drinkt alcohol,2011-01-01,,2,month,drinkt maandelijks
+6ad5591f-896a-4c1c-4421-8c43633fa91f,Drinkt alcohol,2011-01-01,,2,week,drinkt wekelijks
+6ad5591f-896a-4c1c-4421-8c43633fa91g,Dronk vroeger alcohol,2015-01-01,2016-01-01,0,,vroeger gedronken
+6ad5591f-896a-4c1c-4421-8c43633fa91h,Drinkt momenteel geen alcohol,2017-01-01,2018-01-01,0,,
+6ad5591f-896a-4c1c-4421-8c43633fa91i,Levenslang niet drinker van alcohol,,,0,,drinkt nooit
+6ad5591f-896a-4c1c-4421-8c43633fa91j,Drinkt alcohol,2019-01-01,,1,week,drinkt wekelijks
