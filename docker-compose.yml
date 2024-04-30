@@ -131,7 +131,7 @@ services:
       TRANSFORM_SPRING_USERNAME: user
       TRANSFORM_SPRING_PASSWORD: foobar
       PATIENT_SEM_VER: 0.2.0
-      ALKOHOL_GEBRUIK_SEM_VER: 0.1.0
+      ALCOHOL_GEBRUIK_SEM_VER: 0.1.0
     networks:
       - hdp-dh-net
   demo-data:
