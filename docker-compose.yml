@@ -86,11 +86,11 @@ services:
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
     volumes:
       - ./demo_data:/code/data/synthea
+      - ./filebeat/logs/etl-demo:/code/logs
       - ./externals/dh-hdp-etl/outputs:/code/outputs
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
       - ./externals/dh-hdp-etl/src:/code/src
-      - ./filebeat/logs/etl-demo:/code/logs
     environment:
       TZ: Europe/Amsterdam
       LOGSTASH_TAGS: ETL_DEMO
@@ -104,6 +104,35 @@ services:
       DIAGNOSIS_SEM_VER: 0.4.0
       PATIENT_SEM_VER: 0.2.0
       VITAL_SIGNS_SEM_VER: 0.2.0
+    networks:
+      - hdp-dh-net
+  etl-zib:
+    build:
+      context: ./externals/dh-hdp-etl
+      dockerfile: Dockerfile
+      args:
+        - HDP_TEMPLATES_IMAGE_NAME
+    image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
+    volumes:
+      - ./zib-demo-data:/code/data/zib-demo-data
+      - ./filebeat/logs/etl-demo:/code/logs
+      - ./externals/dh-hdp-etl/outputs:/code/outputs
+      # Volume binds to auto-reload the code inside the container
+      - ./externals/dh-hdp-etl/etl.py:/code/etl.py
+      - ./externals/dh-hdp-etl/src:/code/src
+    environment:
+      TZ: Europe/Amsterdam
+      LOGSTASH_TAGS: ETL_DEMO
+      LOGSPOUT: ignore
+      EHRBASE_USERNAME: user
+      EHRBASE_PASSWORD: foobar
+      EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
+      TRANSFORM_SPRING_BASE_URL: "http://transform.dh.local:8080"
+      TRANSFORM_SPRING_USERNAME: user
+      TRANSFORM_SPRING_PASSWORD: foobar
+      # DIAGNOSIS_SEM_VER: 0.4.0
+      # PATIENT_SEM_VER: 0.2.0
+      # VITAL_SIGNS_SEM_VER: 0.2.0
     networks:
       - hdp-dh-net
   demo-data:
