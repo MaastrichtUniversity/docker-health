@@ -130,9 +130,8 @@ services:
       TRANSFORM_SPRING_BASE_URL: "http://transform.dh.local:8080"
       TRANSFORM_SPRING_USERNAME: user
       TRANSFORM_SPRING_PASSWORD: foobar
-      # DIAGNOSIS_SEM_VER: 0.4.0
-      # PATIENT_SEM_VER: 0.2.0
-      # VITAL_SIGNS_SEM_VER: 0.2.0
+      PATIENT_SEM_VER: 0.2.0
+      ALCOHOL_GEBRUIK_SEM_VER: 0.1.0
     networks:
       - hdp-dh-net
   demo-data:
