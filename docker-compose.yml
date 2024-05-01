@@ -58,7 +58,6 @@ services:
       dockerfile: Dockerfile
       args:
         - HDP_TEMPLATES_IMAGE_NAME
-        - TRANSFORM_SRC_PATH
     image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}
     volumes:
       - ./filebeat/logs/transform-rest:/var/log
