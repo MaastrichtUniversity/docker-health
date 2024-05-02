@@ -2,8 +2,9 @@ version: "3.6"
 services:
   proxy:
     image: jwilder/nginx-proxy:${ENV_TAG_PROXY}
+    env_file:
+      - ./env_files/timezone.env
     environment:
-      TZ: Europe/Amsterdam
       # otherwise logstash will keep sending its own logs to itself over and over
       LOGSPOUT: ignore
     volumes:
@@ -16,18 +17,20 @@ services:
       - hdp-dh-net
   ehrbase:
     image: ehrbase/ehrbase:0.32.0
-    environment:
-      TZ: Europe/Amsterdam
     depends_on:
       - ehrdb
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/ehrbase.env
+    environment:
+      LOGSPOUT: ignore
+      VIRTUAL_HOST: ehrbase.${RIT_ENV}.dh.unimaas.nl
     ports:
       - "8080:8080"
     networks:
       hdp-dh-net:
         aliases:
           - ehrbase.dh.local
-    env_file:
-      - ./ehrbase/.env.ehrbase
     entrypoint:
       - java
       - -jar
@@ -39,19 +42,21 @@ services:
     restart: on-failure
   ehrdb:
     image: ehrbase/ehrbase-postgres:13.4.v2
-    ports:
-      - "5432:5432"
-    networks:
-      - hdp-dh-net
+    env_file:
+      - ./env_files/timezone.env
     environment:
-      TZ: Europe/Amsterdam
       LOGSTASH_TAGS: EHR_DB
+      # TODO: These credentials could be reused or stored in env_files/?
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       EHRBASE_USER_ADMIN: ehrbase
       EHRBASE_PASSWORD_ADMIN: ehrbase
       EHRBASE_USER: ehrbase_restricted
       EHRBASE_PASSWORD: ehrbase_restricted
+    ports:
+      - "5432:5432"
+    networks:
+      - hdp-dh-net
   transform-rest:
     build:
       context: ./externals/dh-hdp-transform-rest
@@ -62,13 +67,13 @@ services:
     volumes:
       - ./filebeat/logs/transform-rest:/var/log
     #      - ./externals/dh-hdp-transform-rest/src:/code/src
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/template_version.env
     environment:
-      TZ: Europe/Amsterdam
-      VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
       LOGSTASH_TAGS: TRANSFORM_REST
-      DIAGNOSIS_SEM_VER: 0.4.0
-      PATIENT_SEM_VER: 0.2.0
-      VITAL_SIGNS_SEM_VER: 0.2.0
+      VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
+      # TODO: These credentials could be reused or stored in env_files/?
       SPRING_SECURITY_USERNAME: user
       SPRING_SECURITY_PASSWORD: foobar
     ports:
@@ -91,19 +96,14 @@ services:
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
       - ./externals/dh-hdp-etl/src:/code/src
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/ehrbase_server.env
+      - ./env_files/transform_server.env
+      - ./env_files/template_version.env
     environment:
-      TZ: Europe/Amsterdam
       LOGSTASH_TAGS: ETL_DEMO
       LOGSPOUT: ignore
-      EHRBASE_USERNAME: user
-      EHRBASE_PASSWORD: foobar
-      EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
-      TRANSFORM_SPRING_BASE_URL: "http://transform.dh.local:8080"
-      TRANSFORM_SPRING_USERNAME: user
-      TRANSFORM_SPRING_PASSWORD: foobar
-      DIAGNOSIS_SEM_VER: 0.4.0
-      PATIENT_SEM_VER: 0.2.0
-      VITAL_SIGNS_SEM_VER: 0.2.0
     networks:
       - hdp-dh-net
   etl-zib:
@@ -120,18 +120,14 @@ services:
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
       - ./externals/dh-hdp-etl/src:/code/src
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/ehrbase_server.env
+      - ./env_files/transform_server.env
+      - ./env_files/template_version.env
     environment:
-      TZ: Europe/Amsterdam
       LOGSTASH_TAGS: ETL_DEMO
       LOGSPOUT: ignore
-      EHRBASE_USERNAME: user
-      EHRBASE_PASSWORD: foobar
-      EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
-      TRANSFORM_SPRING_BASE_URL: "http://transform.dh.local:8080"
-      TRANSFORM_SPRING_USERNAME: user
-      TRANSFORM_SPRING_PASSWORD: foobar
-      PATIENT_SEM_VER: 0.2.0
-      ALCOHOL_GEBRUIK_SEM_VER: 0.1.0
     networks:
       - hdp-dh-net
   demo-data:
@@ -149,16 +145,17 @@ services:
       dockerfile: Dockerfile
     image: ${ENV_REGISTRY_HOST}/docker-health/data-exploration:${ENV_TAG}
     command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
+    env_file:
+      - ./env_files/timezone.env
     environment:
-      TZ: Europe/Amsterdam
-      VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
       LOGSPOUT: ignore
-    ports:
-      - "8888:8888"
+      VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
     volumes:
       - ./demo_data/csv:/home/jovyan/data
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
+    ports:
+      - "8888:8888"
     networks:
       hdp-dh-net:
         aliases:
@@ -167,8 +164,9 @@ services:
     build:
       context: ./filebeat
       dockerfile: Dockerfile
+    env_file:
+      - ./env_files/timezone.env
     environment:
-      TZ: Europe/Amsterdam
       LOGSPOUT: ignore
     volumes:
       - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml:ro
