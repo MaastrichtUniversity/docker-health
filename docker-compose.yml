@@ -69,13 +69,11 @@ services:
     #      - ./externals/dh-hdp-transform-rest/src:/code/src
     env_file:
       - ./env_files/timezone.env
+      - ./env_files/transform_server.env
       - ./env_files/templates.env
     environment:
       LOGSTASH_TAGS: TRANSFORM_REST
       VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
-      # TODO: These credentials could be reused or stored in env_files/?
-      SPRING_SECURITY_USERNAME: user
-      SPRING_SECURITY_PASSWORD: foobar
     ports:
       - "8081:8080"
     networks:
