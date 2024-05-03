@@ -69,7 +69,7 @@ services:
     #      - ./externals/dh-hdp-transform-rest/src:/code/src
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/template_version.env
+      - ./env_files/templates.env
     environment:
       LOGSTASH_TAGS: TRANSFORM_REST
       VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
@@ -100,7 +100,7 @@ services:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
       - ./env_files/transform_server.env
-      - ./env_files/template_version.env
+      - ./env_files/templates.env
     environment:
       LOGSTASH_TAGS: ETL_DEMO
       LOGSPOUT: ignore
@@ -124,7 +124,7 @@ services:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
       - ./env_files/transform_server.env
-      - ./env_files/template_version.env
+      - ./env_files/templates.env
     environment:
       LOGSTASH_TAGS: ETL_DEMO
       LOGSPOUT: ignore
