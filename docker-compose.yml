@@ -80,14 +80,16 @@ services:
       dockerfile: Dockerfile
       args:
         - HDP_TEMPLATES_IMAGE_NAME
+        - SRC_SUBPROJECT=src-demo
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
     volumes:
       - ./demo_data:/code/data/synthea
       - ./filebeat/logs/etl-demo:/code/logs
-      - ./externals/dh-hdp-etl/outputs:/code/outputs
+      - ./outputs/etl-demo:/code/outputs
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
-      - ./externals/dh-hdp-etl/src:/code/src
+      - ./externals/dh-hdp-etl/src-core:/code/src/core
+      - ./externals/dh-hdp-etl/src-demo:/code/src/subproject
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
@@ -104,14 +106,16 @@ services:
       dockerfile: Dockerfile
       args:
         - HDP_TEMPLATES_IMAGE_NAME
+        - SRC_SUBPROJECT=src-zib
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
     volumes:
       - ./zib-demo-data:/code/data/zib-demo-data
       - ./filebeat/logs/etl-zib:/code/logs
-      - ./externals/dh-hdp-etl/outputs:/code/outputs
+      - ./outputs/etl-zib:/code/outputs
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
-      - ./externals/dh-hdp-etl/src:/code/src
+      - ./externals/dh-hdp-etl/src-core:/code/src/core
+      - ./externals/dh-hdp-etl/src-zib:/code/src/subproject
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
