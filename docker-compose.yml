@@ -44,15 +44,9 @@ services:
     image: ehrbase/ehrbase-postgres:13.4.v2
     env_file:
       - ./env_files/timezone.env
+      - ./env_files/ehrdb.env
     environment:
       LOGSTASH_TAGS: EHR_DB
-      # TODO: These credentials could be reused or stored in env_files/?
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      EHRBASE_USER_ADMIN: ehrbase
-      EHRBASE_PASSWORD_ADMIN: ehrbase
-      EHRBASE_USER: ehrbase_restricted
-      EHRBASE_PASSWORD: ehrbase_restricted
     ports:
       - "5432:5432"
     networks:
