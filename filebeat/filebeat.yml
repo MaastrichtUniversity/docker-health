@@ -3,24 +3,24 @@ filebeat.inputs:
     enabled: true
     paths:
       - /usr/share/logs/etl-demo/etl-demo.log
-
-    #Tags
     tags: ["ETL_DEMO"]
 
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/transform-rest/transform-rest.log
+      - /usr/share/logs/etl-zib/etl-zib.log
+    tags: ["ETL_ZIB"]
 
-    #Tags
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/transform-rest/transform-rest.log
     tags: ["TRANSFORM_REST"]
 
   - type: log
     enabled: true
     paths:
       - /usr/share/logs/ehrbase/ehrbase.log
-
-    #Tags
     tags: [ "EHRBASE" ]
 
 # Disable filebeat monitoring

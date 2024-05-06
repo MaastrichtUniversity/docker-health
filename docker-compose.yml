@@ -107,7 +107,7 @@ services:
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
     volumes:
       - ./zib-demo-data:/code/data/zib-demo-data
-      - ./filebeat/logs/etl-demo:/code/logs
+      - ./filebeat/logs/etl-zib:/code/logs
       - ./externals/dh-hdp-etl/outputs:/code/outputs
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
@@ -118,7 +118,7 @@ services:
       - ./env_files/transform_server.env
       - ./env_files/templates.env
     environment:
-      LOGSTASH_TAGS: ETL_DEMO
+      LOGSTASH_TAGS: ETL_ZIB
       LOGSPOUT: ignore
     networks:
       - hdp-dh-net
