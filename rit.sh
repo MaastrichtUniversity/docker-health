@@ -47,11 +47,11 @@ if [[ $1 == "data" ]]; then
     exit 0
 fi
 
-if [[ $1 == "transform" ]]; then
-    docker build -t "${HDP_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
+if [[ $1 == "transform-demo" ]]; then
+    docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
     echo -e "\nStart Sprint boot Rest API"
-    docker compose build transform-rest proxy filebeat
-    docker compose up -d transform-rest proxy filebeat
+    docker compose build transform-rest-demo proxy filebeat
+    docker compose up -d transform-rest-demo proxy filebeat
 
     echo -e "\nExit rit.sh"
     exit 0
@@ -68,19 +68,18 @@ fi
 
 
 if [[ $1 == "demo" ]]; then
-    docker build -t "${HDP_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
+    docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
     echo -e "\nStart EHRbase Rest API"
-    docker compose build
+    docker compose build ehrbase proxy filebeat
     docker compose up -d ehrbase proxy filebeat
     until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
     do
     echo -e "Waiting for EhrBase"
       sleep 10
     done
-
     echo -e "\nStart Sprint boot Rest API"
-    docker compose build transform-rest
-    docker compose up -d transform-rest
+    docker compose build transform-rest-demo
+    docker compose up -d transform-rest-demo
     sleep 3
     echo -e "\nRunning etl-demo"
     docker compose up -d etl-demo
@@ -93,21 +92,20 @@ if [[ $1 == "demo" ]]; then
 fi
 
 if [[ $1 == "zib" ]]; then
-    docker build -t "${HDP_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
     echo -e "\nStart EHRbase Rest API"
-    docker compose build
+    docker compose build ehrbase proxy filebeat
     docker compose up -d ehrbase proxy filebeat
     until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
     do
     echo -e "Waiting for EhrBase"
       sleep 10
     done
-
     echo -e "\nStart Sprint boot Rest API"
-    docker compose build transform-rest
-    docker compose up -d transform-rest
+    docker compose build transform-rest-zib
+    docker compose up -d transform-rest-zib
     sleep 3
-    echo -e "\nRunning etl-demo"
+    echo -e "\nRunning etl-zib"
     docker compose up -d etl-zib
     sleep 15
     echo -e "\nPrint logs for etl-zib"

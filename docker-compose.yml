@@ -51,63 +51,17 @@ services:
       - "5432:5432"
     networks:
       - hdp-dh-net
-  transform-rest:
-    build:
-      context: ./externals/dh-hdp-transform-rest
-      dockerfile: Dockerfile
-      args:
-        - HDP_TEMPLATES_IMAGE_NAME
-    image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}
-    volumes:
-      - ./filebeat/logs/transform-rest:/var/log
-    #      - ./externals/dh-hdp-transform-rest/src:/code/src
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/transform_server.env
-      - ./env_files/templates.env
-    environment:
-      LOGSTASH_TAGS: TRANSFORM_REST
-      VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
-    ports:
-      - "8081:8080"
-    networks:
-      hdp-dh-net:
-        aliases:
-          - transform.dh.local
-  etl-demo:
-    build:
-      context: ./externals/dh-hdp-etl
-      dockerfile: Dockerfile
-      args:
-        - HDP_TEMPLATES_IMAGE_NAME
-        - SRC_SUBPROJECT=demo
-    image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
-    volumes:
-      - ./demo_data:/code/data/synthea
-      - ./filebeat/logs/etl-demo:/code/logs
-      - ./outputs/etl-demo:/code/outputs
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-etl/etl.py:/code/etl.py
-      - ./externals/dh-hdp-etl/src/core:/code/src/core
-      - ./externals/dh-hdp-etl/src/subprojects/demo:/code/src/subproject
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/ehrbase_server.env
-      - ./env_files/transform_server.env
-      - ./env_files/templates_demo.env
-    environment:
-      LOGSTASH_TAGS: ETL_DEMO
-      LOGSPOUT: ignore
-    networks:
-      - hdp-dh-net
   etl-zib:
     build:
       context: ./externals/dh-hdp-etl
       dockerfile: Dockerfile
       args:
-        - HDP_TEMPLATES_IMAGE_NAME
+        - HDP_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
         - SRC_SUBPROJECT=zib
-    image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
+    image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
+    # depends_on:
+    #   transform-rest-zib:
+    #     condition: service_healthy
     volumes:
       - ./zib-demo-data:/code/data/zib-demo-data
       - ./filebeat/logs/etl-zib:/code/logs
@@ -126,6 +80,85 @@ services:
       LOGSPOUT: ignore
     networks:
       - hdp-dh-net
+  transform-rest-zib:
+    build:
+      context: ./externals/dh-hdp-transform-rest
+      dockerfile: Dockerfile
+      args:
+        - HDP_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
+        - SRC_SUBPROJECT=zib
+    image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest-zib:${ENV_TAG}
+    volumes:
+      - ./filebeat/logs/transform-rest-zib:/var/log
+    #      - ./externals/dh-hdp-transform-rest/src/zib/:/code/src
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/transform_server.env
+      - ./env_files/templates_zib.env
+    environment:
+      LOGSTASH_TAGS: TRANSFORM_REST_ZIB
+      VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
+    ports:
+      - "8081:8080"
+    networks:
+      hdp-dh-net:
+        aliases:
+          - transform.dh.local
+    # healthcheck:
+    #   test: ["CMD", "curl", "-v", "--user", "user:foobar", "-f", "http://transform.local.dh.unimaas.nl"]
+  etl-demo:
+    build:
+      context: ./externals/dh-hdp-etl
+      dockerfile: Dockerfile
+      args:
+        - HDP_TEMPLATES_IMAGE_NAME=${HDP_DEMO_TEMPLATES_IMAGE_NAME}
+        - SRC_SUBPROJECT=demo
+    image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
+    # depends_on:
+    #   transform-rest-demo:
+    #     condition: service_started
+    volumes:
+      - ./demo_data:/code/data/synthea
+      - ./filebeat/logs/etl-demo:/code/logs
+      - ./outputs/etl-demo:/code/outputs
+      # Volume binds to auto-reload the code inside the container
+      - ./externals/dh-hdp-etl/etl.py:/code/etl.py
+      - ./externals/dh-hdp-etl/src/core:/code/src/core
+      - ./externals/dh-hdp-etl/src/subprojects/demo:/code/src/subproject
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/ehrbase_server.env
+      - ./env_files/transform_server.env
+      - ./env_files/templates_demo.env
+    environment:
+      LOGSTASH_TAGS: ETL_DEMO
+      LOGSPOUT: ignore
+    networks:
+      - hdp-dh-net
+  transform-rest-demo:
+    build:
+      context: ./externals/dh-hdp-transform-rest
+      dockerfile: Dockerfile
+      args:
+        - HDP_TEMPLATES_IMAGE_NAME=${HDP_DEMO_TEMPLATES_IMAGE_NAME}
+        - SRC_SUBPROJECT=demo
+    image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest-demo:${ENV_TAG}
+    volumes:
+      - ./filebeat/logs/transform-rest-demo:/var/log
+    #      - ./externals/dh-hdp-transform-rest/src/demo/:/code/src
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/transform_server.env
+      - ./env_files/templates_demo.env
+    environment:
+      LOGSTASH_TAGS: TRANSFORM_REST_DEMO
+      VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
+    ports:
+      - "8081:8080"
+    networks:
+      hdp-dh-net:
+        aliases:
+          - transform.dh.local
   demo-data:
     build:
       context: ./externals/dh-hdp-demodata
