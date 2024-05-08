@@ -94,7 +94,7 @@ services:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
       - ./env_files/transform_server.env
-      - ./env_files/templates.env
+      - ./env_files/templates_demo.env
     environment:
       LOGSTASH_TAGS: ETL_DEMO
       LOGSPOUT: ignore
@@ -120,7 +120,7 @@ services:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
       - ./env_files/transform_server.env
-      - ./env_files/templates.env
+      - ./env_files/templates_zib.env
     environment:
       LOGSTASH_TAGS: ETL_ZIB
       LOGSPOUT: ignore
