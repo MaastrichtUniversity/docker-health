@@ -74,7 +74,7 @@ services:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
       - ./env_files/transform_server.env
-      - ./env_files/templates_zib.env
+      - ./env_files/etl_zib.env
     environment:
       LOGSTASH_TAGS: ETL_ZIB
       LOGSPOUT: ignore
@@ -94,16 +94,16 @@ services:
     env_file:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
-      - ./env_files/templates_zib.env
+      - ./env_files/etl_zib.env
     environment:
       LOGSTASH_TAGS: TRANSFORM_REST_ZIB
-      VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: transform-zib.${RIT_ENV}.dh.unimaas.nl
     ports:
-      - "8081:8080"
+      - "8082:8080"
     networks:
       hdp-dh-net:
         aliases:
-          - transform.dh.local
+          - transform-zib.dh.local
     # healthcheck:
     #   test: ["CMD", "curl", "-v", "--user", "user:foobar", "-f", "http://transform.local.dh.unimaas.nl"]
   etl-demo:
@@ -129,7 +129,7 @@ services:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
       - ./env_files/transform_server.env
-      - ./env_files/templates_demo.env
+      - ./env_files/etl_demo.env
     environment:
       LOGSTASH_TAGS: ETL_DEMO
       LOGSPOUT: ignore
@@ -149,16 +149,16 @@ services:
     env_file:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
-      - ./env_files/templates_demo.env
+      - ./env_files/etl_demo.env
     environment:
       LOGSTASH_TAGS: TRANSFORM_REST_DEMO
-      VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: transform-demo.${RIT_ENV}.dh.unimaas.nl
     ports:
       - "8081:8080"
     networks:
       hdp-dh-net:
         aliases:
-          - transform.dh.local
+          - transform-demo.dh.local
   demo-data:
     build:
       context: ./externals/dh-hdp-demodata
