@@ -59,9 +59,6 @@ services:
         - HDP_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
         - SRC_SUBPROJECT=zib
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
-    # depends_on:
-    #   transform-rest-zib:
-    #     condition: service_healthy
     volumes:
       - ./zib-demo-data:/code/data/zib-demo-data
       - ./filebeat/logs/etl-zib:/code/logs
@@ -97,6 +94,7 @@ services:
       - ./env_files/etl_zib.env
     environment:
       LOGSTASH_TAGS: TRANSFORM_REST_ZIB
+      LOGSPOUT: ignore
       VIRTUAL_HOST: transform-zib.${RIT_ENV}.dh.unimaas.nl
     ports:
       - "8082:8080"
@@ -104,8 +102,6 @@ services:
       hdp-dh-net:
         aliases:
           - transform-zib.dh.local
-    # healthcheck:
-    #   test: ["CMD", "curl", "-v", "--user", "user:foobar", "-f", "http://transform.local.dh.unimaas.nl"]
   etl-demo:
     build:
       context: ./externals/dh-hdp-etl
@@ -114,9 +110,6 @@ services:
         - HDP_TEMPLATES_IMAGE_NAME=${HDP_DEMO_TEMPLATES_IMAGE_NAME}
         - SRC_SUBPROJECT=demo
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
-    # depends_on:
-    #   transform-rest-demo:
-    #     condition: service_started
     volumes:
       - ./demo_data:/code/data/synthea
       - ./filebeat/logs/etl-demo:/code/logs

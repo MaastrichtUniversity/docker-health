@@ -7,6 +7,7 @@ This service is based on repositories:
 
 - [dh-hdp-demodata](https://github.com/MaastrichtUniversity/dh-hdp-demodata): Simulation of hospital data
 - [dh-hdp-templates](https://github.com/um-datahub/dh-hdp-templates): Custom-made openEHR templates
+- [zib-templates](https://github.com/um-datahub/zib-templates.git): OpenEHR templates made to match the Dutch ZIBs
 - [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl): ETL Python script
 - [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest): Java REST API for data class transformation into openEHR compositions
 - [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks): Jupyter notebooks for an initial data exploration
@@ -79,7 +80,7 @@ Update the credentials in `./ehrbase/.env.ehrbase`
 Extract the synthetic data using csv files, Transform the data into valid EHRbase compositions by using a java REST API and Load the compositions into EHRbase.
 
 ```
-./rit.sh demo
+./rit.sh demo or ./rit.sh zib
 ```
 
 ## Kill the whole stack
