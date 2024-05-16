@@ -60,7 +60,7 @@ services:
         - SRC_SUBPROJECT=zib
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
     volumes:
-      - ./zib-demo-data:/code/data/zib-demo-data
+      - ./data/zib-demo-data:/code/data/zib-demo-data
       - ./filebeat/logs/etl-zib:/code/logs
       - ./outputs/etl-zib:/code/outputs
       # Volume binds to auto-reload the code inside the container
