@@ -82,6 +82,7 @@ if [[ $1 == "demo" ]]; then
     docker compose up -d transform-rest-demo
     sleep 3
     echo -e "\nRunning etl-demo"
+    docker compose build etl-demo
     docker compose up -d etl-demo
     sleep 15
     echo -e "\nPrint logs for etl-demo"
@@ -106,6 +107,7 @@ if [[ $1 == "zib" ]]; then
     docker compose up -d transform-rest-zib
     sleep 3
     echo -e "\nRunning etl-zib"
+    docker compose build etl-zib
     docker compose up -d etl-zib
     sleep 15
     echo -e "\nPrint logs for etl-zib"
