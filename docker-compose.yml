@@ -111,7 +111,7 @@ services:
         - SRC_SUBPROJECT=demo
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
     volumes:
-      - ./demo_data:/code/data/synthea
+      - ./data/synthea-demo-data:/code/data/synthea
       - ./filebeat/logs/etl-demo:/code/logs
       - ./outputs/etl-demo:/code/outputs
       # Volume binds to auto-reload the code inside the container
@@ -160,7 +160,7 @@ services:
     environment:
       LOGSPOUT: ignore
     volumes:
-      - ./demo_data:/opt/output
+      - ./data/synthea-demo-data:/opt/output
   data-exploration:
     build:
       context: ./externals/dh-hdp-notebooks
@@ -173,7 +173,7 @@ services:
       LOGSPOUT: ignore
       VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
     volumes:
-      - ./demo_data/csv:/home/jovyan/data
+      - ./data/synthea-demo-data/csv:/home/jovyan/data
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
     ports:

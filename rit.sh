@@ -38,7 +38,7 @@ if [[ $1 == "externals" ]]; then
     exit 0
 fi
 
-if [[ $1 == "data" ]]; then
+if [[ $1 == "demodata" ]]; then
     echo -e "\nGenerate a synthetic dataset"
     docker compose build demo-data
     docker compose up demo-data
