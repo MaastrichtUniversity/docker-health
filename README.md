@@ -76,17 +76,13 @@ Credentials can be updated in `./ehrbase/.env.ehrbase`
 
 Extract data from csv files, Transform the data into valid openEHR compositions by using a REST API and Load the compositions into EHRbase.
 
-#### ETL demo
-
-ETL workflows specific to demo templates.
+#### ETL workflows specific to demo templates.
 
 ```
 ./rit.sh demo
 ```
 
-#### ETL zib
-
-ETL workflows specific to ZIB templates.
+#### ETL workflows specific to ZIB templates.
 
 ```
 ./rit.sh zib
