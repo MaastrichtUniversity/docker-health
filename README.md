@@ -14,7 +14,8 @@ This service is based on repositories:
 
 ### Encryption between filebeat and elk
 
-CA certificates need to be manually stored in folder `filebeat/certs`
+CA certificates need to be manually stored in folder `filebeat/certs`.
+The present files are used for development-purposes.
 
 ### Add this virtual host entry in your /etc/hosts file
 ```
