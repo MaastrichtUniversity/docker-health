@@ -12,7 +12,14 @@ This service is based on repositories:
 - [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest): Java REST API for data class transformation into openEHR compositions
 - [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks): Jupyter notebooks for an initial data exploration
 
-# Add this virtual host entry in your /etc/hosts file
+## Requirements
+
+### Encryption between filebeat and elk
+
+CA certificates need to be manually stored in folder `filebeat/certs`.
+The present files are used for development-purposes.
+
+### Add this virtual host entry in your /etc/hosts file
 
 ```
 127.0.0.1 ehrbase.local.dh.unimaas.nl
@@ -21,6 +28,8 @@ This service is based on repositories:
 127.0.0.1 transform-demo.local.dh.unimaas.nl
 ```
 
+## Run the stack
+
 After up and running the stack, open your browser and try [http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html](http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html) with the following credentials:
 
 ```
@@ -28,18 +37,16 @@ SECURITY_AUTHUSER=user
 SECURITY_AUTHPASSWORD=foobar
 ```
 
-Update the credentials in `./ehrbase/.env.ehrbase`
+Credentials can be updated in `./ehrbase/.env.ehrbase`
 
-# Run the stack
-
-## Clone the external repositories
+### Clone the external repositories
 
 ```
 ./rit.sh externals clone
 ./rit.sh externals checkout 2024.1
 ```
 
-## Generate synthetic dataset
+### Generate synthetic dataset
 
 Synthetic patient generator using Synthea with n=1000 patients.
 
@@ -47,7 +54,7 @@ Synthetic patient generator using Synthea with n=1000 patients.
 ./rit.sh data
 ```
 
-## Start the data exploration Jupyter notebook
+### Start the data exploration Jupyter notebook
 
 ```
 ./rit.sh data-exploration
@@ -59,7 +66,7 @@ Open your browser and try [http://jupyter.local.dh.unimaas.nl](http://jupyter.lo
 SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
 ```
 
-## Start the EHRbase backend
+### Start the EHRbase backend
 
 ```
 ./rit.sh backend
@@ -75,7 +82,7 @@ SECURITY_AUTHPASSWORD=foobar
 
 Update the credentials in `./ehrbase/.env.ehrbase`
 
-## Run the ETL demo
+### Run the ETL demo
 
 Extract the synthetic data using csv files, Transform the data into valid EHRbase compositions by using a java REST API and Load the compositions into EHRbase.
 
@@ -83,7 +90,7 @@ Extract the synthetic data using csv files, Transform the data into valid EHRbas
 ./rit.sh demo or ./rit.sh zib
 ```
 
-## Kill the whole stack
+### Kill the whole stack
 
 ```
 ./rit.sh down
