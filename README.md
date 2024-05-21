@@ -42,7 +42,7 @@ The present files are used for development-purposes.
 Synthetic patient generator using Synthea with n=1000 patients.
 
 ```
-./rit.sh demodata
+./rit.sh demo-data
 ```
 
 ### Start the data exploration Jupyter notebook
