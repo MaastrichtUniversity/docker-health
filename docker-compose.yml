@@ -87,7 +87,7 @@ services:
     image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest-zib:${ENV_TAG}
     volumes:
       - ./filebeat/logs/transform-rest-zib:/var/log
-    #      - ./externals/dh-hdp-transform-rest/src/zib/:/code/src
+    #      - ./externals/dh-hdp-transform-rest/src-subprojects/zib/:/code/src
     env_file:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
@@ -138,7 +138,7 @@ services:
     image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest-demo:${ENV_TAG}
     volumes:
       - ./filebeat/logs/transform-rest-demo:/var/log
-    #      - ./externals/dh-hdp-transform-rest/src/demo/:/code/src
+    #      - ./externals/dh-hdp-transform-rest/src-subprojects/demo/:/code/src
     env_file:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
