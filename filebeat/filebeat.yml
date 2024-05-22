@@ -23,6 +23,15 @@ filebeat.inputs:
     #Tags
     tags: [ "EHRBASE" ]
 
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/ehrdb/postgresql.log
+
+    #Tags
+    tags: [ "EHRDB" ]
+
+
 # Disable filebeat monitoring
 logging.metrics.enabled: false
 
