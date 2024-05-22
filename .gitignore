@@ -33,8 +33,9 @@ dmypy.json
 # cloned github repo
 externals/*
 demo_data/
+data/synthea-demo-data/
 outputs
 notebooks/.ipynb_checkpoints
 
 # logs
-filebeat/logs
+filebeat/logs/*/*.log

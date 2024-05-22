@@ -39,6 +39,10 @@ services:
     restart: on-failure
   ehrdb:
     image: ehrbase/ehrbase-postgres:13.4.v2
+    command: ["postgres", "-c", "logging_collector=on", "-c", "log_directory=/tmp/postgreslog/", "-c", "log_filename=postgresql.log", "-c", "log_statement=none", "-c", "log_file_mode=0777", "-c", "log_rotation_age=0", "-c", "log_rotation_size=0"]
+    #https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
+    volumes:
+      - ./filebeat/logs/ehrdb:/tmp/postgreslog
     ports:
       - "5432:5432"
     networks:
