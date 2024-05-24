@@ -68,6 +68,8 @@ fi
 
 if [[ $1 == "demo" ]]; then
     docker build -t "${HDP_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
+    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
+    chmod -R 777 ./filebeat/logs/ehrdb
     echo -e "\nStart EHRbase Rest API"
     docker compose build
     docker compose up -d ehrbase proxy filebeat
