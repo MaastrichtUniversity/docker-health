@@ -87,7 +87,7 @@ services:
         - HDP_TEMPLATES_IMAGE_NAME
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
     volumes:
-      - ./demo_data:/code/data/synthea
+      - ./data/synthea-demo-data:/code/data/synthea
       - ./externals/dh-hdp-etl/outputs:/code/outputs
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
