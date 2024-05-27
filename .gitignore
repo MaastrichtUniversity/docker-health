@@ -4,6 +4,9 @@
 
 # CA certificates
 filebeat/certs/
+# logs
+filebeat/logs/*/*.log
+filebeat/logs/*/*.lck
 
 ## Cherry picked python gitignore from: https://github.com/github/gitignore/blob/main/Python.gitignore
 
@@ -36,6 +39,3 @@ demo_data/
 data/synthea-demo-data/
 outputs
 notebooks/.ipynb_checkpoints
-
-# logs
-filebeat/logs/*/*.log
