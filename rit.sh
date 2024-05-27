@@ -49,7 +49,7 @@ fi
 
 if [[ $1 == "transform-demo" ]]; then
     docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
-    echo -e "\nStart Sprint boot Rest API"
+    echo -e "\nStart Spring boot Rest API"
     docker compose build transform-rest-demo proxy filebeat
     docker compose up -d transform-rest-demo proxy filebeat
 
@@ -69,6 +69,8 @@ fi
 
 if [[ $1 == "demo" ]]; then
     docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
+    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
+    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     echo -e "\nStart EHRbase Rest API"
     docker compose build ehrbase proxy filebeat
     docker compose up -d ehrbase proxy filebeat
@@ -77,7 +79,7 @@ if [[ $1 == "demo" ]]; then
     echo -e "Waiting for EhrBase"
       sleep 10
     done
-    echo -e "\nStart Sprint boot Rest API"
+    echo -e "\nStart Spring boot Rest API"
     docker compose build transform-rest-demo
     docker compose up -d transform-rest-demo
     sleep 3
@@ -94,6 +96,8 @@ fi
 
 if [[ $1 == "zib" ]]; then
     docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
+    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
+    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     echo -e "\nStart EHRbase Rest API"
     docker compose build ehrbase proxy filebeat
     docker compose up -d ehrbase proxy filebeat
@@ -102,7 +106,7 @@ if [[ $1 == "zib" ]]; then
     echo -e "Waiting for EhrBase"
       sleep 10
     done
-    echo -e "\nStart Sprint boot Rest API"
+    echo -e "\nStart Spring boot Rest API"
     docker compose build transform-rest-zib
     docker compose up -d transform-rest-zib
     sleep 3

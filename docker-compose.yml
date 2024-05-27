@@ -4,9 +4,6 @@ services:
     image: jwilder/nginx-proxy:${ENV_TAG_PROXY}
     env_file:
       - ./env_files/timezone.env
-    environment:
-      # otherwise logstash will keep sending its own logs to itself over and over
-      LOGSPOUT: ignore
     volumes:
       - /etc/ssl/certs:/etc/nginx/certs/
       - /var/run/docker.sock:/tmp/docker.sock:ro
@@ -23,7 +20,6 @@ services:
       - ./env_files/timezone.env
       - ./env_files/ehrbase.env
     environment:
-      LOGSPOUT: ignore
       VIRTUAL_HOST: ehrbase.${RIT_ENV}.dh.unimaas.nl
     ports:
       - "8080:8080"
@@ -42,11 +38,13 @@ services:
     restart: on-failure
   ehrdb:
     image: ehrbase/ehrbase-postgres:13.4.v2
+    command: ["postgres", "-c", "logging_collector=on", "-c", "log_directory=/tmp/postgreslog/", "-c", "log_filename=postgresql.log", "-c", "log_statement=none", "-c", "log_file_mode=0777", "-c", "log_rotation_age=0", "-c", "log_rotation_size=0"]
+    # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
+    volumes:
+      - ./filebeat/logs/ehrdb:/tmp/postgreslog
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrdb.env
-    environment:
-      LOGSTASH_TAGS: EHR_DB
     ports:
       - "5432:5432"
     networks:
@@ -74,7 +72,6 @@ services:
       - ./env_files/etl_zib.env
     environment:
       LOGSTASH_TAGS: ETL_ZIB
-      LOGSPOUT: ignore
     networks:
       - hdp-dh-net
   transform-rest-zib:
@@ -94,7 +91,6 @@ services:
       - ./env_files/etl_zib.env
     environment:
       LOGSTASH_TAGS: TRANSFORM_REST_ZIB
-      LOGSPOUT: ignore
       VIRTUAL_HOST: transform-zib.${RIT_ENV}.dh.unimaas.nl
     ports:
       - "8082:8080"
@@ -125,7 +121,6 @@ services:
       - ./env_files/etl_demo.env
     environment:
       LOGSTASH_TAGS: ETL_DEMO
-      LOGSPOUT: ignore
     networks:
       - hdp-dh-net
   transform-rest-demo:
@@ -157,8 +152,6 @@ services:
       context: ./externals/dh-hdp-demodata
       dockerfile: Dockerfile
     image: ${ENV_REGISTRY_HOST}/docker-health/demo-data:${ENV_TAG}
-    environment:
-      LOGSPOUT: ignore
     volumes:
       - ./data/synthea-demo-data:/opt/output
   data-exploration:
@@ -170,7 +163,6 @@ services:
     env_file:
       - ./env_files/timezone.env
     environment:
-      LOGSPOUT: ignore
       VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
     volumes:
       - ./data/synthea-demo-data/csv:/home/jovyan/data
@@ -188,8 +180,6 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ./env_files/timezone.env
-    environment:
-      LOGSPOUT: ignore
     volumes:
       - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml:ro
       - ./filebeat/logs:/usr/share/logs/
