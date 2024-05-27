@@ -48,7 +48,7 @@ fi
 
 if [[ $1 == "transform" ]]; then
     docker build -t "${HDP_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
-    echo -e "\nStart Sprint boot Rest API"
+    echo -e "\nStart Spring boot Rest API"
     docker compose build transform-rest proxy filebeat
     docker compose up -d transform-rest proxy filebeat
 
@@ -79,7 +79,7 @@ if [[ $1 == "demo" ]]; then
       sleep 10
     done
 
-    echo -e "\nStart Sprint boot Rest API"
+    echo -e "\nStart Spring boot Rest API"
     docker compose build transform-rest
     docker compose up -d transform-rest
 
