@@ -4,8 +4,6 @@ services:
     image: jwilder/nginx-proxy:${ENV_TAG_PROXY}
     environment:
       TZ: Europe/Amsterdam
-      # otherwise logstash will keep sending its own logs to itself over and over
-      LOGSPOUT: ignore
     volumes:
       - /etc/ssl/certs:/etc/nginx/certs/
       - /var/run/docker.sock:/tmp/docker.sock:ro
@@ -98,7 +96,6 @@ services:
     environment:
       TZ: Europe/Amsterdam
       LOGSTASH_TAGS: ETL_DEMO
-      LOGSPOUT: ignore
       EHRBASE_USERNAME: user
       EHRBASE_PASSWORD: foobar
       EHRBASE_BASE_URL: "http://ehrbase.dh.local:8080/ehrbase/rest/openehr/v1"
@@ -115,8 +112,6 @@ services:
       context: ./externals/dh-hdp-demodata
       dockerfile: Dockerfile
     image: ${ENV_REGISTRY_HOST}/docker-health/demo-data:${ENV_TAG}
-    environment:
-      LOGSPOUT: ignore
     volumes:
       - ./demo_data:/opt/output
   data-exploration:
@@ -128,7 +123,6 @@ services:
     environment:
       TZ: Europe/Amsterdam
       VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
-      LOGSPOUT: ignore
     ports:
       - "8888:8888"
     volumes:
@@ -145,7 +139,6 @@ services:
       dockerfile: Dockerfile
     environment:
       TZ: Europe/Amsterdam
-      LOGSPOUT: ignore
     volumes:
       - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml:ro
       - ./filebeat/logs:/usr/share/logs/
