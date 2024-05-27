@@ -47,7 +47,7 @@ services:
       - hdp-dh-net
     environment:
       TZ: Europe/Amsterdam
-      LOGSTASH_TAGS: EHR_DB
+      LOGSTASH_TAGS: EHRDB
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       EHRBASE_USER_ADMIN: ehrbase
