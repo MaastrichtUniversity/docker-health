@@ -3,10 +3,10 @@ Id,ALCOHOL_GEBRUIKSTATUS,START_DATE,STOP_DATE,HOEVEELHEID_VALUE,HOEVEELHEID_UNIT
 6ad5591f-896a-4c1c-4421-8c43633fa91b,,2012-01-01,2013-01-01,2,DAG,TEST: ALCOHOL_GEBRUIKSTATUS is missing
 6ad5591f-896a-4c1c-4421-8c43633fa91c,TEST,,,,,TEST: ALCOHOL_GEBRUIKSTATUS is wrong
 6ad5591f-896a-4c1c-4421-8c43633fa91d,Drinkt momenteel geen alcohol,2014,,,,TEST: START_DATE with year only
-6ad5591f-896a-4c1c-4421-8c43633fa91e,Levenslang niet drinker van alcohol,,2014-01,,,TEST: STOP_DATE with year+month only
+6ad5591f-896a-4c1c-4421-8c43633fa91e,Levenslange niet-drinker van alcohol,,2014-01,,,TEST: STOP_DATE with year+month only
 6ad5591f-896a-4c1c-4421-8c43633fa91f,Drinkt alcohol,,,,per jaar,TEST: HOEVEELHEID_UNIT is missing
 6ad5591f-896a-4c1c-4421-8c43633fa91g,Drinkt alcohol,,,1,,TEST: HOEVEELHEID_VALUE is missing
 6ad5591f-896a-4c1c-4421-8c43633fa91h,Drinkt alcohol,,,0,dag,TEST: HOEVEELHEID_VALUE == 0
-6ad5591f-896a-4c1c-4421-8c43633fa91i,Drinkt alcohol,,,-10000,,TEST: HOEVEELHEID_VALUE < 0
-6ad5591f-896a-4c1c-4421-8c43633fa91j,Drinkt alcohol,2014-01-01,,25,Jaar,TEST: HOEVEELHEID_UNIT – convert jaar to maand
+6ad5591f-896a-4c1c-4421-8c43633fa91i,Anders,,,-10000,1/mo,TEST: HOEVEELHEID_VALUE < 0
+6ad5591f-896a-4c1c-4421-8c43633fa91j,Drinkt alcohol,2014-01-01,,25,Jaar,TEST: HOEVEELHEID_UNIT - convert jaar to maand
 6ad5591f-896a-4c1c-4421-8c43633fa91k,Dronk vroeger alcohol,2014-01-01,2015-01-01,25,AAAA,TEST: HOEVEELHEID_UNIT is wrong
