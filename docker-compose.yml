@@ -174,6 +174,36 @@ services:
       hdp-dh-net:
         aliases:
           - jupyter.dh.local
+  demo-sprint-6:
+    build:
+      context: ./externals/dh-hdp-notebooks
+      dockerfile: Dockerfile
+      args:
+        - HDP_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
+        - SRC_SUBPROJECT=zib
+    image: ${ENV_REGISTRY_HOST}/docker-health/demo-sprint-6:${ENV_TAG}
+    command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/ehrbase_server.env
+      - ./env_files/transform_server.env
+      - ./env_files/etl_zib.env
+    environment:
+      VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
+    volumes:
+      - ./data/zib-demo-data:/home/jovyan/data/zib-demo-data
+      # Volume binds to auto-reload the code inside the container
+      - ./externals/dh-hdp-etl/etl.py:/home/jovyan/etl.py
+      - ./externals/dh-hdp-etl/src/core:/home/jovyan/src/core
+      - ./externals/dh-hdp-etl/src/subprojects/zib:/home/jovyan/src/subproject
+      # Volume binds to auto-reload the code inside the container
+      # - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
+    ports:
+      - "8888:8888"
+    networks:
+      hdp-dh-net:
+        aliases:
+          - jupyter.dh.local
   filebeat:
     build:
       context: ./filebeat

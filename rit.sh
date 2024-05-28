@@ -121,6 +121,32 @@ if [[ $1 == "zib" ]]; then
     exit 0
 fi
 
+if [[ $1 == "demo-sprint-6" ]]; then
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
+    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
+    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
+
+    echo -e "\nExplore synthea dataset"
+    docker compose build proxy demo-sprint-6
+    docker compose up -d proxy demo-sprint-6
+
+    echo -e "\nStart EHRbase Rest API"
+    docker compose build ehrbase
+    docker compose up -d ehrbase
+    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
+    do
+    echo -e "Waiting for EhrBase"
+      sleep 10
+    done
+
+    echo -e "\nStart Sprint boot Rest API"
+    docker compose build transform-rest-zib
+    docker compose up -d transform-rest-zib
+
+    echo -e "\nExit rit.sh"
+    exit 0
+fi
+
 if [[ $1 == "backend" ]]; then
     docker compose up -d ehrbase proxy filebeat
     until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
