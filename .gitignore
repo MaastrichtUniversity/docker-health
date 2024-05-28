@@ -2,8 +2,6 @@
 .idea
 *.png
 
-# CA certificates
-filebeat/certs/
 # logs
 filebeat/logs/*/*.log
 filebeat/logs/*/*.lck
