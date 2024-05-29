@@ -48,9 +48,9 @@ fi
 
 if [[ $1 == "transform" ]]; then
     docker build -t "${HDP_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
-    echo -e "\nStart Sprint boot Rest API"
-    docker compose build transform-rest
-    docker compose up -d transform-rest proxy
+    echo -e "\nStart Spring boot Rest API"
+    docker compose build transform-rest proxy filebeat
+    docker compose up -d transform-rest proxy filebeat
 
     echo -e "\nExit rit.sh"
     exit 0
@@ -58,8 +58,8 @@ fi
 
 if [[ $1 == "data-exploration" ]]; then
     echo -e "\nExplore synthea dataset"
-    docker compose build data-exploration
-    docker compose up -d proxy data-exploration
+    docker compose build data-exploration proxy
+    docker compose up -d data-exploration proxy
 
     echo -e "\nExit rit.sh"
     exit 0
@@ -68,16 +68,18 @@ fi
 
 if [[ $1 == "demo" ]]; then
     docker build -t "${HDP_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
+    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
+    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     echo -e "\nStart EHRbase Rest API"
-    docker compose build
-    docker compose up -d ehrbase proxy
+    docker compose build ehrbase proxy filebeat
+    docker compose up -d ehrbase proxy filebeat
     until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
     do
     echo -e "Waiting for EhrBase"
       sleep 10
     done
 
-    echo -e "\nStart Sprint boot Rest API"
+    echo -e "\nStart Spring boot Rest API"
     docker compose build transform-rest
     docker compose up -d transform-rest
 
@@ -92,7 +94,8 @@ if [[ $1 == "demo" ]]; then
 fi
 
 if [[ $1 == "backend" ]]; then
-    docker compose up -d ehrbase proxy
+    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
+    docker compose up -d ehrbase proxy filebeat
     until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
     do
       echo -e "Waiting for EhrBase"

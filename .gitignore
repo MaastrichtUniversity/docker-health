@@ -2,6 +2,10 @@
 .idea
 *.png
 
+# logs
+filebeat/logs/*/*.log
+filebeat/logs/*/*.lck
+
 ## Cherry picked python gitignore from: https://github.com/github/gitignore/blob/main/Python.gitignore
 
 # Byte-compiled / optimized / DLL files
@@ -30,5 +34,6 @@ dmypy.json
 # cloned github repo
 externals/*
 demo_data/
+data/synthea-demo-data/
 outputs
 notebooks/.ipynb_checkpoints

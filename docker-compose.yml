@@ -3,12 +3,10 @@ services:
   proxy:
     image: jwilder/nginx-proxy:${ENV_TAG_PROXY}
     environment:
-      # otherwise logstash will keep sending its own logs to itself over and over
-      LOGSPOUT: ignore
+      TZ: Europe/Amsterdam
     volumes:
       - /etc/ssl/certs:/etc/nginx/certs/
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - /etc/localtime:/etc/localtime:ro
     ports:
       - "80:80"
       - "443:443"
@@ -16,6 +14,8 @@ services:
       - hdp-dh-net
   ehrbase:
     image: ehrbase/ehrbase:0.32.0
+    environment:
+      TZ: Europe/Amsterdam
     depends_on:
       - ehrdb
     ports:
@@ -26,22 +26,27 @@ services:
           - ehrbase.dh.local
     env_file:
       - ./ehrbase/.env.ehrbase
+    entrypoint:
+      - java
+      - -jar
+      - -Dspring.profiles.active=docker
+      - -Dlogging.file.name=/var/log/ehrbase.log
+      - ehrbase.jar
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+      - ./filebeat/logs/ehrbase:/var/log
     restart: on-failure
   ehrdb:
     image: ehrbase/ehrbase-postgres:13.4.v2
+    command: ["postgres", "-c", "logging_collector=on", "-c", "log_directory=/tmp/postgreslog/", "-c", "log_filename=postgresql.log", "-c", "log_statement=none", "-c", "log_file_mode=0777", "-c", "log_rotation_age=0", "-c", "log_rotation_size=0"]
+    #https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
+    volumes:
+      - ./filebeat/logs/ehrdb:/tmp/postgreslog
     ports:
       - "5432:5432"
     networks:
       - hdp-dh-net
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
-    #      - ./ehrbase/.pgdata:/var/lib/postgresql/data
     environment:
-      LOGSTASH_TAGS: EHR_DB
+      TZ: Europe/Amsterdam
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       EHRBASE_USER_ADMIN: ehrbase
@@ -56,10 +61,10 @@ services:
         - HDP_TEMPLATES_IMAGE_NAME
     image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+      - ./filebeat/logs/transform-rest:/var/log
     #      - ./externals/dh-hdp-transform-rest/src:/code/src
     environment:
+      TZ: Europe/Amsterdam
       VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
       LOGSTASH_TAGS: TRANSFORM_REST
       DIAGNOSIS_SEM_VER: 0.4.0
@@ -81,14 +86,14 @@ services:
         - HDP_TEMPLATES_IMAGE_NAME
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
-      - ./demo_data:/code/data/synthea
+      - ./data/synthea-demo-data:/code/data/synthea
       - ./externals/dh-hdp-etl/outputs:/code/outputs
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
       - ./externals/dh-hdp-etl/src:/code/src
+      - ./filebeat/logs/etl-demo:/code/logs
     environment:
+      TZ: Europe/Amsterdam
       LOGSTASH_TAGS: ETL_DEMO
       EHRBASE_USERNAME: user
       EHRBASE_PASSWORD: foobar
@@ -106,8 +111,6 @@ services:
       context: ./externals/dh-hdp-demodata
       dockerfile: Dockerfile
     image: ${ENV_REGISTRY_HOST}/docker-health/demo-data:${ENV_TAG}
-    environment:
-      LOGSPOUT: ignore
     volumes:
       - ./demo_data:/opt/output
   data-exploration:
@@ -117,13 +120,11 @@ services:
     image: ${ENV_REGISTRY_HOST}/docker-health/data-exploration:${ENV_TAG}
     command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
     environment:
+      TZ: Europe/Amsterdam
       VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
-      LOGSPOUT: ignore
     ports:
       - "8888:8888"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ./demo_data/csv:/home/jovyan/data
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
@@ -131,6 +132,29 @@ services:
       hdp-dh-net:
         aliases:
           - jupyter.dh.local
+  filebeat:
+    build:
+      context: ./filebeat
+      dockerfile: Dockerfile
+    environment:
+      TZ: Europe/Amsterdam
+    volumes:
+      - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml:ro
+      - ./filebeat/logs:/usr/share/logs/
+      - ./filebeat/certs:/etc/certs:ro
+    networks:
+      hdp-dh-net:
+        aliases:
+          - filebeat.dh.local
 
 networks:
-  hdp-dh-net: {}
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.30.1.0/24"
+  hdp-dh-net:
+   ipam:
+      driver: default
+      config:
+        - subnet: "172.31.1.0/24"
