@@ -174,7 +174,7 @@ services:
       hdp-dh-net:
         aliases:
           - jupyter.dh.local
-  demo-sprint-6:
+  demo-zib:
     build:
       context: ./externals/dh-hdp-notebooks
       dockerfile: Dockerfile

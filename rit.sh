@@ -121,7 +121,7 @@ if [[ $1 == "zib" ]]; then
     exit 0
 fi
 
-if [[ $1 == "demo-sprint-6" ]]; then
+if [[ $1 == "demo-zib" ]]; then
     docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
