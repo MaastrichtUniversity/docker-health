@@ -57,6 +57,17 @@ if [[ $1 == "transform-demo" ]]; then
     exit 0
 fi
 
+if [[ $1 == "transform-zib" ]]; then
+    docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
+    echo -e "\nStart Spring boot Rest API"
+    docker compose build transform-rest-zib proxy filebeat
+    docker compose up -d transform-rest-zib proxy filebeat
+
+    echo -e "\nExit rit.sh"
+    exit 0
+fi
+
+
 if [[ $1 == "demo" ]]; then
     docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"

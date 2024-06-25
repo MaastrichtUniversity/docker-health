@@ -64,7 +64,7 @@ services:
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
       - ./externals/dh-hdp-etl/src/core:/code/src/core
-      - ./externals/dh-hdp-etl/src/subprojects/zib:/code/src/subproject
+      - ./externals/dh-hdp-etl/src/subprojects/zib:/code/src/subprojects/zib
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
@@ -144,7 +144,7 @@ services:
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
       - ./externals/dh-hdp-etl/src/core:/code/src/core
-      - ./externals/dh-hdp-etl/src/subprojects/demo:/code/src/subproject
+      - ./externals/dh-hdp-etl/src/subprojects/demo:/code/src/subprojects/demo
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
