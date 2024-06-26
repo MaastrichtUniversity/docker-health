@@ -98,6 +98,37 @@ services:
       hdp-dh-net:
         aliases:
           - transform-zib.dh.local
+  jupyter-zib:
+    build:
+      context: ./externals/dh-hdp-notebooks
+      dockerfile: Dockerfile
+      args:
+        - HDP_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
+        - DATA=zib
+    image: ${ENV_REGISTRY_HOST}/docker-health/jupyter-zib:${ENV_TAG}
+    command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/ehrbase_server.env
+      - ./env_files/transform_server.env
+      - ./env_files/etl_zib.env
+    environment:
+      VIRTUAL_HOST: jupyter-zib.${RIT_ENV}.dh.unimaas.nl
+    volumes:
+      - ./data/zib-demo-data:/home/jovyan/data/zib-demo-data
+      # Volume binds to auto-reload the code inside the container
+      - ./externals/dh-hdp-etl/etl.py:/home/jovyan/etl.py
+      - ./externals/dh-hdp-etl/requirements.txt:/home/jovyan/requirements.txt
+      - ./externals/dh-hdp-etl/src/core:/home/jovyan/src/core
+      - ./externals/dh-hdp-etl/src/subprojects/zib:/home/jovyan/src/subproject
+      # Volume binds to auto-reload the code inside the container
+      # - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
+    ports:
+      - "8888:8888"
+    networks:
+      hdp-dh-net:
+        aliases:
+          - jupyter-zib.dh.local
   etl-demo:
     build:
       context: ./externals/dh-hdp-etl
@@ -154,26 +185,37 @@ services:
     image: ${ENV_REGISTRY_HOST}/docker-health/demo-data:${ENV_TAG}
     volumes:
       - ./data/synthea-demo-data:/opt/output
-  data-exploration:
+  jupyter-synthea:
     build:
       context: ./externals/dh-hdp-notebooks
       dockerfile: Dockerfile
-    image: ${ENV_REGISTRY_HOST}/docker-health/data-exploration:${ENV_TAG}
+      args:
+        - HDP_TEMPLATES_IMAGE_NAME=${HDP_DEMO_TEMPLATES_IMAGE_NAME}
+        - DATA=synthea
+    image: ${ENV_REGISTRY_HOST}/docker-health/jupyter-synthea:${ENV_TAG}
     command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
     env_file:
       - ./env_files/timezone.env
+      - ./env_files/ehrbase_server.env
+      - ./env_files/transform_server.env
+      - ./env_files/etl_demo.env
     environment:
-      VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: jupyter-synthea.${RIT_ENV}.dh.unimaas.nl
     volumes:
-      - ./data/synthea-demo-data/csv:/home/jovyan/data
+      - ./data/synthea-demo-data:/home/jovyan/data/synthea
       # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
+      - ./externals/dh-hdp-etl/etl.py:/home/jovyan/etl.py
+      - ./externals/dh-hdp-etl/requirements.txt:/home/jovyan/requirements.txt
+      - ./externals/dh-hdp-etl/src/core:/home/jovyan/src/core
+      - ./externals/dh-hdp-etl/src/subprojects/demo:/home/jovyan/src/subproject
+      # Volume binds to auto-reload the code inside the container
+      # - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
     ports:
-      - "8888:8888"
+      - "8889:8888"
     networks:
       hdp-dh-net:
         aliases:
-          - jupyter.dh.local
+          - jupyter-synthea.dh.local
   filebeat:
     build:
       context: ./filebeat

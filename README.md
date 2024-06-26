@@ -23,9 +23,10 @@ The present files are used for development-purposes.
 
 ```
 127.0.0.1 ehrbase.local.dh.unimaas.nl
-127.0.0.1 jupyter.local.dh.unimaas.nl
 127.0.0.1 transform-zib.local.dh.unimaas.nl
 127.0.0.1 transform-demo.local.dh.unimaas.nl
+127.0.0.1 jupyter-zib.local.dh.unimaas.nl
+127.0.0.1 jupyter-synthea.local.dh.unimaas.nl
 ```
 
 ## Run the stack
@@ -45,13 +46,13 @@ Synthetic patient generator using Synthea with n=1000 patients.
 ./rit.sh demo-data
 ```
 
-### Start the data exploration Jupyter notebook
+### Start the Jupyter notebook for data exploration and live demo
 
 ```
-./rit.sh data-exploration
+./rit.sh jupyter-synthea # or jupyter-zib
 ```
 
-Open your browser and try [http://jupyter.local.dh.unimaas.nl](http://jupyter.local.dh.unimaas.nl) using the following token:
+Open your browser and try [http://jupyter-synthea.local.dh.unimaas.nl](http://jupyter-synthea.local.dh.unimaas.nl) (or [http://jupyter-zib.local.dh.unimaas.nl](http://jupyter-zib.local.dh.unimaas.nl)) using the following token:
 
 ```
 SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
