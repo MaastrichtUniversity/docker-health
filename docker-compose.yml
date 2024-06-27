@@ -205,10 +205,9 @@ services:
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/home/jovyan/etl.py
       - ./externals/dh-hdp-etl/requirements.txt:/home/jovyan/requirements.txt
-      - ./externals/dh-hdp-etl/src/core:/home/jovyan/src/core
-      - ./externals/dh-hdp-etl/src/subprojects/demo:/home/jovyan/src/subproject
+      - ./externals/dh-hdp-etl/src:/home/jovyan/src
       # Volume binds to auto-reload the code inside the container
-      # - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
+      - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
     ports:
       - "8889:8888"
     networks:
