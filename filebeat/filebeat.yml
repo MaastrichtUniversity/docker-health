@@ -8,7 +8,7 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/transform-rest-demo/transform-rest.log
+      - /usr/share/logs/transform-rest/transform-rest.log
     tags: ["TRANSFORM_REST"]
 
   - type: log
