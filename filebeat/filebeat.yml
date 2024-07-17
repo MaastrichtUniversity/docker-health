@@ -4,12 +4,12 @@ filebeat.inputs:
     paths:
       - /usr/share/logs/etl-demo/etl-demo.log
     tags: ["ETL_DEMO"]
-    
+
   - type: log
     enabled: true
     paths:
       - /usr/share/logs/transform-rest-demo/transform-rest.log
-    tags: ["TRANSFORM_REST_DEMO"]
+    tags: ["TRANSFORM_REST"]
 
   - type: log
     enabled: true
@@ -20,21 +20,14 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/transform-rest-zib/transform-rest.log
-    tags: ["TRANSFORM_REST_ZIB"]
-
-  - type: log
-    enabled: true
-    paths:
       - /usr/share/logs/ehrbase/ehrbase.log
-    tags: [ "EHRBASE" ]
+    tags: ["EHRBASE"]
 
   - type: log
     enabled: true
     paths:
       - /usr/share/logs/ehrdb/postgresql.log
-    tags: [ "EHRDB" ]
-
+    tags: ["EHRDB"]
 
 # Disable filebeat monitoring
 logging.metrics.enabled: false
