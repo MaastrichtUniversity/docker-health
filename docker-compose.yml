@@ -95,6 +95,7 @@ services:
       context: ./externals/dh-hdp-transform-rest
       dockerfile: Dockerfile
       args:
+        - MAVEN_VERSION=${MAVEN_VERSION}
         - HDP_ZIB_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
         - HDP_DEMO_TEMPLATES_IMAGE_NAME=${HDP_DEMO_TEMPLATES_IMAGE_NAME}
     image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}
