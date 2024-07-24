@@ -1,4 +1,3 @@
-version: "3.6"
 services:
   proxy:
     image: jwilder/nginx-proxy:${ENV_TAG_PROXY}
@@ -38,7 +37,24 @@ services:
     restart: on-failure
   ehrdb:
     image: ehrbase/ehrbase-postgres:13.4.v2
-    command: ["postgres", "-c", "logging_collector=on", "-c", "log_directory=/tmp/postgreslog/", "-c", "log_filename=postgresql.log", "-c", "log_statement=none", "-c", "log_file_mode=0777", "-c", "log_rotation_age=0", "-c", "log_rotation_size=0"]
+    command:
+      [
+        "postgres",
+        "-c",
+        "logging_collector=on",
+        "-c",
+        "log_directory=/tmp/postgreslog/",
+        "-c",
+        "log_filename=postgresql.log",
+        "-c",
+        "log_statement=none",
+        "-c",
+        "log_file_mode=0777",
+        "-c",
+        "log_rotation_age=0",
+        "-c",
+        "log_rotation_size=0",
+      ]
     # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
     volumes:
       - ./filebeat/logs/ehrdb:/tmp/postgreslog
@@ -74,30 +90,32 @@ services:
       LOGSTASH_TAGS: ETL_ZIB
     networks:
       - hdp-dh-net
-  transform-rest-zib:
+  transform-rest:
     build:
       context: ./externals/dh-hdp-transform-rest
       dockerfile: Dockerfile
       args:
-        - HDP_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
-        - SRC_SUBPROJECT=zib
-    image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest-zib:${ENV_TAG}
+        - MAVEN_VERSION=${MAVEN_VERSION}
+        - HDP_ZIB_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
+        - HDP_DEMO_TEMPLATES_IMAGE_NAME=${HDP_DEMO_TEMPLATES_IMAGE_NAME}
+    image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}
     volumes:
-      - ./filebeat/logs/transform-rest-zib:/var/log
-    #      - ./externals/dh-hdp-transform-rest/src-subprojects/zib/:/code/src
+      - ./filebeat/logs/transform-rest:/var/log
+    #      - ./externals/dh-hdp-transform-rest/src/:/code/src
     env_file:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
       - ./env_files/etl_zib.env
+      - ./env_files/etl_demo.env
     environment:
-      LOGSTASH_TAGS: TRANSFORM_REST_ZIB
-      VIRTUAL_HOST: transform-zib.${RIT_ENV}.dh.unimaas.nl
+      LOGSTASH_TAGS: TRANSFORM_REST
+      VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
     ports:
       - "8082:8080"
     networks:
       hdp-dh-net:
         aliases:
-          - transform-zib.dh.local
+          - transform.dh.local
   jupyter-zib:
     build:
       context: ./externals/dh-hdp-notebooks
@@ -153,37 +171,6 @@ services:
       LOGSTASH_TAGS: ETL_DEMO
     networks:
       - hdp-dh-net
-  transform-rest-demo:
-    build:
-      context: ./externals/dh-hdp-transform-rest
-      dockerfile: Dockerfile
-      args:
-        - HDP_TEMPLATES_IMAGE_NAME=${HDP_DEMO_TEMPLATES_IMAGE_NAME}
-        - SRC_SUBPROJECT=demo
-    image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest-demo:${ENV_TAG}
-    volumes:
-      - ./filebeat/logs/transform-rest-demo:/var/log
-    #      - ./externals/dh-hdp-transform-rest/src-subprojects/demo/:/code/src
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/transform_server.env
-      - ./env_files/etl_demo.env
-    environment:
-      LOGSTASH_TAGS: TRANSFORM_REST_DEMO
-      VIRTUAL_HOST: transform-demo.${RIT_ENV}.dh.unimaas.nl
-    ports:
-      - "8081:8080"
-    networks:
-      hdp-dh-net:
-        aliases:
-          - transform-demo.dh.local
-  demo-data:
-    build:
-      context: ./externals/dh-hdp-demodata
-      dockerfile: Dockerfile
-    image: ${ENV_REGISTRY_HOST}/docker-health/demo-data:${ENV_TAG}
-    volumes:
-      - ./data/synthea-demo-data:/opt/output
   jupyter-synthea:
     build:
       context: ./externals/dh-hdp-notebooks

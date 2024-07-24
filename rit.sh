@@ -47,21 +47,12 @@ if [[ $1 == "demo-data" ]]; then
     exit 0
 fi
 
-if [[ $1 == "transform-demo" ]]; then
+if [[ $1 == "transform" ]]; then
     docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
     echo -e "\nStart Spring boot Rest API"
-    docker compose build transform-rest-demo proxy filebeat
-    docker compose up -d transform-rest-demo proxy filebeat
-
-    echo -e "\nExit rit.sh"
-    exit 0
-fi
-
-if [[ $1 == "transform-zib" ]]; then
-    docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
-    echo -e "\nStart Spring boot Rest API"
-    docker compose build transform-rest-zib proxy filebeat
-    docker compose up -d transform-rest-zib proxy filebeat
+    docker compose build transform-rest proxy filebeat
+    docker compose up -d transform-rest proxy filebeat
 
     echo -e "\nExit rit.sh"
     exit 0
@@ -70,6 +61,7 @@ fi
 
 if [[ $1 == "demo" ]]; then
     docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     echo -e "\nStart EHRbase Rest API"
@@ -81,8 +73,8 @@ if [[ $1 == "demo" ]]; then
       sleep 10
     done
     echo -e "\nStart Spring boot Rest API"
-    docker compose build transform-rest-demo
-    docker compose up -d transform-rest-demo
+    docker compose build transform-rest
+    docker compose up -d transform-rest
     sleep 3
     echo -e "\nRunning etl-demo"
     docker compose build etl-demo
@@ -96,6 +88,7 @@ if [[ $1 == "demo" ]]; then
 fi
 
 if [[ $1 == "zib" ]]; then
+    docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
     docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
@@ -108,8 +101,8 @@ if [[ $1 == "zib" ]]; then
       sleep 10
     done
     echo -e "\nStart Spring boot Rest API"
-    docker compose build transform-rest-zib
-    docker compose up -d transform-rest-zib
+    docker compose build transform-rest
+    docker compose up -d transform-rest
     sleep 3
     echo -e "\nRunning etl-zib"
     docker compose build etl-zib
@@ -141,8 +134,8 @@ if [[ $1 == "jupyter-synthea" ]]; then
     done
 
     echo -e "\nStart Sprint boot Rest API"
-    docker compose build transform-rest-demo
-    docker compose up -d transform-rest-demo
+    docker compose build transform-rest
+    docker compose up -d transform-rest
 
     echo -e "\nExit rit.sh"
     exit 0
@@ -167,8 +160,8 @@ if [[ $1 == "jupyter-zib" ]]; then
     done
 
     echo -e "\nStart Sprint boot Rest API"
-    docker compose build transform-rest-zib
-    docker compose up -d transform-rest-zib
+    docker compose build transform-rest
+    docker compose up -d transform-rest
 
     echo -e "\nExit rit.sh"
     exit 0
