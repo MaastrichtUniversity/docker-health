@@ -95,3 +95,11 @@ Extract data from csv files, Transform the data into valid openEHR compositions 
 ```
 ./rit.sh down
 ```
+
+### Start openehr-Tools [for DEV environment only]
+
+Tool for interacting with the EHRbase server with a basic dashboard integrated.
+
+```
+./rit.sh up -d openehrtool
+```
