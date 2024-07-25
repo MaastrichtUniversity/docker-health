@@ -65,6 +65,34 @@ services:
       - "5432:5432"
     networks:
       - hdp-dh-net
+  openehrtool:
+    image: surfercrs4/openehrtool:latest
+    volumes:
+        - ./openEHR-tool/openehrtool.cfg:/code/config/openehrtool.cfg
+    env_file:
+        - ./openEHR-tool/.env
+    depends_on:
+        - redis
+        - ehrbase
+    ports:
+        - 9000:9000
+    environment:
+      VIRTUAL_HOST: openehrtool.${RIT_ENV}.dh.unimaas.nl
+    networks:
+      hdp-dh-net:
+        aliases:
+          - openehrtool.dh.local
+  redis:
+    image: redis:latest
+    ports:
+    - 6379:6379
+    command:  redis-server  /redis.conf
+    volumes:
+    - ./openEHR-tool/redis.conf:/redis.conf
+    networks:
+      hdp-dh-net:
+        aliases:
+          - redis.dh.local
   etl-zib:
     build:
       context: ./externals/dh-hdp-etl

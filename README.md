@@ -26,6 +26,7 @@ The present files are used for development-purposes.
 127.0.0.1 transform.local.dh.unimaas.nl
 127.0.0.1 jupyter-zib.local.dh.unimaas.nl
 127.0.0.1 jupyter-synthea.local.dh.unimaas.nl
+127.0.0.1 openehrtool.local.dh.unimaas.nl
 ```
 
 ## Run the stack
@@ -92,4 +93,12 @@ Extract data from csv files, Transform the data into valid openEHR compositions 
 
 ```
 ./rit.sh down
+```
+
+### Start openehr-Tools [for DEV environment only]
+
+Tool for interacting with the EHRbase server with a basic dashboard integrated.
+
+```
+./rit.sh up -d openehrtool
 ```
