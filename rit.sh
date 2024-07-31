@@ -167,6 +167,25 @@ if [[ $1 == "jupyter-zib" ]]; then
     exit 0
 fi
 
+if [[ $1 == "fhirbridge" ]]; then
+    # docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
+    # docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
+    # echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
+    # mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
+    # echo -e "\nStart EHRbase Rest API"
+#    docker compose build ehrbase proxy filebeat
+#    docker compose up -d ehrbase proxy filebeat
+    # until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
+    # do
+    # echo -e "Waiting for EhrBase"
+    #   sleep 10
+    # done
+    docker compose build proxy minio
+    docker compose up -d proxy minio
+    docker compose build fhir-bridge
+    docker compose up -d fhir-bridge
+fi
+
 if [[ $1 == "backend" ]]; then
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     docker compose up -d ehrbase proxy filebeat

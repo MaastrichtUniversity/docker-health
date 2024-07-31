@@ -243,7 +243,35 @@ services:
       hdp-dh-net:
         aliases:
           - filebeat.dh.local
-
+  fhir-bridge:
+#    build:
+#      context: ./externals/dh-hdp-fhir-bridge
+#      dockerfile: Dockerfile
+#      args:
+#        - MAVEN_VERSION=${MAVEN_VERSION}
+#    image: ${ENV_REGISTRY_HOST}/docker-health/fhir-bridge:${ENV_TAG}
+    image: ehrbase/fhir-bridge:1.5.5
+    depends_on:
+      - ehrbase
+    env_file:
+      - ./env_files/fhir-bridge.env
+    ports:
+      - "8888:8888"
+    networks:
+      hdp-dh-net:
+        aliases:
+          - ehrbase.local.dh # fhir-bridge.dh.local
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123456
+    command: server /data --console-address ":9001"
+    networks:
+      - hdp-dh-net
 networks:
   default:
     ipam:
