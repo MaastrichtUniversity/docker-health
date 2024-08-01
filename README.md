@@ -24,7 +24,7 @@ The present files are used for development-purposes.
 ```
 127.0.0.1 ehrbase.local.dh.unimaas.nl
 127.0.0.1 transform.local.dh.unimaas.nl
-127.0.0.1 fhir-bridge.local.dh.unimaas.nl
+127.0.0.1 fhirbridge.local.dh.unimaas.nl
 127.0.0.1 jupyter-zib.local.dh.unimaas.nl
 127.0.0.1 jupyter-synthea.local.dh.unimaas.nl
 127.0.0.1 openehrtool.local.dh.unimaas.nl
@@ -95,6 +95,14 @@ Extract data from csv files, Transform the data into valid openEHR compositions 
 ```
 ./rit.sh down
 ```
+
+### Start FHIR-bridge
+
+```
+./rit.sh fhir
+```
+
+Open your browser and try [http://localhost:8887/fhir-bridge/).
 
 ### Start openehr-Tools [for DEV environment only]
 
