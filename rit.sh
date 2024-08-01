@@ -168,8 +168,8 @@ if [[ $1 == "jupyter-zib" ]]; then
 fi
 
 if [[ $1 == "fhir" ]]; then
-    # docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
-    # docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
+#     docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
+     docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
     # echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     # mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     echo -e "\nStart EHRbase Rest API"
@@ -204,4 +204,4 @@ if [[ $1 == "backend" ]]; then
     exit 0
 fi
 
-docker compose $ARGS
+# docker compose $ARGS
