@@ -255,12 +255,12 @@ services:
       - ehrbase
     env_file:
       - ./env_files/fhir-bridge.env
+    environment:
+      VIRTUAL_HOST: fhir-bridge.${RIT_ENV}.dh.unimaas.nl
     ports:
       - "8888:8888"
     networks:
-      hdp-dh-net:
-        aliases:
-          - ehrbase.local.dh # fhir-bridge.dh.local
+      - hdp-dh-net
   minio:
     image: minio/minio
     ports:

@@ -24,6 +24,7 @@ The present files are used for development-purposes.
 ```
 127.0.0.1 ehrbase.local.dh.unimaas.nl
 127.0.0.1 transform.local.dh.unimaas.nl
+127.0.0.1 fhir-bridge.local.dh.unimaas.nl
 127.0.0.1 jupyter-zib.local.dh.unimaas.nl
 127.0.0.1 jupyter-synthea.local.dh.unimaas.nl
 127.0.0.1 openehrtool.local.dh.unimaas.nl
