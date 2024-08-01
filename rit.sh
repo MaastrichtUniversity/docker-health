@@ -167,7 +167,7 @@ if [[ $1 == "jupyter-zib" ]]; then
     exit 0
 fi
 
-if [[ $1 == "fhir-bridge" ]]; then
+if [[ $1 == "fhir" ]]; then
     # docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
     # docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
     # echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
@@ -181,8 +181,7 @@ if [[ $1 == "fhir-bridge" ]]; then
         sleep 10
     done
     docker compose build minio fhir-bridge
-    docker compose up -d minio
-    docker compose up -d fhir-bridge
+    docker compose up -d minio fhir-bridge
     echo -e "\nStart FHIR-bridge Rest API"
     until docker compose logs --tail 100 fhir-bridge 2>&1 | grep -q "Started FhirBridgeApplication in ";
     do
