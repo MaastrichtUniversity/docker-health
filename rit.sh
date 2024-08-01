@@ -184,7 +184,7 @@ if [[ $1 == "fhir-bridge" ]]; then
     docker compose up -d minio
     docker compose up -d fhir-bridge
     echo -e "\nStart FHIR-bridge Rest API"
-    until docker compose logs --tail 100 fhir-bridge 2>&1 | grep -q "Started FHIR-bridge in";
+    until docker compose logs --tail 100 fhir-bridge 2>&1 | grep -q "Started FhirBridgeApplication in ";
     do
     echo -e "Waiting for FHIR-bridge"
         sleep 10
