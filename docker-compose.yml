@@ -244,21 +244,15 @@ services:
         aliases:
           - filebeat.dh.local
   fhir-bridge:
-#    build:
-#      context: ./externals/dh-hdp-fhir-bridge
-#      dockerfile: Dockerfile
-#      args:
-#        - MAVEN_VERSION=${MAVEN_VERSION}
-#    image: ${ENV_REGISTRY_HOST}/docker-health/fhir-bridge:${ENV_TAG}
     image: ehrbase/fhir-bridge:1.5.5
     depends_on:
       - ehrbase
     env_file:
       - ./env_files/fhir-bridge.env
     environment:
-      VIRTUAL_HOST: fhir-bridge.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: fhirbridge.${RIT_ENV}.dh.unimaas.nl
     ports:
-      - "8888:8888"
+      - "8887:8888"
     networks:
       - hdp-dh-net
   minio:
