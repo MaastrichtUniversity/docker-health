@@ -89,6 +89,12 @@ Extract data from csv files, Transform the data into valid openEHR compositions 
 ./rit.sh zib
 ```
 
+### Run the tests
+
+```
+./rit.sh test
+```
+
 ### Kill the whole stack
 
 ```
