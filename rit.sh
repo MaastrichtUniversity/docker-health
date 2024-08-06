@@ -188,7 +188,7 @@ if [[ $1 == "fhir" ]]; then
     echo -e "Waiting for FHIR-bridge"
         sleep 10
     done
-
+    exit 0
 fi
 
 if [[ $1 == "backend" ]]; then
@@ -204,4 +204,4 @@ if [[ $1 == "backend" ]]; then
     exit 0
 fi
 
-# docker compose $ARGS
+docker compose $ARGS
