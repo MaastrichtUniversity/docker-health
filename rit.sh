@@ -200,7 +200,7 @@ if [[ $1 == "test" ]]; then
     echo -e "\nStart ETL-ZIB test"
 #    docker compose run --rm --entrypoint pytest etl-zib -o log_cli=true --log-cli-level=INFO
     docker compose run --rm --entrypoint pytest etl-zib -s
-#    docker compose run --rm --entrypoint pytest etl-zib -s -o log_cli=true --log-cli-level=INFO
+#    docker compose run --rm --entrypoint pytest etl-zib --verbose --verbosity=5
 
     exit 0
 fi
