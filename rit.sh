@@ -180,4 +180,30 @@ if [[ $1 == "backend" ]]; then
     exit 0
 fi
 
+
+if [[ $1 == "test" ]]; then
+    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
+    docker compose up -d ehrbase proxy filebeat
+    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
+    do
+      echo -e "Waiting for EhrBase"
+      sleep 10
+    done
+    echo -e "\nEHRbase up and running"
+
+    docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
+    echo -e "\nStart Spring boot Rest API"
+    docker compose build transform-rest
+    docker compose up -d transform-rest
+
+    echo -e "\nStart ETL-ZIB test"
+#    docker compose run --rm --entrypoint pytest etl-zib -o log_cli=true --log-cli-level=INFO
+    docker compose run --rm --entrypoint pytest etl-zib -s
+#    docker compose run --rm --entrypoint pytest etl-zib --verbose --verbosity=5
+
+    exit 0
+fi
+
+
 docker compose $ARGS
