@@ -246,8 +246,8 @@ services:
   fhir-bridge:
     build:
       context: ./externals/dh-hdp-fhir-bridge
-      additional_contexts:
-        - hdp_transform_rest=./externals/dh-hdp-transform-rest
+      # additional_contexts:
+      #   - hdp_transform_rest=./externals/dh-hdp-transform-rest
       dockerfile: Dockerfile
       args:
         - MAVEN_VERSION=${MAVEN_VERSION}
