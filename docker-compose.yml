@@ -264,7 +264,7 @@ services:
     env_file:
       - ./env_files/fhir-bridge.env
     environment:
-      VIRTUAL_HOST: fhirbridge.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: fhir-bridge.${RIT_ENV}.dh.unimaas.nl
     ports:
       - "8887:8888"
     networks:
