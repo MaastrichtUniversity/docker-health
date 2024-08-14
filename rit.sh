@@ -168,7 +168,7 @@ if [[ $1 == "jupyter-zib" ]]; then
 fi
 
 if [[ $1 == "fhir" ]]; then
-    docker compose up -d ehrbase
+    docker compose up -d proxy ehrbase
     until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
     do
       echo -e "Waiting for EhrBase"
