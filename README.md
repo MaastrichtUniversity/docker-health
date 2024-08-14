@@ -102,7 +102,7 @@ Extract data from csv files, Transform the data into valid openEHR compositions 
 ./rit.sh fhir
 ```
 
-Open your browser and try [http://localhost:8887/fhir-bridge/).
+Open your browser and try [http://fhir-bridge.local.dh.unimaas.nl/fhir-bridge](http://fhir-bridge.local.dh.unimaas.nl/fhir-bridge).
 
 ### Start openehr-Tools [for DEV environment only]
 
