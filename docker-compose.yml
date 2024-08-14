@@ -268,7 +268,9 @@ services:
     ports:
       - "8887:8888"
     networks:
-      - hdp-dh-net
+      hdp-dh-net:
+        aliases:
+          - fhir-bridge.dh.local
   minio:
     image: minio/minio
     ports:
