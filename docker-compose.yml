@@ -244,17 +244,21 @@ services:
         aliases:
           - filebeat.dh.local
   fhir-bridge:
-    build:
-      context: ./externals/dh-hdp-fhir-bridge
-      # additional_contexts:
-      #   - hdp_transform_rest=./externals/dh-hdp-transform-rest
-      dockerfile: Dockerfile
-      args:
-        - MAVEN_VERSION=${MAVEN_VERSION}
-        - FHIR_BRIDGE_VERSION=${FHIR_BRIDGE_VERSION}
-        - HDP_ZIB_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
-    image: ${ENV_REGISTRY_HOST}/docker-health/fhir-bridge:${ENV_TAG}
+    ## BUILD option 1: Using a pre-build docker image
     # image: ehrbase/fhir-bridge:1.5.5
+    ## BUILD option 2: Using a Dockerfile FAILED:
+    # build:
+    #   context: ./externals/dh-hdp-fhir-bridge
+    #   # additional_contexts:
+    #   #   - hdp_transform_rest=./externals/dh-hdp-transform-rest
+    #   dockerfile: Dockerfile
+    #   args:
+    #     - MAVEN_VERSION=${MAVEN_VERSION}
+    #     - FHIR_BRIDGE_VERSION=${FHIR_BRIDGE_VERSION}
+    #     - HDP_ZIB_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
+    # # image: ${ENV_REGISTRY_HOST}/docker-health/fhir-bridge:${ENV_TAG}
+    ## BUILD option 3: Build the image using `mvn clean spring-boot:build-image`
+    image: hdp-ehrbase/fhir-bridge:${ENV_TAG}
     depends_on:
       - ehrbase
     env_file:
