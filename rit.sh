@@ -94,7 +94,8 @@ if [[ $1 == "zib" ]]; then
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     echo -e "\nStart EHRbase Rest API"
     docker compose build ehrbase proxy filebeat
-    docker compose up -d ehrbase proxy filebeat
+    docker compose up -d proxy filebeat
+    docker compose up -d --force-recreate ehrbase ehrdb
     until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
     do
     echo -e "Waiting for EhrBase"
@@ -108,6 +109,11 @@ if [[ $1 == "zib" ]]; then
     docker compose build etl-zib
     docker compose up -d etl-zib
     sleep 15
+        until docker compose logs --tail 100 etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
+    do
+    echo -e "Waiting for etl-zib"
+      sleep 5
+    done
     echo -e "\nPrint logs for etl-zib"
     docker compose logs etl-zib
 
@@ -198,9 +204,9 @@ if [[ $1 == "test" ]]; then
     docker compose up -d transform-rest
 
     echo -e "\nStart ETL-ZIB test"
+    docker compose run --rm --entrypoint pytest etl-zib --verbose --verbosity=5
+#    docker compose run --rm --entrypoint pytest etl-zib -s
 #    docker compose run --rm --entrypoint pytest etl-zib -o log_cli=true --log-cli-level=INFO
-    docker compose run --rm --entrypoint pytest etl-zib -s
-#    docker compose run --rm --entrypoint pytest etl-zib --verbose --verbosity=5
 
     exit 0
 fi
