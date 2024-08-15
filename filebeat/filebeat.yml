@@ -1,0 +1,39 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/etl-demo/etl-demo.log
+    tags: ["ETL_DEMO"]
+
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/transform-rest/transform-rest.log
+    tags: ["TRANSFORM_REST"]
+
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/etl-zib/etl-zib.log
+    tags: ["ETL_ZIB"]
+
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/ehrbase/ehrbase.log
+    tags: ["EHRBASE"]
+
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/ehrdb/postgresql.log
+    tags: ["EHRDB"]
+
+# Disable filebeat monitoring
+logging.metrics.enabled: false
+
+output.logstash:
+  hosts: ["elk.dh.local:5044"]
+  ssl.certificate_authorities: ["/etc/certs/ca.crt"]
+  ssl.certificate: "/etc/certs/filebeat.dh.local.crt"
+  ssl.key: "/etc/certs/filebeat.dh.local.key"
