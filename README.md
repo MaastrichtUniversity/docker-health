@@ -111,3 +111,5 @@ Tool for interacting with the EHRbase server with a basic dashboard integrated.
 ```
 ./rit.sh up -d openehrtool
 ```
+
+Open your browser and try [https://openehrtool.local.dh.unimaas.nl](https://openehrtool.local.dh.unimaas.nl)
