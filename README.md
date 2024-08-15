@@ -101,7 +101,7 @@ Extract data from csv files, Transform the data into valid openEHR compositions 
 
 Convert FHIR messages into openEHR compositions and them into EHRbase
 
-Before starting, build the image in dh-hdp-fhir-bridge (check the README file in [dh-hdp-fhir-bridge](https://github.com/um-datahub/dh-hdp-fhir-bridge/tree/2024.1) for the command)
+Before starting, build the image in dh-hdp-fhir-bridge (check the README file in [dh-hdp-fhir-bridge](https://github.com/MaastrichtUniversity/dh-hdp-fhir-bridge/tree/2024.1) for the command)
 
 ```
 ./rit.sh fhir
