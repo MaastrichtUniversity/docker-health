@@ -28,6 +28,7 @@ externals/dh-hdp-templates https://github.com/um-datahub/dh-hdp-templates.git
 externals/zib-templates https://github.com/um-datahub/zib-templates.git
 externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-transform-rest.git
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
+externals/dh-hdp-fhir-bridge https://github.com/MaastrichtUniversity/dh-hdp-fhir-bridge.git
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git"
 
 
