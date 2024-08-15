@@ -91,6 +91,24 @@ Extract data from csv files, Transform the data into valid openEHR compositions 
 ./rit.sh zib
 ```
 
+### Run the tests
+Start the dev environment and execute all the tests
+```
+./rit.sh test
+```
+Execute all the tests
+```
+./rit.sh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5
+```
+Execute a specific class test
+```
+./rit.sh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_zib_pipeline_individually.py::TestBurgerlijkestaat
+```
+Execute a single test
+```
+./rit.sh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_all_zib_pipelines.py::TestAllZibPipelines::test_number_of_templates
+```
+
 ### Kill the whole stack
 
 ```

@@ -109,6 +109,7 @@ services:
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
       - ./externals/dh-hdp-etl/src/core:/code/src/core
       - ./externals/dh-hdp-etl/src/subprojects/zib:/code/src/subprojects/zib
+      - ./externals/dh-hdp-etl/tests:/code/tests
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
