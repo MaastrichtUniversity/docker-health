@@ -10,7 +10,7 @@ This service is based on repositories:
 - [zib-templates](https://github.com/um-datahub/zib-templates/tree/2024.1): Custom-made openEHR templates matching the Dutch ZIBs
 - [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2024.1): ETL Python script
 - [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest/tree/2024.1): Java REST API for data class transformation into openEHR compositions
-- [dh-hdp-fhir-bridge](https://github.com/um-datahub/dh-hdp-fhir-bridge/tree/2024.1): Java REST API for converting FHIR messages into openEHR composition and storage into EHRbase
+- [dh-hdp-fhir-bridge](https://github.com/MaastrichtUniversity/dh-hdp-fhir-bridge/tree/2024.1): Java REST API for converting FHIR messages into openEHR composition and storage into EHRbase
 - [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2024.1): Jupyter notebooks for an initial data exploration
 
 ## Requirements
@@ -91,6 +91,24 @@ Extract data from csv files, Transform the data into valid openEHR compositions 
 ./rit.sh zib
 ```
 
+### Run the tests
+Start the dev environment and execute all the tests
+```
+./rit.sh test
+```
+Execute all the tests
+```
+./rit.sh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5
+```
+Execute a specific class test
+```
+./rit.sh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_zib_pipeline_individually.py::TestBurgerlijkestaat
+```
+Execute a single test
+```
+./rit.sh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_all_zib_pipelines.py::TestAllZibPipelines::test_number_of_templates
+```
+
 ### Kill the whole stack
 
 ```
@@ -101,7 +119,7 @@ Extract data from csv files, Transform the data into valid openEHR compositions 
 
 Convert FHIR messages into openEHR compositions and them into EHRbase
 
-Before starting, build the image in dh-hdp-fhir-bridge (check the README file in [dh-hdp-fhir-bridge](https://github.com/um-datahub/dh-hdp-fhir-bridge/tree/2024.1) for the command)
+Before starting, build the image in dh-hdp-fhir-bridge (check the README file in [dh-hdp-fhir-bridge](https://github.com/MaastrichtUniversity/dh-hdp-fhir-bridge/tree/2024.1) for the command)
 
 ```
 ./rit.sh fhir
