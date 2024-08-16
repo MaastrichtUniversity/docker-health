@@ -109,6 +109,12 @@ Before starting, build the image in dh-hdp-fhir-bridge (check the README file in
 
 Open your browser and try [http://fhir-bridge.local.dh.unimaas.nl/fhir-bridge](http://fhir-bridge.local.dh.unimaas.nl/fhir-bridge).
 
+Run the following command to run both fhir-bridge and etl-zib:
+
+```
+./rit.sh fhir-etl
+```
+
 ### Start openehr-Tools [for DEV environment only]
 
 Tool for interacting with the EHRbase server with a basic dashboard integrated.

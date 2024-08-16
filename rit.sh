@@ -188,6 +188,43 @@ if [[ $1 == "fhir" ]]; then
     exit 0
 fi
 
+if [[ $1 == "fhir-etl" ]]; then
+    docker compose up -d proxy ehrbase
+    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
+    do
+      echo -e "Waiting for EhrBase"
+      sleep 10
+    done
+
+    echo -e "\nStart FHIR Bridge"
+    docker compose up -d fhir-bridge
+    until docker compose logs --tail 100 fhir-bridge 2>&1 | grep -q "Started FhirBridgeApplication in";
+    do
+      echo -e "Waiting for FhirBridgeApplication"
+      sleep 10
+    done
+
+    docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
+    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
+    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
+    echo -e "\nStart Spring boot Rest API"
+    docker compose build transform-rest
+    docker compose up -d transform-rest
+    sleep 3
+    echo -e "\nRunning etl-zib"
+    docker compose build etl-zib
+    docker compose up -d etl-zib
+    sleep 15
+    echo -e "\nPrint logs for etl-zib"
+    docker compose logs etl-zib
+
+    echo -e "\nExit rit.sh"
+    exit 0
+fi
+
+
+
 if [[ $1 == "backend" ]]; then
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     docker compose up -d ehrbase proxy filebeat
