@@ -211,7 +211,7 @@ if [[ $1 == "fhir-etl" ]]; then
     done
 
     docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     echo -e "\nStart Spring boot Rest API"
