@@ -28,6 +28,7 @@ externals/dh-hdp-templates https://github.com/um-datahub/dh-hdp-templates.git
 externals/dh-hdp-zib-templates https://github.com/um-datahub/dh-hdp-zib-templates.git
 externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-transform-rest.git
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
+externals/dh-hdp-fhir-bridge https://github.com/MaastrichtUniversity/dh-hdp-fhir-bridge.git
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git"
 
 
@@ -172,6 +173,63 @@ if [[ $1 == "jupyter-zib" ]]; then
     echo -e "\nExit rit.sh"
     exit 0
 fi
+
+if [[ $1 == "fhir" ]]; then
+    docker compose up -d proxy ehrbase
+    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
+    do
+      echo -e "Waiting for EhrBase"
+      sleep 10
+    done
+
+    echo -e "\nStart FHIR Bridge"
+    docker compose up -d fhir-bridge
+    until docker compose logs --tail 100 fhir-bridge 2>&1 | grep -q "Started FhirBridgeApplication in";
+    do
+      echo -e "Waiting for FhirBridgeApplication"
+      sleep 10
+    done
+
+    echo -e "\nExit rit.sh"
+    exit 0
+fi
+
+if [[ $1 == "fhir-etl" ]]; then
+    docker compose up -d proxy ehrbase
+    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
+    do
+      echo -e "Waiting for EhrBase"
+      sleep 10
+    done
+
+    echo -e "\nStart FHIR Bridge"
+    docker compose up -d fhir-bridge
+    until docker compose logs --tail 100 fhir-bridge 2>&1 | grep -q "Started FhirBridgeApplication in";
+    do
+      echo -e "Waiting for FhirBridgeApplication"
+      sleep 10
+    done
+
+    docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
+    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
+    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
+    echo -e "\nStart Spring boot Rest API"
+    docker compose build transform-rest
+    docker compose up -d transform-rest
+    sleep 3
+    echo -e "\nRunning etl-zib"
+    docker compose build etl-zib
+    docker compose up -d etl-zib
+    sleep 15
+    echo -e "\nPrint logs for etl-zib"
+    docker compose logs etl-zib
+
+    echo -e "\nExit rit.sh"
+    exit 0
+fi
+
+
 
 if [[ $1 == "backend" ]]; then
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb

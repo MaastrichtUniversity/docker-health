@@ -10,6 +10,7 @@ This service is based on repositories:
 - [zib-templates](https://github.com/um-datahub/zib-templates/tree/2024.1): Custom-made openEHR templates matching the Dutch ZIBs
 - [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2024.1): ETL Python script
 - [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest/tree/2024.1): Java REST API for data class transformation into openEHR compositions
+- [dh-hdp-fhir-bridge](https://github.com/MaastrichtUniversity/dh-hdp-fhir-bridge/tree/2024.1): Java REST API for converting FHIR messages into openEHR composition and storage into EHRbase
 - [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2024.1): Jupyter notebooks for an initial data exploration
 
 ## Requirements
@@ -24,6 +25,7 @@ The present files are used for development-purposes.
 ```
 127.0.0.1 ehrbase.local.dh.unimaas.nl
 127.0.0.1 transform.local.dh.unimaas.nl
+127.0.0.1 fhir-bridge.local.dh.unimaas.nl
 127.0.0.1 jupyter-zib.local.dh.unimaas.nl
 127.0.0.1 jupyter-synthea.local.dh.unimaas.nl
 127.0.0.1 openehrtool.local.dh.unimaas.nl
@@ -113,6 +115,24 @@ Execute a single test
 ./rit.sh down
 ```
 
+### Start FHIR-bridge
+
+Convert FHIR messages into openEHR compositions and them into EHRbase
+
+Before starting, build the image in dh-hdp-fhir-bridge (check the README file in [dh-hdp-fhir-bridge](https://github.com/MaastrichtUniversity/dh-hdp-fhir-bridge/tree/2024.1) for the command)
+
+```
+./rit.sh fhir
+```
+
+Open your browser and try [http://fhir-bridge.local.dh.unimaas.nl/fhir-bridge](http://fhir-bridge.local.dh.unimaas.nl/fhir-bridge).
+
+Run the following command to run both fhir-bridge and etl-zib:
+
+```
+./rit.sh fhir-etl
+```
+
 ### Start openehr-Tools [for DEV environment only]
 
 Tool for interacting with the EHRbase server with a basic dashboard integrated.
@@ -120,3 +140,5 @@ Tool for interacting with the EHRbase server with a basic dashboard integrated.
 ```
 ./rit.sh up -d openehrtool
 ```
+
+Open your browser and try [http://openehrtool.local.dh.unimaas.nl](http://openehrtool.local.dh.unimaas.nl)
