@@ -25,7 +25,7 @@ export COMPOSE_PROJECT_NAME
 # specify externals for this project
 externals="externals/dh-hdp-demodata https://github.com/MaastrichtUniversity/dh-hdp-demodata.git
 externals/dh-hdp-templates https://github.com/um-datahub/dh-hdp-templates.git
-externals/zib-templates https://github.com/um-datahub/zib-templates.git
+externals/dh-hdp-zib-templates https://github.com/um-datahub/dh-hdp-zib-templates.git
 externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-transform-rest.git
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
 externals/dh-hdp-fhir-bridge https://github.com/MaastrichtUniversity/dh-hdp-fhir-bridge.git
@@ -62,7 +62,7 @@ fi
 
 if [[ $1 == "demo" ]]; then
     docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     echo -e "\nStart EHRbase Rest API"
@@ -90,7 +90,7 @@ fi
 
 if [[ $1 == "zib" ]]; then
     docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     echo -e "\nStart EHRbase Rest API"
@@ -149,7 +149,7 @@ if [[ $1 == "jupyter-synthea" ]]; then
 fi
 
 if [[ $1 == "jupyter-zib" ]]; then
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
 
@@ -256,7 +256,7 @@ if [[ $1 == "test" ]]; then
     echo -e "\nEHRbase up and running"
 
     docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
     echo -e "\nStart Spring boot Rest API"
     docker compose build transform-rest
     docker compose up -d transform-rest
