@@ -27,39 +27,39 @@ services:
       hdp-dh-net:
         aliases:
           - ehrbase.dh.local
-    entrypoint:
-      - java
-      - -jar
-      - -Dspring.profiles.active=docker
-      - -Dlogging.file.name=/var/log/ehrbase.log
-      - ehrbase.jar
-    volumes:
-      - ./filebeat/logs/ehrbase:/var/log
+#    entrypoint:
+#      - java
+#      - -jar
+#      - -Dspring.profiles.active=docker
+#      - -Dlogging.file.name=/tmp/ehrbase.log
+#      - ehrbase.jar
+#    volumes:
+#      - ./filebeat/logs/ehrbase:/var/log
     restart: on-failure
   ehrdb:
 #    image: ehrbase/ehrbase-postgres:13.4.v2
     image: ehrbase/ehrbase-v2-postgres:16.2
-    command:
-      [
-        "postgres",
-        "-c",
-        "logging_collector=on",
-        "-c",
-        "log_directory=/tmp/postgreslog/",
-        "-c",
-        "log_filename=postgresql.log",
-        "-c",
-        "log_statement=none",
-        "-c",
-        "log_file_mode=0777",
-        "-c",
-        "log_rotation_age=0",
-        "-c",
-        "log_rotation_size=0",
-      ]
-    # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
-    volumes:
-      - ./filebeat/logs/ehrdb:/tmp/postgreslog
+#    command:
+#      [
+#        "postgres",
+#        "-c",
+#        "logging_collector=on",
+#        "-c",
+#        "log_directory=/tmp/postgreslog/",
+#        "-c",
+#        "log_filename=postgresql.log",
+#        "-c",
+#        "log_statement=none",
+#        "-c",
+#        "log_file_mode=0777",
+#        "-c",
+#        "log_rotation_age=0",
+#        "-c",
+#        "log_rotation_size=0",
+#      ]
+#    # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
+#    volumes:
+#      - ./filebeat/logs/ehrdb:/tmp/postgreslog
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrdb.env
