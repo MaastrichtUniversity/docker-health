@@ -12,7 +12,8 @@ services:
     networks:
       - hdp-dh-net
   ehrbase:
-    image: ehrbase/ehrbase:0.32.0
+#    image: ehrbase/ehrbase:0.32.0
+    image: ehrbase/ehrbase:2.6.0
     depends_on:
       - ehrdb
     env_file:
