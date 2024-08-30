@@ -30,10 +30,10 @@ services:
       - java
       - -jar
       - -Dspring.profiles.active=docker
-      - -Dlogging.file.name=/tmp/ehrbase.log
+      - -Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log
       - ehrbase.jar
     volumes:
-      - ./filebeat/logs/ehrbase:/var/log
+      - ./filebeat/logs/ehrbase:/tmp/ehrbaselog
     restart: on-failure
   ehrdb:
     image: ehrbase/ehrbase-v2-postgres:16.2
