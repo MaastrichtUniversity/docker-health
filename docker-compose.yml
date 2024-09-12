@@ -135,7 +135,6 @@ services:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
       - ./env_files/etl_zib.env
-      - ./env_files/etl_demo.env
     environment:
       LOGSTASH_TAGS: TRANSFORM_REST
       VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
@@ -195,7 +194,6 @@ services:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
       - ./env_files/transform_server.env
-      - ./env_files/etl_demo.env
     environment:
       LOGSTASH_TAGS: ETL_DEMO
     networks:
@@ -213,7 +211,6 @@ services:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
       - ./env_files/transform_server.env
-      - ./env_files/etl_demo.env
     environment:
       VIRTUAL_HOST: jupyter-synthea.${RIT_ENV}.dh.unimaas.nl
     volumes:
