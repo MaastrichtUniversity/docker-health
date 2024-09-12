@@ -174,59 +174,6 @@ services:
       hdp-dh-net:
         aliases:
           - jupyter-zib.dh.local
-  etl-demo:
-    build:
-      context: ./externals/dh-hdp-etl
-      dockerfile: Dockerfile
-      args:
-        - HDP_TEMPLATES_IMAGE_NAME=${HDP_DEMO_TEMPLATES_IMAGE_NAME}
-        - SRC_SUBPROJECT=demo
-    image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
-    volumes:
-      - ./data/synthea-demo-data:/code/data/synthea
-      - ./filebeat/logs/etl-demo:/code/logs
-      - ./outputs/etl-demo:/code/outputs
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-etl/etl.py:/code/etl.py
-      - ./externals/dh-hdp-etl/src/core:/code/src/core
-      - ./externals/dh-hdp-etl/src/subprojects/demo:/code/src/subprojects/demo
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/ehrbase_server.env
-      - ./env_files/transform_server.env
-    environment:
-      LOGSTASH_TAGS: ETL_DEMO
-    networks:
-      - hdp-dh-net
-  jupyter-synthea:
-    build:
-      context: ./externals/dh-hdp-notebooks
-      dockerfile: Dockerfile
-      args:
-        - HDP_TEMPLATES_IMAGE_NAME=${HDP_DEMO_TEMPLATES_IMAGE_NAME}
-        - DATA=synthea
-    image: ${ENV_REGISTRY_HOST}/docker-health/jupyter-synthea:${ENV_TAG}
-    command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/ehrbase_server.env
-      - ./env_files/transform_server.env
-    environment:
-      VIRTUAL_HOST: jupyter-synthea.${RIT_ENV}.dh.unimaas.nl
-    volumes:
-      - ./data/synthea-demo-data:/home/jovyan/data/synthea
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-etl/etl.py:/home/jovyan/etl.py
-      - ./externals/dh-hdp-etl/requirements.txt:/home/jovyan/requirements.txt
-      - ./externals/dh-hdp-etl/src:/home/jovyan/src
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
-    ports:
-      - "8889:8888"
-    networks:
-      hdp-dh-net:
-        aliases:
-          - jupyter-synthea.dh.local
   filebeat:
     build:
       context: ./filebeat
