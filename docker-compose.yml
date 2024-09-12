@@ -159,7 +159,7 @@ services:
       - ./env_files/transform_server.env
       - ./env_files/etl_zib.env
     environment:
-      VIRTUAL_HOST: jupyter-zib.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
     volumes:
       - ./data/zib-demo-data:/home/jovyan/data/zib-demo-data
       # Volume binds to auto-reload the code inside the container
