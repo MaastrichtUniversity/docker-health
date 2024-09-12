@@ -2,12 +2,6 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/etl-demo/etl-demo.log
-    tags: ["ETL_DEMO"]
-
-  - type: log
-    enabled: true
-    paths:
       - /usr/share/logs/transform-rest/transform-rest.log
     tags: ["TRANSFORM_REST"]
 
