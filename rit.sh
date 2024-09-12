@@ -89,7 +89,6 @@ if [[ $1 == "demo" ]]; then
 fi
 
 if [[ $1 == "zib" ]]; then
-    docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
     docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
@@ -255,7 +254,6 @@ if [[ $1 == "test" ]]; then
     done
     echo -e "\nEHRbase up and running"
 
-    docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
     docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
     echo -e "\nStart Spring boot Rest API"
     docker compose build transform-rest
