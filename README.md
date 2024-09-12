@@ -27,7 +27,6 @@ The present files are used for development-purposes.
 127.0.0.1 transform.local.dh.unimaas.nl
 127.0.0.1 fhir-bridge.local.dh.unimaas.nl
 127.0.0.1 jupyter-zib.local.dh.unimaas.nl
-127.0.0.1 jupyter-synthea.local.dh.unimaas.nl
 127.0.0.1 openehrtool.local.dh.unimaas.nl
 ```
 
@@ -51,10 +50,10 @@ Synthetic patient generator using Synthea with n=1000 patients.
 ### Start the Jupyter notebook for data exploration and live demo
 
 ```
-./rit.sh jupyter-synthea # or jupyter-zib
+./rit.sh jupyter-zib
 ```
 
-Open your browser and try [http://jupyter-synthea.local.dh.unimaas.nl](http://jupyter-synthea.local.dh.unimaas.nl) (or [http://jupyter-zib.local.dh.unimaas.nl](http://jupyter-zib.local.dh.unimaas.nl)) using the following token:
+Open your browser and try [http://jupyter-zib.local.dh.unimaas.nl](http://jupyter-zib.local.dh.unimaas.nl) using the following token:
 
 ```
 SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
