@@ -23,8 +23,7 @@ COMPOSE_PROJECT_NAME="dev-hdp"
 export COMPOSE_PROJECT_NAME
 
 # specify externals for this project
-externals="externals/dh-hdp-demodata https://github.com/MaastrichtUniversity/dh-hdp-demodata.git
-externals/dh-hdp-templates https://github.com/um-datahub/dh-hdp-templates.git
+externals="externals/dh-hdp-templates https://github.com/um-datahub/dh-hdp-templates.git
 externals/dh-hdp-zib-templates https://github.com/um-datahub/dh-hdp-zib-templates.git
 externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-transform-rest.git
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
@@ -39,15 +38,6 @@ if [[ $1 == "externals" ]]; then
     exit 0
 fi
 
-if [[ $1 == "demo-data" ]]; then
-    echo -e "\nGenerate a synthetic dataset"
-    docker compose build demo-data
-    docker compose up demo-data
-
-    echo -e "\nExit rit.sh"
-    exit 0
-fi
-
 if [[ $1 == "transform" ]]; then
     docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
     docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
@@ -59,34 +49,6 @@ if [[ $1 == "transform" ]]; then
     exit 0
 fi
 
-
-if [[ $1 == "demo" ]]; then
-    docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
-    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
-    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
-    echo -e "\nStart EHRbase Rest API"
-    docker compose build ehrbase proxy filebeat
-    docker compose up -d ehrbase proxy filebeat
-    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
-    do
-    echo -e "Waiting for EhrBase"
-      sleep 10
-    done
-    echo -e "\nStart Spring boot Rest API"
-    docker compose build transform-rest
-    docker compose up -d transform-rest
-    sleep 3
-    echo -e "\nRunning etl-demo"
-    docker compose build etl-demo
-    docker compose up -d etl-demo
-    sleep 15
-    echo -e "\nPrint logs for etl-demo"
-    docker compose logs etl-demo
-
-    echo -e "\nExit rit.sh"
-    exit 0
-fi
 
 if [[ $1 == "zib" ]]; then
     docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
@@ -121,38 +83,12 @@ if [[ $1 == "zib" ]]; then
     exit 0
 fi
 
-if [[ $1 == "jupyter-synthea" ]]; then
-    docker build -t "${HDP_DEMO_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-templates/
-    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
-    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
-
-    echo -e "\nExplore synthea dataset"
-    docker compose build proxy jupyter-synthea
-    docker compose up -d proxy jupyter-synthea
-
-    echo -e "\nStart EHRbase Rest API"
-    docker compose build ehrbase
-    docker compose up -d ehrbase
-    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
-    do
-    echo -e "Waiting for EhrBase"
-      sleep 10
-    done
-
-    echo -e "\nStart Sprint boot Rest API"
-    docker compose build transform-rest
-    docker compose up -d transform-rest
-
-    echo -e "\nExit rit.sh"
-    exit 0
-fi
-
 if [[ $1 == "jupyter-zib" ]]; then
     docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
 
-    echo -e "\nExplore synthea dataset"
+    echo -e "\nExplore zib dataset"
     docker compose build proxy jupyter-zib
     docker compose up -d proxy jupyter-zib
 
