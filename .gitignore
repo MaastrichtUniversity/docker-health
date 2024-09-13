@@ -35,6 +35,5 @@ dmypy.json
 # cloned github repo
 externals/*
 
-data/synthea-demo-data/
 outputs/
 notebooks/.ipynb_checkpoints
