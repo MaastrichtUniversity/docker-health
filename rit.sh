@@ -53,6 +53,7 @@ if [[ $1 == "zib" ]]; then
     docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
+    mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
     echo -e "\nStart EHRbase Rest API"
     docker compose build ehrbase proxy filebeat
     docker compose up -d proxy filebeat
@@ -86,6 +87,7 @@ if [[ $1 == "jupyter-zib" ]]; then
     docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
+    mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
 
     echo -e "\nExplore zib dataset"
     docker compose build proxy jupyter-zib
@@ -147,6 +149,7 @@ if [[ $1 == "fhir-etl" ]]; then
     docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
+    mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
     echo -e "\nStart Spring boot Rest API"
     docker compose build transform-rest
     docker compose up -d transform-rest
@@ -166,6 +169,7 @@ fi
 
 if [[ $1 == "backend" ]]; then
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
+    mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
     docker compose up -d ehrbase proxy filebeat
     until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
     do
@@ -180,6 +184,7 @@ fi
 
 if [[ $1 == "test" ]]; then
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
+    mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
     docker compose up -d ehrbase proxy filebeat
     until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
     do

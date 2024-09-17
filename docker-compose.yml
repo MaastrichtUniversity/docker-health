@@ -12,7 +12,7 @@ services:
     networks:
       - hdp-dh-net
   ehrbase:
-    image: ehrbase/ehrbase:0.32.0
+    image: ehrbase/ehrbase:2.6.0
     depends_on:
       - ehrdb
     env_file:
@@ -30,13 +30,13 @@ services:
       - java
       - -jar
       - -Dspring.profiles.active=docker
-      - -Dlogging.file.name=/var/log/ehrbase.log
+      - -Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log
       - ehrbase.jar
     volumes:
-      - ./filebeat/logs/ehrbase:/var/log
+      - ./filebeat/logs/ehrbase:/tmp/ehrbaselog
     restart: on-failure
   ehrdb:
-    image: ehrbase/ehrbase-postgres:13.4.v2
+    image: ehrbase/ehrbase-v2-postgres:16.2
     command:
       [
         "postgres",
