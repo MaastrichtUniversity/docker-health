@@ -1,5 +1,5 @@
 Id,ALCOHOL_GEBRUIKSTATUS,START_DATE,STOP_DATE,HOEVEELHEID_VALUE,HOEVEELHEID_UNIT
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Current drinker of alcohol (finding),2011-12-01,,1
+6ad5591f-896a-4c1c-4421-8c43633fa91a,Current drinker of alcohol (finding),2011-12-01,,1,maand
 6ad5591f-896a-4c1c-4421-8c43633fa91b,,2012-01-01,2013-01-01,2,DAG
 6ad5591f-896a-4c1c-4421-8c43633fa91c,TEST,,,,
 6ad5591f-896a-4c1c-4421-8c43633fa91d,Current non-drinker of alcohol (finding),2014,,,
