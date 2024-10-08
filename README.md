@@ -34,14 +34,14 @@ The present files are used for development-purposes.
 ### Clone the external repositories
 
 ```
-./rit.sh externals clone
-./rit.sh externals checkout 2024.1
+./dh.dh externals clone
+./dh.dh externals checkout 2024.1
 ```
 
 ### Start the Jupyter notebook for data exploration and live demo
 
 ```
-./rit.sh jupyter-zib
+./dh.dh jupyter-zib
 ```
 
 Open your browser and try [http://jupyter.local.dh.unimaas.nl](http://jupyter.local.dh.unimaas.nl) using the following token:
@@ -53,7 +53,7 @@ SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
 ### Start the EHRbase backend
 
 ```
-./rit.sh backend
+./dh.dh backend
 ```
 
 Open your browser and try [http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html](http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html) with the following credentials:
@@ -72,31 +72,31 @@ Extract data from csv files, Transform the data into valid openEHR compositions 
 #### ETL workflows specific to ZIB templates.
 
 ```
-./rit.sh zib
+./dh.dh zib
 ```
 
 ### Run the tests
 Start the dev environment and execute all the tests
 ```
-./rit.sh test
+./dh.dh test
 ```
 Execute all the tests
 ```
-./rit.sh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5
+./dh.dh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5
 ```
 Execute a specific class test
 ```
-./rit.sh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_zib_pipeline_individually.py::TestBurgerlijkestaat
+./dh.dh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_zib_pipeline_individually.py::TestBurgerlijkestaat
 ```
 Execute a single test
 ```
-./rit.sh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_all_zib_pipelines.py::TestAllZibPipelines::test_number_of_templates
+./dh.dh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_all_zib_pipelines.py::TestAllZibPipelines::test_number_of_templates
 ```
 
 ### Kill the whole stack
 
 ```
-./rit.sh down
+./dh.dh down
 ```
 
 ### Start FHIR-bridge
@@ -106,7 +106,7 @@ Convert FHIR messages into openEHR compositions and them into EHRbase
 Before starting, build the image in dh-hdp-fhir-bridge (check the README file in [dh-hdp-fhir-bridge](https://github.com/MaastrichtUniversity/dh-hdp-fhir-bridge/tree/2024.1) for the command)
 
 ```
-./rit.sh fhir
+./dh.dh fhir
 ```
 
 Open your browser and try [http://fhir-bridge.local.dh.unimaas.nl/fhir-bridge](http://fhir-bridge.local.dh.unimaas.nl/fhir-bridge).
@@ -114,7 +114,7 @@ Open your browser and try [http://fhir-bridge.local.dh.unimaas.nl/fhir-bridge](h
 Run the following command to run both fhir-bridge and etl-zib:
 
 ```
-./rit.sh fhir-etl
+./dh.dh fhir-etl
 ```
 
 ### Start openehr-Tools [for DEV environment only]
@@ -122,7 +122,7 @@ Run the following command to run both fhir-bridge and etl-zib:
 Tool for interacting with the EHRbase server with a basic dashboard integrated.
 
 ```
-./rit.sh up -d openehrtool
+./dh.dh up -d openehrtool
 ```
 
 Open your browser and try [http://openehrtool.local.dh.unimaas.nl](http://openehrtool.local.dh.unimaas.nl)
