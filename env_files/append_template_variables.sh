@@ -29,7 +29,5 @@ create_dynamic_template_variables() { # $1 __ID, $2 SEM_VER
 create_dynamic_template_variables ${TEMPLATES__PATIENT__ID}
 create_dynamic_template_variables ${TEMPLATES__ALCOHOLGEBRUIK2023__ID}
 create_dynamic_template_variables ${TEMPLATES__ALCOHOLGEBRUIK2017__ID}
-# create_dynamic_template_variables ${TEMPLATES__ALCOHOLGEBRUIK0000__ID}
 create_dynamic_template_variables ${TEMPLATES__BURGERLIJKESTAAT2023__ID}
 create_dynamic_template_variables ${TEMPLATES__BURGERLIJKESTAAT2017__ID}
-create_dynamic_template_variables ${TEMPLATES__BURGERLIJKESTAAT0000__ID}
