@@ -39,10 +39,10 @@ if [[ $1 == "externals" ]]; then
 fi
 
 if [[ $1 == "transform" ]]; then
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
     echo -e "\nStart Spring boot Rest API"
-    docker compose build transform-rest proxy filebeat
-    docker compose up -d transform-rest proxy filebeat
+    docker compose build transform-rest filebeat
+    docker compose up -d transform-rest
 
     echo -e "\nExit rit.sh"
     exit 0
@@ -54,24 +54,12 @@ if [[ $1 == "zib" ]]; then
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
-    echo -e "\nStart EHRbase Rest API"
-    docker compose build ehrbase proxy filebeat
-    docker compose up -d proxy filebeat
-    docker compose up -d --force-recreate ehrbase ehrdb
-    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
-    do
-    echo -e "Waiting for EhrBase"
-      sleep 10
-    done
-    echo -e "\nStart Spring boot Rest API"
-    docker compose build transform-rest
-    docker compose up -d transform-rest
-    sleep 3
+
+    docker compose build filebeat etl-zib transform-rest
+
     echo -e "\nRunning etl-zib"
-    docker compose build etl-zib
     docker compose up -d etl-zib
-    sleep 15
-        until docker compose logs --tail 100 etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
+    until docker compose logs --tail 100 etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
     do
     echo -e "Waiting for etl-zib"
       sleep 5
@@ -90,34 +78,14 @@ if [[ $1 == "jupyter-zib" ]]; then
     mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
 
     echo -e "\nExplore zib dataset"
-    docker compose build proxy jupyter-zib
-    docker compose up -d proxy jupyter-zib
-
-    echo -e "\nStart EHRbase Rest API"
-    docker compose build ehrbase
-    docker compose up -d ehrbase
-    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
-    do
-    echo -e "Waiting for EhrBase"
-      sleep 10
-    done
-
-    echo -e "\nStart Sprint boot Rest API"
-    docker compose build transform-rest
-    docker compose up -d transform-rest
+    docker compose build jupyter-zib transform-rest
+    docker compose up -d jupyter-zib
 
     echo -e "\nExit rit.sh"
     exit 0
 fi
 
 if [[ $1 == "fhir" ]]; then
-    docker compose up -d proxy ehrbase
-    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
-    do
-      echo -e "Waiting for EhrBase"
-      sleep 10
-    done
-
     echo -e "\nStart FHIR Bridge"
     docker compose up -d fhir-bridge
     until docker compose logs --tail 100 fhir-bridge 2>&1 | grep -q "Started FhirBridgeApplication in";
@@ -131,13 +99,6 @@ if [[ $1 == "fhir" ]]; then
 fi
 
 if [[ $1 == "fhir-etl" ]]; then
-    docker compose up -d proxy ehrbase
-    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
-    do
-      echo -e "Waiting for EhrBase"
-      sleep 10
-    done
-
     echo -e "\nStart FHIR Bridge"
     docker compose up -d fhir-bridge
     until docker compose logs --tail 100 fhir-bridge 2>&1 | grep -q "Started FhirBridgeApplication in";
@@ -150,14 +111,15 @@ if [[ $1 == "fhir-etl" ]]; then
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
-    echo -e "\nStart Spring boot Rest API"
-    docker compose build transform-rest
-    docker compose up -d transform-rest
-    sleep 3
+
     echo -e "\nRunning etl-zib"
     docker compose build etl-zib
     docker compose up -d etl-zib
-    sleep 15
+    until docker compose logs --tail 100 etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
+    do
+    echo -e "Waiting for etl-zib"
+      sleep 5
+    done
     echo -e "\nPrint logs for etl-zib"
     docker compose logs etl-zib
 
@@ -168,10 +130,11 @@ fi
 
 
 if [[ $1 == "backend" ]]; then
+    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
-    docker compose up -d ehrbase proxy filebeat
-    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
+    docker compose up -d ehrbase
+    until docker container inspect --format "{{json .State.Health }}" dev-hdp-ehrbase-1 2>&1 | grep -q "healthy";
     do
       echo -e "Waiting for EhrBase"
       sleep 10
@@ -183,22 +146,13 @@ fi
 
 
 if [[ $1 == "test" ]]; then
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
+    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
-    docker compose up -d ehrbase proxy filebeat
-    until docker compose logs --tail 100 ehrbase 2>&1 | grep -q "Started EhrBase in";
-    do
-      echo -e "Waiting for EhrBase"
-      sleep 10
-    done
-    echo -e "\nEHRbase up and running"
-
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
-    echo -e "\nStart Spring boot Rest API"
-    docker compose build transform-rest
-    docker compose up -d transform-rest
 
     echo -e "\nStart ETL-ZIB test"
+    docker compose build etl-zib transform-rest
     docker compose run --rm --entrypoint pytest etl-zib --verbose --verbosity=5
 #    docker compose run --rm --entrypoint pytest etl-zib -s
 #    docker compose run --rm --entrypoint pytest etl-zib -o log_cli=true --log-cli-level=INFO
