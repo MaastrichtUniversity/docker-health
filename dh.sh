@@ -31,10 +31,25 @@ externals/dh-hdp-fhir-bridge https://github.com/MaastrichtUniversity/dh-hdp-fhir
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git"
 
 
+setup_requirements(){
+    echo -e "Build ${HDP_ZIB_TEMPLATES_IMAGE_NAME} image"
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
+
+    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
+    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
+    mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
+}
+
+
 # do the required action in case of externals or exec
 if [[ $1 == "externals" ]]; then
     action=${ARGS/$1/}
     run_repo_action ${action} "${externals}"
+    exit 0
+fi
+
+if [[ $1 == "setup" ]]; then
+    setup_requirements
     exit 0
 fi
 
