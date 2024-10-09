@@ -82,17 +82,28 @@ if [[ $1 == "zib" ]]; then
 
     echo -e "\nRunning etl-zib"
     docker compose up -d etl-zib
+    # Add a safe guard against infinite loop during a CI execution
+    SAFE_GUARD=0
     until docker compose logs --tail 100 etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
     do
+      if [[ $SAFE_GUARD -eq 15  ]]; then
+        echo -e "STOP waiting for etl-zib"
+        break
+      fi
+      ((SAFE_GUARD++))
       echo -e "Waiting for etl-zib"
       sleep 5
     done
 
-    echo -e "\nPrint logs for etl-zib"
-    docker compose logs etl-zib
-
-    echo -e "\nExit dh.dh"
-    exit 0
+    if [[ $SAFE_GUARD -ne 15  ]]; then
+      echo -e "\nPrint logs for etl-zib"
+      docker compose logs etl-zib
+      echo -e "\nExit dh.dh"
+      exit 0
+    else
+      echo -e "\nFailed to run etl-zib"
+      exit 1
+    fi
 fi
 
 if [[ $1 == "jupyter-zib" ]]; then
@@ -164,8 +175,13 @@ if [[ $1 == "test" ]]; then
 #    docker compose run --rm --entrypoint pytest etl-zib -s
 #    docker compose run --rm --entrypoint pytest etl-zib -o log_cli=true --log-cli-level=INFO
 
-    echo -e "\nExit dh.dh"
-    exit 0
+    if [ $? -eq 0 ]; then
+      echo -e "\nExit dh.dh"
+      exit 0
+    else
+      echo -e "\nFailed to run etl-zib tests"
+      exit 1
+    fi
 fi
 
 
