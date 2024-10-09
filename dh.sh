@@ -72,7 +72,7 @@ if [[ $1 == "transform" ]]; then
     if is_local; then docker compose build transform-rest filebeat; fi
     docker compose up -d transform-rest
 
-    echo -e "\nExit rit.sh"
+    echo -e "\nExit dh.dh"
     exit 0
 fi
 
@@ -91,7 +91,7 @@ if [[ $1 == "zib" ]]; then
     echo -e "\nPrint logs for etl-zib"
     docker compose logs etl-zib
 
-    echo -e "\nExit rit.sh"
+    echo -e "\nExit dh.dh"
     exit 0
 fi
 
@@ -101,7 +101,7 @@ if [[ $1 == "jupyter-zib" ]]; then
     if is_local; then docker compose build jupyter-zib transform-rest; fi
     docker compose up -d jupyter-zib
 
-    echo -e "\nExit rit.sh"
+    echo -e "\nExit dh.dh"
     exit 0
 fi
 
@@ -114,7 +114,7 @@ if [[ $1 == "fhir" ]]; then
       sleep 10
     done
 
-    echo -e "\nExit rit.sh"
+    echo -e "\nExit dh.dh"
     exit 0
 fi
 
@@ -139,7 +139,7 @@ if [[ $1 == "fhir-etl" ]]; then
     echo -e "\nPrint logs for etl-zib"
     docker compose logs etl-zib
 
-    echo -e "\nExit rit.sh"
+    echo -e "\nExit dh.dh"
     exit 0
 fi
 
@@ -152,7 +152,7 @@ if [[ $1 == "backend" ]]; then
       sleep 10
     done
 
-    echo -e "\nEHRbase up and running, exiting rit.sh"
+    echo -e "\nEHRbase up and running, exiting dh.dh"
     exit 0
 fi
 
@@ -164,6 +164,7 @@ if [[ $1 == "test" ]]; then
 #    docker compose run --rm --entrypoint pytest etl-zib -s
 #    docker compose run --rm --entrypoint pytest etl-zib -o log_cli=true --log-cli-level=INFO
 
+    echo -e "\nExit dh.dh"
     exit 0
 fi
 
