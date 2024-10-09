@@ -39,7 +39,7 @@ if [[ $1 == "externals" ]]; then
 fi
 
 if [[ $1 == "transform" ]]; then
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/zib-templates/
+    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
     echo -e "\nStart Spring boot Rest API"
     docker compose build transform-rest proxy filebeat
     docker compose up -d transform-rest proxy filebeat
