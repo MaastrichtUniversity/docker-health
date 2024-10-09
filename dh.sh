@@ -31,6 +31,14 @@ externals/dh-hdp-fhir-bridge https://github.com/MaastrichtUniversity/dh-hdp-fhir
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git"
 
 
+is_local(){
+    if [[ $RIT_ENV == "local" ]]; then
+      return 0;
+    fi
+    return 1;
+
+}
+
 setup_requirements(){
     echo -e "Build ${HDP_ZIB_TEMPLATES_IMAGE_NAME} image"
     docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
@@ -40,6 +48,11 @@ setup_requirements(){
     mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
 }
 
+dev_setup_requirements(){
+    if is_local; then
+      setup_requirements
+    fi
+}
 
 # do the required action in case of externals or exec
 if [[ $1 == "externals" ]]; then
@@ -54,31 +67,27 @@ if [[ $1 == "setup" ]]; then
 fi
 
 if [[ $1 == "transform" ]]; then
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
+    dev_setup_requirements
     echo -e "\nStart Spring boot Rest API"
-    docker compose build transform-rest filebeat
+    if is_local; then docker compose build transform-rest filebeat; fi
     docker compose up -d transform-rest
 
     echo -e "\nExit rit.sh"
     exit 0
 fi
 
-
 if [[ $1 == "zib" ]]; then
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
-    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
-    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
-    mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
-
-    docker compose build filebeat etl-zib transform-rest
+    dev_setup_requirements
+    if is_local; then docker compose build filebeat etl-zib transform-rest; fi
 
     echo -e "\nRunning etl-zib"
     docker compose up -d etl-zib
     until docker compose logs --tail 100 etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
     do
-    echo -e "Waiting for etl-zib"
+      echo -e "Waiting for etl-zib"
       sleep 5
     done
+
     echo -e "\nPrint logs for etl-zib"
     docker compose logs etl-zib
 
@@ -87,13 +96,9 @@ if [[ $1 == "zib" ]]; then
 fi
 
 if [[ $1 == "jupyter-zib" ]]; then
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
-    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
-    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
-    mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
-
+    dev_setup_requirements
     echo -e "\nExplore zib dataset"
-    docker compose build jupyter-zib transform-rest
+    if is_local; then docker compose build jupyter-zib transform-rest; fi
     docker compose up -d jupyter-zib
 
     echo -e "\nExit rit.sh"
@@ -114,6 +119,7 @@ if [[ $1 == "fhir" ]]; then
 fi
 
 if [[ $1 == "fhir-etl" ]]; then
+    dev_setup_requirements
     echo -e "\nStart FHIR Bridge"
     docker compose up -d fhir-bridge
     until docker compose logs --tail 100 fhir-bridge 2>&1 | grep -q "Started FhirBridgeApplication in";
@@ -122,13 +128,8 @@ if [[ $1 == "fhir-etl" ]]; then
       sleep 10
     done
 
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
-    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
-    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
-    mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
-
     echo -e "\nRunning etl-zib"
-    docker compose build etl-zib
+    if is_local; then docker compose build etl-zib; fi
     docker compose up -d etl-zib
     until docker compose logs --tail 100 etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
     do
@@ -142,14 +143,10 @@ if [[ $1 == "fhir-etl" ]]; then
     exit 0
 fi
 
-
-
 if [[ $1 == "backend" ]]; then
-    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
-    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
-    mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
+    dev_setup_requirements
     docker compose up -d ehrbase
-    until docker container inspect --format "{{json .State.Health }}" dev-hdp-ehrbase-1 2>&1 | grep -q "healthy";
+    until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase-1 2>&1 | grep -q "healthy";
     do
       echo -e "Waiting for EhrBase"
       sleep 10
@@ -159,15 +156,10 @@ if [[ $1 == "backend" ]]; then
     exit 0
 fi
 
-
 if [[ $1 == "test" ]]; then
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
-    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
-    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
-    mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
-
+    dev_setup_requirements
     echo -e "\nStart ETL-ZIB test"
-    docker compose build etl-zib transform-rest
+    if is_local; then docker compose build etl-zib transform-rest; fi
     docker compose run --rm --entrypoint pytest etl-zib --verbose --verbosity=5
 #    docker compose run --rm --entrypoint pytest etl-zib -s
 #    docker compose run --rm --entrypoint pytest etl-zib -o log_cli=true --log-cli-level=INFO
