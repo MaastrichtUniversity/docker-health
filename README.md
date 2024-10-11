@@ -99,6 +99,12 @@ Execute a single test
 ./dh.sh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_all_zib_pipelines.py::TestAllZibPipelines::test_number_of_templates
 ```
 
+### Recreate the ETL stack
+
+```
+./dh.sh up -d --force-recreate ehrdb ehrbase etl-zib
+```
+
 ### Kill the whole stack
 
 ```
