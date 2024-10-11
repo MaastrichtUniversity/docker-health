@@ -115,8 +115,9 @@ services:
       context: ./externals/dh-hdp-etl
       dockerfile: Dockerfile
       args:
-        - HDP_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
         - SRC_SUBPROJECT=zib
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
     volumes:
       - ./data/zib-demo-data:/code/data/zib-demo-data
@@ -147,7 +148,8 @@ services:
       dockerfile: Dockerfile
       args:
         - MAVEN_VERSION=${MAVEN_VERSION}
-        - HDP_ZIB_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
     image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}
     depends_on:
       - proxy
@@ -173,8 +175,9 @@ services:
       context: ./externals/dh-hdp-notebooks
       dockerfile: Dockerfile
       args:
-        - HDP_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
         - DATA=zib
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
     image: ${ENV_REGISTRY_HOST}/docker-health/jupyter-zib:${ENV_TAG}
     command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
     depends_on:

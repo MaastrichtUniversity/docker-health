@@ -40,9 +40,6 @@ is_local(){
 }
 
 setup_requirements(){
-    echo -e "Build ${HDP_ZIB_TEMPLATES_IMAGE_NAME} image"
-    docker build -t "${HDP_ZIB_TEMPLATES_IMAGE_NAME}" ./externals/dh-hdp-zib-templates/
-
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
