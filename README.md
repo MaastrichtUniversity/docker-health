@@ -126,7 +126,7 @@ Open your browser and try [http://fhir-bridge.local.dh.unimaas.nl/fhir-bridge](h
 Run the following command to run both fhir-bridge and etl-zib:
 
 ```
-./dh.sh fhir-etl
+./dh.sh up -d fhir-bridge && ./dh.sh up -d etl-zib && ./dh.sh logs -f etl-zib fhir-bridge
 ```
 
 ### Start openehr-Tools [for DEV environment only]

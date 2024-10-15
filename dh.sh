@@ -126,31 +126,6 @@ if [[ $1 == "fhir" ]]; then
     exit 0
 fi
 
-if [[ $1 == "fhir-etl" ]]; then
-    dev_setup_requirements
-    echo -e "\nStart FHIR Bridge"
-    docker compose up -d fhir-bridge
-    until docker compose logs --tail 100 fhir-bridge 2>&1 | grep -q "Started FhirBridgeApplication in";
-    do
-      echo -e "Waiting for FhirBridgeApplication"
-      sleep 10
-    done
-
-    echo -e "\nRunning etl-zib"
-    if is_local; then docker compose build etl-zib; fi
-    docker compose up -d etl-zib
-    until docker compose logs --tail 100 etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
-    do
-    echo -e "Waiting for etl-zib"
-      sleep 5
-    done
-    echo -e "\nPrint logs for etl-zib"
-    docker compose logs etl-zib
-
-    echo -e "\nExit dh.sh"
-    exit 0
-fi
-
 if [[ $1 == "backend" ]]; then
     dev_setup_requirements
     docker compose up -d ehrbase
