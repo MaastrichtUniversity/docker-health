@@ -35,5 +35,12 @@ dmypy.json
 # cloned github repo
 externals/*
 
+# ETL input/output data
+data/*
 outputs/
+
+# Jupyter notebooks
 notebooks/.ipynb_checkpoints
+
+# Symbolic link from dh.sh to rit.sh (old name)
+rit.sh
