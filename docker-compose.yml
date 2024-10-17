@@ -14,12 +14,23 @@ services:
   ehrbase:
     image: ehrbase/ehrbase:2.6.0
     depends_on:
-      - ehrdb
+      ehrdb:
+        condition: service_healthy
+      proxy:
+        condition: service_started
+      filebeat:
+        condition: service_started
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrbase.env
     environment:
       VIRTUAL_HOST: ehrbase.${RIT_ENV}.dh.unimaas.nl
+    healthcheck:
+     test: "wget -T5 -qO- localhost:8080/ehrbase/management/health | grep UP || exit 1"
+     interval: 5s
+     timeout: 3s
+     retries: 10
+#     start_period: 10s
     ports:
       - "8080:8080"
     networks:
@@ -61,6 +72,11 @@ services:
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrdb.env
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 12
     ports:
       - "5432:5432"
     networks:
@@ -74,6 +90,7 @@ services:
     depends_on:
         - redis
         - ehrbase
+        - proxy
     ports:
         - 9000:9000
     environment:
@@ -98,8 +115,9 @@ services:
       context: ./externals/dh-hdp-etl
       dockerfile: Dockerfile
       args:
-        - HDP_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
         - SRC_SUBPROJECT=zib
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
     volumes:
       - ./data/zib-demo-data:/code/data/zib-demo-data
@@ -117,6 +135,11 @@ services:
       - ./env_files/etl_zib.env
     environment:
       LOGSTASH_TAGS: ETL_ZIB
+    depends_on:
+      transform-rest:
+        condition: service_started
+      ehrbase:
+        condition: service_healthy
     networks:
       - hdp-dh-net
   transform-rest:
@@ -125,8 +148,12 @@ services:
       dockerfile: Dockerfile
       args:
         - MAVEN_VERSION=${MAVEN_VERSION}
-        - HDP_ZIB_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
     image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}
+    depends_on:
+      - proxy
+      - filebeat
     volumes:
       - ./filebeat/logs/transform-rest:/var/log
     #      - ./externals/dh-hdp-transform-rest/src/:/code/src
@@ -148,10 +175,16 @@ services:
       context: ./externals/dh-hdp-notebooks
       dockerfile: Dockerfile
       args:
-        - HDP_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
         - DATA=zib
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
     image: ${ENV_REGISTRY_HOST}/docker-health/jupyter-zib:${ENV_TAG}
     command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
+    depends_on:
+      transform-rest:
+        condition: service_started
+      ehrbase:
+        condition: service_healthy
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
@@ -204,7 +237,8 @@ services:
     ## BUILD option 3: Build the image using `mvn clean spring-boot:build-image`
     image: hdp-ehrbase/fhir-bridge:${ENV_TAG}
     depends_on:
-      - ehrbase
+      ehrbase:
+        condition: service_healthy
     env_file:
       - ./env_files/fhir-bridge.env
     environment:
