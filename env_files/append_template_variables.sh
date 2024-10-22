@@ -4,7 +4,7 @@ source ./env_files/etl_zib.env
 
 ENV_FILE="env_files/etl_zib.env"
 
-create_dynamic_template_variables() { # $1 __ID, $2 SEM_VER
+create_dynamic_template_variables() { # $1 __ID
     # Only append variables which don't exist in the env file
     if ! [[ -n $1 ]]; then
       echo "Parameter \$1 does not exist or is empty."
@@ -31,3 +31,4 @@ create_dynamic_template_variables ${TEMPLATES__ALCOHOLGEBRUIK2023__ID}
 create_dynamic_template_variables ${TEMPLATES__ALCOHOLGEBRUIK2017__ID}
 create_dynamic_template_variables ${TEMPLATES__BURGERLIJKESTAAT2023__ID}
 create_dynamic_template_variables ${TEMPLATES__BURGERLIJKESTAAT2017__ID}
+create_dynamic_template_variables ${TEMPLATES__CONTACTPERSOON2017__ID}
