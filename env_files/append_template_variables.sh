@@ -32,3 +32,4 @@ create_dynamic_template_variables ${TEMPLATES__ALCOHOLGEBRUIK2017__ID}
 create_dynamic_template_variables ${TEMPLATES__BURGERLIJKESTAAT2023__ID}
 create_dynamic_template_variables ${TEMPLATES__BURGERLIJKESTAAT2017__ID}
 create_dynamic_template_variables ${TEMPLATES__CONTACTPERSOON2017__ID}
+create_dynamic_template_variables ${TEMPLATES__WOONSITUATIE2017__ID}
