@@ -1,13 +1,13 @@
 Id,WONING_TYPE,TOELICHTING
 6ad5591f-896a-4c1c-4421-8c43633fa91a,Bovenwoning,moved recently
-6ad5591f-896a-4c1c-4421-8c43633fa91b,bobob,TEST: WONING_TYPE is wrong
+6ad5591f-896a-4c1c-4421-8c43633fa91b,bobob,TEST: incorrect WONING_TYPE
 6ad5591f-896a-4c1c-4421-8c43633fa91c,,unsure
 6ad5591f-896a-4c1c-4421-8c43633fa91d,Appartement of flatwoning,wants to move
-6ad5591f-896a-4c1c-4421-8c43633fa91e,Aanleunwoning,
+6ad5591f-896a-4c1c-4421-8c43633fa91e,Bovenwoning,moved recently
 6ad5591f-896a-4c1c-4421-8c43633fa91f,,
-6ad5591f-896a-4c1c-4421-8c43633fa91g,Woonwagen,TEST: added additional variable,bobob
+6ad5591f-896a-4c1c-4421-8c43633fa91g,Woonwagen,with family
 6ad5591f-896a-4c1c-4421-8c43633fa91h,Instelling AWBZ,
 6ad5591f-896a-4c1c-4421-8c43633fa91i,Dakloos,previously had a house
 6ad5591f-896a-4c1c-4421-8c43633fa91j,Anders,squatting
-6ad5591f-896a-4c1c-4421-8c43633fa91j,Woonboot,TEST: duplicate Id
+6ad5591f-896a-4c1c-4421-8c43633fa91k,Woonboot,boat
 6ad5591f-896a-4c1c-4421-8c43633fa91l,Eengezinswoning,has a dog
