@@ -12,14 +12,25 @@ services:
     networks:
       - hdp-dh-net
   ehrbase:
-    image: ehrbase/ehrbase:0.32.0
+    image: ehrbase/ehrbase:2.6.0
     depends_on:
-      - ehrdb
+      ehrdb:
+        condition: service_healthy
+      proxy:
+        condition: service_started
+      filebeat:
+        condition: service_started
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrbase.env
     environment:
       VIRTUAL_HOST: ehrbase.${RIT_ENV}.dh.unimaas.nl
+    healthcheck:
+     test: "wget -T5 -qO- localhost:8080/ehrbase/management/health | grep UP || exit 1"
+     interval: 5s
+     timeout: 3s
+     retries: 10
+#     start_period: 10s
     ports:
       - "8080:8080"
     networks:
@@ -30,13 +41,13 @@ services:
       - java
       - -jar
       - -Dspring.profiles.active=docker
-      - -Dlogging.file.name=/var/log/ehrbase.log
+      - -Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log
       - ehrbase.jar
     volumes:
-      - ./filebeat/logs/ehrbase:/var/log
+      - ./filebeat/logs/ehrbase:/tmp/ehrbaselog
     restart: on-failure
   ehrdb:
-    image: ehrbase/ehrbase-postgres:13.4.v2
+    image: ehrbase/ehrbase-v2-postgres:16.2
     command:
       [
         "postgres",
@@ -61,6 +72,11 @@ services:
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrdb.env
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 12
     ports:
       - "5432:5432"
     networks:
@@ -74,6 +90,7 @@ services:
     depends_on:
         - redis
         - ehrbase
+        - proxy
     ports:
         - 9000:9000
     environment:
@@ -98,8 +115,9 @@ services:
       context: ./externals/dh-hdp-etl
       dockerfile: Dockerfile
       args:
-        - HDP_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
         - SRC_SUBPROJECT=zib
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
     volumes:
       - ./data/zib-demo-data:/code/data/zib-demo-data
@@ -117,6 +135,11 @@ services:
       - ./env_files/etl_zib.env
     environment:
       LOGSTASH_TAGS: ETL_ZIB
+    depends_on:
+      transform-rest:
+        condition: service_started
+      ehrbase:
+        condition: service_healthy
     networks:
       - hdp-dh-net
   transform-rest:
@@ -125,9 +148,12 @@ services:
       dockerfile: Dockerfile
       args:
         - MAVEN_VERSION=${MAVEN_VERSION}
-        - HDP_ZIB_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
-        - HDP_DEMO_TEMPLATES_IMAGE_NAME=${HDP_DEMO_TEMPLATES_IMAGE_NAME}
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
     image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}
+    depends_on:
+      - proxy
+      - filebeat
     volumes:
       - ./filebeat/logs/transform-rest:/var/log
     #      - ./externals/dh-hdp-transform-rest/src/:/code/src
@@ -135,7 +161,6 @@ services:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
       - ./env_files/etl_zib.env
-      - ./env_files/etl_demo.env
     environment:
       LOGSTASH_TAGS: TRANSFORM_REST
       VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
@@ -150,17 +175,23 @@ services:
       context: ./externals/dh-hdp-notebooks
       dockerfile: Dockerfile
       args:
-        - HDP_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
         - DATA=zib
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
     image: ${ENV_REGISTRY_HOST}/docker-health/jupyter-zib:${ENV_TAG}
     command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
+    depends_on:
+      transform-rest:
+        condition: service_started
+      ehrbase:
+        condition: service_healthy
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrbase_server.env
       - ./env_files/transform_server.env
       - ./env_files/etl_zib.env
     environment:
-      VIRTUAL_HOST: jupyter-zib.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
     volumes:
       - ./data/zib-demo-data:/home/jovyan/data/zib-demo-data
       # Volume binds to auto-reload the code inside the container
@@ -175,61 +206,6 @@ services:
       hdp-dh-net:
         aliases:
           - jupyter-zib.dh.local
-  etl-demo:
-    build:
-      context: ./externals/dh-hdp-etl
-      dockerfile: Dockerfile
-      args:
-        - HDP_TEMPLATES_IMAGE_NAME=${HDP_DEMO_TEMPLATES_IMAGE_NAME}
-        - SRC_SUBPROJECT=demo
-    image: ${ENV_REGISTRY_HOST}/docker-health/etl-demo:${ENV_TAG}
-    volumes:
-      - ./data/synthea-demo-data:/code/data/synthea
-      - ./filebeat/logs/etl-demo:/code/logs
-      - ./outputs/etl-demo:/code/outputs
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-etl/etl.py:/code/etl.py
-      - ./externals/dh-hdp-etl/src/core:/code/src/core
-      - ./externals/dh-hdp-etl/src/subprojects/demo:/code/src/subprojects/demo
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/ehrbase_server.env
-      - ./env_files/transform_server.env
-      - ./env_files/etl_demo.env
-    environment:
-      LOGSTASH_TAGS: ETL_DEMO
-    networks:
-      - hdp-dh-net
-  jupyter-synthea:
-    build:
-      context: ./externals/dh-hdp-notebooks
-      dockerfile: Dockerfile
-      args:
-        - HDP_TEMPLATES_IMAGE_NAME=${HDP_DEMO_TEMPLATES_IMAGE_NAME}
-        - DATA=synthea
-    image: ${ENV_REGISTRY_HOST}/docker-health/jupyter-synthea:${ENV_TAG}
-    command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/ehrbase_server.env
-      - ./env_files/transform_server.env
-      - ./env_files/etl_demo.env
-    environment:
-      VIRTUAL_HOST: jupyter-synthea.${RIT_ENV}.dh.unimaas.nl
-    volumes:
-      - ./data/synthea-demo-data:/home/jovyan/data/synthea
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-etl/etl.py:/home/jovyan/etl.py
-      - ./externals/dh-hdp-etl/requirements.txt:/home/jovyan/requirements.txt
-      - ./externals/dh-hdp-etl/src:/home/jovyan/src
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
-    ports:
-      - "8889:8888"
-    networks:
-      hdp-dh-net:
-        aliases:
-          - jupyter-synthea.dh.local
   filebeat:
     build:
       context: ./filebeat
@@ -244,7 +220,46 @@ services:
       hdp-dh-net:
         aliases:
           - filebeat.dh.local
-
+  fhir-bridge:
+    ## BUILD option 1: Using a pre-build docker image
+    # image: ehrbase/fhir-bridge:1.5.5
+    ## BUILD option 2: Using a Dockerfile FAILED:
+    # build:
+    #   context: ./externals/dh-hdp-fhir-bridge
+    #   # additional_contexts:
+    #   #   - hdp_transform_rest=./externals/dh-hdp-transform-rest
+    #   dockerfile: Dockerfile
+    #   args:
+    #     - MAVEN_VERSION=${MAVEN_VERSION}
+    #     - FHIR_BRIDGE_VERSION=${FHIR_BRIDGE_VERSION}
+    #     - HDP_ZIB_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
+    # # image: ${ENV_REGISTRY_HOST}/docker-health/fhir-bridge:${ENV_TAG}
+    ## BUILD option 3: Build the image using `mvn clean spring-boot:build-image`
+    image: hdp-ehrbase/fhir-bridge:${ENV_TAG}
+    depends_on:
+      ehrbase:
+        condition: service_healthy
+    env_file:
+      - ./env_files/fhir-bridge.env
+    environment:
+      VIRTUAL_HOST: fhir-bridge.${RIT_ENV}.dh.unimaas.nl
+    ports:
+      - "8887:8888"
+    networks:
+      hdp-dh-net:
+        aliases:
+          - fhir-bridge.dh.local
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123456
+    command: server /data --console-address ":9001"
+    networks:
+      - hdp-dh-net
 networks:
   default:
     ipam:
