@@ -26,7 +26,7 @@ services:
     environment:
       VIRTUAL_HOST: ehrbase.${RIT_ENV}.dh.unimaas.nl
     healthcheck:
-     test: "wget -T5 -qO- localhost:8080/ehrbase/management/health | grep UP || exit 1"
+     test: "wget -T5 -qO- -Y off localhost:8080/ehrbase/management/health | grep UP || exit 1"
      interval: 5s
      timeout: 3s
      retries: 10
