@@ -36,7 +36,7 @@ dmypy.json
 externals/*
 
 # ETL input/output data
-data/*
+data/synthea-demo-data
 outputs/
 
 # Jupyter notebooks
