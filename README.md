@@ -12,6 +12,10 @@ This service is based on repositories:
 - [dh-hdp-fhir-bridge](https://github.com/MaastrichtUniversity/dh-hdp-fhir-bridge/tree/2024.1): Java REST API for converting FHIR messages into openEHR composition and storage into EHRbase
 - [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2024.1): Jupyter notebooks for an initial data exploration
 
+Aditional proof of concept level repositiory:
+
+- [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api): Proof of concept Federation service
+
 ## Requirements
 
 ### Encryption between filebeat and elk
