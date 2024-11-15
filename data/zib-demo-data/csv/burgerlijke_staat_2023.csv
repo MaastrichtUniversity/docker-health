@@ -1,13 +1,15 @@
-Id,BURGERLIJKE_STAAT
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Weduwe/weduwnaar
-6ad5591f-896a-4c1c-4421-8c43633fa91b,
-6ad5591f-896a-4c1c-4421-8c43633fa91c,Gescheiden (huwelijk/geregistreerd partnerschap ontbonden)
-6ad5591f-896a-4c1c-4421-8c43633fa91d,Nooit gehuwd geweest/ geregistreerd partnerschap gehad
-6ad5591f-896a-4c1c-4421-8c43633fa91e,Gehuwd
-6ad5591f-896a-4c1c-4421-8c43633fa91f,Niet gehuwd
-6ad5591f-896a-4c1c-4421-8c43633fa91g,Geregistreerd partnerschap
-6ad5591f-896a-4c1c-4421-8c43633fa91h,Gescheiden (huwelijk/geregistreerd partnerschap ontbonden)
-6ad5591f-896a-4c1c-4421-8c43633fa91i,Nooit gehuwd geweest/ geregistreerd partnerschap gehad
-6ad5591f-896a-4c1c-4421-8c43633fa91j,Gehuwd
-6ad5591f-896a-4c1c-4421-8c43633fa91k,Gescheiden (huwelijk/geregistreerd partnerschap ontbonden)
-6ad5591f-896a-4c1c-4421-8c43633fa91l,
+Id,BURGERLIJKE_STAAT,DATE_TIME
+6ad5591f-896a-4c1c-4421-8c43633fa91a,Weduwe/weduwnaar,2023-11-14T15:50:14
+6ad5591f-896a-4c1c-4421-8c43633fa91a,Weduwe/weduwnaar,2024-11-14T15:50:14
+6ad5591f-896a-4c1c-4421-8c43633fa91a,Weduwe/weduwnaar,2023-11-14T15:50:14
+6ad5591f-896a-4c1c-4421-8c43633fa91b,,2005-01-19T09:43:13
+6ad5591f-896a-4c1c-4421-8c43633fa91c,Gescheiden (huwelijk/geregistreerd partnerschap ontbonden),2023-12-31T23:59:59
+6ad5591f-896a-4c1c-4421-8c43633fa91d,Nooit gehuwd geweest/ geregistreerd partnerschap gehad,
+6ad5591f-896a-4c1c-4421-8c43633fa91e,Gehuwd,2024-10-10T10:10:10
+6ad5591f-896a-4c1c-4421-8c43633fa91f,Niet gehuwd,2007-12-04T12:09:45
+6ad5591f-896a-4c1c-4421-8c43633fa91g,Geregistreerd partnerschap,996-05-21T17:04:55
+6ad5591f-896a-4c1c-4421-8c43633fa91h,Gescheiden (huwelijk/geregistreerd partnerschap ontbonden),2016-10-02T06:30:00
+6ad5591f-896a-4c1c-4421-8c43633fa91i,Nooit gehuwd geweest/ geregistreerd partnerschap gehad,1989-01-01T00:00:00
+6ad5591f-896a-4c1c-4421-8c43633fa91j,Gehuwd,2008-07-13T05:38:29
+6ad5591f-896a-4c1c-4421-8c43633fa91k,Gescheiden (huwelijk/geregistreerd partnerschap ontbonden),2005-09-28T22:40:32
+6ad5591f-896a-4c1c-4421-8c43633fa91l,,2022-04-01T18:06:22
