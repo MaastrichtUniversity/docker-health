@@ -129,7 +129,7 @@ if [[ $1 == "fhir" ]]; then
     exit 0
 fi
 
-if [[ $1 == "first-server" ]]; then
+if [[ $1 == "first-node" ]]; then
     dev_setup_requirements
     docker compose up -d ehrbase
     until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase-1 2>&1 | grep -q "healthy";
@@ -142,10 +142,11 @@ if [[ $1 == "first-server" ]]; then
     exit 0
 fi
 
-if [[ $1 == "second-server" ]]; then
+if [[ $1 == "second-node" ]]; then
     dev_setup_requirements
-    docker compose up -d ehrbase2
-    # It showed it was up and running but the connection to DB was not established
+    # Up it depending on if you are using 1 or 2 compose files
+    # docker compose up -d ehrbase2
+    docker compose -f docker-compose.second-node.yml up -d ehrbase2
     until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase2-1 2>&1 | grep -q "healthy";
     do
       echo -e "Waiting for EhrBase2 (Second node)"
