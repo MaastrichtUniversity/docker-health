@@ -16,6 +16,7 @@ services:
       - ./env_files/ehrbase2.env
     environment:
       VIRTUAL_HOST: ehrbase2.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_PORT: 8081
     healthcheck:
       test: "wget -T5 -qO- -Y off localhost:8081/ehrbase/management/health | grep UP || exit 1"
       interval: 5s
@@ -23,7 +24,7 @@ services:
       retries: 10
     #     start_period: 10s
     ports:
-      - "8081:8080"
+      - "8081:8081"
     networks:
       dev-hdp_hdp-dh-net:
         aliases:
@@ -39,9 +40,13 @@ services:
     restart: on-failure
   ehrdb2:
     image: ehrbase/ehrbase-v2-postgres:16.2
+    environment:
+      - PGPORT=5433
     command:
       [
         "postgres",
+        "-p",
+        "5433",
         "-c",
         "logging_collector=on",
         "-c",
@@ -68,10 +73,31 @@ services:
       interval: 5s
       timeout: 5s
       retries: 12
+
     ports:
-      - "5433:5432"
+      - "5433:5433"
     networks:
       - dev-hdp_hdp-dh-net
+  openehrtool2:
+    image: surfercrs4/openehrtool:latest
+    volumes:
+      - ./openEHR-tool/openehrtool-second-node.cfg:/code/config/openehrtool.cfg
+    env_file:
+      - ./openEHR-tool/.env
+    depends_on:
+      # - redis
+      - ehrbase2
+      # - proxy
+    ports:
+      - 9001:9001
+    command: ["flask", "run", "--host=0.0.0.0", "--port=9001"]
+    environment:
+      VIRTUAL_HOST: openehrtool2.${RIT_ENV}.dh.unimaas.nl
+      FLASK_RUN_PORT: 9001
+    networks:
+      dev-hdp_hdp-dh-net:
+        aliases:
+          - openehrtool2.dh.local
 # This config now relies on the main compose file that the network has already been created
 networks:
   dev-hdp_hdp-dh-net:

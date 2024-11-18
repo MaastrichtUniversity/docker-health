@@ -166,6 +166,18 @@ if [[ $1 == "down" ]]; then
     exit 0
 fi
 
+if [[ $1 == "openehrtool" ]]; then
+    if [[ -z "$2" ]]; then
+        docker compose up -d openehrtool
+        echo -e "\nOpenEHRtool on first node up and running, exiting dh.sh"
+    else
+        docker compose -f docker-compose.second-node.yml up -d openehrtool2
+        echo -e "\nOpenEHRtool on second node up and running, exiting dh.sh"
+    fi
+
+    exit 0
+fi
+
 if [[ $1 == "test" ]]; then
     dev_setup_requirements
     echo -e "\nStart ETL-ZIB test"
