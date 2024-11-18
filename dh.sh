@@ -157,6 +157,15 @@ if [[ $1 == "second-node" ]]; then
     exit 0
 fi
 
+if [[ $1 == "down" ]]; then
+    echo -e "Bringing down services from both compose files"
+    
+    docker compose -f docker-compose.yml down
+    docker compose -f docker-compose.second-node.yml down
+    
+    exit 0
+fi
+
 if [[ $1 == "test" ]]; then
     dev_setup_requirements
     echo -e "\nStart ETL-ZIB test"
