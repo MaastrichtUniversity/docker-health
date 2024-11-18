@@ -44,6 +44,8 @@ setup_requirements(){
     echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
     mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
     mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
+    mkdir -p ./filebeat/logs/ehrdb2 && chmod -R 777 ./filebeat/logs/ehrdb2
+    mkdir -p ./filebeat/logs/ehrbase2 && chmod -R 777 ./filebeat/logs/ehrbase2
 }
 
 dev_setup_requirements(){
@@ -127,7 +129,7 @@ if [[ $1 == "fhir" ]]; then
     exit 0
 fi
 
-if [[ $1 == "backend" ]]; then
+if [[ $1 == "first-server" ]]; then
     dev_setup_requirements
     docker compose up -d ehrbase
     until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase-1 2>&1 | grep -q "healthy";
@@ -137,6 +139,20 @@ if [[ $1 == "backend" ]]; then
     done
 
     echo -e "\nEHRbase up and running, exiting dh.sh"
+    exit 0
+fi
+
+if [[ $1 == "second-server" ]]; then
+    dev_setup_requirements
+    docker compose up -d ehrbase2
+    # It showed it was up and running but the connection to DB was not established
+    until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase2-1 2>&1 | grep -q "healthy";
+    do
+      echo -e "Waiting for EhrBase2 (Second node)"
+      sleep 10
+    done
+
+    echo -e "\nEHRbase2 up and running, exiting dh.sh"
     exit 0
 fi
 
