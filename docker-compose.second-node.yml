@@ -86,7 +86,7 @@ services:
         hdp_templates: ./externals/dh-hdp-zib-templates
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib2:${ENV_TAG}
     volumes:
-      - ./data/second-node-demo-data:/code/data/second-node-demo-data
+      - ./data/gp-demo-data:/code/data/gp-demo-data
       - ./filebeat/logs/etl-zib:/code/logs
       - ./outputs/etl-zib:/code/outputs
       # Volume binds to auto-reload the code inside the container
