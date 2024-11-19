@@ -76,34 +76,88 @@ if [[ $1 == "transform" ]]; then
     exit 0
 fi
 
+
+
+if [[ $1 == "backend" ]]; then
+    dev_setup_requirements
+    if [[ -z "$2" ]]; then
+        docker compose up -d ehrbase
+        until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase-1 2>&1 | grep -q "healthy";
+        do
+          echo -e "Waiting for EhrBase (first node)"
+          sleep 10
+        done
+        echo -e "\nEHRbase first node up and running, exiting dh.sh"
+    else
+        docker compose -f docker-compose.second-node.yml up -d ehrbase2
+        until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase2-1 2>&1 | grep -q "healthy";
+        do
+          echo -e "Waiting for EhrBase2 (Second node)"
+          sleep 10
+        done
+
+        echo -e "\nEHRbase2 up and running, exiting dh.sh"
+    fi
+
+    exit 0
+fi
+
 if [[ $1 == "zib" ]]; then
     dev_setup_requirements
-    if is_local; then docker compose build filebeat etl-zib transform-rest; fi
+    if is_local; then docker compose build filebeat transform-rest; fi
+    if [[ -z "$2" ]]; then
+        docker compose build etl-zib
+        echo -e "\nRunning etl-zib"
+        docker compose up -d etl-zib
+        # Add a safe guard against infinite loop during a CI execution
+        SAFE_GUARD=0
+        until docker compose logs --tail 100 etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
+        do
+          if [[ $SAFE_GUARD -eq 15  ]]; then
+            echo -e "STOP waiting for etl-zib"
+            break
+          fi
+          ((SAFE_GUARD++))
+          echo -e "Waiting for etl-zib"
+          sleep 5
+        done
 
-    echo -e "\nRunning etl-zib"
-    docker compose up -d etl-zib
-    # Add a safe guard against infinite loop during a CI execution
-    SAFE_GUARD=0
-    until docker compose logs --tail 100 etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
-    do
-      if [[ $SAFE_GUARD -eq 15  ]]; then
-        echo -e "STOP waiting for etl-zib"
-        break
-      fi
-      ((SAFE_GUARD++))
-      echo -e "Waiting for etl-zib"
-      sleep 5
-    done
-
-    if [[ $SAFE_GUARD -ne 15  ]]; then
-      echo -e "\nPrint logs for etl-zib"
-      docker compose logs etl-zib
-      echo -e "\nExit dh.sh"
-      exit 0
+        if [[ $SAFE_GUARD -ne 15  ]]; then
+          echo -e "\nPrint logs for etl-zib"
+          docker compose logs etl-zib
+          echo -e "\nExit dh.sh"
+          exit 0
+        else
+          echo -e "\nFailed to run etl-zib"
+          exit 1
+        fi
     else
-      echo -e "\nFailed to run etl-zib"
-      exit 1
-    fi
+        docker compose -f docker-compose.second-node.yml build etl-zib2
+          echo -e "\nRunning etl-zib second node"
+        docker compose -f docker-compose.second-node.yml up -d etl-zib2
+        # Add a safe guard against infinite loop during a CI execution
+        SAFE_GUARD=0
+        until docker compose logs --tail 100 etl-zib2 2>&1 | grep -q "Print all EHR ids available on the server";
+        do
+          if [[ $SAFE_GUARD -eq 15  ]]; then
+            echo -e "STOP waiting for etl-zib2"
+            break
+          fi
+          ((SAFE_GUARD++))
+          echo -e "Waiting for etl-zib2"
+          sleep 5
+        done
+
+        if [[ $SAFE_GUARD -ne 15  ]]; then
+          echo -e "\nPrint logs for etl-zib2"
+          docker compose logs etl-zib2
+          echo -e "\nExit dh.sh"
+          exit 0
+        else
+          echo -e "\nFailed to run etl-zib2"
+          exit 1
+        fi
+    fi    
 fi
 
 if [[ $1 == "jupyter-zib" ]]; then

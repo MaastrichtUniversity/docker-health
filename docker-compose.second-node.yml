@@ -76,6 +76,38 @@ services:
       - "5433:5433"
     networks:
       - dev-hdp_hdp-dh-net
+  etl-zib2:
+    build:
+      context: ./externals/dh-hdp-etl
+      dockerfile: Dockerfile
+      args:
+        - SRC_SUBPROJECT=zib
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
+    image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib2:${ENV_TAG}
+    volumes:
+      - ./data/second-node-demo-data:/code/data/second-node-demo-data
+      - ./filebeat/logs/etl-zib:/code/logs
+      - ./outputs/etl-zib:/code/outputs
+      # Volume binds to auto-reload the code inside the container
+      - ./externals/dh-hdp-etl/etl.py:/code/etl.py
+      - ./externals/dh-hdp-etl/src/core:/code/src/core
+      - ./externals/dh-hdp-etl/src/subprojects/zib:/code/src/subprojects/zib
+      - ./externals/dh-hdp-etl/tests:/code/tests
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/ehrbase_server2.env
+      - ./env_files/transform_server.env
+      - ./env_files/etl_zib2.env
+    environment:
+      LOGSTASH_TAGS: ETL_ZIB2
+    depends_on:
+      # transform-rest:
+      #   condition: service_started
+      ehrbase2:
+        condition: service_healthy
+    networks:
+      - dev-hdp_hdp-dh-net
   openehrtool2:
     image: surfercrs4/openehrtool:latest
     volumes:
@@ -95,7 +127,7 @@ services:
       dev-hdp_hdp-dh-net:
         aliases:
           - openehrtool2.dh.local
-# This config now relies on the main compose file that the network has already been created
+# This config now relies on the main compose file that the network has already been created ( it doesnt create one if it's external : true)
 networks:
   dev-hdp_hdp-dh-net:
     external: true

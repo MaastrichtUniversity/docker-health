@@ -175,6 +175,13 @@ Run backend to up first node, then run backend 2 to up the second node
 To run openEHR tool on each node, run :
 
 ```
-./dh.sh up openehrtool
-./dh.sh up openehrtool 2
+./dh.sh openehrtool
+./dh.sh openehrtool 2
+```
+
+Then, load the data in each node :
+
+```
+./dh.sh zib
+./dh.sh zib 2
 ```
