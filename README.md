@@ -165,11 +165,11 @@ Add these virtual hosts to your /etc/hosts
 127.0.0.1 ehrbase2.local.dh.unimaas.nl
 127.0.0.1 openehrtool2.local.dh.unimaas.nl
 
-Run backend to up first node, then run backend 2 to up the second node
+To up each node and load data in it, run :
 
 ```
-./dh.sh backend
-./dh.sh backend 2
+./dh.sh zib
+./dh.sh zib 2
 ```
 
 To run openEHR tool on each node, run :
@@ -177,11 +177,4 @@ To run openEHR tool on each node, run :
 ```
 ./dh.sh openehrtool
 ./dh.sh openehrtool 2
-```
-
-Then, load the data in each node :
-
-```
-./dh.sh zib
-./dh.sh zib 2
 ```
