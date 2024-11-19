@@ -129,33 +129,31 @@ if [[ $1 == "fhir" ]]; then
     exit 0
 fi
 
-if [[ $1 == "first-node" ]]; then
-    dev_setup_requirements
-    docker compose up -d ehrbase
-    until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase-1 2>&1 | grep -q "healthy";
-    do
-      echo -e "Waiting for EhrBase"
-      sleep 10
-    done
 
-    echo -e "\nEHRbase up and running, exiting dh.sh"
+if [[ $1 == "backend" ]]; then
+    dev_setup_requirements
+    if [[ -z "$2" ]]; then
+        docker compose up -d ehrbase
+        until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase-1 2>&1 | grep -q "healthy";
+        do
+          echo -e "Waiting for EhrBase (first node)"
+          sleep 10
+        done
+        echo -e "\nEHRbase first node up and running, exiting dh.sh"
+    else
+        docker compose -f docker-compose.second-node.yml up -d ehrbase2
+        until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase2-1 2>&1 | grep -q "healthy";
+        do
+          echo -e "Waiting for EhrBase2 (Second node)"
+          sleep 10
+        done
+
+        echo -e "\nEHRbase2 up and running, exiting dh.sh"
+    fi
+
     exit 0
 fi
 
-if [[ $1 == "second-node" ]]; then
-    dev_setup_requirements
-    # Up it depending on if you are using 1 or 2 compose files
-    # docker compose up -d ehrbase2
-    docker compose -f docker-compose.second-node.yml up -d ehrbase2
-    until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase2-1 2>&1 | grep -q "healthy";
-    do
-      echo -e "Waiting for EhrBase2 (Second node)"
-      sleep 10
-    done
-
-    echo -e "\nEHRbase2 up and running, exiting dh.sh"
-    exit 0
-fi
 
 if [[ $1 == "down" ]]; then
     echo -e "Bringing down services from both compose files"

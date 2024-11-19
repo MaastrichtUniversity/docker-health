@@ -157,3 +157,24 @@ Tool for interacting with the EHRbase server with a basic dashboard integrated.
 ```
 
 Open your browser and try [http://openehrtool.local.dh.unimaas.nl](http://openehrtool.local.dh.unimaas.nl)
+
+### For POC EHRBase nodes
+
+Add these virtual hosts to your /etc/hosts
+
+127.0.0.1 ehrbase2.local.dh.unimaas.nl
+127.0.0.1 openehrtool2.local.dh.unimaas.nl
+
+Run backend to up first node, then run backend 2 to up the second node
+
+```
+./dh.sh backend
+./dh.sh backend 2
+```
+
+To run openEHR tool on each node, run :
+
+```
+./dh.sh up openehrtool
+./dh.sh up openehrtool 2
+```
