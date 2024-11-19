@@ -76,6 +76,16 @@ if [[ $1 == "transform" ]]; then
     exit 0
 fi
 
+if [[ $1 == "federation" ]]; then
+    dev_setup_requirements
+    echo -e "\nStart FastAPI"
+    if is_local; then docker compose build federation-api filebeat; fi
+    docker compose up -d federation-api
+
+    echo -e "\nExit dh.sh"
+    exit 0
+fi
+
 
 
 if [[ $1 == "backend" ]]; then

@@ -170,6 +170,27 @@ services:
       hdp-dh-net:
         aliases:
           - transform.dh.local
+  federation-api:
+    build:
+      context: ./externals/dh-hdp-federation-api
+      dockerfile: Dockerfile
+    image: ${ENV_REGISTRY_HOST}/docker-health/federation-api:${ENV_TAG}
+    depends_on:
+      - proxy
+      - filebeat
+    volumes:
+      - ./filebeat/logs/federation-api:/var/log
+    env_file:
+      - ./env_files/timezone.env
+    environment:
+      LOGSTASH_TAGS: FEDERATION-API # TODO: Setup logstash in docker-common
+      VIRTUAL_HOST: federation.${RIT_ENV}.dh.unimaas.nl
+    ports:
+      - "8000:8000"
+    networks:
+      hdp-dh-net:
+        aliases:
+          - federation.dh.local
   jupyter-zib:
     build:
       context: ./externals/dh-hdp-notebooks
