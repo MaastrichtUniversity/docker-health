@@ -182,6 +182,8 @@ services:
       - ./filebeat/logs/federation-api:/var/log
     env_file:
       - ./env_files/timezone.env
+      - ./env_files/ehrbase_server.env
+      - ./env_files/ehrbase_server2.env
     environment:
       LOGSTASH_TAGS: FEDERATION-API # TODO: Setup logstash in docker-common
       VIRTUAL_HOST: federation.${RIT_ENV}.dh.unimaas.nl
