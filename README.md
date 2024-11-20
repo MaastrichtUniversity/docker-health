@@ -175,6 +175,13 @@ To up each node and load data in it, run:
 ./dh.sh zib 2
 ```
 
+To run federation service, run:
+
+```
+./dh.sh federation
+```
+
+(Optional)
 To run openEHR tool on each node, run:
 
 ```
