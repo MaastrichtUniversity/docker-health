@@ -1,34 +1,26 @@
 services:
-  ehrbase2:
+  ehrbase:
     image: ehrbase/ehrbase:2.6.0
     depends_on:
-      ehrdb2:
+      ehrdb:
         condition: service_healthy
-      # The depends_on property only works for services defined within the same compose.yaml file.
-      # We would need to implement custom retry logic in your application to handle dependencies gracefully.
-      # You need to make sure yourself that proxy and filebeat from main compose file are started.
-      # proxy:
-      #   condition: service_started
-      # filebeat:
-      #   condition: service_started
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/ehrbase2.env
+      - ./env_files/ehrbase.env
     environment:
-      VIRTUAL_HOST: ehrbase2.${RIT_ENV}.dh.unimaas.nl
-      VIRTUAL_PORT: 8081
+      VIRTUAL_HOST: ehrbase.${RIT_ENV}.dh.unimaas.nl
     healthcheck:
-      test: "wget -T5 -qO- -Y off localhost:8081/ehrbase/management/health | grep UP || exit 1"
+      test: "wget -T5 -qO- -Y off localhost:8080/ehrbase/management/health | grep UP || exit 1"
       interval: 5s
       timeout: 3s
       retries: 10
     #     start_period: 10s
     ports:
-      - "8081:8081"
+      - "8080:8080"
     networks:
       dev-hdp_hdp-dh-net:
         aliases:
-          - ehrbase2.dh.local
+          - ehrbase.dh.local
     entrypoint:
       - java
       - -jar
@@ -36,12 +28,10 @@ services:
       - -Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log
       - ehrbase.jar
     volumes:
-      - ./filebeat/logs/ehrbase2:/tmp/ehrbaselog
+      - ./filebeat/logs/ehrbase:/tmp/ehrbaselog
     restart: on-failure
-  ehrdb2:
+  ehrdb:
     image: ehrbase/ehrbase-v2-postgres:16.2
-    environment:
-      - PGPORT=5433
     command:
       [
         "postgres",
@@ -62,7 +52,7 @@ services:
       ]
     # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
     volumes:
-      - ./filebeat/logs/ehrdb2:/tmp/postgreslog
+      - ./filebeat/logs/ehrdb:/tmp/postgreslog
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrdb.env
@@ -71,12 +61,27 @@ services:
       interval: 5s
       timeout: 5s
       retries: 12
-
     ports:
-      - "5433:5433"
+      - "5432:5432"
     networks:
       - dev-hdp_hdp-dh-net
-  etl-zib2:
+  openehrtool:
+    image: surfercrs4/openehrtool:latest
+    volumes:
+      - ./openEHR-tool/openehrtool.cfg:/code/config/openehrtool.cfg
+    env_file:
+      - ./openEHR-tool/.env
+    depends_on:
+      - ehrbase
+    ports:
+      - 9000:9000
+    environment:
+      VIRTUAL_HOST: openehrtool.${RIT_ENV}.dh.unimaas.nl
+    networks:
+      dev-hdp_hdp-dh-net:
+        aliases:
+          - openehrtool.dh.local
+  etl-zib:
     build:
       context: ./externals/dh-hdp-etl
       dockerfile: Dockerfile
@@ -84,9 +89,9 @@ services:
         - SRC_SUBPROJECT=zib
       additional_contexts:
         hdp_templates: ./externals/dh-hdp-zib-templates
-    image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib2:${ENV_TAG}
+    image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
     volumes:
-      - ./data/gp-demo-data:/code/data/gp-demo-data
+      - ./data/mumc-demo-data:/code/data/mumc-demo-data
       - ./filebeat/logs/etl-zib:/code/logs
       - ./outputs/etl-zib:/code/outputs
       # Volume binds to auto-reload the code inside the container
@@ -96,38 +101,16 @@ services:
       - ./externals/dh-hdp-etl/tests:/code/tests
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/ehrbase_server2.env
+      - ./env_files/ehrbase_server.env
       - ./env_files/transform_server.env
-      - ./env_files/etl_zib2.env
+      - ./env_files/etl_zib.env
     environment:
-      LOGSTASH_TAGS: ETL_ZIB2
+      LOGSTASH_TAGS: ETL_ZIB
     depends_on:
-      # transform-rest:
-      #   condition: service_started
-      ehrbase2:
+      ehrbase:
         condition: service_healthy
     networks:
       - dev-hdp_hdp-dh-net
-  openehrtool2:
-    image: surfercrs4/openehrtool:latest
-    volumes:
-      - ./openEHR-tool/openehrtool-second-node.cfg:/code/config/openehrtool.cfg
-    env_file:
-      - ./openEHR-tool/.env
-    depends_on:
-      # - redis
-      - ehrbase2
-      # - proxy
-    ports:
-      - 9001:9001
-    command: ["flask", "run", "--host=0.0.0.0", "--port=9001"]
-    environment:
-      VIRTUAL_HOST: openehrtool2.${RIT_ENV}.dh.unimaas.nl
-    networks:
-      dev-hdp_hdp-dh-net:
-        aliases:
-          - openehrtool2.dh.local
-# This config now relies on the main compose file that the network has already been created ( it doesnt create one if it's external : true)
 networks:
   dev-hdp_hdp-dh-net:
     external: true

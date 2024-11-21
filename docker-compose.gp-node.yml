@@ -1,0 +1,121 @@
+services:
+  ehrbase2:
+    image: ehrbase/ehrbase:2.6.0
+    depends_on:
+      ehrdb2:
+        condition: service_healthy
+      # The depends_on property only works for services defined within the same compose.yaml file.
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/ehrbase2.env
+    environment:
+      VIRTUAL_HOST: ehrbase2.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_PORT: 8081
+    healthcheck:
+      test: "wget -T5 -qO- -Y off localhost:8081/ehrbase/management/health | grep UP || exit 1"
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    #     start_period: 10s
+    ports:
+      - "8081:8081"
+    networks:
+      dev-hdp_hdp-dh-gp-net:
+        aliases:
+          - ehrbase2.dh.local
+    entrypoint:
+      - java
+      - -jar
+      - -Dspring.profiles.active=docker
+      - -Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log
+      - ehrbase.jar
+    volumes:
+      - ./filebeat/logs/ehrbase2:/tmp/ehrbaselog
+    restart: on-failure
+  ehrdb2:
+    image: ehrbase/ehrbase-v2-postgres:16.2
+    environment:
+      - PGPORT=5433
+    command:
+      [
+        "postgres",
+        "-c",
+        "logging_collector=on",
+        "-c",
+        "log_directory=/tmp/postgreslog/",
+        "-c",
+        "log_filename=postgresql.log",
+        "-c",
+        "log_statement=none",
+        "-c",
+        "log_file_mode=0777",
+        "-c",
+        "log_rotation_age=0",
+        "-c",
+        "log_rotation_size=0",
+      ]
+    # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
+    volumes:
+      - ./filebeat/logs/ehrdb2:/tmp/postgreslog
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/ehrdb.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    ports:
+      - "5433:5433"
+    networks:
+      - dev-hdp_hdp-dh-gp-net
+  etl-zib2:
+    build:
+      context: ./externals/dh-hdp-etl
+      dockerfile: Dockerfile
+      args:
+        - SRC_SUBPROJECT=zib
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
+    image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib2:${ENV_TAG}
+    volumes:
+      - ./data/gp-demo-data:/code/data/gp-demo-data
+      - ./filebeat/logs/etl-zib:/code/logs
+      - ./outputs/etl-zib:/code/outputs
+      # Volume binds to auto-reload the code inside the container
+      - ./externals/dh-hdp-etl/etl.py:/code/etl.py
+      - ./externals/dh-hdp-etl/src/core:/code/src/core
+      - ./externals/dh-hdp-etl/src/subprojects/zib:/code/src/subprojects/zib
+      - ./externals/dh-hdp-etl/tests:/code/tests
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/ehrbase_server2.env
+      - ./env_files/transform_server.env
+      - ./env_files/etl_zib2.env
+    environment:
+      LOGSTASH_TAGS: ETL_ZIB2
+    depends_on:
+      ehrbase2:
+        condition: service_healthy
+    networks:
+      - dev-hdp_hdp-dh-gp-net
+  openehrtool2:
+    image: surfercrs4/openehrtool:latest
+    volumes:
+      - ./openEHR-tool/openehrtool-second-node.cfg:/code/config/openehrtool.cfg
+    env_file:
+      - ./openEHR-tool/.env
+    depends_on:
+      - ehrbase2
+    ports:
+      - 9001:9001
+    command: ["flask", "run", "--host=0.0.0.0", "--port=9001"]
+    environment:
+      VIRTUAL_HOST: openehrtool2.${RIT_ENV}.dh.unimaas.nl
+    networks:
+      dev-hdp_hdp-dh-gp-net:
+        aliases:
+          - openehrtool2.dh.local
+networks:
+  dev-hdp_hdp-dh-gp-net:
+    external: true
