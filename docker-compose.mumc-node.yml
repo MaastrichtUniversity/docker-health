@@ -18,7 +18,7 @@ services:
     ports:
       - "8080:8080"
     networks:
-      dev-hdp_hdp-dh-net:
+      dev-hdp_hdp-dh-mumc-net:
         aliases:
           - ehrbase.dh.local
     entrypoint:
@@ -64,7 +64,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - dev-hdp_hdp-dh-net
+      - dev-hdp_hdp-dh-mumc-net
   openehrtool:
     image: surfercrs4/openehrtool:latest
     volumes:
@@ -78,7 +78,7 @@ services:
     environment:
       VIRTUAL_HOST: openehrtool.${RIT_ENV}.dh.unimaas.nl
     networks:
-      dev-hdp_hdp-dh-net:
+      dev-hdp_hdp-dh-mumc-net:
         aliases:
           - openehrtool.dh.local
   etl-zib:
@@ -116,7 +116,7 @@ services:
       ehrbase:
         condition: service_healthy
     networks:
-      - dev-hdp_hdp-dh-net
+      - dev-hdp_hdp-dh-mumc-net
 networks:
-  dev-hdp_hdp-dh-net:
+  dev-hdp_hdp-dh-mumc-net:
     external: true

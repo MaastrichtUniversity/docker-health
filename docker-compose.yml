@@ -10,7 +10,7 @@ services:
       - "80:80"
       - "443:443"
     networks:
-      - hdp-dh-net
+      - hdp-dh-mumc-net
       - hdp-dh-gp-net
   transform-rest:
     build:
@@ -37,7 +37,7 @@ services:
     ports:
       - "8082:8080"
     networks:
-      hdp-dh-net:
+      hdp-dh-mumc-net:
         aliases:
           - transform.dh.local
       hdp-dh-gp-net:
@@ -67,7 +67,7 @@ services:
     ports:
       - "8000:8000"
     networks:
-      hdp-dh-net:
+      hdp-dh-mumc-net:
         aliases:
           - federation.dh.local
       hdp-dh-gp-net:
@@ -84,38 +84,9 @@ services:
       - ./filebeat/logs:/usr/share/logs/
       - ./filebeat/certs:/etc/certs:ro
     networks:
-      hdp-dh-net:
+      hdp-dh-mumc-net:
         aliases:
           - filebeat.dh.local
-  #  fhir-bridge:
-  #    ## BUILD option 1: Using a pre-build docker image
-  #    # image: ehrbase/fhir-bridge:1.5.5
-  #    ## BUILD option 2: Using a Dockerfile FAILED:
-  #    # build:
-  #    #   context: ./externals/dh-hdp-fhir-bridge
-  #    #   # additional_contexts:
-  #    #   #   - hdp_transform_rest=./externals/dh-hdp-transform-rest
-  #    #   dockerfile: Dockerfile
-  #    #   args:
-  #    #     - MAVEN_VERSION=${MAVEN_VERSION}
-  #    #     - FHIR_BRIDGE_VERSION=${FHIR_BRIDGE_VERSION}
-  #    #     - HDP_ZIB_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
-  #    # # image: ${ENV_REGISTRY_HOST}/docker-health/fhir-bridge:${ENV_TAG}
-  #    ## BUILD option 3: Build the image using `mvn clean spring-boot:build-image`
-  #    image: hdp-ehrbase/fhir-bridge:${ENV_TAG}
-  #    depends_on:
-  #      ehrbase:
-  #        condition: service_healthy
-  #    env_file:
-  #      - ./env_files/fhir-bridge.env
-  #    environment:
-  #      VIRTUAL_HOST: fhir-bridge.${RIT_ENV}.dh.unimaas.nl
-  #    ports:
-  #      - "8887:8888"
-  #    networks:
-  #      hdp-dh-net:
-  #        aliases:
-  #          - fhir-bridge.dh.local
   jupyter-zib:
     build:
       context: ./externals/dh-hdp-notebooks
@@ -151,7 +122,7 @@ services:
     ports:
       - "8888:8888"
     networks:
-      hdp-dh-net:
+      hdp-dh-mumc-net:
         aliases:
           - jupyter-zib.dh.local
       hdp-dh-gp-net:
@@ -165,7 +136,7 @@ services:
     volumes:
       - ./openEHR-tool/redis.conf:/redis.conf
     networks:
-      hdp-dh-net:
+      hdp-dh-mumc-net:
         aliases:
           - redis.dh.local
   minio:
@@ -178,14 +149,43 @@ services:
       MINIO_ROOT_PASSWORD: minio123456
     command: server /data --console-address ":9001"
     networks:
-      - hdp-dh-net
+      - hdp-dh-mumc-net
+  #  fhir-bridge:
+  #    ## BUILD option 1: Using a pre-build docker image
+  #    # image: ehrbase/fhir-bridge:1.5.5
+  #    ## BUILD option 2: Using a Dockerfile FAILED:
+  #    # build:
+  #    #   context: ./externals/dh-hdp-fhir-bridge
+  #    #   # additional_contexts:
+  #    #   #   - hdp_transform_rest=./externals/dh-hdp-transform-rest
+  #    #   dockerfile: Dockerfile
+  #    #   args:
+  #    #     - MAVEN_VERSION=${MAVEN_VERSION}
+  #    #     - FHIR_BRIDGE_VERSION=${FHIR_BRIDGE_VERSION}
+  #    #     - HDP_ZIB_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
+  #    # # image: ${ENV_REGISTRY_HOST}/docker-health/fhir-bridge:${ENV_TAG}
+  #    ## BUILD option 3: Build the image using `mvn clean spring-boot:build-image`
+  #    image: hdp-ehrbase/fhir-bridge:${ENV_TAG}
+  #    depends_on:
+  #      ehrbase:
+  #        condition: service_healthy
+  #    env_file:
+  #      - ./env_files/fhir-bridge.env
+  #    environment:
+  #      VIRTUAL_HOST: fhir-bridge.${RIT_ENV}.dh.unimaas.nl
+  #    ports:
+  #      - "8887:8888"
+  #    networks:
+  #      hdp-dh-mumc-net:
+  #        aliases:
+  #          - fhir-bridge.dh.local
 networks:
   default:
     ipam:
       driver: default
       config:
         - subnet: "172.30.1.0/24"
-  hdp-dh-net:
+  hdp-dh-mumc-net:
     ipam:
       driver: default
       config:
