@@ -92,7 +92,7 @@ services:
       - ehrbase
       - proxy
     ports:
-      - 9000:9000
+      - "9000:9000"
     environment:
       VIRTUAL_HOST: openehrtool.${RIT_ENV}.dh.unimaas.nl
     networks:
@@ -102,7 +102,7 @@ services:
   redis:
     image: redis:latest
     ports:
-      - 6379:6379
+      - "6379:6379"
     command: redis-server  /redis.conf
     volumes:
       - ./openEHR-tool/redis.conf:/redis.conf

@@ -125,7 +125,7 @@ services:
       - ehrbase2
       # - proxy
     ports:
-      - 9001:9001
+      - "9001:9001"
     command: ["flask", "run", "--host=0.0.0.0", "--port=9001"]
     environment:
       VIRTUAL_HOST: openehrtool2.${RIT_ENV}.dh.unimaas.nl
