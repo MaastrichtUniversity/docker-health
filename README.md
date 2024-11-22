@@ -103,19 +103,19 @@ Start the dev environment and execute all the tests
 Execute all the tests
 
 ```
-./dh.sh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5
+docker compose -f docker-compose.mumc-node.yml run --entrypoint pytest etl-zib --verbose --verbosity=5
 ```
 
 Execute a specific class test
 
 ```
-./dh.sh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_burgerlijke_staat.py::TestBurgerlijkeStaat2017
+docker compose -f docker-compose.mumc-node.yml run --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_burgerlijke_staat.py::TestBurgerlijkeStaat2017
 ```
 
 Execute a single test
 
 ```
-./dh.sh run --rm --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_all_zib_pipelines.py::TestAllZibPipelines::test_number_of_templates
+docker compose -f docker-compose.mumc-node.yml run --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_all_zib_pipelines.py::TestAllZibPipelines::test_number_of_templates
 ```
 
 ### Recreate the ETL stack
