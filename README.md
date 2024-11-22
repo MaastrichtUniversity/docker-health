@@ -168,23 +168,15 @@ Add these virtual hosts to your /etc/hosts
 127.0.0.1 federation.local.dh.unimaas.nl
 ```
 
-To up each node and load data in it, run:
+Up each node, load data and start the federation API:
 
 ```
-./dh.sh zib
-./dh.sh zib 2
-```
-
-To run federation service, run:
-
-```
-./dh.sh federation
+./dh.sh zib; ./dh.sh zib 2; ./dh.sh federation
 ```
 
 (Optional)
 To run openEHR tool on each node, run:
 
 ```
-./dh.sh openehrtool
-./dh.sh openehrtool 2
+./dh.sh openehrtool; ./dh.sh openehrtool 2
 ```
