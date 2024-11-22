@@ -96,11 +96,17 @@ services:
       - ./externals/dh-hdp-etl/tests:/code/tests
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/ehrbase_server2.env
       - ./env_files/transform_server.env
       - ./env_files/etl_zib2.env
     environment:
       LOGSTASH_TAGS: ETL_ZIB2
+      EHRBASE_USERNAME: ${EHRBASE_USERNAME_GP_NODE}
+      EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_GP_NODE}
+      EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_GP_NODE}
+      # Environment variables meant for development while running the test teardown:
+      EHRBASE_ADMIN_USERNAME: ${EHRBASE_ADMIN_USERNAME_GP_NODE}
+      EHRBASE_ADMIN_PASSWORD: ${EHRBASE_ADMIN_PASSWORD_GP_NODE}
+      EHRBASE_ADMIN_BASE_URL: ${EHRBASE_ADMIN_BASE_URL_GP_NODE}
     depends_on:
       # transform-rest:
       #   condition: service_started

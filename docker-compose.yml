@@ -130,11 +130,17 @@ services:
       - ./externals/dh-hdp-etl/tests:/code/tests
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/ehrbase_server.env
       - ./env_files/transform_server.env
       - ./env_files/etl_zib.env
     environment:
       LOGSTASH_TAGS: ETL_ZIB
+      EHRBASE_USERNAME: ${EHRBASE_USERNAME_MUMC_NODE}
+      EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_MUMC_NODE}
+      EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_MUMC_NODE}
+      # Environment variables meant for development while running the test teardown:
+      EHRBASE_ADMIN_USERNAME: ${EHRBASE_ADMIN_USERNAME_MUMC_NODE}
+      EHRBASE_ADMIN_PASSWORD: ${EHRBASE_ADMIN_PASSWORD_MUMC_NODE}
+      EHRBASE_ADMIN_BASE_URL: ${EHRBASE_ADMIN_BASE_URL_MUMC_NODE}
     depends_on:
       transform-rest:
         condition: service_started
@@ -182,11 +188,15 @@ services:
       - ./filebeat/logs/federation-api:/var/log
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/ehrbase_server.env
-      - ./env_files/ehrbase_server2.env
     environment:
       LOGSTASH_TAGS: FEDERATION-API # TODO: Setup logstash in docker-common
       VIRTUAL_HOST: federation.${RIT_ENV}.dh.unimaas.nl
+      MUMC__EHRBASE_USERNAME: ${EHRBASE_USERNAME_MUMC_NODE}
+      MUMC__EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_MUMC_NODE}
+      MUMC__EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_MUMC_NODE}
+      GP__EHRBASE_USERNAME: ${EHRBASE_USERNAME_GP_NODE}
+      GP__EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_GP_NODE}
+      GP__EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_GP_NODE}
     ports:
       - "8000:8000"
     networks:
@@ -210,11 +220,13 @@ services:
         condition: service_healthy
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/ehrbase_server.env
       - ./env_files/transform_server.env
       - ./env_files/etl_zib.env
     environment:
       VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
+      EHRBASE_USERNAME: ${EHRBASE_USERNAME_MUMC_NODE}
+      EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_MUMC_NODE}
+      EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_MUMC_NODE}
     volumes:
       - ./data/zib-demo-data:/home/jovyan/data/zib-demo-data
       # Volume binds to auto-reload the code inside the container
