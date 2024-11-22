@@ -5,12 +5,6 @@ services:
       ehrdb2:
         condition: service_healthy
       # The depends_on property only works for services defined within the same compose.yaml file.
-      # We would need to implement custom retry logic in your application to handle dependencies gracefully.
-      # You need to make sure yourself that proxy and filebeat from main compose file are started.
-      # proxy:
-      #   condition: service_started
-      # filebeat:
-      #   condition: service_started
     env_file:
       - ./env_files/timezone.env
       - ./env_files/ehrbase2.env
@@ -26,7 +20,7 @@ services:
     ports:
       - "8081:8081"
     networks:
-      dev-hdp_hdp-dh-net:
+      dev-hdp_hdp-dh-gp-net:
         aliases:
           - ehrbase2.dh.local
     entrypoint:
@@ -71,11 +65,10 @@ services:
       interval: 5s
       timeout: 5s
       retries: 12
-
     ports:
       - "5433:5433"
     networks:
-      - dev-hdp_hdp-dh-net
+      - dev-hdp_hdp-dh-gp-net
   etl-zib2:
     build:
       context: ./externals/dh-hdp-etl
@@ -108,12 +101,10 @@ services:
       EHRBASE_ADMIN_PASSWORD: ${EHRBASE_ADMIN_PASSWORD_GP_NODE}
       EHRBASE_ADMIN_BASE_URL: ${EHRBASE_ADMIN_BASE_URL_GP_NODE}
     depends_on:
-      # transform-rest:
-      #   condition: service_started
       ehrbase2:
         condition: service_healthy
     networks:
-      - dev-hdp_hdp-dh-net
+      - dev-hdp_hdp-dh-gp-net
   openehrtool2:
     image: surfercrs4/openehrtool:latest
     volumes:
@@ -121,19 +112,16 @@ services:
     env_file:
       - ./openEHR-tool/.env
     depends_on:
-      # - redis
       - ehrbase2
-      # - proxy
     ports:
       - "9001:9001"
     command: ["flask", "run", "--host=0.0.0.0", "--port=9001"]
     environment:
       VIRTUAL_HOST: openehrtool2.${RIT_ENV}.dh.unimaas.nl
     networks:
-      dev-hdp_hdp-dh-net:
+      dev-hdp_hdp-dh-gp-net:
         aliases:
           - openehrtool2.dh.local
-# This config now relies on the main compose file that the network has already been created ( it doesnt create one if it's external : true)
 networks:
-  dev-hdp_hdp-dh-net:
+  dev-hdp_hdp-dh-gp-net:
     external: true

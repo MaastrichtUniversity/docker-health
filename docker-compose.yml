@@ -11,143 +11,7 @@ services:
       - "443:443"
     networks:
       - hdp-dh-net
-  ehrbase:
-    image: ehrbase/ehrbase:2.6.0
-    depends_on:
-      ehrdb:
-        condition: service_healthy
-      proxy:
-        condition: service_started
-      filebeat:
-        condition: service_started
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/ehrbase.env
-    environment:
-      VIRTUAL_HOST: ehrbase.${RIT_ENV}.dh.unimaas.nl
-    healthcheck:
-      test: "wget -T5 -qO- -Y off localhost:8080/ehrbase/management/health | grep UP || exit 1"
-      interval: 5s
-      timeout: 3s
-      retries: 10
-    #     start_period: 10s
-    ports:
-      - "8080:8080"
-    networks:
-      hdp-dh-net:
-        aliases:
-          - ehrbase.dh.local
-    entrypoint:
-      - java
-      - -jar
-      - -Dspring.profiles.active=docker
-      - -Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log
-      - ehrbase.jar
-    volumes:
-      - ./filebeat/logs/ehrbase:/tmp/ehrbaselog
-    restart: on-failure
-  ehrdb:
-    image: ehrbase/ehrbase-v2-postgres:16.2
-    command:
-      [
-        "postgres",
-        "-c",
-        "logging_collector=on",
-        "-c",
-        "log_directory=/tmp/postgreslog/",
-        "-c",
-        "log_filename=postgresql.log",
-        "-c",
-        "log_statement=none",
-        "-c",
-        "log_file_mode=0777",
-        "-c",
-        "log_rotation_age=0",
-        "-c",
-        "log_rotation_size=0",
-      ]
-    # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
-    volumes:
-      - ./filebeat/logs/ehrdb:/tmp/postgreslog
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/ehrdb.env
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 12
-    ports:
-      - "5432:5432"
-    networks:
-      - hdp-dh-net
-  openehrtool:
-    image: surfercrs4/openehrtool:latest
-    volumes:
-      - ./openEHR-tool/openehrtool.cfg:/code/config/openehrtool.cfg
-    env_file:
-      - ./openEHR-tool/.env
-    depends_on:
-      - redis
-      - ehrbase
-      - proxy
-    ports:
-      - "9000:9000"
-    environment:
-      VIRTUAL_HOST: openehrtool.${RIT_ENV}.dh.unimaas.nl
-    networks:
-      hdp-dh-net:
-        aliases:
-          - openehrtool.dh.local
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
-    command: redis-server  /redis.conf
-    volumes:
-      - ./openEHR-tool/redis.conf:/redis.conf
-    networks:
-      hdp-dh-net:
-        aliases:
-          - redis.dh.local
-  etl-zib:
-    build:
-      context: ./externals/dh-hdp-etl
-      dockerfile: Dockerfile
-      args:
-        - SRC_SUBPROJECT=zib
-      additional_contexts:
-        hdp_templates: ./externals/dh-hdp-zib-templates
-    image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
-    volumes:
-      - ./data/mumc-demo-data:/code/data/mumc-demo-data
-      - ./filebeat/logs/etl-zib:/code/logs
-      - ./outputs/etl-zib:/code/outputs
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-etl/etl.py:/code/etl.py
-      - ./externals/dh-hdp-etl/src/core:/code/src/core
-      - ./externals/dh-hdp-etl/src/subprojects/zib:/code/src/subprojects/zib
-      - ./externals/dh-hdp-etl/tests:/code/tests
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/transform_server.env
-      - ./env_files/etl_zib.env
-    environment:
-      LOGSTASH_TAGS: ETL_ZIB
-      EHRBASE_USERNAME: ${EHRBASE_USERNAME_MUMC_NODE}
-      EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_MUMC_NODE}
-      EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_MUMC_NODE}
-      # Environment variables meant for development while running the test teardown:
-      EHRBASE_ADMIN_USERNAME: ${EHRBASE_ADMIN_USERNAME_MUMC_NODE}
-      EHRBASE_ADMIN_PASSWORD: ${EHRBASE_ADMIN_PASSWORD_MUMC_NODE}
-      EHRBASE_ADMIN_BASE_URL: ${EHRBASE_ADMIN_BASE_URL_MUMC_NODE}
-    depends_on:
-      transform-rest:
-        condition: service_started
-      ehrbase:
-        condition: service_healthy
-    networks:
-      - hdp-dh-net
+      - hdp-dh-gp-net
   transform-rest:
     build:
       context: ./externals/dh-hdp-transform-rest
@@ -174,6 +38,9 @@ services:
       - "8082:8080"
     networks:
       hdp-dh-net:
+        aliases:
+          - transform.dh.local
+      hdp-dh-gp-net:
         aliases:
           - transform.dh.local
   federation-api:
@@ -203,44 +70,9 @@ services:
       hdp-dh-net:
         aliases:
           - federation.dh.local
-  jupyter-zib:
-    build:
-      context: ./externals/dh-hdp-notebooks
-      dockerfile: Dockerfile
-      args:
-        - DATA=zib
-      additional_contexts:
-        hdp_templates: ./externals/dh-hdp-zib-templates
-    image: ${ENV_REGISTRY_HOST}/docker-health/jupyter-zib:${ENV_TAG}
-    command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
-    depends_on:
-      transform-rest:
-        condition: service_started
-      ehrbase:
-        condition: service_healthy
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/transform_server.env
-      - ./env_files/etl_zib.env
-    environment:
-      VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
-      EHRBASE_USERNAME: ${EHRBASE_USERNAME_MUMC_NODE}
-      EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_MUMC_NODE}
-      EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_MUMC_NODE}
-    volumes:
-      - ./data/zib-demo-data:/home/jovyan/data/zib-demo-data
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-etl/etl.py:/home/jovyan/etl.py
-      - ./externals/dh-hdp-etl/requirements.txt:/home/jovyan/requirements.txt
-      - ./externals/dh-hdp-etl/src:/home/jovyan/src
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
-    ports:
-      - "8888:8888"
-    networks:
-      hdp-dh-net:
+      hdp-dh-gp-net:
         aliases:
-          - jupyter-zib.dh.local
+          - federation.dh.local
   filebeat:
     build:
       context: ./filebeat
@@ -284,6 +116,58 @@ services:
   #      hdp-dh-net:
   #        aliases:
   #          - fhir-bridge.dh.local
+  jupyter-zib:
+    build:
+      context: ./externals/dh-hdp-notebooks
+      dockerfile: Dockerfile
+      args:
+        - DATA=zib
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
+    image: ${ENV_REGISTRY_HOST}/docker-health/jupyter-zib:${ENV_TAG}
+    command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
+    depends_on:
+      transform-rest:
+        condition: service_started
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/transform_server.env
+      - ./env_files/etl_zib.env
+    environment:
+      VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
+      # Update the env depending on the node:
+      EHRBASE_USERNAME: ${EHRBASE_USERNAME_MUMC_NODE}
+      EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_MUMC_NODE}
+      EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_MUMC_NODE}
+    volumes:
+      - ./data/mumc-demo-data:/home/jovyan/data/mumc-demo-data
+      - ./data/gp-demo-data:/home/jovyan/data/gp-demo-data
+      # Volume binds to auto-reload the code inside the container
+      - ./externals/dh-hdp-etl/etl.py:/home/jovyan/etl.py
+      - ./externals/dh-hdp-etl/requirements.txt:/home/jovyan/requirements.txt
+      - ./externals/dh-hdp-etl/src:/home/jovyan/src
+      # Volume binds to auto-reload the code inside the container
+      - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
+    ports:
+      - "8888:8888"
+    networks:
+      hdp-dh-net:
+        aliases:
+          - jupyter-zib.dh.local
+      hdp-dh-gp-net:
+        aliases:
+          - jupyter-zib.dh.local
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    command: redis-server  /redis.conf
+    volumes:
+      - ./openEHR-tool/redis.conf:/redis.conf
+    networks:
+      hdp-dh-net:
+        aliases:
+          - redis.dh.local
   minio:
     image: minio/minio
     ports:
@@ -306,3 +190,8 @@ networks:
       driver: default
       config:
         - subnet: "172.31.1.0/24"
+  hdp-dh-gp-net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.32.1.0/24"
