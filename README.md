@@ -100,19 +100,21 @@ Start the dev environment and execute all the tests
 ./dh.sh test
 ```
 
-Execute all the tests
+For more specific test execution, add the following line within `test` in `dh.sh`:
+
+- Execute all the tests
 
 ```
 docker compose -f docker-compose.mumc-node.yml run --entrypoint pytest etl-zib --verbose --verbosity=5
 ```
 
-Execute a specific class test
+- Execute a specific class test
 
 ```
 docker compose -f docker-compose.mumc-node.yml run --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_burgerlijke_staat.py::TestBurgerlijkeStaat2017
 ```
 
-Execute a single test
+- Execute a single test
 
 ```
 docker compose -f docker-compose.mumc-node.yml run --entrypoint pytest etl-zib --verbose --verbosity=5 tests/test_all_zib_pipelines.py::TestAllZibPipelines::test_number_of_templates
