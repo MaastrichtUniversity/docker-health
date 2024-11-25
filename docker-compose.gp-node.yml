@@ -7,7 +7,7 @@ services:
       # The depends_on property only works for services defined within the same compose.yaml file.
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/ehrbase2.env
+      - ./env_files/gp/ehrbase.env
     environment:
       VIRTUAL_HOST: ehrbase2.${RIT_ENV}.dh.unimaas.nl
       VIRTUAL_PORT: 8081
@@ -59,7 +59,7 @@ services:
       - ./filebeat/logs/ehrdb2:/tmp/postgreslog
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/ehrdb.env
+      - ./env_files/gp/ehrdb.env
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -90,7 +90,8 @@ services:
     env_file:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
-      - ./env_files/etl_zib2.env
+      - ./env_files/zib-templates.env
+      - ./env_files/gp/etl.env
     environment:
       LOGSTASH_TAGS: ETL_ZIB2
       EHRBASE_USERNAME: ${EHRBASE_USERNAME_GP_NODE}

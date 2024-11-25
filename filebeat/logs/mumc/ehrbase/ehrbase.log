@@ -1,0 +1,90 @@
+2024-11-25T11:09:01.405+01:00  INFO 1 --- [ehrbase] [main] org.ehrbase.application.EhrBase          : Starting EhrBase using Java 21.0.4 with PID 1 (/app/ehrbase.jar started by ehrbase in /app)
+2024-11-25T11:09:01.409+01:00  INFO 1 --- [ehrbase] [main] org.ehrbase.application.EhrBase          : The following 1 profile is active: "docker"
+2024-11-25T11:09:02.919+01:00  INFO 1 --- [ehrbase] [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2024-11-25T11:09:02.921+01:00  INFO 1 --- [ehrbase] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2024-11-25T11:09:02.941+01:00  INFO 1 --- [ehrbase] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+2024-11-25T11:09:03.195+01:00  INFO 1 --- [ehrbase] [main] org.pf4j.DefaultPluginStatusProvider     : Enabled plugins: []
+2024-11-25T11:09:03.198+01:00  INFO 1 --- [ehrbase] [main] org.pf4j.DefaultPluginStatusProvider     : Disabled plugins: []
+2024-11-25T11:09:03.202+01:00  INFO 1 --- [ehrbase] [main] org.pf4j.DefaultPluginManager            : PF4J version 3.11.1 in 'deployment' mode
+2024-11-25T11:09:03.211+01:00  WARN 1 --- [ehrbase] [main] org.pf4j.AbstractPluginManager           : No 'plugin_dir' root
+2024-11-25T11:09:03.212+01:00  INFO 1 --- [ehrbase] [main] org.pf4j.AbstractPluginManager           : No plugins
+2024-11-25T11:09:03.798+01:00  INFO 1 --- [ehrbase] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-11-25T11:09:03.808+01:00  INFO 1 --- [ehrbase] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-11-25T11:09:03.809+01:00  INFO 1 --- [ehrbase] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-11-25T11:09:03.834+01:00  INFO 1 --- [ehrbase] [main] o.a.c.c.C.[.[localhost].[/ehrbase]       : Initializing Spring embedded WebApplicationContext
+2024-11-25T11:09:03.834+01:00  INFO 1 --- [ehrbase] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2367 ms
+2024-11-25T11:09:04.147+01:00  INFO 1 --- [ehrbase] [main] o.e.c.c.s.SecurityConfigBasicAuth        : Using basic authentication
+2024-11-25T11:09:05.057+01:00  INFO 1 --- [ehrbase] [main] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:postgresql://ehrdb:5432/ehrbase (PostgreSQL 16.2)
+2024-11-25T11:09:05.068+01:00  WARN 1 --- [ehrbase] [main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: PostgreSQL 16.2 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 14.
+2024-11-25T11:09:05.121+01:00  INFO 1 --- [ehrbase] [main] o.f.c.i.c.SqlScriptCallbackFactory       : Executing SQL callback: beforeValidate - 
+2024-11-25T11:09:05.153+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbValidate     : Successfully validated 4 migrations (execution time 00:00.022s)
+2024-11-25T11:09:05.173+01:00  INFO 1 --- [ehrbase] [main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "ext"."flyway_schema_history" ...
+2024-11-25T11:09:05.201+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Current version of schema "ext": << Empty Schema >>
+2024-11-25T11:09:05.207+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ext" to version "1 - baseline"
+2024-11-25T11:09:05.232+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ext" to version "2 - aggregate functions"
+2024-11-25T11:09:05.253+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ext" to version "3 - dv ordered aggregate functions"
+2024-11-25T11:09:05.270+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ext" to version "4 - create missing collation"
+2024-11-25T11:09:05.278+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Successfully applied 4 migrations to schema "ext", now at version v4 (execution time 00:00.082s)
+2024-11-25T11:09:05.322+01:00  INFO 1 --- [ehrbase] [main] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:postgresql://ehrdb:5432/ehrbase (PostgreSQL 16.2)
+2024-11-25T11:09:05.325+01:00  WARN 1 --- [ehrbase] [main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: PostgreSQL 16.2 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 14.
+2024-11-25T11:09:05.333+01:00  INFO 1 --- [ehrbase] [main] o.f.c.i.c.SqlScriptCallbackFactory       : Executing SQL callback: beforeValidate - 
+2024-11-25T11:09:05.351+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbValidate     : Successfully validated 23 migrations (execution time 00:00.015s)
+2024-11-25T11:09:05.360+01:00  INFO 1 --- [ehrbase] [main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "ehr"."flyway_schema_history" ...
+2024-11-25T11:09:05.378+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Current version of schema "ehr": << Empty Schema >>
+2024-11-25T11:09:05.389+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "1 - ehr"
+2024-11-25T11:09:05.469+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "2 - tenant"
+2024-11-25T11:09:05.494+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "3 - locatable"
+2024-11-25T11:09:05.567+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "4 - drop comp data idx"
+2024-11-25T11:09:05.581+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "5.1 - remove multi tenancy"
+2024-11-25T11:09:05.658+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "5.2 - remove multi tenancy"
+2024-11-25T11:09:05.702+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "5.3 - remove multi tenancy"
+2024-11-25T11:09:05.754+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "5.4 - remove multi tenancy"
+2024-11-25T11:09:05.769+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "6.1 - version tables"
+2024-11-25T11:09:05.803+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "6.2 - version tables"
+2024-11-25T11:09:05.816+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "6.3 - version tables"
+2024-11-25T11:09:05.875+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "6.4 - version tables"
+2024-11-25T11:09:05.889+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "7 - comp rmobject index"
+2024-11-25T11:09:05.895+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "8 - vo data indexes"
+2024-11-25T11:09:05.904+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "9.1 - add root concept to comp version"
+2024-11-25T11:09:05.913+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "9.2 - add root concept to comp version"
+2024-11-25T11:09:05.921+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "9.3 - add root concept to comp version"
+2024-11-25T11:09:05.929+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "10 - ehr status subject aql idx"
+2024-11-25T11:09:05.933+01:00  INFO 1 --- [ehrbase] [main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: relation "prep_ehr_status_subject_idx" does not exist, skipping
+2024-11-25T11:09:05.940+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "11 - drop system"
+2024-11-25T11:09:05.949+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "12 - drop template index"
+2024-11-25T11:09:05.956+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "13 - refactor audit details"
+2024-11-25T11:09:05.969+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "14 - index for ehr time created"
+2024-11-25T11:09:05.978+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Migrating schema "ehr" to version "15 - data tables add parent num"
+2024-11-25T11:09:05.989+01:00  INFO 1 --- [ehrbase] [main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: index "mig_ehr_folder_data_history_num_idx" does not exist, skipping
+2024-11-25T11:09:05.989+01:00  INFO 1 --- [ehrbase] [main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: index "mig_ehr_folder_data_num_idx" does not exist, skipping
+2024-11-25T11:09:05.990+01:00  INFO 1 --- [ehrbase] [main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: index "mig_ehr_status_data_history_num_idx" does not exist, skipping
+2024-11-25T11:09:05.990+01:00  INFO 1 --- [ehrbase] [main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: index "mig_ehr_status_data_num_idx" does not exist, skipping
+2024-11-25T11:09:05.990+01:00  INFO 1 --- [ehrbase] [main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: index "mig_comp_data_history_num_idx" does not exist, skipping
+2024-11-25T11:09:05.991+01:00  INFO 1 --- [ehrbase] [main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: index "mig_comp_data_num_idx" does not exist, skipping
+2024-11-25T11:09:06.005+01:00  INFO 1 --- [ehrbase] [main] o.f.core.internal.command.DbMigrate      : Successfully applied 23 migrations to schema "ehr", now at version v15 (execution time 00:00.629s)
+2024-11-25T11:09:06.520+01:00  WARN 1 --- [ehrbase] [main] o.ehrbase.service.ValidationServiceImp   : Disabling strict invariant validation. Caution is advised.
+2024-11-25T11:09:06.838+01:00  WARN 1 --- [ehrbase] [main] .ValidationConfiguration$$SpringCGLIB$$0 : External terminology validation is disabled, consider to enable it
+2024-11-25T11:09:07.177+01:00  INFO 1 --- [ehrbase] [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2024-11-25T11:09:07.674+01:00  INFO 1 --- [ehrbase] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/management'
+2024-11-25T11:09:07.696+01:00  INFO 1 --- [ehrbase] [main] o.e.c.c.s.SecurityConfigBasicAuth        : Management endpoint access type PUBLIC
+2024-11-25T11:09:07.740+01:00  INFO 1 --- [ehrbase] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6124a7c0, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@77a13162, org.springframework.security.web.context.SecurityContextHolderFilter@467625e3, org.springframework.security.web.header.HeaderWriterFilter@4bacabc4, org.springframework.web.filter.CorsFilter@6bea0866, org.springframework.security.web.csrf.CsrfFilter@cbd9494, org.springframework.security.web.authentication.logout.LogoutFilter@65d3e2ba, org.ehrbase.configuration.config.security.SecurityFilter@3c5d183, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@10d8769e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@16baf8d0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7473cfe2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@471b7c9c, org.springframework.security.web.session.SessionManagementFilter@577b2c5f, org.springframework.security.web.access.ExceptionTranslationFilter@1adc38a0, org.springframework.security.web.access.intercept.AuthorizationFilter@520034a]
+2024-11-25T11:09:08.785+01:00  INFO 1 --- [ehrbase] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/ehrbase'
+2024-11-25T11:09:08.810+01:00  INFO 1 --- [ehrbase] [main] org.ehrbase.application.EhrBase          : Started EhrBase in 7.77 seconds (process running for 8.346)
+2024-11-25T11:09:10.653+01:00  INFO 1 --- [ehrbase] [http-nio-8080-exec-1] o.a.c.c.C.[.[localhost].[/ehrbase]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-11-25T11:09:10.654+01:00  INFO 1 --- [ehrbase] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-11-25T11:09:10.655+01:00  INFO 1 --- [ehrbase] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-11-25T11:09:10.749+01:00  INFO 1 --- [ehrbase] [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-11-25T11:09:10.784+01:00  INFO 1 --- [ehrbase] [http-nio-8080-exec-1] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2bc25d6c
+2024-11-25T11:09:10.788+01:00  INFO 1 --- [ehrbase] [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-11-25T11:09:12.418+01:00  INFO 1 --- [ehrbase] [http-nio-8080-exec-2] o.j.i.D.logVersionSupport                : Version                  : Database version is supported by dialect POSTGRES: 16.2
+2024-11-25T11:09:12.450+01:00  WARN 1 --- [ehrbase] [http-nio-8080-exec-2] o.e.c.exception.DefaultExceptionHandler  : No EHR with supplied subject parameters found
+2024-11-25T11:09:14.736+01:00  INFO 1 --- [ehrbase] [http-nio-8080-exec-9] o.e.service.KnowledgeCacheServiceImp     : Updating WebTemplate cache for template: BurgerlijkeStaat2017
+2024-11-25T11:09:15.317+01:00  WARN 1 --- [ehrbase] [http-nio-8080-exec-12] o.e.c.exception.DefaultExceptionHandler  : No EHR with supplied subject parameters found
+2024-11-25T11:09:15.536+01:00  WARN 1 --- [ehrbase] [http-nio-8080-exec-19] o.e.c.exception.DefaultExceptionHandler  : Operational template with this template ID already exists: BurgerlijkeStaat2017
+2024-11-25T11:09:15.626+01:00  WARN 1 --- [ehrbase] [http-nio-8080-exec-21] o.e.c.exception.DefaultExceptionHandler  : No EHR with supplied subject parameters found
+2024-11-25T11:09:15.804+01:00  WARN 1 --- [ehrbase] [http-nio-8080-exec-28] o.e.c.exception.DefaultExceptionHandler  : Operational template with this template ID already exists: BurgerlijkeStaat2017
+2024-11-25T11:09:16.769+01:00  INFO 1 --- [ehrbase] [http-nio-8080-exec-40] o.e.service.KnowledgeCacheServiceImp     : Updating WebTemplate cache for template: DataHub-Woonsituatie-2017
+2024-11-25T11:09:16.983+01:00  WARN 1 --- [ehrbase] [http-nio-8080-exec-45] o.e.c.exception.DefaultExceptionHandler  : Operational template with this template ID already exists: DataHub-Woonsituatie-2017
+2024-11-25T11:09:17.159+01:00  WARN 1 --- [ehrbase] [http-nio-8080-exec-51] o.e.c.exception.DefaultExceptionHandler  : Operational template with this template ID already exists: DataHub-Woonsituatie-2017
+2024-11-25T11:15:50.274+01:00  WARN 1 --- [ehrbase] [http-nio-8080-exec-141] o.e.c.exception.DefaultExceptionHandler  : No static resource management/info.
+2024-11-25T11:15:50.280+01:00  WARN 1 --- [ehrbase] [http-nio-8080-exec-140] o.e.c.exception.DefaultExceptionHandler  : No static resource management/env.

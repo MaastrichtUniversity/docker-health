@@ -6,7 +6,7 @@ services:
         condition: service_healthy
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/ehrbase.env
+      - ./env_files/mumc/ehrbase.env
     environment:
       VIRTUAL_HOST: ehrbase.${RIT_ENV}.dh.unimaas.nl
     healthcheck:
@@ -55,7 +55,7 @@ services:
       - ./filebeat/logs/ehrdb:/tmp/postgreslog
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/ehrdb.env
+      - ./env_files/mumc/ehrdb.env
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -102,7 +102,8 @@ services:
     env_file:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
-      - ./env_files/etl_zib.env
+      - ./env_files/zib-templates.env
+      - ./env_files/mumc/etl.env
     environment:
       LOGSTASH_TAGS: ETL_ZIB
       EHRBASE_USERNAME: ${EHRBASE_USERNAME_MUMC_NODE}
