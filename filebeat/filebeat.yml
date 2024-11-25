@@ -8,20 +8,23 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/etl-zib/etl-zib.log
+      - /usr/share/logs/mumc/etl-zib/etl-zib.log
     tags: ["ETL_ZIB"]
 
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/ehrbase/ehrbase.log
+      - /usr/share/logs/mumc/ehrbase/ehrbase.log
     tags: ["EHRBASE"]
 
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/ehrdb/postgresql.log
+      - /usr/share/logs/mumc/ehrdb/postgresql.log
     tags: ["EHRDB"]
+
+
+# TODO: ETL_ZIB2, EHRBASE2 and EHRDB2 for the node "gp"
 
 # Disable filebeat monitoring
 logging.metrics.enabled: false

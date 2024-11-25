@@ -28,7 +28,7 @@ services:
       - -Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log
       - ehrbase.jar
     volumes:
-      - ./filebeat/logs/ehrbase:/tmp/ehrbaselog
+      - ./filebeat/logs/mumc/ehrbase:/tmp/ehrbaselog
     restart: on-failure
   ehrdb:
     image: ehrbase/ehrbase-v2-postgres:16.2
@@ -52,7 +52,7 @@ services:
       ]
     # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
     volumes:
-      - ./filebeat/logs/ehrdb:/tmp/postgreslog
+      - ./filebeat/logs/mumc/ehrdb:/tmp/postgreslog
     env_file:
       - ./env_files/timezone.env
       - ./env_files/mumc/ehrdb.env
@@ -92,7 +92,7 @@ services:
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
     volumes:
       - ./data/mumc-demo-data:/code/data/mumc-demo-data
-      - ./filebeat/logs/etl-zib:/code/logs
+      - ./filebeat/logs/mumc/etl-zib:/code/logs/mumc
       - ./outputs/etl-zib:/code/outputs
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py

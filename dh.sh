@@ -41,11 +41,11 @@ is_local(){
 }
 
 setup_requirements(){
-    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
-    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
-    mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
-    mkdir -p ./filebeat/logs/ehrdb2 && chmod -R 777 ./filebeat/logs/ehrdb2
-    mkdir -p ./filebeat/logs/ehrbase2 && chmod -R 777 ./filebeat/logs/ehrbase2
+    echo -e "Update permissions of the ehrbase and ehrdb filebeat/logs"
+    mkdir -p ./filebeat/logs/mumc/ehrdb && chmod -R 777 ./filebeat/logs/mumc/ehrdb
+    mkdir -p ./filebeat/logs/mumc/ehrbase && chmod -R 777 ./filebeat/logs/mumc/ehrbase
+    mkdir -p ./filebeat/logs/gp/ehrdb && chmod -R 777 ./filebeat/logs/gp/ehrdb
+    mkdir -p ./filebeat/logs/gp/ehrbase && chmod -R 777 ./filebeat/logs/gp/ehrbase
 }
 
 build_and_up_common_services() {
