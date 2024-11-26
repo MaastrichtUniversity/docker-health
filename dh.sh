@@ -41,10 +41,14 @@ is_local(){
 
 setup_requirements(){
     echo -e "Update permissions of the ehrbase and ehrdb filebeat/logs"
-    mkdir -p ./filebeat/logs/mumc/ehrdb && chmod -R 777 ./filebeat/logs/mumc/ehrdb
-    mkdir -p ./filebeat/logs/mumc/ehrbase && chmod -R 777 ./filebeat/logs/mumc/ehrbase
-    mkdir -p ./filebeat/logs/gp/ehrdb && chmod -R 777 ./filebeat/logs/gp/ehrdb
-    mkdir -p ./filebeat/logs/gp/ehrbase && chmod -R 777 ./filebeat/logs/gp/ehrbase
+    mkdir -p ./filebeat/logs/$1/ehrdb && chmod -R 777 ./filebeat/logs/$1/ehrdb
+    mkdir -p ./filebeat/logs/$1/ehrbase && chmod -R 777 ./filebeat/logs/$1/ehrbase
+}
+
+dev_setup_requirements(){
+    if is_local; then
+      setup_requirements $1
+    fi
 }
 
 build_and_up_common_services() {
@@ -55,12 +59,6 @@ build_and_up_common_services() {
     docker compose up -d proxy filebeat transform-rest
 }
 
-dev_setup_requirements(){
-    if is_local; then
-      setup_requirements
-    fi
-}
-
 # do the required action in case of externals or exec
 if [[ $1 == "externals" ]]; then
     action=${ARGS/$1/}
@@ -69,12 +67,13 @@ if [[ $1 == "externals" ]]; then
 fi
 
 if [[ $1 == "setup" ]]; then
-    setup_requirements
+    setup_requirements "mumc"
+    setup_requirements "gp"
     exit 0
 fi
 
 if [[ $1 == "transform" ]]; then
-    dev_setup_requirements
+#    dev_setup_requirements $1
     echo -e "\nStart Spring boot Rest API"
     if is_local; then docker compose build transform-rest filebeat; fi
     docker compose up -d transform-rest
@@ -84,7 +83,7 @@ if [[ $1 == "transform" ]]; then
 fi
 
 if [[ $1 == "federation" ]]; then
-    dev_setup_requirements
+#    dev_setup_requirements $1
     echo -e "\nStart FastAPI"
     if is_local; then docker compose build federation-api filebeat; fi
     docker compose up -d federation-api
@@ -94,7 +93,7 @@ if [[ $1 == "federation" ]]; then
 fi
 
 run_etl_zib(){
-    dev_setup_requirements
+    dev_setup_requirements $1
     if is_local; then build_and_up_common_services; fi
     docker compose -f docker-compose.$1-node.yml build $1-etl-zib
     echo -e "\nRunning $1-etl-zib"
@@ -132,8 +131,8 @@ if [[ $1 == "zib" ]]; then
 fi
 
 if [[ $1 == "jupyter-zib" ]]; then
-    dev_setup_requirements
-    # The ehrbase server needs to be up with its respective .env in the docker compose of jupyter-zib
+    # This service is based on the node "mumc"
+    dev_setup_requirements "mumc"
     echo -e "\nExplore zib dataset"
     if is_local; then docker compose build jupyter-zib transform-rest; fi
     docker compose up -d jupyter-zib
@@ -156,7 +155,7 @@ fi
 #fi
 
 run_backend(){
-    dev_setup_requirements
+    dev_setup_requirements $1
     docker compose -f docker-compose.$1-node.yml up -d $1-ehrbase
     until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-$1-ehrbase-1 2>&1 | grep -q "healthy";
     do
@@ -203,7 +202,7 @@ if [[ $1 == "openehrtool" ]]; then
 fi
 
 run_test(){
-    dev_setup_requirements
+    dev_setup_requirements $1
     echo -e "\nStart $1-etl-zib test"
     docker compose -f docker-compose.$1-node.yml build $1-etl-zib
     docker compose -f docker-compose.$1-node.yml run --rm --entrypoint pytest $1-etl-zib --verbose --verbosity=5
