@@ -109,7 +109,7 @@ services:
   gp-openehrtool:
     image: surfercrs4/openehrtool:latest
     volumes:
-      - ./openEHR-tool/openehrtool-second-node.cfg:/code/config/openehrtool.cfg
+      - ./openEHR-tool/gp-openehrtool.cfg:/code/config/openehrtool.cfg
     env_file:
       - ./openEHR-tool/.env
     depends_on:

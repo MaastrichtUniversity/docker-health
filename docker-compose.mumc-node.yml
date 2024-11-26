@@ -68,7 +68,7 @@ services:
   mumc-openehrtool:
     image: surfercrs4/openehrtool:latest
     volumes:
-      - ./openEHR-tool/openehrtool.cfg:/code/config/openehrtool.cfg
+      - ./openEHR-tool/mumc-openehrtool.cfg:/code/config/openehrtool.cfg
     env_file:
       - ./openEHR-tool/.env
     depends_on:
