@@ -1,8 +1,8 @@
 services:
-  ehrbase:
+  mumc-ehrbase:
     image: ehrbase/ehrbase:2.6.0
     depends_on:
-      ehrdb:
+      mumc-ehrdb:
         condition: service_healthy
     env_file:
       - ./env_files/timezone.env
@@ -30,7 +30,7 @@ services:
     volumes:
       - ./filebeat/logs/mumc/ehrbase:/tmp/ehrbaselog
     restart: on-failure
-  ehrdb:
+  mumc-ehrdb:
     image: ehrbase/ehrbase-v2-postgres:16.2
     command:
       [
@@ -65,14 +65,14 @@ services:
       - "5432:5432"
     networks:
       - dev-hdp_hdp-dh-mumc-net
-  openehrtool:
+  mumc-openehrtool:
     image: surfercrs4/openehrtool:latest
     volumes:
       - ./openEHR-tool/openehrtool.cfg:/code/config/openehrtool.cfg
     env_file:
       - ./openEHR-tool/.env
     depends_on:
-      - ehrbase
+      - mumc-ehrbase
     ports:
       - "9000:9000"
     environment:
@@ -81,7 +81,7 @@ services:
       dev-hdp_hdp-dh-mumc-net:
         aliases:
           - openehrtool.dh.local
-  etl-zib:
+  mumc-etl-zib:
     build:
       context: ./externals/dh-hdp-etl
       dockerfile: Dockerfile
@@ -89,7 +89,7 @@ services:
         - SRC_SUBPROJECT=zib
       additional_contexts:
         hdp_templates: ./externals/dh-hdp-zib-templates
-    image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
+    image: ${ENV_REGISTRY_HOST}/docker-health/mumc-etl-zib:${ENV_TAG}
     volumes:
       - ./data/mumc-demo-data:/code/data/mumc-demo-data
       - ./filebeat/logs/mumc/etl-zib:/code/logs/mumc
@@ -114,7 +114,7 @@ services:
       EHRBASE_ADMIN_PASSWORD: ${EHRBASE_ADMIN_PASSWORD_MUMC_NODE}
       EHRBASE_ADMIN_BASE_URL: ${EHRBASE_ADMIN_BASE_URL_MUMC_NODE}
     depends_on:
-      ehrbase:
+      mumc-ehrbase:
         condition: service_healthy
     networks:
       - dev-hdp_hdp-dh-mumc-net
