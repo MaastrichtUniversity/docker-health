@@ -93,7 +93,7 @@ services:
       - ./env_files/zib-templates.env
       - ./env_files/gp/etl.env
     environment:
-      LOGSTASH_TAGS: ETL_ZIB2
+      LOGSTASH_TAGS: GP_ETL_ZIB
       EHRBASE_USERNAME: ${EHRBASE_USERNAME_GP_NODE}
       EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_GP_NODE}
       EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_GP_NODE}

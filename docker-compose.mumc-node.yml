@@ -105,7 +105,7 @@ services:
       - ./env_files/zib-templates.env
       - ./env_files/mumc/etl.env
     environment:
-      LOGSTASH_TAGS: ETL_ZIB
+      LOGSTASH_TAGS: MUMC_ETL_ZIB
       EHRBASE_USERNAME: ${EHRBASE_USERNAME_MUMC_NODE}
       EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_MUMC_NODE}
       EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_MUMC_NODE}

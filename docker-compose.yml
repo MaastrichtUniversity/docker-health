@@ -56,7 +56,7 @@ services:
     env_file:
       - ./env_files/timezone.env
     environment:
-      LOGSTASH_TAGS: FEDERATION-API # TODO: Setup logstash in docker-common
+#      LOGSTASH_TAGS: FEDERATION_API
       VIRTUAL_HOST: federation.${RIT_ENV}.dh.unimaas.nl
       MUMC__EHRBASE_USERNAME: ${EHRBASE_USERNAME_MUMC_NODE}
       MUMC__EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_MUMC_NODE}

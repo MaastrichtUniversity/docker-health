@@ -9,22 +9,45 @@ filebeat.inputs:
     enabled: true
     paths:
       - /usr/share/logs/mumc/etl-zib/etl-zib.log
-    tags: ["ETL_ZIB"]
+    tags: ["MUMC_ETL_ZIB"]
+
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/gp/etl-zib/etl-zib.log
+    tags: [ "GP_ETL_ZIB" ]
 
   - type: log
     enabled: true
     paths:
       - /usr/share/logs/mumc/ehrbase/ehrbase.log
-    tags: ["EHRBASE"]
+    tags: ["MUMC_EHRBASE"]
+
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/gp/ehrbase/ehrbase.log
+    tags: ["GP_EHRBASE"]
 
   - type: log
     enabled: true
     paths:
       - /usr/share/logs/mumc/ehrdb/postgresql.log
-    tags: ["EHRDB"]
+    tags: ["MUMC_EHRDB"]
 
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/gp/ehrdb/postgresql.log
+    tags: [ "GP_EHRDB" ]
 
-# TODO: ETL_ZIB2, EHRBASE2 and EHRDB2 for the node "gp"
+# Unused at the moment:
+#  - type: log
+#    enabled: true
+#    paths:
+#      - /usr/share/logs/federation-api/federation-api.log
+#      - /usr/share/logs/
+#    tags: ["FEDERATION_API"]
 
 # Disable filebeat monitoring
 logging.metrics.enabled: false
