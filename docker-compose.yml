@@ -87,6 +87,9 @@ services:
       hdp-dh-mumc-net:
         aliases:
           - filebeat.dh.local
+      hdp-dh-gp-net:
+        aliases:
+          - filebeat.dh.local
   jupyter-zib:
     build:
       context: ./externals/dh-hdp-notebooks
@@ -140,6 +143,9 @@ services:
       hdp-dh-mumc-net:
         aliases:
           - redis.dh.local
+      hdp-dh-gp-net:
+        aliases:
+          - redis.dh.local
   minio:
     image: minio/minio
     ports:
@@ -151,6 +157,7 @@ services:
     command: server /data --console-address ":9001"
     networks:
       - hdp-dh-mumc-net
+      - hdp-dh-gp-net
   #  fhir-bridge:
   #    ## BUILD option 1: Using a pre-build docker image
   #    # image: ehrbase/fhir-bridge:1.5.5
