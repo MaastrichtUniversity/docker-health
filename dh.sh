@@ -181,7 +181,7 @@ if [[ $1 == "down" ]]; then
 
     docker compose -f docker-compose.yml down
     docker compose -f docker-compose.mumc-node.yml down
-    docker compose -f docker-compose.second-node.yml down
+    docker compose -f docker-compose.gp-node.yml down
 
     exit 0
 fi
