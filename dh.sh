@@ -93,62 +93,42 @@ if [[ $1 == "federation" ]]; then
     exit 0
 fi
 
-if [[ $1 == "zib" ]]; then
+run_etl_zib(){
     dev_setup_requirements
     if is_local; then build_and_up_common_services; fi
-    if [[ -z "$2" ]]; then
-        docker compose -f docker-compose.mumc-node.yml build etl-zib
-        echo -e "\nRunning etl-zib"
-        docker compose -f docker-compose.mumc-node.yml up -d etl-zib
-        # Add a safe guard against infinite loop during a CI execution
-        SAFE_GUARD=0
-        until docker compose logs --tail 100 etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
-        do
-          if [[ $SAFE_GUARD -eq 15  ]]; then
-            echo -e "STOP waiting for etl-zib"
-            break
-          fi
-          ((SAFE_GUARD++))
-          echo -e "Waiting for etl-zib"
-          sleep 5
-        done
+    docker compose -f docker-compose.$1-node.yml build $1-etl-zib
+    echo -e "\nRunning $1-etl-zib"
+    docker compose -f docker-compose.$1-node.yml up -d $1-etl-zib
+    # Add a safe guard against infinite loop during a CI execution
+    SAFE_GUARD=0
+    until docker compose logs --tail 100 $1-etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
+    do
+      if [[ $SAFE_GUARD -eq 15  ]]; then
+        echo -e "STOP waiting for $1-etl-zib"
+        break
+      fi
+      ((SAFE_GUARD++))
+      echo -e "Waiting for $1-etl-zib"
+      sleep 5
+    done
 
-        if [[ $SAFE_GUARD -ne 15  ]]; then
-          echo -e "\nPrint logs for etl-zib"
-          docker compose logs etl-zib
-          echo -e "\nExit dh.sh"
-          exit 0
-        else
-          echo -e "\nFailed to run etl-zib"
-          exit 1
-        fi
+    if [[ $SAFE_GUARD -ne 15  ]]; then
+      echo -e "\nPrint logs for $1-etl-zib"
+      docker compose logs $1-etl-zib
+      echo -e "\nExit dh.sh"
+      exit 0
     else
-        docker compose -f docker-compose.gp-node.yml build etl-zib2
-          echo -e "\nRunning etl-zib gp node"
-        docker compose -f docker-compose.gp-node.yml up -d etl-zib2
-        # Add a safe guard against infinite loop during a CI execution
-        SAFE_GUARD=0
-        until docker compose logs --tail 100 etl-zib2 2>&1 | grep -q "Print all EHR ids available on the server";
-        do
-          if [[ $SAFE_GUARD -eq 15  ]]; then
-            echo -e "STOP waiting for etl-zib2"
-            break
-          fi
-          ((SAFE_GUARD++))
-          echo -e "Waiting for etl-zib2"
-          sleep 5
-        done
+      echo -e "\nFailed to run $1-etl-zib"
+      exit 1
+    fi
+}
 
-        if [[ $SAFE_GUARD -ne 15  ]]; then
-          echo -e "\nPrint logs for etl-zib2"
-          docker compose logs etl-zib2
-          echo -e "\nExit dh.sh"
-          exit 0
-        else
-          echo -e "\nFailed to run etl-zib2"
-          exit 1
-        fi
-    fi    
+if [[ $1 == "zib" ]]; then
+    if [[ -z "$2" ]]; then
+        run_etl_zib "mumc"
+    else
+        run_etl_zib "gp"
+    fi
 fi
 
 if [[ $1 == "jupyter-zib" ]]; then
@@ -175,26 +155,22 @@ fi
 #    exit 0
 #fi
 
+run_backend(){
+    dev_setup_requirements
+    docker compose -f docker-compose.$1-node.yml up -d $1-ehrbase
+    until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-$1-ehrbase-1 2>&1 | grep -q "healthy";
+    do
+      echo -e "Waiting for EHRbase ($1 node)"
+      sleep 10
+    done
+    echo -e "\nEHRbase ($1 node) up and running, exiting dh.sh"
+}
 
 if [[ $1 == "backend" ]]; then
-    dev_setup_requirements
     if [[ -z "$2" ]]; then
-        docker compose -f docker-compose.mumc-node.yml up -d ehrbase
-        until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase-1 2>&1 | grep -q "healthy";
-        do
-          echo -e "Waiting for EhrBase (first node)"
-          sleep 10
-        done
-        echo -e "\nEHRbase first node up and running, exiting dh.sh"
+        run_backend "mumc"
     else
-        docker compose -f docker-compose.gp-node.yml up -d ehrbase2
-        until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase2-1 2>&1 | grep -q "healthy";
-        do
-          echo -e "Waiting for EhrBase2 (GP node)"
-          sleep 10
-        done
-
-        echo -e "\nEHRbase2 up and running, exiting dh.sh"
+        run_backend "gp"
     fi
 
     exit 0
@@ -207,38 +183,42 @@ if [[ $1 == "down" ]]; then
     docker compose -f docker-compose.yml down
     docker compose -f docker-compose.mumc-node.yml down
     docker compose -f docker-compose.second-node.yml down
-    
+
     exit 0
 fi
+
+run_openehrtool(){
+    docker compose -f docker-compose.$1-node.yml up -d $1-openehrtool
+    echo -e "\nOpenEHRtool on $1 node up and running, exiting dh.sh"
+}
 
 if [[ $1 == "openehrtool" ]]; then
     if [[ -z "$2" ]]; then
-        docker compose -f docker-compose.mumc-node.yml up -d openehrtool
-        echo -e "\nOpenEHRtool on mumc node up and running, exiting dh.sh"
+      run_openehrtool "mumc"
     else
-        docker compose -f docker-compose.gp-node.yml up -d openehrtool2
-        echo -e "\nOpenEHRtool on gp node up and running, exiting dh.sh"
+      run_openehrtool "gp"
     fi
 
     exit 0
 fi
 
-if [[ $1 == "test" ]]; then
+run_test(){
     dev_setup_requirements
-    echo -e "\nStart ETL-ZIB test"
-    if is_local; then build_and_up_common_services; fi
-    if [[ -z "$2" ]]; then
-        docker compose -f docker-compose.mumc-node.yml build etl-zib
-        docker compose -f docker-compose.mumc-node.yml run --rm --entrypoint pytest etl-zib --verbose --verbosity=5
-    #    docker compose -f docker-compose.mumc-node.yml run --rm --entrypoint pytest etl-zib -s
-    #    docker compose -f docker-compose.mumc-node.yml run --rm --entrypoint pytest etl-zib -o log_cli=true --log-cli-level=INFO
-    else
-        docker compose -f docker-compose.gp-node.yml build etl-zib2
-        docker compose -f docker-compose.gp-node.yml run --rm --entrypoint pytest etl-zib --verbose --verbosity=5
-    #    docker compose -f docker-compose.gp-node.yml run --rm --entrypoint pytest etl-zib -s
-    #    docker compose -f docker-compose.gp-node.yml run --rm --entrypoint pytest etl-zib -o log_cli=true --log-cli-level=INFO
-    fi
+    echo -e "\nStart $1-etl-zib test"
+    docker compose -f docker-compose.$1-node.yml build $1-etl-zib
+    docker compose -f docker-compose.$1-node.yml run --rm --entrypoint pytest $1-etl-zib --verbose --verbosity=5
+#    docker compose -f docker-compose.$1-node.yml run --rm --entrypoint pytest $1-etl-zib -s
+#    docker compose -f docker-compose.$1-node.yml run --rm --entrypoint pytest $1-etl-zib -o log_cli=true --log-cli-level=INFO
+}
 
+if [[ $1 == "test" ]]; then
+    if is_local; then build_and_up_common_services; fi
+
+    if [[ -z "$2" ]]; then
+        run_test "mumc"
+    else
+        run_test "gp"
+    fi
 
     if [ $? -eq 0 ]; then
       echo -e "\nExit dh.sh"
