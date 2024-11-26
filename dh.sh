@@ -37,7 +37,6 @@ is_local(){
       return 0;
     fi
     return 1;
-
 }
 
 setup_requirements(){
@@ -91,31 +90,6 @@ if [[ $1 == "federation" ]]; then
     docker compose up -d federation-api
 
     echo -e "\nExit dh.sh"
-    exit 0
-fi
-
-
-if [[ $1 == "backend" ]]; then
-    dev_setup_requirements
-    if [[ -z "$2" ]]; then
-        docker compose -f docker-compose.mumc-node.ym up -d ehrbase
-        until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase-1 2>&1 | grep -q "healthy";
-        do
-          echo -e "Waiting for EhrBase (first node)"
-          sleep 10
-        done
-        echo -e "\nEHRbase first node up and running, exiting dh.sh"
-    else
-        docker compose -f docker-compose.second-node.yml up -d ehrbase2
-        until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase2-1 2>&1 | grep -q "healthy";
-        do
-          echo -e "Waiting for EhrBase2 (Second node)"
-          sleep 10
-        done
-
-        echo -e "\nEHRbase2 up and running, exiting dh.sh"
-    fi
-
     exit 0
 fi
 
@@ -188,18 +162,18 @@ if [[ $1 == "jupyter-zib" ]]; then
     exit 0
 fi
 
-if [[ $1 == "fhir" ]]; then
-    echo -e "\nStart FHIR Bridge"
-    docker compose up -d fhir-bridge
-    until docker compose logs --tail 100 fhir-bridge 2>&1 | grep -q "Started FhirBridgeApplication in";
-    do
-      echo -e "Waiting for FhirBridgeApplication"
-      sleep 10
-    done
-
-    echo -e "\nExit dh.sh"
-    exit 0
-fi
+#if [[ $1 == "fhir" ]]; then
+#    echo -e "\nStart FHIR Bridge"
+#    docker compose up -d fhir-bridge
+#    until docker compose logs --tail 100 fhir-bridge 2>&1 | grep -q "Started FhirBridgeApplication in";
+#    do
+#      echo -e "Waiting for FhirBridgeApplication"
+#      sleep 10
+#    done
+#
+#    echo -e "\nExit dh.sh"
+#    exit 0
+#fi
 
 
 if [[ $1 == "backend" ]]; then
