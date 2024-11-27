@@ -65,22 +65,6 @@ services:
       - "5432:5432"
     networks:
       - dev-hdp_hdp-dh-mumc-net
-  mumc-openehrtool:
-    image: surfercrs4/openehrtool:latest
-    volumes:
-      - ./openEHR-tool/mumc-openehrtool.cfg:/code/config/openehrtool.cfg
-    env_file:
-      - ./openEHR-tool/.env
-    depends_on:
-      - mumc-ehrbase
-    ports:
-      - "9000:9000"
-    environment:
-      VIRTUAL_HOST: openehrtool.${RIT_ENV}.dh.unimaas.nl
-    networks:
-      dev-hdp_hdp-dh-mumc-net:
-        aliases:
-          - openehrtool.dh.local
   mumc-etl-zib:
     build:
       context: ./externals/dh-hdp-etl
@@ -118,6 +102,22 @@ services:
         condition: service_healthy
     networks:
       - dev-hdp_hdp-dh-mumc-net
+  mumc-openehrtool:
+    image: surfercrs4/openehrtool:latest
+    volumes:
+      - ./openEHR-tool/mumc-openehrtool.cfg:/code/config/openehrtool.cfg
+    env_file:
+      - ./openEHR-tool/.env
+    depends_on:
+      - mumc-ehrbase
+    ports:
+      - "9000:9000"
+    environment:
+      VIRTUAL_HOST: openehrtool.${RIT_ENV}.dh.unimaas.nl
+    networks:
+      dev-hdp_hdp-dh-mumc-net:
+        aliases:
+          - openehrtool.dh.local
 networks:
   dev-hdp_hdp-dh-mumc-net:
     external: true
