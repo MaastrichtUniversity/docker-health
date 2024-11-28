@@ -173,7 +173,12 @@ Add these virtual hosts to your /etc/hosts
 Up each node, load data and start the federation API:
 
 ```
-./dh.sh zib; ./dh.sh zib 2; ./dh.sh federation
+./dh.sh federation
+```
+
+To run the federation service API integration test:
+```
+./dh.sh test federation
 ```
 
 (Optional)

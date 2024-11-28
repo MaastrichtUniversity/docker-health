@@ -217,17 +217,21 @@ run_test(){
 if [[ $1 == "test" ]]; then
     if is_local; then build_and_up_common_services; fi
 
-    if [[ -z "$2" ]]; then
+    if [[ $2 == "mumc" ]]; then
         run_test "mumc"
-    else
+    fi
+    if [[ $2 == "gp" ]]; then
         run_test "gp"
+    fi
+    if [[ $2 == "federation" ]]; then
+        docker compose run --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
     fi
 
     if [ $? -eq 0 ]; then
       echo -e "\nExit dh.sh"
       exit 0
     else
-      echo -e "\nFailed to run etl-zib tests"
+      echo -e "\nFailed to run $2 tests"
       exit 1
     fi
 fi
