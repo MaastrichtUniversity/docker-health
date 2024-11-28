@@ -57,9 +57,9 @@ services:
       filebeat:
         condition: service_started
       mumc-etl-zib:
-        condition: service_started
+        condition: service_healthy
       gp-etl-zib:
-        condition: service_started
+        condition: service_healthy
     volumes:
       - ./filebeat/logs/federation-api:/var/log
     env_file:
