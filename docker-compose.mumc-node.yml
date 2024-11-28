@@ -3,7 +3,11 @@ services:
     image: ehrbase/ehrbase:2.6.0
     depends_on:
       mumc-ehrdb:
-        condition: service_healthy
+        condition: service_started
+      proxy:
+        condition: service_started
+      filebeat:
+        condition: service_started
     env_file:
       - ./env_files/timezone.env
       - ./env_files/mumc/ehrbase.env
@@ -100,6 +104,8 @@ services:
     depends_on:
       mumc-ehrbase:
         condition: service_healthy
+      transform-rest:
+        condition: service_started
     networks:
       - dev-hdp_hdp-dh-mumc-net
   mumc-openehrtool:

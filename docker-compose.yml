@@ -1,3 +1,6 @@
+include:
+  - docker-compose.mumc-node.yml
+  - docker-compose.gp-node.yml
 services:
   proxy:
     image: jwilder/nginx-proxy:${ENV_TAG_PROXY}
@@ -49,8 +52,14 @@ services:
       dockerfile: Dockerfile
     image: ${ENV_REGISTRY_HOST}/docker-health/federation-api:${ENV_TAG}
     depends_on:
-      - proxy
-      - filebeat
+      proxy:
+        condition: service_started
+      filebeat:
+        condition: service_started
+      mumc-etl-zib:
+        condition: service_started
+      gp-etl-zib:
+        condition: service_started
     volumes:
       - ./filebeat/logs/federation-api:/var/log
     env_file:

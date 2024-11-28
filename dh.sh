@@ -32,6 +32,21 @@ externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git
 externals/dh-hdp-federation-api https://github.com/MaastrichtUniversity/dh-hdp-federation-api.git"
 
 
+# Create docker network dev-hdp_hdp-dh-mumc-net if it does not exists
+if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-mumc-net --format="true") ] ;
+      then
+       echo "Creating network dev-hdp_hdp-dh-mumc-net"
+       docker network create dev-hdp_hdp-dh-mumc-net --subnet "172.31.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-mumc-net"
+fi
+
+# Create docker network dev-hdp_hdp-dh-gp-net if it does not exists
+if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-gp-net --format="true") ] ;
+      then
+       echo "Creating network dev-hdp_hdp-dh-gp-net"
+       docker network create dev-hdp_hdp-dh-gp-net --subnet "172.32.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-gp-net"
+fi
+
+
 is_local(){
     if [[ $RIT_ENV == "local" ]]; then
       return 0;
@@ -95,12 +110,12 @@ fi
 run_etl_zib(){
     dev_setup_requirements $1
     if is_local; then build_and_up_common_services; fi
-    docker compose -f docker-compose.$1-node.yml build $1-etl-zib
+    docker compose build $1-etl-zib
     echo -e "\nRunning $1-etl-zib"
-    docker compose -f docker-compose.$1-node.yml up -d $1-etl-zib
+    docker compose up -d $1-etl-zib
     # Add a safe guard against infinite loop during a CI execution
     SAFE_GUARD=0
-    until docker compose logs --tail 100 $1-etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
+    until docker compose logs --tail 15 $1-etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
     do
       if [[ $SAFE_GUARD -eq 15  ]]; then
         echo -e "STOP waiting for $1-etl-zib"
@@ -156,7 +171,7 @@ fi
 
 run_backend(){
     dev_setup_requirements $1
-    docker compose -f docker-compose.$1-node.yml up -d $1-ehrbase
+    docker compose up -d $1-ehrbase
     until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-$1-ehrbase-1 2>&1 | grep -q "healthy";
     do
       echo -e "Waiting for EHRbase ($1 node)"
@@ -175,19 +190,8 @@ if [[ $1 == "backend" ]]; then
     exit 0
 fi
 
-
-if [[ $1 == "down" ]]; then
-    echo -e "Bringing down services from all compose files"
-
-    docker compose -f docker-compose.yml down
-    docker compose -f docker-compose.mumc-node.yml down
-    docker compose -f docker-compose.gp-node.yml down
-
-    exit 0
-fi
-
 run_openehrtool(){
-    docker compose -f docker-compose.$1-node.yml up -d $1-openehrtool
+    docker compose up -d $1-openehrtool
     echo -e "\nOpenEHRtool on $1 node up and running, exiting dh.sh"
 }
 
@@ -204,10 +208,10 @@ fi
 run_test(){
     dev_setup_requirements $1
     echo -e "\nStart $1-etl-zib test"
-    docker compose -f docker-compose.$1-node.yml build $1-etl-zib
-    docker compose -f docker-compose.$1-node.yml run --rm --entrypoint pytest $1-etl-zib --verbose --verbosity=5
-#    docker compose -f docker-compose.$1-node.yml run --rm --entrypoint pytest $1-etl-zib -s
-#    docker compose -f docker-compose.$1-node.yml run --rm --entrypoint pytest $1-etl-zib -o log_cli=true --log-cli-level=INFO
+    docker compose build $1-etl-zib
+    docker compose run --rm --entrypoint pytest $1-etl-zib --verbose --verbosity=5
+#    docker compose run --rm --entrypoint pytest $1-etl-zib -s
+#    docker compose run --rm --entrypoint pytest $1-etl-zib -o log_cli=true --log-cli-level=INFO
 }
 
 if [[ $1 == "test" ]]; then
