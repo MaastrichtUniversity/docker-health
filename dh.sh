@@ -145,7 +145,7 @@ if [[ $1 == "etl" ]]; then
     fi
 fi
 
-if [[ $1 == "jupyter-zib" ]]; then
+if [[ $1 == "jupyter" ]]; then
     # This service is based on the node "mumc"
     dev_setup_requirements "mumc"
     echo -e "\nExplore zib dataset"

@@ -55,7 +55,7 @@ the bash script `./env_files/append_template_variables.sh`
 ### Start the Jupyter notebook for data exploration and live demo
 
 ```
-./dh.sh jupyter-zib
+./dh.sh jupyter
 ```
 
 Open your browser and try [http://jupyter.local.dh.unimaas.nl](http://jupyter.local.dh.unimaas.nl) using the following token:
