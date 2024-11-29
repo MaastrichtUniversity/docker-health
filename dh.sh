@@ -25,23 +25,21 @@ export COMPOSE_PROJECT_NAME
 # specify externals for this project
 externals="externals/dh-hdp-zib-templates https://github.com/um-datahub/dh-hdp-zib-templates.git
 externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-transform-rest.git
-externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git
-externals/dh-hdp-federation-api https://github.com/MaastrichtUniversity/dh-hdp-federation-api.git"
+externals/dh-hdp-federation-api https://github.com/MaastrichtUniversity/dh-hdp-federation-api.git
+externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git"
 
 
 # Create docker network dev-hdp_hdp-dh-mumc-net if it does not exists
-if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-mumc-net --format="true") ] ;
-      then
-       echo "Creating network dev-hdp_hdp-dh-mumc-net"
-       docker network create dev-hdp_hdp-dh-mumc-net --subnet "172.31.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-mumc-net"
+if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-mumc-net --format="true") ]; then
+  echo "Creating network dev-hdp_hdp-dh-mumc-net"
+  docker network create dev-hdp_hdp-dh-mumc-net --subnet "172.31.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-mumc-net"
 fi
 
 # Create docker network dev-hdp_hdp-dh-gp-net if it does not exists
-if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-gp-net --format="true") ] ;
-      then
-       echo "Creating network dev-hdp_hdp-dh-gp-net"
-       docker network create dev-hdp_hdp-dh-gp-net --subnet "172.32.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-gp-net"
+if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-gp-net --format="true") ]; then
+  echo "Creating network dev-hdp_hdp-dh-gp-net"
+  docker network create dev-hdp_hdp-dh-gp-net --subnet "172.32.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-gp-net"
 fi
 
 
@@ -94,7 +92,7 @@ if [[ $1 == "setup" ]]; then
 fi
 
 if [[ $1 == "transform" ]]; then
-#    dev_setup_requirements $1
+#    dev_setup_requirements $2
     echo -e "\nStart Spring boot Rest API"
     if is_local; then docker compose build transform-rest filebeat; fi
     docker compose up -d transform-rest
@@ -104,7 +102,7 @@ if [[ $1 == "transform" ]]; then
 fi
 
 if [[ $1 == "federation" ]]; then
-#    dev_setup_requirements $1
+#    dev_setup_requirements $2
     echo -e "\nStart FastAPI"
     if is_local; then docker compose build federation-api filebeat; fi
     docker compose up -d federation-api
@@ -196,7 +194,7 @@ if [[ $1 == "test" ]]; then
     fi
 
     if [[ $2 == "federation" ]]; then
-        docker compose run --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
+      docker compose run --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
     fi
 
     if [ $? -eq 0 ]; then
