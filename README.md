@@ -89,7 +89,7 @@ Extract data from csv files, Transform the data into valid openEHR compositions 
 #### ETL workflows specific to ZIB templates.
 
 ```
-./dh.sh zib
+./dh.sh zib mumc
 ```
 
 ### Run the tests
@@ -97,7 +97,7 @@ Extract data from csv files, Transform the data into valid openEHR compositions 
 Start the dev environment and execute all the tests
 
 ```
-./dh.sh test
+./dh.sh test mumc
 ```
 
 For more specific test execution, add the following line within `test` in `dh.sh`:
@@ -155,7 +155,7 @@ Run the following command to run both fhir-bridge and etl-zib:
 Tool for interacting with the EHRbase server with a basic dashboard integrated.
 
 ```
-./dh.sh up -d openehrtool
+./dh.sh openehrtool mumc
 ```
 
 Open your browser and try [http://mumc.openehrtool.local.dh.unimaas.nl](http://mumc.openehrtool.local.dh.unimaas.nl)
@@ -185,5 +185,5 @@ To run the federation service API integration test:
 To run openEHR tool on each node, run:
 
 ```
-./dh.sh openehrtool; ./dh.sh openehrtool 2
+./dh.sh openehrtool gp; ./dh.sh openehrtool mumc
 ```
