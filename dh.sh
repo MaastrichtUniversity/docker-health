@@ -27,7 +27,6 @@ externals="externals/dh-hdp-templates https://github.com/um-datahub/dh-hdp-templ
 externals/dh-hdp-zib-templates https://github.com/um-datahub/dh-hdp-zib-templates.git
 externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-transform-rest.git
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
-externals/dh-hdp-fhir-bridge https://github.com/MaastrichtUniversity/dh-hdp-fhir-bridge.git
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git
 externals/dh-hdp-federation-api https://github.com/MaastrichtUniversity/dh-hdp-federation-api.git"
 
@@ -157,19 +156,6 @@ if [[ $1 == "jupyter-zib" ]]; then
     echo -e "\nExit dh.sh"
     exit 0
 fi
-
-#if [[ $1 == "fhir" ]]; then
-#    echo -e "\nStart FHIR Bridge"
-#    docker compose up -d fhir-bridge
-#    until docker compose logs --tail 100 fhir-bridge 2>&1 | grep -q "Started FhirBridgeApplication in";
-#    do
-#      echo -e "Waiting for FhirBridgeApplication"
-#      sleep 10
-#    done
-#
-#    echo -e "\nExit dh.sh"
-#    exit 0
-#fi
 
 if [[ $1 == "backend" ]]; then
     check_argument $2
