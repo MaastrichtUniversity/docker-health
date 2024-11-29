@@ -13,7 +13,6 @@ services:
       - ./env_files/gp/ehrbase.env
     environment:
       VIRTUAL_HOST: zio.ehrbase.${RIT_ENV}.dh.unimaas.nl
-      VIRTUAL_PORT: 8081
     healthcheck:
       test: "wget -T5 -qO- -Y off localhost:8080/ehrbase/management/health | grep UP || exit 1"
       interval: 5s
