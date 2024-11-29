@@ -24,8 +24,9 @@ The present files are used for development-purposes.
 ### Add these virtual host entries in your /etc/hosts file
 
 ```
-127.0.0.1 mumc.ehrbase.local.dh.unimaas.nl
-127.0.0.1 mumc.openehrtool.local.dh.unimaas.nl
+127.0.0.1 test.ehrbase.local.dh.unimaas.nl
+127.0.0.1 test.openehrtool.local.dh.unimaas.nl
+
 127.0.0.1 transform.local.dh.unimaas.nl
 127.0.0.1 jupyter.local.dh.unimaas.nl
 ```
@@ -66,18 +67,24 @@ SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
 
 ### Start the EHRbase backend
 
+Start the default test backend:
 ```
 ./dh.sh backend
 ```
 
-Open your browser and try [http://mumc.ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html](http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html) with the following credentials:
-
+For a specific node, e.g mumc:
 ```
-SECURITY_AUTHUSER=user
-SECURITY_AUTHPASSWORD=foobar
+./dh.sh backend mumc
 ```
 
-Credentials can be updated in `./ehrbase/.env.ehrbase`
+Open your browser and try [http://test.ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html](http://test.ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html) with the following credentials:
+
+```
+SECURITY_AUTHUSER=user0
+SECURITY_AUTHPASSWORD=foobar0
+```
+
+Credentials can be updated in `.env`
 
 ### Run the ETL
 
@@ -85,40 +92,46 @@ Extract data from csv files, Transform the data into valid openEHR compositions 
 
 #### ETL workflows specific to ZIB templates.
 
+Start the default test node:
+```
+./dh.sh etl
+```
+
+For a specific node:
 ```
 ./dh.sh etl mumc
 ```
 
 ### Run the tests
 
-Start the dev environment and execute all the tests
+Start the dev environment for a single node and execute all the tests
 
 ```
-./dh.sh test mumc
+./dh.sh test single-node
 ```
 
 - Execute all the tests
 
 ```
-./dh.sh run --rm --entrypoint pytest mumc-etl-zib --verbose --verbosity=5
+./dh.sh run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5
 ```
 
 - Execute a specific class test
 
 ```
-./dh.sh run --rm --entrypoint pytest mumc-etl-zib --verbose --verbosity=5 tests/test_burgerlijke_staat.py::TestBurgerlijkeStaat2017
+./dh.sh run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5 tests/test_burgerlijke_staat.py::TestBurgerlijkeStaat2017
 ```
 
 - Execute a single test
 
 ```
-./dh.sh run --rm --entrypoint pytest mumc-etl-zib --verbose --verbosity=5 tests/test_all_zib_pipelines.py::TestAllZibPipelines::test_number_of_templates
+./dh.sh run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5 tests/test_all_zib_pipelines.py::TestAllZibPipelines::test_number_of_templates
 ```
 
-### Recreate the ETL stack
+### Recreate the test ETL stack
 
 ```
-./dh.sh up -d --force-recreate mumc-ehrdb mumc-ehrbase mumc-etl-zib
+./dh.sh up -d --force-recreate test-ehrdb test-ehrbase test-etl-zib
 ```
 
 ### Kill the whole stack
@@ -132,16 +145,21 @@ Start the dev environment and execute all the tests
 Tool for interacting with the EHRbase server with a basic dashboard integrated.
 
 ```
+./dh.sh openehrtool
+```
+For a specific node:
+```
 ./dh.sh openehrtool mumc
 ```
-
-Open your browser and try [http://mumc.openehrtool.local.dh.unimaas.nl](http://mumc.openehrtool.local.dh.unimaas.nl)
+Open your browser and try [http://test.openehrtool.local.dh.unimaas.nl](http://openehrtool.local.dh.unimaas.nl)
 
 ### POC Federated EHRBase nodes
 
 Add these virtual hosts to your /etc/hosts
 
 ```
+127.0.0.1 mumc.ehrbase.local.dh.unimaas.nl
+127.0.0.1 mumc.openehrtool.local.dh.unimaas.nl
 127.0.0.1 zio.ehrbase.local.dh.unimaas.nl
 127.0.0.1 zio.openehrtool.local.dh.unimaas.nl
 127.0.0.1 federation.local.dh.unimaas.nl
@@ -162,5 +180,5 @@ To run the federation service API integration test:
 To run openEHR tool on each node, run:
 
 ```
-./dh.sh openehrtool gp; ./dh.sh openehrtool mumc
+./dh.sh openehrtool mumc; ./dh.sh openehrtool gp
 ```

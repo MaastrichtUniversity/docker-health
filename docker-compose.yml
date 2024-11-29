@@ -1,4 +1,5 @@
 include:
+  - docker-compose.test-node.yml
   - docker-compose.mumc-node.yml
   - docker-compose.gp-node.yml
 services:
@@ -13,6 +14,7 @@ services:
       - "80:80"
       - "443:443"
     networks:
+      - hdp-dh-test-net
       - hdp-dh-mumc-net
       - hdp-dh-gp-net
   transform-rest:
@@ -38,8 +40,11 @@ services:
       LOGSTASH_TAGS: TRANSFORM_REST
       VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
     ports:
-      - "8082:8080"
+      - "8079:8080"
     networks:
+      hdp-dh-test-net:
+        aliases:
+          - transform.dh.local
       hdp-dh-mumc-net:
         aliases:
           - transform.dh.local
@@ -161,6 +166,12 @@ networks:
       driver: default
       config:
         - subnet: "172.30.1.0/24"
+  hdp-dh-test-net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.33.1.0/24"
+
   hdp-dh-mumc-net:
     ipam:
       driver: default

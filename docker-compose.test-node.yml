@@ -1,0 +1,136 @@
+services:
+  test-ehrbase:
+    image: ehrbase/ehrbase:2.6.0
+    depends_on:
+      test-ehrdb:
+        condition: service_started
+      proxy:
+        condition: service_started
+      filebeat:
+        condition: service_started
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/test/ehrbase.env
+    environment:
+      VIRTUAL_HOST: test.ehrbase.${RIT_ENV}.dh.unimaas.nl
+    healthcheck:
+      test: "wget -T5 -qO- -Y off localhost:8080/ehrbase/management/health | grep UP || exit 1"
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    #     start_period: 10s
+    ports:
+      - "8082:8080"
+    networks:
+      dev-hdp_hdp-dh-test-net:
+        aliases:
+          - test.ehrbase.dh.local
+    entrypoint:
+      - java
+      - -jar
+      - -Dspring.profiles.active=docker
+      - -Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log
+      - ehrbase.jar
+    volumes:
+      - ./filebeat/logs/test/ehrbase:/tmp/ehrbaselog
+  test-ehrdb:
+    image: ehrbase/ehrbase-v2-postgres:16.2
+    environment:
+      - PGPORT=5432
+    command:
+      [
+        "postgres",
+        "-c",
+        "logging_collector=on",
+        "-c",
+        "log_directory=/tmp/postgreslog/",
+        "-c",
+        "log_filename=postgresql.log",
+        "-c",
+        "log_statement=none",
+        "-c",
+        "log_file_mode=0777",
+        "-c",
+        "log_rotation_age=0",
+        "-c",
+        "log_rotation_size=0",
+      ]
+    # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
+    volumes:
+      - ./filebeat/logs/test/ehrdb:/tmp/postgreslog
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/test/ehrdb.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    ports:
+      - "5434:5432"
+    networks:
+      - dev-hdp_hdp-dh-test-net
+  test-etl-zib:
+    build:
+      context: ./externals/dh-hdp-etl
+      dockerfile: Dockerfile
+      args:
+        - SRC_SUBPROJECT=zib
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
+    image: ${ENV_REGISTRY_HOST}/docker-health/test-etl-zib:${ENV_TAG}
+    healthcheck:
+      test: "tail -n 10 /code/logs/test/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - ./data/test-demo-data:/code/data/test-demo-data
+      - ./filebeat/logs/test/etl-zib:/code/logs/test
+      - ./outputs/etl-zib:/code/outputs
+      # Volume binds to auto-reload the code inside the container
+      - ./externals/dh-hdp-etl/etl.py:/code/etl.py
+      - ./externals/dh-hdp-etl/src/core:/code/src/core
+      - ./externals/dh-hdp-etl/src/subprojects/zib:/code/src/subprojects/zib
+      - ./externals/dh-hdp-etl/tests:/code/tests
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/transform_server.env
+      - ./env_files/zib-templates.env
+      - ./env_files/test/etl.env
+    environment:
+      LOGSTASH_TAGS: TEST_ETL_ZIB
+      EHRBASE_USERNAME: ${EHRBASE_USERNAME_TEST_NODE}
+      EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_TEST_NODE}
+      EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_TEST_NODE}
+      # Environment variables meant for development while running the test teardown:
+      EHRBASE_ADMIN_USERNAME: ${EHRBASE_ADMIN_USERNAME_TEST_NODE}
+      EHRBASE_ADMIN_PASSWORD: ${EHRBASE_ADMIN_PASSWORD_TEST_NODE}
+      EHRBASE_ADMIN_BASE_URL: ${EHRBASE_ADMIN_BASE_URL_TEST_NODE}
+    depends_on:
+      test-ehrbase:
+        condition: service_healthy
+      transform-rest:
+        condition: service_started
+    networks:
+      - dev-hdp_hdp-dh-test-net
+  test-openehrtool:
+    image: surfercrs4/openehrtool:latest
+    volumes:
+      - ./openEHR-tool/test-openehrtool.cfg:/code/config/openehrtool.cfg
+    env_file:
+      - ./openEHR-tool/.env
+    depends_on:
+      - test-ehrbase
+    ports:
+      - "9002:9000"
+    command: ["flask", "run", "--host=0.0.0.0", "--port=9000"]
+    environment:
+      VIRTUAL_HOST: test.openehrtool.${RIT_ENV}.dh.unimaas.nl
+    networks:
+      dev-hdp_hdp-dh-test-net:
+        aliases:
+          - test.openehrtool.dh.local
+networks:
+  dev-hdp_hdp-dh-test-net:
+    external: true

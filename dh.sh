@@ -42,6 +42,12 @@ if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-gp-net --format="true") 
   docker network create dev-hdp_hdp-dh-gp-net --subnet "172.32.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-gp-net"
 fi
 
+# Create docker network dev-hdp_hdp-dh-test-net if it does not exists
+if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-test-net --format="true") ]; then
+  echo "Creating network dev-hdp_hdp-dh-test-net"
+  docker network create dev-hdp_hdp-dh-test-net --subnet "172.33.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-test-net"
+fi
+
 
 is_local(){
     if [[ $RIT_ENV == "local" ]]; then
@@ -88,6 +94,7 @@ fi
 if [[ $1 == "setup" ]]; then
     setup_requirements "mumc"
     setup_requirements "gp"
+    setup_requirements "test"
     exit 0
 fi
 
@@ -111,35 +118,42 @@ if [[ $1 == "federation" ]]; then
     exit 0
 fi
 
-if [[ $1 == "etl" ]]; then
-    check_argument $2
-
-    dev_setup_requirements $2
+run_etl_zib(){
+    dev_setup_requirements $1
     if is_local; then build_and_up_common_services; fi
-    docker compose build $2-etl-zib
-    echo -e "\nRunning $2-etl-zib"
-    docker compose up -d $2-etl-zib
+    docker compose build $1-etl-zib
+    echo -e "\nRunning $1-etl-zib"
+    docker compose up -d $1-etl-zib
     # Add a safe guard against infinite loop during a CI execution
     SAFE_GUARD=0
-    until docker compose logs --tail 15 $2-etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
+    until docker compose logs --tail 15 $1-etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
     do
       if [[ $SAFE_GUARD -eq 15  ]]; then
-        echo -e "STOP waiting for $2-etl-zib"
+        echo -e "STOP waiting for $1-etl-zib"
         break
       fi
       ((SAFE_GUARD++))
-      echo -e "Waiting for $2-etl-zib"
+      echo -e "Waiting for $1-etl-zib"
       sleep 5
     done
 
     if [[ $SAFE_GUARD -ne 15  ]]; then
-      echo -e "\nPrint logs for $2-etl-zib"
-      docker compose logs $2-etl-zib
+      echo -e "\nPrint logs for $1-etl-zib"
+      docker compose logs $1-etl-zib
       echo -e "\nExit dh.sh"
       exit 0
     else
-      echo -e "\nFailed to run $2-etl-zib"
+      echo -e "\nFailed to run $1-etl-zib"
       exit 1
+    fi
+}
+
+if [[ $1 == "etl" ]]; then
+    if [[ -z "$2" ]]; then
+        run_etl_zib "test"
+    else
+        check_argument "$2"
+        run_etl_zib "$2"
     fi
 fi
 
@@ -154,47 +168,60 @@ if [[ $1 == "jupyter" ]]; then
     exit 0
 fi
 
-if [[ $1 == "backend" ]]; then
-    check_argument $2
-
-    dev_setup_requirements $2
-    docker compose up -d $2-ehrbase
-    until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-$2-ehrbase-1 2>&1 | grep -q "healthy";
+run_backend(){
+    dev_setup_requirements $1
+    docker compose up -d $1-ehrbase
+    until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-$1-ehrbase-1 2>&1 | grep -q "healthy";
     do
-      echo -e "Waiting for EHRbase ($2 node)"
+      echo -e "Waiting for EHRbase ($1 node)"
       sleep 10
     done
+    echo -e "\nEHRbase ($1 node) up and running, exiting dh.sh"
+}
 
-    echo -e "\nEHRbase ($2 node) up and running, exiting dh.sh"
+if [[ $1 == "backend" ]]; then
+    if [[ -z "$2" ]]; then
+        run_backend "test"
+    else
+        check_argument "$2"
+        run_backend "$2"
+    fi
+
     exit 0
 fi
+
+run_openehrtool(){
+    docker compose up -d $1-openehrtool
+    echo -e "\nOpenEHRtool on $1 node up and running, exiting dh.sh"
+}
 
 if [[ $1 == "openehrtool" ]]; then
-    check_argument $2
+    if [[ -z "$2" ]]; then
+      run_openehrtool "test"
+    else
+      check_argument "$2"
+      run_openehrtool "$2"
+    fi
 
-    docker compose up -d $2-openehrtool
-    echo -e "\nOpenEHRtool on $2 node up and running, exiting dh.sh"
     exit 0
 fi
+
+run_test(){
+    dev_setup_requirements $1
+    echo -e "\nStart $1-etl-zib test"
+    docker compose build $1-etl-zib
+    docker compose run --rm --entrypoint pytest $1-etl-zib --verbose --verbosity=5
+#    docker compose run --rm --entrypoint pytest $1-etl-zib -s
+#    docker compose run --rm --entrypoint pytest $1-etl-zib -o log_cli=true --log-cli-level=INFO
+}
 
 if [[ $1 == "test" ]]; then
     if is_local; then build_and_up_common_services; fi
-    if [[ -z "$2" || ( "$2" != "mumc" && "$2" != "gp" && "$2" != "federation") ]]; then
-      echo "Error: The second argument must be either 'mumc', 'gp' or 'federation"
-      exit 1
-    fi
 
-    if [[ $2 == "mumc" || $2 == "gp" ]]; then
-      dev_setup_requirements $2
-      echo -e "\nStart $2-etl-zib test"
-      docker compose build $2-etl-zib
-      docker compose run --rm --entrypoint pytest $2-etl-zib --verbose --verbosity=5
-#      docker compose run --rm --entrypoint pytest $2-etl-zib -s
-#      docker compose run --rm --entrypoint pytest $2-etl-zib -o log_cli=true --log-cli-level=INFO
-    fi
-
-    if [[ $2 == "federation" ]]; then
-      docker compose run --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
+    if [[ $2 == "single-node" ]]; then
+        run_test "test"
+    elif [[ $2 == "federation" ]]; then
+        docker compose run --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
     fi
 
     if [ $? -eq 0 ]; then
