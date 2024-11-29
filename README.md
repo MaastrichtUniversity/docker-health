@@ -26,11 +26,11 @@ The present files are used for development-purposes.
 ### Add these virtual host entries in your /etc/hosts file
 
 ```
-127.0.0.1 ehrbase.local.dh.unimaas.nl
+127.0.0.1 mumc.ehrbase.local.dh.unimaas.nl
+127.0.0.1 mumc.openehrtool.local.dh.unimaas.nl
 127.0.0.1 transform.local.dh.unimaas.nl
 127.0.0.1 fhir-bridge.local.dh.unimaas.nl
 127.0.0.1 jupyter.local.dh.unimaas.nl
-127.0.0.1 openehrtool.local.dh.unimaas.nl
 ```
 
 ### Template variables
@@ -73,7 +73,7 @@ SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
 ./dh.sh backend
 ```
 
-Open your browser and try [http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html](http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html) with the following credentials:
+Open your browser and try [http://mumc.ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html](http://ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html) with the following credentials:
 
 ```
 SECURITY_AUTHUSER=user
@@ -158,15 +158,15 @@ Tool for interacting with the EHRbase server with a basic dashboard integrated.
 ./dh.sh up -d openehrtool
 ```
 
-Open your browser and try [http://openehrtool.local.dh.unimaas.nl](http://openehrtool.local.dh.unimaas.nl)
+Open your browser and try [http://mumc.openehrtool.local.dh.unimaas.nl](http://mumc.openehrtool.local.dh.unimaas.nl)
 
 ### POC Federated EHRBase nodes
 
 Add these virtual hosts to your /etc/hosts
 
 ```
-127.0.0.1 ehrbase2.local.dh.unimaas.nl
-127.0.0.1 openehrtool2.local.dh.unimaas.nl
+127.0.0.1 zio.ehrbase.local.dh.unimaas.nl
+127.0.0.1 zio.openehrtool.local.dh.unimaas.nl
 127.0.0.1 federation.local.dh.unimaas.nl
 ```
 

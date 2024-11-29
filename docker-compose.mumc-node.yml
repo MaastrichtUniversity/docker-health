@@ -12,7 +12,7 @@ services:
       - ./env_files/timezone.env
       - ./env_files/mumc/ehrbase.env
     environment:
-      VIRTUAL_HOST: ehrbase.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: mumc.ehrbase.${RIT_ENV}.dh.unimaas.nl
     healthcheck:
       test: "wget -T5 -qO- -Y off localhost:8080/ehrbase/management/health | grep UP || exit 1"
       interval: 5s
@@ -24,7 +24,7 @@ services:
     networks:
       dev-hdp_hdp-dh-mumc-net:
         aliases:
-          - ehrbase.dh.local
+          - mumc.ehrbase.dh.local
     entrypoint:
       - java
       - -jar
@@ -124,11 +124,11 @@ services:
     ports:
       - "9000:9000"
     environment:
-      VIRTUAL_HOST: openehrtool.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: mumc.openehrtool.${RIT_ENV}.dh.unimaas.nl
     networks:
       dev-hdp_hdp-dh-mumc-net:
         aliases:
-          - openehrtool.dh.local
+          - mumc.openehrtool.dh.local
 networks:
   dev-hdp_hdp-dh-mumc-net:
     external: true
