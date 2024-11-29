@@ -113,7 +113,7 @@ if [[ $1 == "federation" ]]; then
     exit 0
 fi
 
-if [[ $1 == "zib" ]]; then
+if [[ $1 == "etl" ]]; then
     check_argument $2
 
     dev_setup_requirements $2

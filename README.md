@@ -86,7 +86,7 @@ Extract data from csv files, Transform the data into valid openEHR compositions 
 #### ETL workflows specific to ZIB templates.
 
 ```
-./dh.sh zib mumc
+./dh.sh etl mumc
 ```
 
 ### Run the tests
