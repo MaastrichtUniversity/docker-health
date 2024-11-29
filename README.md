@@ -5,7 +5,6 @@ EHRbase provides a standard-based backend for interoperable clinical application
 
 This service is based on repositories:
 
-- [dh-hdp-templates](https://github.com/um-datahub/dh-hdp-templates/tree/2024.1): Custom-made openEHR templates
 - [dh-hdp-zib-templates](https://github.com/um-datahub/dh-hdp-zib-templates/tree/2024.1): Custom-made openEHR templates matching the Dutch ZIBs
 - [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2024.1): ETL Python script
 - [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest/tree/2024.1): Java REST API for data class transformation into openEHR compositions

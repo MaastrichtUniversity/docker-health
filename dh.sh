@@ -23,8 +23,7 @@ COMPOSE_PROJECT_NAME="dev-hdp"
 export COMPOSE_PROJECT_NAME
 
 # specify externals for this project
-externals="externals/dh-hdp-templates https://github.com/um-datahub/dh-hdp-templates.git
-externals/dh-hdp-zib-templates https://github.com/um-datahub/dh-hdp-zib-templates.git
+externals="externals/dh-hdp-zib-templates https://github.com/um-datahub/dh-hdp-zib-templates.git
 externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-transform-rest.git
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git
