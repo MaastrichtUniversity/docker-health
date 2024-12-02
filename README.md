@@ -182,5 +182,5 @@ To run the federation service API integration test:
 To run openEHR tool on each node:
 
 ```
-./dh.sh openehrtool mumc; ./dh.sh openehrtool gp
+./dh.sh openehrtool mumc; ./dh.sh openehrtool zio
 ```

@@ -8,26 +8,44 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/mumc/etl-zib/etl-zib.log
-    tags: ["MUMC_ETL_ZIB"]
+      - /usr/share/logs/test/etl-zib/etl-zib.log
+    tags: ["TEST_ETL_ZIB"]
 
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/gp/etl-zib/etl-zib.log
-    tags: [ "GP_ETL_ZIB" ]
+      - /usr/share/logs/mumc/etl-zib/etl-zib.log
+    tags: [ "MUMC_ETL_ZIB" ]
+
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/zio/etl-zib/etl-zib.log
+    tags: [ "ZIO_ETL_ZIB" ]
+
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/test/ehrbase/ehrbase.log
+    tags: ["TEST_EHRBASE"]
 
   - type: log
     enabled: true
     paths:
       - /usr/share/logs/mumc/ehrbase/ehrbase.log
     tags: ["MUMC_EHRBASE"]
+    
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/zio/ehrbase/ehrbase.log
+    tags: ["ZIO_EHRBASE"]
 
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/gp/ehrbase/ehrbase.log
-    tags: ["GP_EHRBASE"]
+      - /usr/share/logs/test/ehrdb/postgresql.log
+    tags: ["TEST_EHRDB"]
 
   - type: log
     enabled: true
@@ -38,8 +56,8 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/gp/ehrdb/postgresql.log
-    tags: [ "GP_EHRDB" ]
+      - /usr/share/logs/zio/ehrdb/postgresql.log
+    tags: [ "ZIO_EHRDB" ]
 
 # Unused at the moment:
 #  - type: log

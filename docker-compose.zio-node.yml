@@ -1,8 +1,8 @@
 services:
-  gp-ehrbase:
+  zio-ehrbase:
     image: ehrbase/ehrbase:2.6.0
     depends_on:
-      gp-ehrdb:
+      zio-ehrdb:
         condition: service_started
       proxy:
         condition: service_started
@@ -10,7 +10,7 @@ services:
         condition: service_started
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/gp/ehrbase.env
+      - ./env_files/zio/ehrbase.env
     environment:
       VIRTUAL_HOST: zio.ehrbase.${RIT_ENV}.dh.unimaas.nl
     healthcheck:
@@ -22,7 +22,7 @@ services:
     ports:
       - "8081:8080"
     networks:
-      dev-hdp_hdp-dh-gp-net:
+      dev-hdp_hdp-dh-zio-net:
         aliases:
           - zio.ehrbase.dh.local
     entrypoint:
@@ -32,9 +32,9 @@ services:
       - -Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log
       - ehrbase.jar
     volumes:
-      - ./filebeat/logs/gp/ehrbase:/tmp/ehrbaselog
+      - ./filebeat/logs/zio/ehrbase:/tmp/ehrbaselog
     restart: on-failure
-  gp-ehrdb:
+  zio-ehrdb:
     image: ehrbase/ehrbase-v2-postgres:16.2
     environment:
       - PGPORT=5432
@@ -58,10 +58,10 @@ services:
       ]
     # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
     volumes:
-      - ./filebeat/logs/gp/ehrdb:/tmp/postgreslog
+      - ./filebeat/logs/zio/ehrdb:/tmp/postgreslog
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/gp/ehrdb.env
+      - ./env_files/zio/ehrdb.env
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -70,8 +70,8 @@ services:
     ports:
       - "5433:5432"
     networks:
-      - dev-hdp_hdp-dh-gp-net
-  gp-etl-zib:
+      - dev-hdp_hdp-dh-zio-net
+  zio-etl-zib:
     build:
       context: ./externals/dh-hdp-etl
       dockerfile: Dockerfile
@@ -79,15 +79,15 @@ services:
         - SRC_SUBPROJECT=zib
       additional_contexts:
         hdp_templates: ./externals/dh-hdp-zib-templates
-    image: ${ENV_REGISTRY_HOST}/docker-health/gp-etl-zib:${ENV_TAG}
+    image: ${ENV_REGISTRY_HOST}/docker-health/zio-etl-zib:${ENV_TAG}
     healthcheck:
-      test: "tail -n 10 /code/logs/gp/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
+      test: "tail -n 10 /code/logs/zio/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
       interval: 5s
       timeout: 3s
       retries: 10
     volumes:
-      - ./data/gp-demo-data:/code/data/gp-demo-data
-      - ./filebeat/logs/gp/etl-zib:/code/logs/gp
+      - ./data/zio-demo-data:/code/data/zio-demo-data
+      - ./filebeat/logs/zio/etl-zib:/code/logs/zio
       - ./outputs/etl-zib:/code/outputs
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
@@ -98,40 +98,40 @@ services:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
       - ./env_files/zib-templates.env
-      - ./env_files/gp/etl.env
+      - ./env_files/zio/etl.env
     environment:
-      LOGSTASH_TAGS: GP_ETL_ZIB
-      EHRBASE_USERNAME: ${EHRBASE_USERNAME_GP_NODE}
-      EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_GP_NODE}
-      EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_GP_NODE}
+      LOGSTASH_TAGS: ZIO_ETL_ZIB
+      EHRBASE_USERNAME: ${EHRBASE_USERNAME_ZIO_NODE}
+      EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_ZIO_NODE}
+      EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_ZIO_NODE}
       # Environment variables meant for development while running the test teardown:
-      EHRBASE_ADMIN_USERNAME: ${EHRBASE_ADMIN_USERNAME_GP_NODE}
-      EHRBASE_ADMIN_PASSWORD: ${EHRBASE_ADMIN_PASSWORD_GP_NODE}
-      EHRBASE_ADMIN_BASE_URL: ${EHRBASE_ADMIN_BASE_URL_GP_NODE}
+      EHRBASE_ADMIN_USERNAME: ${EHRBASE_ADMIN_USERNAME_ZIO_NODE}
+      EHRBASE_ADMIN_PASSWORD: ${EHRBASE_ADMIN_PASSWORD_ZIO_NODE}
+      EHRBASE_ADMIN_BASE_URL: ${EHRBASE_ADMIN_BASE_URL_ZIO_NODE}
     depends_on:
-      gp-ehrbase:
+      zio-ehrbase:
         condition: service_healthy
       transform-rest:
         condition: service_started
     networks:
-      - dev-hdp_hdp-dh-gp-net
-  gp-openehrtool:
+      - dev-hdp_hdp-dh-zio-net
+  zio-openehrtool:
     image: surfercrs4/openehrtool:latest
     volumes:
-      - ./openEHR-tool/gp-openehrtool.cfg:/code/config/openehrtool.cfg
+      - ./openEHR-tool/zio-openehrtool.cfg:/code/config/openehrtool.cfg
     env_file:
       - ./openEHR-tool/.env
     depends_on:
-      - gp-ehrbase
+      - zio-ehrbase
     ports:
       - "9001:9000"
     command: ["flask", "run", "--host=0.0.0.0", "--port=9000"]
     environment:
       VIRTUAL_HOST: zio.openehrtool.${RIT_ENV}.dh.unimaas.nl
     networks:
-      dev-hdp_hdp-dh-gp-net:
+      dev-hdp_hdp-dh-zio-net:
         aliases:
           - zio.openehrtool.dh.local
 networks:
-  dev-hdp_hdp-dh-gp-net:
+  dev-hdp_hdp-dh-zio-net:
     external: true

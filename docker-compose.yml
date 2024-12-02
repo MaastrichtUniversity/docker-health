@@ -1,7 +1,7 @@
 include:
   - docker-compose.test-node.yml
   - docker-compose.mumc-node.yml
-  - docker-compose.gp-node.yml
+  - docker-compose.zio-node.yml
 services:
   proxy:
     image: jwilder/nginx-proxy:${ENV_TAG_PROXY}
@@ -16,7 +16,7 @@ services:
     networks:
       - hdp-dh-test-net
       - hdp-dh-mumc-net
-      - hdp-dh-gp-net
+      - hdp-dh-zio-net
   transform-rest:
     build:
       context: ./externals/dh-hdp-transform-rest
@@ -48,7 +48,7 @@ services:
       hdp-dh-mumc-net:
         aliases:
           - transform.dh.local
-      hdp-dh-gp-net:
+      hdp-dh-zio-net:
         aliases:
           - transform.dh.local
   federation-api:
@@ -63,7 +63,7 @@ services:
         condition: service_started
       mumc-etl-zib:
         condition: service_healthy
-      gp-etl-zib:
+      zio-etl-zib:
         condition: service_healthy
     volumes:
       - ./filebeat/logs/federation-api:/var/log
@@ -75,16 +75,16 @@ services:
       MUMC__EHRBASE_USERNAME: ${EHRBASE_USERNAME_MUMC_NODE}
       MUMC__EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_MUMC_NODE}
       MUMC__EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_MUMC_NODE}
-      GP__EHRBASE_USERNAME: ${EHRBASE_USERNAME_GP_NODE}
-      GP__EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_GP_NODE}
-      GP__EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_GP_NODE}
+      ZIO__EHRBASE_USERNAME: ${EHRBASE_USERNAME_ZIO_NODE}
+      ZIO__EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_ZIO_NODE}
+      ZIO__EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_ZIO_NODE}
     ports:
       - "8000:8000"
     networks:
       hdp-dh-mumc-net:
         aliases:
           - federation.dh.local
-      hdp-dh-gp-net:
+      hdp-dh-zio-net:
         aliases:
           - federation.dh.local
   filebeat:
@@ -101,7 +101,7 @@ services:
       hdp-dh-mumc-net:
         aliases:
           - filebeat.dh.local
-      hdp-dh-gp-net:
+      hdp-dh-zio-net:
         aliases:
           - filebeat.dh.local
   jupyter-zib:
@@ -130,7 +130,7 @@ services:
       EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_MUMC_NODE}
     volumes:
       - ./data/mumc-demo-data:/home/jovyan/data/mumc-demo-data
-      - ./data/gp-demo-data:/home/jovyan/data/gp-demo-data
+      - ./data/zio-demo-data:/home/jovyan/data/zio-demo-data
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/home/jovyan/etl.py
       - ./externals/dh-hdp-etl/requirements.txt:/home/jovyan/requirements.txt
@@ -143,7 +143,7 @@ services:
       hdp-dh-mumc-net:
         aliases:
           - jupyter-zib.dh.local
-      hdp-dh-gp-net:
+      hdp-dh-zio-net:
         aliases:
           - jupyter-zib.dh.local
   redis:
@@ -157,7 +157,7 @@ services:
       hdp-dh-mumc-net:
         aliases:
           - redis.dh.local
-      hdp-dh-gp-net:
+      hdp-dh-zio-net:
         aliases:
           - redis.dh.local
 networks:
@@ -177,7 +177,7 @@ networks:
       driver: default
       config:
         - subnet: "172.31.1.0/24"
-  hdp-dh-gp-net:
+  hdp-dh-zio-net:
     ipam:
       driver: default
       config:

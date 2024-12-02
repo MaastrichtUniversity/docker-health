@@ -36,10 +36,10 @@ if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-mumc-net --format="true"
   docker network create dev-hdp_hdp-dh-mumc-net --subnet "172.31.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-mumc-net"
 fi
 
-# Create docker network dev-hdp_hdp-dh-gp-net if it does not exists
-if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-gp-net --format="true") ]; then
-  echo "Creating network dev-hdp_hdp-dh-gp-net"
-  docker network create dev-hdp_hdp-dh-gp-net --subnet "172.32.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-gp-net"
+# Create docker network dev-hdp_hdp-dh-zio-net if it does not exists
+if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-zio-net --format="true") ]; then
+  echo "Creating network dev-hdp_hdp-dh-zio-net"
+  docker network create dev-hdp_hdp-dh-zio-net --subnet "172.32.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-zio-net"
 fi
 
 # Create docker network dev-hdp_hdp-dh-test-net if it does not exists
@@ -69,9 +69,9 @@ dev_setup_requirements(){
 }
 
 check_argument(){
-  # Check if the second argument is empty or not "gp" or "mumc"
-  if [[ -z "$1" || ( "$1" != "mumc" && "$1" != "gp" ) ]]; then
-    echo "Error: The second argument must be either 'mumc' or 'gp'"
+  # Check if the second argument is empty or not "zio" or "mumc"
+  if [[ -z "$1" || ( "$1" != "mumc" && "$1" != "zio" ) ]]; then
+    echo "Error: The second argument must be either 'mumc' or 'zio'"
     exit 1
   fi
 }
@@ -93,7 +93,7 @@ fi
 
 if [[ $1 == "setup" ]]; then
     setup_requirements "mumc"
-    setup_requirements "gp"
+    setup_requirements "zio"
     setup_requirements "test"
     exit 0
 fi
