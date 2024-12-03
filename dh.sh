@@ -221,7 +221,7 @@ if [[ $1 == "test" ]]; then
     if [[ $2 == "single-node" ]]; then
         run_test "test"
     elif [[ $2 == "federation" ]]; then
-        docker compose run --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
+        docker compose run --build --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
     fi
 
     if [ $? -eq 0 ]; then
