@@ -69,15 +69,10 @@ services:
       - ./filebeat/logs/federation-api:/var/log
     env_file:
       - ./env_files/timezone.env
+      - ./env_files/federation.env
     environment:
 #      LOGSTASH_TAGS: FEDERATION_API
       VIRTUAL_HOST: federation.${RIT_ENV}.dh.unimaas.nl
-      MUMC__EHRBASE_USERNAME: ${EHRBASE_USERNAME_MUMC_NODE}
-      MUMC__EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_MUMC_NODE}
-      MUMC__EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_MUMC_NODE}
-      ZIO__EHRBASE_USERNAME: ${EHRBASE_USERNAME_ZIO_NODE}
-      ZIO__EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_ZIO_NODE}
-      ZIO__EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_ZIO_NODE}
     ports:
       - "8000:8000"
     networks:
