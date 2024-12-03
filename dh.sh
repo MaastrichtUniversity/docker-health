@@ -109,7 +109,9 @@ if [[ $1 == "transform" ]]; then
 fi
 
 if [[ $1 == "federation" ]]; then
-#    dev_setup_requirements $2
+    dev_setup_requirements "mumc"
+    dev_setup_requirements "zio"
+
     echo -e "\nStart FastAPI"
     if is_local; then docker compose build federation-api filebeat; fi
     docker compose up -d federation-api
