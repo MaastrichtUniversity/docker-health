@@ -99,7 +99,6 @@ if [[ $1 == "setup" ]]; then
 fi
 
 if [[ $1 == "transform" ]]; then
-#    dev_setup_requirements $2
     echo -e "\nStart Spring boot Rest API"
     if is_local; then docker compose build transform-rest filebeat; fi
     docker compose up -d transform-rest
