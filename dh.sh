@@ -207,22 +207,29 @@ if [[ $1 == "openehrtool" ]]; then
     exit 0
 fi
 
-run_test(){
-    dev_setup_requirements $1
-    echo -e "\nStart $1-etl-zib test"
-    docker compose build $1-etl-zib
-    docker compose run --rm --entrypoint pytest $1-etl-zib --verbose --verbosity=5
-#    docker compose run --rm --entrypoint pytest $1-etl-zib -s
-#    docker compose run --rm --entrypoint pytest $1-etl-zib -o log_cli=true --log-cli-level=INFO
+run_single_node_tests(){
+    dev_setup_requirements "test"
+    if is_local; then build_and_up_common_services; fi
+    echo -e "\nStart single node tests on test-etl-zib"
+    docker compose build test-etl-zib
+    docker compose run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5
+#    docker compose run --rm --entrypoint pytest test-etl-zib -s
+#    docker compose run --rm --entrypoint pytest test-etl-zib -o log_cli=true --log-cli-level=INFO
+}
+
+run_federation_tests(){
+    dev_setup_requirements "mumc"
+    dev_setup_requirements "zio"
+    if is_local; then build_and_up_common_services; fi
+    echo -e "\nStart federation tests"
+    docker compose run --build --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
 }
 
 if [[ $1 == "test" ]]; then
-    if is_local; then build_and_up_common_services; fi
-
     if [[ $2 == "single-node" ]]; then
-        run_test "test"
+        run_single_node_tests
     elif [[ $2 == "federation" ]]; then
-        docker compose run --build --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
+        run_federation_tests
     fi
 
     if [ $? -eq 0 ]; then
