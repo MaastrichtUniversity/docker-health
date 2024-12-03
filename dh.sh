@@ -158,17 +158,6 @@ if [[ $1 == "etl" ]]; then
     fi
 fi
 
-if [[ $1 == "jupyter" ]]; then
-    # This service is based on the node "mumc"
-    dev_setup_requirements "mumc"
-    echo -e "\nExplore zib dataset"
-    if is_local; then docker compose build jupyter-zib transform-rest; fi
-    docker compose up -d jupyter-zib
-
-    echo -e "\nExit dh.sh"
-    exit 0
-fi
-
 run_backend(){
     dev_setup_requirements $1
     docker compose up -d $1-ehrbase
@@ -188,6 +177,17 @@ if [[ $1 == "backend" ]]; then
         run_backend "$2"
     fi
 
+    exit 0
+fi
+
+if [[ $1 == "jupyter" ]]; then
+    # This service is based on the node "mumc"
+    dev_setup_requirements "mumc"
+    echo -e "\nExplore zib dataset"
+    if is_local; then docker compose build jupyter-zib transform-rest; fi
+    docker compose up -d jupyter-zib
+
+    echo -e "\nExit dh.sh"
     exit 0
 fi
 
