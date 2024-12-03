@@ -57,7 +57,7 @@ is_local(){
 }
 
 setup_requirements(){
-    echo -e "Update permissions of the ehrbase and ehrdb filebeat/logs"
+    echo -e "Update permissions of the ehrbase and ehrdb filebeat/logs/$1"
     mkdir -p ./filebeat/logs/$1/ehrdb && chmod -R 777 ./filebeat/logs/$1/ehrdb
     mkdir -p ./filebeat/logs/$1/ehrbase && chmod -R 777 ./filebeat/logs/$1/ehrbase
 }
