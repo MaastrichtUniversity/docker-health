@@ -99,13 +99,6 @@ services:
       - ./env_files/mumc/etl.env
     environment:
       LOGSTASH_TAGS: MUMC_ETL_ZIB
-      EHRBASE_USERNAME: ${EHRBASE_USERNAME_MUMC_NODE}
-      EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_MUMC_NODE}
-      EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_MUMC_NODE}
-      # Environment variables meant for development while running the test teardown:
-      EHRBASE_ADMIN_USERNAME: ${EHRBASE_ADMIN_USERNAME_MUMC_NODE}
-      EHRBASE_ADMIN_PASSWORD: ${EHRBASE_ADMIN_PASSWORD_MUMC_NODE}
-      EHRBASE_ADMIN_BASE_URL: ${EHRBASE_ADMIN_BASE_URL_MUMC_NODE}
     depends_on:
       mumc-ehrbase:
         condition: service_healthy
