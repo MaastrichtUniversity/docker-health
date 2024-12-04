@@ -112,17 +112,18 @@ services:
     depends_on:
       transform-rest:
         condition: service_started
+      mumc-ehrbase:
+        condition: service_healthy
+      zio-ehrbase:
+        condition: service_healthy
+      federation-api:
+        condition: service_started
     env_file:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
       - ./env_files/zib-templates.env
-      - ./env_files/mumc/etl.env
     environment:
       VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
-      # Update the env depending on the node:
-      EHRBASE_USERNAME: ${EHRBASE_USERNAME_MUMC_NODE}
-      EHRBASE_PASSWORD: ${EHRBASE_PASSWORD_MUMC_NODE}
-      EHRBASE_BASE_URL: ${EHRBASE_BASE_URL_MUMC_NODE}
     volumes:
       - ./data/mumc-demo-data:/home/jovyan/data/mumc-demo-data
       - ./data/zio-demo-data:/home/jovyan/data/zio-demo-data

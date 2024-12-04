@@ -181,8 +181,9 @@ if [[ $1 == "backend" ]]; then
 fi
 
 if [[ $1 == "jupyter" ]]; then
-    # This service is based on the node "mumc"
+    # This service is based on the "mumc" and "zio" nodes
     dev_setup_requirements "mumc"
+    dev_setup_requirements "zio"
     echo -e "\nExplore zib dataset"
     if is_local; then docker compose build jupyter-zib transform-rest; fi
     docker compose up -d jupyter-zib
