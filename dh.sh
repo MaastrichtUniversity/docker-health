@@ -110,8 +110,10 @@ if [[ $1 == "transform" ]]; then
 fi
 
 if [[ $1 == "federation" ]]; then
-    dev_setup_requirements "mumc"
-    dev_setup_requirements "zio"
+    # Functions included within run_etl_zib:
+    # * dev_setup_requirements
+    run_etl_zib "mumc"
+    run_etl_zib "zio"
 
     echo -e "\nStart FastAPI"
     if is_local; then docker compose build federation-api filebeat; fi
@@ -139,7 +141,9 @@ run_etl_zib(){
       echo -e "Waiting for $1-etl-zib"
       sleep 5
     done
+}
 
+check_etl_safe_guard(){
     if [[ $SAFE_GUARD -ne 15  ]]; then
       echo -e "\nPrint logs for $1-etl-zib"
       docker compose logs $1-etl-zib
@@ -154,9 +158,11 @@ run_etl_zib(){
 if [[ $1 == "etl" ]]; then
     if [[ -z "$2" ]]; then
         run_etl_zib "test"
+        check_etl_safe_guard "test"
     else
         check_argument "$2"
         run_etl_zib "$2"
+        check_etl_safe_guard "$2"
     fi
 fi
 
@@ -224,9 +230,12 @@ run_single_node_tests(){
 }
 
 run_federation_tests(){
-    dev_setup_requirements "mumc"
-    dev_setup_requirements "zio"
-    if is_local; then build_and_up_common_services; fi
+    # Functions included within run_etl_zib:
+    # * dev_setup_requirements
+    # * build_and_up_common_services
+    run_etl_zib "mumc"
+    run_etl_zib "zio"
+
     echo -e "\nStart federation tests"
     docker compose run --build --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
 }

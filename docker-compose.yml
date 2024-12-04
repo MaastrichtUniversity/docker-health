@@ -61,9 +61,9 @@ services:
         condition: service_started
       filebeat:
         condition: service_started
-      mumc-etl-zib:
+      mumc-ehrbase:
         condition: service_healthy
-      zio-etl-zib:
+      zio-ehrbase:
         condition: service_healthy
     volumes:
       - ./filebeat/logs/federation-api:/var/log
