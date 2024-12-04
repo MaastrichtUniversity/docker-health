@@ -95,6 +95,8 @@ if [[ $1 == "setup" ]]; then
     setup_requirements "mumc"
     setup_requirements "zio"
     setup_requirements "test"
+
+    echo -e "\nExit dh.sh"
     exit 0
 fi
 
@@ -166,7 +168,7 @@ run_backend(){
       echo -e "Waiting for EHRbase ($1 node)"
       sleep 10
     done
-    echo -e "\nEHRbase ($1 node) up and running, exiting dh.sh"
+    echo -e "\nEHRbase ($1 node) up and running"
 }
 
 if [[ $1 == "backend" ]]; then
@@ -177,6 +179,7 @@ if [[ $1 == "backend" ]]; then
         run_backend "$2"
     fi
 
+    echo -e "\nExit dh.sh"
     exit 0
 fi
 
@@ -194,7 +197,7 @@ fi
 
 run_openehrtool(){
     docker compose up -d $1-openehrtool
-    echo -e "\nOpenEHRtool on $1 node up and running, exiting dh.sh"
+    echo -e "\nOpenEHRtool on $1 node up and running"
 }
 
 if [[ $1 == "openehrtool" ]]; then
@@ -205,6 +208,7 @@ if [[ $1 == "openehrtool" ]]; then
       run_openehrtool "$2"
     fi
 
+    echo -e "\nExit dh.sh"
     exit 0
 fi
 
