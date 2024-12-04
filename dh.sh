@@ -184,9 +184,9 @@ if [[ $1 == "backend" ]]; then
 fi
 
 if [[ $1 == "jupyter" ]]; then
-    # This service is based on the "mumc" and "zio" nodes
     dev_setup_requirements "mumc"
     dev_setup_requirements "zio"
+
     echo -e "\nExplore zib dataset"
     if is_local; then docker compose build jupyter-zib transform-rest; fi
     docker compose up -d jupyter-zib
@@ -215,6 +215,7 @@ fi
 run_single_node_tests(){
     dev_setup_requirements "test"
     if is_local; then build_and_up_common_services; fi
+
     echo -e "\nStart single node tests on test-etl-zib"
     docker compose build test-etl-zib
     docker compose run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5
