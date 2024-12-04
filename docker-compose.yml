@@ -170,7 +170,6 @@ networks:
       driver: default
       config:
         - subnet: "172.33.1.0/24"
-
   hdp-dh-mumc-net:
     ipam:
       driver: default
