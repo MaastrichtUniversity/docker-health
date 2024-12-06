@@ -1,8 +1,8 @@
 #!/bin/bash
 
-source ./env_files/etl_zib.env
+source ./env_files/zib-templates.env
 
-ENV_FILE="env_files/etl_zib.env"
+ENV_FILE="env_files/zib-templates.env"
 
 create_dynamic_template_variables() { # $1 __ID
     # Only append variables which don't exist in the env file

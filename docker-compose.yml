@@ -1,3 +1,7 @@
+include:
+  - docker-compose.test-node.yml
+  - docker-compose.mumc-node.yml
+  - docker-compose.zio-node.yml
 services:
   proxy:
     image: jwilder/nginx-proxy:${ENV_TAG_PROXY}
@@ -10,138 +14,9 @@ services:
       - "80:80"
       - "443:443"
     networks:
-      - hdp-dh-net
-  ehrbase:
-    image: ehrbase/ehrbase:2.6.0
-    depends_on:
-      ehrdb:
-        condition: service_healthy
-      proxy:
-        condition: service_started
-      filebeat:
-        condition: service_started
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/ehrbase.env
-    environment:
-      VIRTUAL_HOST: ehrbase.${RIT_ENV}.dh.unimaas.nl
-    healthcheck:
-     test: "wget -T5 -qO- -Y off localhost:8080/ehrbase/management/health | grep UP || exit 1"
-     interval: 5s
-     timeout: 3s
-     retries: 10
-#     start_period: 10s
-    ports:
-      - "8080:8080"
-    networks:
-      hdp-dh-net:
-        aliases:
-          - ehrbase.dh.local
-    entrypoint:
-      - java
-      - -jar
-      - -Dspring.profiles.active=docker
-      - -Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log
-      - ehrbase.jar
-    volumes:
-      - ./filebeat/logs/ehrbase:/tmp/ehrbaselog
-    restart: on-failure
-  ehrdb:
-    image: ehrbase/ehrbase-v2-postgres:16.2
-    command:
-      [
-        "postgres",
-        "-c",
-        "logging_collector=on",
-        "-c",
-        "log_directory=/tmp/postgreslog/",
-        "-c",
-        "log_filename=postgresql.log",
-        "-c",
-        "log_statement=none",
-        "-c",
-        "log_file_mode=0777",
-        "-c",
-        "log_rotation_age=0",
-        "-c",
-        "log_rotation_size=0",
-      ]
-    # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
-    volumes:
-      - ./filebeat/logs/ehrdb:/tmp/postgreslog
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/ehrdb.env
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 5s
-      timeout: 5s
-      retries: 12
-    ports:
-      - "5432:5432"
-    networks:
-      - hdp-dh-net
-  openehrtool:
-    image: surfercrs4/openehrtool:latest
-    volumes:
-        - ./openEHR-tool/openehrtool.cfg:/code/config/openehrtool.cfg
-    env_file:
-        - ./openEHR-tool/.env
-    depends_on:
-        - redis
-        - ehrbase
-        - proxy
-    ports:
-        - 9000:9000
-    environment:
-      VIRTUAL_HOST: openehrtool.${RIT_ENV}.dh.unimaas.nl
-    networks:
-      hdp-dh-net:
-        aliases:
-          - openehrtool.dh.local
-  redis:
-    image: redis:latest
-    ports:
-    - 6379:6379
-    command:  redis-server  /redis.conf
-    volumes:
-    - ./openEHR-tool/redis.conf:/redis.conf
-    networks:
-      hdp-dh-net:
-        aliases:
-          - redis.dh.local
-  etl-zib:
-    build:
-      context: ./externals/dh-hdp-etl
-      dockerfile: Dockerfile
-      args:
-        - SRC_SUBPROJECT=zib
-      additional_contexts:
-        hdp_templates: ./externals/dh-hdp-zib-templates
-    image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
-    volumes:
-      - ./data/zib-demo-data:/code/data/zib-demo-data
-      - ./filebeat/logs/etl-zib:/code/logs
-      - ./outputs/etl-zib:/code/outputs
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-etl/etl.py:/code/etl.py
-      - ./externals/dh-hdp-etl/src/core:/code/src/core
-      - ./externals/dh-hdp-etl/src/subprojects/zib:/code/src/subprojects/zib
-      - ./externals/dh-hdp-etl/tests:/code/tests
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/ehrbase_server.env
-      - ./env_files/transform_server.env
-      - ./env_files/etl_zib.env
-    environment:
-      LOGSTASH_TAGS: ETL_ZIB
-    depends_on:
-      transform-rest:
-        condition: service_started
-      ehrbase:
-        condition: service_healthy
-    networks:
-      - hdp-dh-net
+      - hdp-dh-test-net
+      - hdp-dh-mumc-net
+      - hdp-dh-zio-net
   transform-rest:
     build:
       context: ./externals/dh-hdp-transform-rest
@@ -160,16 +35,73 @@ services:
     env_file:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
-      - ./env_files/etl_zib.env
+      - ./env_files/zib-templates.env
     environment:
       LOGSTASH_TAGS: TRANSFORM_REST
       VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
     ports:
-      - "8082:8080"
+      - "8079:8080"
     networks:
-      hdp-dh-net:
+      hdp-dh-test-net:
         aliases:
           - transform.dh.local
+      hdp-dh-mumc-net:
+        aliases:
+          - transform.dh.local
+      hdp-dh-zio-net:
+        aliases:
+          - transform.dh.local
+  federation-api:
+    build:
+      context: ./externals/dh-hdp-federation-api
+      dockerfile: Dockerfile
+    image: ${ENV_REGISTRY_HOST}/docker-health/federation-api:${ENV_TAG}
+    depends_on:
+      proxy:
+        condition: service_started
+      filebeat:
+        condition: service_started
+      mumc-etl-zib:
+        condition: service_healthy
+      zio-etl-zib:
+        condition: service_healthy
+    volumes:
+      - ./filebeat/logs/federation-api:/var/log
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/federation.env
+    environment:
+#      LOGSTASH_TAGS: FEDERATION_API
+      VIRTUAL_HOST: federation.${RIT_ENV}.dh.unimaas.nl
+    ports:
+      - "8000:8000"
+    networks:
+      hdp-dh-mumc-net:
+        aliases:
+          - federation.dh.local
+      hdp-dh-zio-net:
+        aliases:
+          - federation.dh.local
+  filebeat:
+    build:
+      context: ./filebeat
+      dockerfile: Dockerfile
+    env_file:
+      - ./env_files/timezone.env
+    volumes:
+      - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml:ro
+      - ./filebeat/logs:/usr/share/logs/
+      - ./filebeat/certs:/etc/certs:ro
+    networks:
+      hdp-dh-test-net:
+        aliases:
+          - filebeat.dh.local
+      hdp-dh-mumc-net:
+        aliases:
+          - filebeat.dh.local
+      hdp-dh-zio-net:
+        aliases:
+          - filebeat.dh.local
   jupyter-zib:
     build:
       context: ./externals/dh-hdp-notebooks
@@ -183,17 +115,21 @@ services:
     depends_on:
       transform-rest:
         condition: service_started
-      ehrbase:
+      mumc-ehrbase:
         condition: service_healthy
+      zio-ehrbase:
+        condition: service_healthy
+      federation-api:
+        condition: service_started
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/ehrbase_server.env
       - ./env_files/transform_server.env
-      - ./env_files/etl_zib.env
+      - ./env_files/zib-templates.env
     environment:
       VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
     volumes:
-      - ./data/zib-demo-data:/home/jovyan/data/zib-demo-data
+      - ./data/mumc-demo-data:/home/jovyan/data/mumc-demo-data
+      - ./data/zio-demo-data:/home/jovyan/data/zio-demo-data
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/home/jovyan/etl.py
       - ./externals/dh-hdp-etl/requirements.txt:/home/jovyan/requirements.txt
@@ -203,71 +139,44 @@ services:
     ports:
       - "8888:8888"
     networks:
-      hdp-dh-net:
+      hdp-dh-mumc-net:
         aliases:
           - jupyter-zib.dh.local
-  filebeat:
-    build:
-      context: ./filebeat
-      dockerfile: Dockerfile
-    env_file:
-      - ./env_files/timezone.env
-    volumes:
-      - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml:ro
-      - ./filebeat/logs:/usr/share/logs/
-      - ./filebeat/certs:/etc/certs:ro
-    networks:
-      hdp-dh-net:
+      hdp-dh-zio-net:
         aliases:
-          - filebeat.dh.local
-#  fhir-bridge:
-#    ## BUILD option 1: Using a pre-build docker image
-#    # image: ehrbase/fhir-bridge:1.5.5
-#    ## BUILD option 2: Using a Dockerfile FAILED:
-#    # build:
-#    #   context: ./externals/dh-hdp-fhir-bridge
-#    #   # additional_contexts:
-#    #   #   - hdp_transform_rest=./externals/dh-hdp-transform-rest
-#    #   dockerfile: Dockerfile
-#    #   args:
-#    #     - MAVEN_VERSION=${MAVEN_VERSION}
-#    #     - FHIR_BRIDGE_VERSION=${FHIR_BRIDGE_VERSION}
-#    #     - HDP_ZIB_TEMPLATES_IMAGE_NAME=${HDP_ZIB_TEMPLATES_IMAGE_NAME}
-#    # # image: ${ENV_REGISTRY_HOST}/docker-health/fhir-bridge:${ENV_TAG}
-#    ## BUILD option 3: Build the image using `mvn clean spring-boot:build-image`
-#    image: hdp-ehrbase/fhir-bridge:${ENV_TAG}
-#    depends_on:
-#      ehrbase:
-#        condition: service_healthy
-#    env_file:
-#      - ./env_files/fhir-bridge.env
-#    environment:
-#      VIRTUAL_HOST: fhir-bridge.${RIT_ENV}.dh.unimaas.nl
-#    ports:
-#      - "8887:8888"
-#    networks:
-#      hdp-dh-net:
-#        aliases:
-#          - fhir-bridge.dh.local
-  minio:
-    image: minio/minio
+          - jupyter-zib.dh.local
+  redis:
+    image: redis:latest
     ports:
-      - "9000:9000"
-      - "9001:9001"
-    environment:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: minio123456
-    command: server /data --console-address ":9001"
+      - "6379:6379"
+    command: redis-server  /redis.conf
+    volumes:
+      - ./openEHR-tool/redis.conf:/redis.conf
     networks:
-      - hdp-dh-net
+      hdp-dh-mumc-net:
+        aliases:
+          - redis.dh.local
+      hdp-dh-zio-net:
+        aliases:
+          - redis.dh.local
 networks:
   default:
     ipam:
       driver: default
       config:
         - subnet: "172.30.1.0/24"
-  hdp-dh-net:
+  hdp-dh-test-net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.33.1.0/24"
+  hdp-dh-mumc-net:
     ipam:
       driver: default
       config:
         - subnet: "172.31.1.0/24"
+  hdp-dh-zio-net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.32.1.0/24"

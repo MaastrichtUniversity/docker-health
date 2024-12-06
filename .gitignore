@@ -4,6 +4,7 @@
 
 # logs
 filebeat/logs/*/*.log
+filebeat/logs/*/*/*.log
 filebeat/logs/*/*.lck
 filebeat/logs/*/*.gz
 

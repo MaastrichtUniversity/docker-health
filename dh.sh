@@ -23,12 +23,30 @@ COMPOSE_PROJECT_NAME="dev-hdp"
 export COMPOSE_PROJECT_NAME
 
 # specify externals for this project
-externals="externals/dh-hdp-templates https://github.com/um-datahub/dh-hdp-templates.git
-externals/dh-hdp-zib-templates https://github.com/um-datahub/dh-hdp-zib-templates.git
+externals="externals/dh-hdp-zib-templates https://github.com/um-datahub/dh-hdp-zib-templates.git
 externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-transform-rest.git
-externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
-externals/dh-hdp-fhir-bridge https://github.com/MaastrichtUniversity/dh-hdp-fhir-bridge.git
-externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git"
+externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git
+externals/dh-hdp-federation-api https://github.com/MaastrichtUniversity/dh-hdp-federation-api.git
+externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git"
+
+
+# Create docker network dev-hdp_hdp-dh-mumc-net if it does not exists
+if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-mumc-net --format="true") ]; then
+  echo "Creating network dev-hdp_hdp-dh-mumc-net"
+  docker network create dev-hdp_hdp-dh-mumc-net --subnet "172.31.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-mumc-net"
+fi
+
+# Create docker network dev-hdp_hdp-dh-zio-net if it does not exists
+if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-zio-net --format="true") ]; then
+  echo "Creating network dev-hdp_hdp-dh-zio-net"
+  docker network create dev-hdp_hdp-dh-zio-net --subnet "172.32.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-zio-net"
+fi
+
+# Create docker network dev-hdp_hdp-dh-test-net if it does not exists
+if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-test-net --format="true") ]; then
+  echo "Creating network dev-hdp_hdp-dh-test-net"
+  docker network create dev-hdp_hdp-dh-test-net --subnet "172.33.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-test-net"
+fi
 
 
 is_local(){
@@ -36,19 +54,34 @@ is_local(){
       return 0;
     fi
     return 1;
-
 }
 
 setup_requirements(){
-    echo -e "Update permissions of the folder filebeat/logs/ehrdb/"
-    mkdir -p ./filebeat/logs/ehrdb && chmod -R 777 ./filebeat/logs/ehrdb
-    mkdir -p ./filebeat/logs/ehrbase && chmod -R 777 ./filebeat/logs/ehrbase
+    echo -e "Update permissions of the ehrbase and ehrdb filebeat/logs/$1"
+    mkdir -p ./filebeat/logs/$1/ehrdb && chmod -R 777 ./filebeat/logs/$1/ehrdb
+    mkdir -p ./filebeat/logs/$1/ehrbase && chmod -R 777 ./filebeat/logs/$1/ehrbase
 }
 
 dev_setup_requirements(){
     if is_local; then
-      setup_requirements
+      setup_requirements $1
     fi
+}
+
+check_argument(){
+  # Check if the second argument is empty or not "zio" or "mumc"
+  if [[ -z "$1" || ( "$1" != "mumc" && "$1" != "zio" ) ]]; then
+    echo "Error: The second argument must be either 'mumc' or 'zio'"
+    exit 1
+  fi
+}
+
+build_and_up_common_services() {
+    echo "Building common services: proxy, filebeat, transform-rest"
+    docker compose build proxy filebeat transform-rest
+
+    echo "Starting common services"
+    docker compose up -d proxy filebeat transform-rest
 }
 
 # do the required action in case of externals or exec
@@ -59,12 +92,15 @@ if [[ $1 == "externals" ]]; then
 fi
 
 if [[ $1 == "setup" ]]; then
-    setup_requirements
+    setup_requirements "mumc"
+    setup_requirements "zio"
+    setup_requirements "test"
+
+    echo -e "\nExit dh.sh"
     exit 0
 fi
 
 if [[ $1 == "transform" ]]; then
-    dev_setup_requirements
     echo -e "\nStart Spring boot Rest API"
     if is_local; then docker compose build transform-rest filebeat; fi
     docker compose up -d transform-rest
@@ -73,38 +109,84 @@ if [[ $1 == "transform" ]]; then
     exit 0
 fi
 
-if [[ $1 == "zib" ]]; then
-    dev_setup_requirements
-    if is_local; then docker compose build filebeat etl-zib transform-rest; fi
+if [[ $1 == "federation" ]]; then
+    dev_setup_requirements "mumc"
+    dev_setup_requirements "zio"
 
-    echo -e "\nRunning etl-zib"
-    docker compose up -d etl-zib
+    echo -e "\nStart FastAPI"
+    if is_local; then docker compose build federation-api filebeat; fi
+    docker compose up -d federation-api
+
+    echo -e "\nExit dh.sh"
+    exit 0
+fi
+
+run_etl_zib(){
+    dev_setup_requirements $1
+    if is_local; then build_and_up_common_services; fi
+    docker compose build $1-etl-zib
+    echo -e "\nRunning $1-etl-zib"
+    docker compose up -d $1-etl-zib
     # Add a safe guard against infinite loop during a CI execution
     SAFE_GUARD=0
-    until docker compose logs --tail 100 etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
+    until docker compose logs --tail 15 $1-etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
     do
       if [[ $SAFE_GUARD -eq 15  ]]; then
-        echo -e "STOP waiting for etl-zib"
+        echo -e "STOP waiting for $1-etl-zib"
         break
       fi
       ((SAFE_GUARD++))
-      echo -e "Waiting for etl-zib"
+      echo -e "Waiting for $1-etl-zib"
       sleep 5
     done
 
     if [[ $SAFE_GUARD -ne 15  ]]; then
-      echo -e "\nPrint logs for etl-zib"
-      docker compose logs etl-zib
+      echo -e "\nPrint logs for $1-etl-zib"
+      docker compose logs $1-etl-zib
       echo -e "\nExit dh.sh"
       exit 0
     else
-      echo -e "\nFailed to run etl-zib"
+      echo -e "\nFailed to run $1-etl-zib"
       exit 1
+    fi
+}
+
+if [[ $1 == "etl" ]]; then
+    if [[ -z "$2" ]]; then
+        run_etl_zib "test"
+    else
+        check_argument "$2"
+        run_etl_zib "$2"
     fi
 fi
 
-if [[ $1 == "jupyter-zib" ]]; then
-    dev_setup_requirements
+run_backend(){
+    dev_setup_requirements $1
+    docker compose up -d $1-ehrbase
+    until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-$1-ehrbase-1 2>&1 | grep -q "healthy";
+    do
+      echo -e "Waiting for EHRbase ($1 node)"
+      sleep 10
+    done
+    echo -e "\nEHRbase ($1 node) up and running"
+}
+
+if [[ $1 == "backend" ]]; then
+    if [[ -z "$2" ]]; then
+        run_backend "test"
+    else
+        check_argument "$2"
+        run_backend "$2"
+    fi
+
+    echo -e "\nExit dh.sh"
+    exit 0
+fi
+
+if [[ $1 == "jupyter" ]]; then
+    dev_setup_requirements "mumc"
+    dev_setup_requirements "zio"
+
     echo -e "\nExplore zib dataset"
     if is_local; then docker compose build jupyter-zib transform-rest; fi
     docker compose up -d jupyter-zib
@@ -113,45 +195,54 @@ if [[ $1 == "jupyter-zib" ]]; then
     exit 0
 fi
 
-if [[ $1 == "fhir" ]]; then
-    echo -e "\nStart FHIR Bridge"
-    docker compose up -d fhir-bridge
-    until docker compose logs --tail 100 fhir-bridge 2>&1 | grep -q "Started FhirBridgeApplication in";
-    do
-      echo -e "Waiting for FhirBridgeApplication"
-      sleep 10
-    done
+run_openehrtool(){
+    docker compose up -d $1-openehrtool
+    echo -e "\nOpenEHRtool on $1 node up and running"
+}
+
+if [[ $1 == "openehrtool" ]]; then
+    if [[ -z "$2" ]]; then
+      run_openehrtool "test"
+    else
+      check_argument "$2"
+      run_openehrtool "$2"
+    fi
 
     echo -e "\nExit dh.sh"
     exit 0
 fi
 
-if [[ $1 == "backend" ]]; then
-    dev_setup_requirements
-    docker compose up -d ehrbase
-    until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-ehrbase-1 2>&1 | grep -q "healthy";
-    do
-      echo -e "Waiting for EhrBase"
-      sleep 10
-    done
+run_single_node_tests(){
+    dev_setup_requirements "test"
+    if is_local; then build_and_up_common_services; fi
 
-    echo -e "\nEHRbase up and running, exiting dh.sh"
-    exit 0
-fi
+    echo -e "\nStart single node tests on test-etl-zib"
+    docker compose build test-etl-zib
+    docker compose run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5
+#    docker compose run --rm --entrypoint pytest test-etl-zib -s
+#    docker compose run --rm --entrypoint pytest test-etl-zib -o log_cli=true --log-cli-level=INFO
+}
+
+run_federation_tests(){
+    dev_setup_requirements "mumc"
+    dev_setup_requirements "zio"
+    if is_local; then build_and_up_common_services; fi
+    echo -e "\nStart federation tests"
+    docker compose run --build --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
+}
 
 if [[ $1 == "test" ]]; then
-    dev_setup_requirements
-    echo -e "\nStart ETL-ZIB test"
-    if is_local; then docker compose build etl-zib transform-rest; fi
-    docker compose run --rm --entrypoint pytest etl-zib --verbose --verbosity=5
-#    docker compose run --rm --entrypoint pytest etl-zib -s
-#    docker compose run --rm --entrypoint pytest etl-zib -o log_cli=true --log-cli-level=INFO
+    if [[ $2 == "single-node" ]]; then
+        run_single_node_tests
+    elif [[ $2 == "federation" ]]; then
+        run_federation_tests
+    fi
 
     if [ $? -eq 0 ]; then
       echo -e "\nExit dh.sh"
       exit 0
     else
-      echo -e "\nFailed to run etl-zib tests"
+      echo -e "\nFailed to run $2 tests"
       exit 1
     fi
 fi
