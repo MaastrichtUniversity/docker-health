@@ -122,6 +122,23 @@ services:
       dev-hdp_hdp-dh-mumc-net:
         aliases:
           - mumc.openehrtool.dh.local
+  mumc-node-ui:
+    build:
+      context: externals/dh-hdp-node-ui/
+      dockerfile: Dockerfile
+      target: development  # Use the 'production' stage from Dockerfile for production
+      args:
+        NODE_NAME_BUILD: mumc
+    #      ports:
+    #        - "3000:3000"
+    volumes:
+      - "./externals/dh-hdp-node-ui/src:/app/src" #DEV
+      - "./externals/dh-hdp-node-ui/public:/app/public" #DEV
+    environment:
+      VIRTUAL_HOST: mumc-ui.${RIT_ENV}.dh.unimaas.nl
+      NODE_NAME: mumc
+    networks:
+      - dev-hdp_hdp-dh-mumc-net
 networks:
   dev-hdp_hdp-dh-mumc-net:
     external: true

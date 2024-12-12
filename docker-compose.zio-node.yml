@@ -125,6 +125,23 @@ services:
       dev-hdp_hdp-dh-zio-net:
         aliases:
           - zio.openehrtool.dh.local
+  zio-node-ui:
+    build:
+      context: externals/dh-hdp-node-ui/
+      dockerfile: Dockerfile
+      target: development  # Use the 'production' stage from Dockerfile for production
+      args:
+        NODE_NAME_BUILD: zio
+    volumes:
+      - "./externals/dh-hdp-node-ui/src:/app/src" #DEV
+      - "./externals/dh-hdp-node-ui/public:/app/public" #DEV
+    environment:
+      VIRTUAL_HOST: zio-ui.${RIT_ENV}.dh.unimaas.nl
+      NODE_NAME: zio
+    networks:
+     dev-hdp_hdp-dh-zio-net:
+        aliases:
+          - mumc-ui.dh.local
 networks:
   dev-hdp_hdp-dh-zio-net:
     external: true
