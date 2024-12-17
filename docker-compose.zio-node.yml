@@ -132,6 +132,10 @@ services:
       target: development  # Use the 'production' stage from Dockerfile for production
       args:
         NODE_NAME_BUILD: zio
+    depends_on:
+      federation-api:
+        condition:
+          service_started
     volumes:
       - "./externals/dh-hdp-node-ui/src:/app/src" #DEV
       - "./externals/dh-hdp-node-ui/public:/app/public" #DEV

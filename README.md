@@ -13,6 +13,7 @@ This service is based on repositories:
 Aditional proof of concept level repositiory:
 
 - [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api): Proof of concept Federation service
+- [dh-hdp-node-ui](https://github.com/MaastrichtUniversity/dh-hdp-node-ui): Proof of concept Node User Interface service
 
 ## Requirements
 
@@ -184,3 +185,19 @@ To run openEHR tool on each node:
 ```
 ./dh.sh openehrtool mumc; ./dh.sh openehrtool zio
 ```
+
+To run the node UI on each node 
+#### Add these virtual host entries in your /etc/hosts file
+```
+127.0.0.1 mumc-ui.local.dh.unimaas.nl/
+127.0.0.1 zio-ui.local.dh.unimaas.nl/
+```
+
+### To run
+
+```
+./dh.sh node-ui mumc
+./dh.sh node-ui zio
+```
+
+
