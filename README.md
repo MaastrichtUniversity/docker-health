@@ -171,7 +171,6 @@ SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
 #### Run the federation
 
 Up each node, load data and start the federation API:
-
 ```
 ./dh.sh federation
 ```
@@ -181,14 +180,15 @@ To run the federation service API integration test:
 ./dh.sh test federation
 ```
 
+To run the node UI on each node:
+```
+./dh.sh node-ui mumc; ./dh.sh node-ui zio
+```
+
 User Interfaces available at [mumc-ui.local.dh.unimaas.nl](mumc-ui.local.dh.unimaas.nl) & [zio-ui.local.dh.unimaas.nl](zio-ui.local.dh.unimaas.nl)
-
-(To run the node UI on each node: `./dh.sh node-ui mumc; ./dh.sh node-ui zio`)
-
 
 (Optional)
 To run openEHR tool on each node:
-
 ```
 ./dh.sh openehrtool mumc; ./dh.sh openehrtool zio
 ```
