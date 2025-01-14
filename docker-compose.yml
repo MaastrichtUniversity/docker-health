@@ -63,12 +63,8 @@ services:
         condition: service_started
       mumc-etl-zib:
         condition: service_healthy
-      mumc-node-ui:
-        condition: service_started
       zio-etl-zib:
         condition: service_healthy
-      zio-node-ui:
-        condition: service_started
     volumes:
       - ./filebeat/logs/federation-api:/var/log
     env_file:
