@@ -214,6 +214,7 @@ if [[ $1 == "openehrtool" ]]; then
 fi
 
 run_node-ui(){
+    docker compose build $1-node-ui
     docker compose up -d $1-node-ui
     echo -e "\nNode userinterface on $1 node up and running"
 }
