@@ -141,7 +141,7 @@ services:
       - "./externals/dh-hdp-node-ui/public:/app/public" #DEV
     environment:
       VIRTUAL_HOST: zio-ui.${RIT_ENV}.dh.unimaas.nl
-      NODE_NAME: zio
+      NEXT_PUBLIC_NODE_NAME: zio
     networks:
      dev-hdp_hdp-dh-zio-net:
         aliases:
