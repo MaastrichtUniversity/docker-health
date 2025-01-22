@@ -73,6 +73,13 @@ services:
     environment:
       #      LOGSTASH_TAGS: FEDERATION_API
       VIRTUAL_HOST: federation.${RIT_ENV}.dh.unimaas.nl
+    command: ["uvicorn", "federation_api:app", "--host", "0.0.0.0", "--port", "8000"]
+    healthcheck:
+      test: curl --fail http://localhost:8000/health || exit 1
+      interval: 2s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
     ports:
       - "8000:8000"
     networks:
