@@ -67,6 +67,8 @@ services:
         condition: service_healthy
     volumes:
       - ./filebeat/logs/federation-api:/var/log
+      - ./filebeat/logs/mumc/etl-zib:/code/logs/mumc
+      - ./filebeat/logs/zio/etl-zib:/code/logs/zio
     env_file:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
