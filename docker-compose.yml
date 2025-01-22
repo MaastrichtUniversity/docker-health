@@ -69,6 +69,8 @@ services:
       - ./filebeat/logs/federation-api:/var/log
     env_file:
       - ./env_files/timezone.env
+      - ./env_files/transform_server.env
+      - ./env_files/zib-templates.env
       - ./env_files/federation.env
     environment:
       #      LOGSTASH_TAGS: FEDERATION_API
