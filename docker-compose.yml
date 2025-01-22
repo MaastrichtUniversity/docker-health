@@ -55,6 +55,8 @@ services:
     build:
       context: ./externals/dh-hdp-federation-api
       dockerfile: Dockerfile
+      additional_contexts:
+        src_etl: ./externals/dh-hdp-etl
     image: ${ENV_REGISTRY_HOST}/docker-health/federation-api:${ENV_TAG}
     depends_on:
       proxy:
