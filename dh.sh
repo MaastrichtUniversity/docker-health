@@ -27,7 +27,8 @@ externals="externals/dh-hdp-zib-templates https://github.com/um-datahub/dh-hdp-z
 externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-transform-rest.git
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git
 externals/dh-hdp-federation-api https://github.com/MaastrichtUniversity/dh-hdp-federation-api.git
-externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git"
+externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
+externals/dh-hdp-node-ui https://github.com/MaastrichtUniversitydh-hdp-node-ui.git"
 
 
 # Create docker network dev-hdp_hdp-dh-mumc-net if it does not exists
@@ -211,6 +212,27 @@ if [[ $1 == "openehrtool" ]]; then
     echo -e "\nExit dh.sh"
     exit 0
 fi
+
+run_node-ui(){
+    docker compose build $1-node-ui
+    docker compose up -d $1-node-ui
+    echo -e "\nNode userinterface on $1 node up and running"
+}
+
+if [[ $1 == "node-ui" ]]; then
+    if [[ -z "$2" ]]; then
+       echo -e "Missing node name"
+       exit 1
+    else
+      check_argument "$2"
+      run_node-ui "$2"
+    fi
+
+    echo -e "\nExit dh.sh"
+    exit 0
+fi
+
+
 
 run_single_node_tests(){
     dev_setup_requirements "test"

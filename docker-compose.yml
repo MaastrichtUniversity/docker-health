@@ -71,7 +71,7 @@ services:
       - ./env_files/timezone.env
       - ./env_files/federation.env
     environment:
-#      LOGSTASH_TAGS: FEDERATION_API
+      #      LOGSTASH_TAGS: FEDERATION_API
       VIRTUAL_HOST: federation.${RIT_ENV}.dh.unimaas.nl
     ports:
       - "8000:8000"
