@@ -137,7 +137,7 @@ services:
       - "./externals/dh-hdp-node-ui/public:/app/public" #DEV
     environment:
       VIRTUAL_HOST: mumc-ui.${RIT_ENV}.dh.unimaas.nl
-      NODE_NAME: mumc
+      NEXT_PUBLIC_NODE_NAME: mumc
     networks:
       - dev-hdp_hdp-dh-mumc-net
 networks:
