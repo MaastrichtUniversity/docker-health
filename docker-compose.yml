@@ -55,6 +55,8 @@ services:
     build:
       context: ./externals/dh-hdp-federation-api
       dockerfile: Dockerfile
+      additional_contexts:
+        src_etl: ./externals/dh-hdp-etl
     image: ${ENV_REGISTRY_HOST}/docker-health/federation-api:${ENV_TAG}
     depends_on:
       proxy:
@@ -67,12 +69,23 @@ services:
         condition: service_healthy
     volumes:
       - ./filebeat/logs/federation-api:/var/log
+      - ./filebeat/logs/mumc/etl-zib:/code/logs/mumc
+      - ./filebeat/logs/zio/etl-zib:/code/logs/zio
     env_file:
       - ./env_files/timezone.env
+      - ./env_files/transform_server.env
+      - ./env_files/zib-templates.env
       - ./env_files/federation.env
     environment:
       #      LOGSTASH_TAGS: FEDERATION_API
       VIRTUAL_HOST: federation.${RIT_ENV}.dh.unimaas.nl
+    command: ["uvicorn", "federation_api:app", "--host", "0.0.0.0", "--port", "8000"]
+    healthcheck:
+      test: curl --fail http://localhost:8000/health || exit 1
+      interval: 2s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
     ports:
       - "8000:8000"
     networks:
