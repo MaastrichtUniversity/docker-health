@@ -199,17 +199,17 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: "172.33.1.0/24"
+        - subnet: "172.31.1.0/24"
   hdp-dh-mumc-net:
     ipam:
       driver: default
       config:
-        - subnet: "172.31.1.0/24"
+        - subnet: "172.32.1.0/24"
   hdp-dh-zio-net:
     ipam:
       driver: default
       config:
-        - subnet: "172.32.1.0/24"
+        - subnet: "172.33.1.0/24"
   hdp-dh-envida-net:
     ipam:
       driver: default
