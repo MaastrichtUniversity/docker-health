@@ -20,7 +20,7 @@ services:
       retries: 10
     #     start_period: 10s
     ports:
-      - "8080:8080"
+      - "8083:8080"
     networks:
       dev-hdp_hdp-dh-envida-net:
         aliases:
@@ -66,7 +66,7 @@ services:
       timeout: 5s
       retries: 12
     ports:
-      - "5432:5432"
+      - "5435:5432"
     networks:
       - dev-hdp_hdp-dh-envida-net
   envida-etl-zib:
@@ -115,7 +115,7 @@ services:
     depends_on:
       - envida-ehrbase
     ports:
-      - "9000:9000"
+      - "9003:9000"
     environment:
       VIRTUAL_HOST: envida.openehrtool.${RIT_ENV}.dh.unimaas.nl
     networks:

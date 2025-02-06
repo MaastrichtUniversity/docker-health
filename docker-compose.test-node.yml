@@ -20,7 +20,7 @@ services:
       retries: 10
     #     start_period: 10s
     ports:
-      - "8082:8080"
+      - "8080:8080"
     networks:
       dev-hdp_hdp-dh-test-net:
         aliases:
@@ -67,7 +67,7 @@ services:
       timeout: 5s
       retries: 12
     ports:
-      - "5434:5432"
+      - "5432:5432"
     networks:
       - dev-hdp_hdp-dh-test-net
   test-etl-zib:
@@ -116,7 +116,7 @@ services:
     depends_on:
       - test-ehrbase
     ports:
-      - "9002:9000"
+      - "9000:9000"
     command: ["flask", "run", "--host=0.0.0.0", "--port=9000"]
     environment:
       VIRTUAL_HOST: test.openehrtool.${RIT_ENV}.dh.unimaas.nl
