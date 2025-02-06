@@ -43,6 +43,12 @@ if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-zio-net --format="true")
   docker network create dev-hdp_hdp-dh-zio-net --subnet "172.32.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-zio-net"
 fi
 
+# Create docker network dev-hdp_hdp-dh-envida-net if it does not exists
+if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-envida-net --format="true") ]; then
+  echo "Creating network dev-hdp_hdp-dh-envida-net"
+  docker network create dev-hdp_hdp-dh-envida-net --subnet "172.34.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-envida-net"
+fi
+
 # Create docker network dev-hdp_hdp-dh-test-net if it does not exists
 if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-test-net --format="true") ]; then
   echo "Creating network dev-hdp_hdp-dh-test-net"
@@ -70,9 +76,9 @@ dev_setup_requirements(){
 }
 
 check_argument(){
-  # Check if the second argument is empty or not "zio" or "mumc"
-  if [[ -z "$1" || ( "$1" != "mumc" && "$1" != "zio" ) ]]; then
-    echo "Error: The second argument must be either 'mumc' or 'zio'"
+  # Check if the second argument is empty or not "zio"/"mumc"/"envida"
+  if [[ -z "$1" || ( "$1" != "mumc" && "$1" != "zio" && "$1" != "envida" ) ]]; then
+    echo "Error: The second argument must be either 'mumc', 'zio' or 'envida'"
     exit 1
   fi
 }
@@ -95,6 +101,7 @@ fi
 if [[ $1 == "setup" ]]; then
     setup_requirements "mumc"
     setup_requirements "zio"
+    setup_requirements "envida"
     setup_requirements "test"
 
     echo -e "\nExit dh.sh"
@@ -113,6 +120,7 @@ fi
 if [[ $1 == "federation" ]]; then
     dev_setup_requirements "mumc"
     dev_setup_requirements "zio"
+    dev_setup_requirements "envida"
 
     echo -e "\nStart FastAPI"
     if is_local; then docker compose build federation-api filebeat; fi
@@ -187,6 +195,7 @@ fi
 if [[ $1 == "jupyter" ]]; then
     dev_setup_requirements "mumc"
     dev_setup_requirements "zio"
+    dev_setup_requirements "envida"
 
     echo -e "\nExplore zib dataset"
     if is_local; then docker compose build jupyter-zib transform-rest; fi
@@ -248,6 +257,7 @@ run_single_node_tests(){
 run_federation_tests(){
     dev_setup_requirements "mumc"
     dev_setup_requirements "zio"
+    dev_setup_requirements "envida"
     if is_local; then build_and_up_common_services; fi
     echo -e "\nStart federation tests"
     docker compose run --build --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
