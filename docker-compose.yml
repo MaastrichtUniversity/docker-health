@@ -2,6 +2,7 @@ include:
   - docker-compose.test-node.yml
   - docker-compose.mumc-node.yml
   - docker-compose.zio-node.yml
+  - docker-compose.envida-node.yml
 services:
   proxy:
     image: jwilder/nginx-proxy:${ENV_TAG_PROXY}
@@ -17,6 +18,7 @@ services:
       - hdp-dh-test-net
       - hdp-dh-mumc-net
       - hdp-dh-zio-net
+      - hdp-dh-envida-net
   transform-rest:
     build:
       context: ./externals/dh-hdp-transform-rest
@@ -51,6 +53,9 @@ services:
       hdp-dh-zio-net:
         aliases:
           - transform.dh.local
+      hdp-dh-envida-net:
+        aliases:
+          - transform.dh.local
   federation-api:
     build:
       context: ./externals/dh-hdp-federation-api
@@ -67,10 +72,13 @@ services:
         condition: service_healthy
       zio-etl-zib:
         condition: service_healthy
+      envida-etl-zib:
+        condition: service_healthy
     volumes:
       - ./filebeat/logs/federation-api:/var/log
       - ./filebeat/logs/mumc/etl-zib:/code/logs/mumc
       - ./filebeat/logs/zio/etl-zib:/code/logs/zio
+      - ./filebeat/logs/envida/etl-zib:/code/logs/envida
     env_file:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
@@ -87,6 +95,9 @@ services:
         aliases:
           - federation.dh.local
       hdp-dh-zio-net:
+        aliases:
+          - federation.dh.local
+      hdp-dh-envida-net:
         aliases:
           - federation.dh.local
   filebeat:
@@ -109,6 +120,9 @@ services:
       hdp-dh-zio-net:
         aliases:
           - filebeat.dh.local
+      hdp-dh-envida-net:
+        aliases:
+          - filebeat.dh.local
   jupyter-zib:
     build:
       context: ./externals/dh-hdp-notebooks
@@ -126,6 +140,8 @@ services:
         condition: service_healthy
       zio-ehrbase:
         condition: service_healthy
+      envida-ehrbase:
+        condition: service_healthy
       federation-api:
         condition: service_started
     env_file:
@@ -137,6 +153,7 @@ services:
     volumes:
       - ./data/mumc-demo-data:/home/jovyan/data/mumc-demo-data
       - ./data/zio-demo-data:/home/jovyan/data/zio-demo-data
+      - ./data/envida-demo-data:/home/jovyan/data/envida-demo-data
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/home/jovyan/etl.py
       - ./externals/dh-hdp-etl/requirements.txt:/home/jovyan/requirements.txt
@@ -152,6 +169,9 @@ services:
       hdp-dh-zio-net:
         aliases:
           - jupyter-zib.dh.local
+      hdp-dh-envida-net:
+        aliases:
+          - jupyter-zib.dh.local
   redis:
     image: redis:latest
     ports:
@@ -164,6 +184,9 @@ services:
         aliases:
           - redis.dh.local
       hdp-dh-zio-net:
+        aliases:
+          - redis.dh.local
+      hdp-dh-envida-net:
         aliases:
           - redis.dh.local
 networks:
@@ -187,3 +210,8 @@ networks:
       driver: default
       config:
         - subnet: "172.32.1.0/24"
+  hdp-dh-envida-net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.34.1.0/24"
