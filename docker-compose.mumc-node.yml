@@ -36,6 +36,8 @@ services:
     restart: on-failure
   mumc-ehrdb:
     image: ehrbase/ehrbase-v2-postgres:16.2
+    environment:
+      - PGPORT=5432
     command:
       [
         "postgres",
