@@ -117,7 +117,6 @@ services:
     depends_on:
       - zio-ehrbase
     ports:
-    command: ["flask", "run", "--host=0.0.0.0", "--port=9000"]
       - "9002:9000"
     environment:
       VIRTUAL_HOST: zio.openehrtool.${RIT_ENV}.dh.unimaas.nl
@@ -134,8 +133,7 @@ services:
         NODE_NAME_BUILD: zio
     depends_on:
       federation-api:
-        condition:
-          service_started
+        condition: service_started
     volumes:
       - "./externals/dh-hdp-node-ui/src:/app/src" #DEV
       - "./externals/dh-hdp-node-ui/public:/app/public" #DEV
@@ -143,9 +141,7 @@ services:
       VIRTUAL_HOST: zio-ui.${RIT_ENV}.dh.unimaas.nl
       NEXT_PUBLIC_NODE_NAME: zio
     networks:
-     dev-hdp_hdp-dh-zio-net:
-        aliases:
-          - mumc-ui.dh.local
+      - dev-hdp_hdp-dh-zio-net
 networks:
   dev-hdp_hdp-dh-zio-net:
     external: true
