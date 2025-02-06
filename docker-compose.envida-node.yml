@@ -1,0 +1,145 @@
+services:
+  envida-ehrbase:
+    image: ehrbase/ehrbase:2.6.0
+    depends_on:
+      envida-ehrdb:
+        condition: service_started
+      proxy:
+        condition: service_started
+      filebeat:
+        condition: service_started
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/envida/ehrbase.env
+    environment:
+      VIRTUAL_HOST: envida.ehrbase.${RIT_ENV}.dh.unimaas.nl
+    healthcheck:
+      test: "wget -T5 -qO- -Y off localhost:8080/ehrbase/management/health | grep UP || exit 1"
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    #     start_period: 10s
+    ports:
+      - "8080:8080"
+    networks:
+      dev-hdp_hdp-dh-envida-net:
+        aliases:
+          - envida.ehrbase.dh.local
+    entrypoint:
+      - java
+      - -jar
+      - -Dspring.profiles.active=docker
+      - -Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log
+      - ehrbase.jar
+    volumes:
+      - ./filebeat/logs/envida/ehrbase:/tmp/ehrbaselog
+    restart: on-failure
+  envida-ehrdb:
+    image: ehrbase/ehrbase-v2-postgres:16.2
+    command:
+      [
+        "postgres",
+        "-c",
+        "logging_collector=on",
+        "-c",
+        "log_directory=/tmp/postgreslog/",
+        "-c",
+        "log_filename=postgresql.log",
+        "-c",
+        "log_statement=none",
+        "-c",
+        "log_file_mode=0777",
+        "-c",
+        "log_rotation_age=0",
+        "-c",
+        "log_rotation_size=0",
+      ]
+    # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
+    volumes:
+      - ./filebeat/logs/envida/ehrdb:/tmp/postgreslog
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/envida/ehrdb.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    ports:
+      - "5432:5432"
+    networks:
+      - dev-hdp_hdp-dh-envida-net
+  envida-etl-zib:
+    build:
+      context: ./externals/dh-hdp-etl
+      dockerfile: Dockerfile
+      args:
+        - SRC_SUBPROJECT=zib
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
+    image: ${ENV_REGISTRY_HOST}/docker-health/envida-etl-zib:${ENV_TAG}
+    healthcheck:
+      test: "tail -n 10 /code/logs/envida/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - ./data/envida-demo-data:/code/data/envida-demo-data
+      - ./filebeat/logs/envida/etl-zib:/code/logs/envida
+      - ./outputs/etl-zib:/code/outputs
+      # Volume binds to auto-reload the code inside the container
+      - ./externals/dh-hdp-etl/etl.py:/code/etl.py
+      - ./externals/dh-hdp-etl/src/core:/code/src/core
+      - ./externals/dh-hdp-etl/src/subprojects/zib:/code/src/subprojects/zib
+      - ./externals/dh-hdp-etl/tests:/code/tests
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/transform_server.env
+      - ./env_files/zib-templates.env
+      - ./env_files/envida/etl.env
+    environment:
+      LOGSTASH_TAGS: ENVIDA_ETL_ZIB
+    depends_on:
+      envida-ehrbase:
+        condition: service_healthy
+      transform-rest:
+        condition: service_started
+    networks:
+      - dev-hdp_hdp-dh-envida-net
+  envida-openehrtool:
+    image: surfercrs4/openehrtool:latest
+    volumes:
+      - ./openEHR-tool/envida-openehrtool.cfg:/code/config/openehrtool.cfg
+    env_file:
+      - ./openEHR-tool/.env
+    depends_on:
+      - envida-ehrbase
+    ports:
+      - "9000:9000"
+    environment:
+      VIRTUAL_HOST: envida.openehrtool.${RIT_ENV}.dh.unimaas.nl
+    networks:
+      dev-hdp_hdp-dh-envida-net:
+        aliases:
+          - envida.openehrtool.dh.local
+  envida-node-ui:
+    build:
+      context: externals/dh-hdp-node-ui/
+      dockerfile: Dockerfile
+      target: development  # Use the 'production' stage from Dockerfile for production
+      args:
+        NODE_NAME_BUILD: envida
+    depends_on:
+      federation-api:
+        condition: service_started
+    volumes:
+      - "./externals/dh-hdp-node-ui/src:/app/src" #DEV
+      - "./externals/dh-hdp-node-ui/public:/app/public" #DEV
+    environment:
+      VIRTUAL_HOST: envida-ui.${RIT_ENV}.dh.unimaas.nl
+      NEXT_PUBLIC_NODE_NAME: envida
+    networks:
+      - dev-hdp_hdp-dh-envida-net
+networks:
+  dev-hdp_hdp-dh-envida-net:
+    external: true
