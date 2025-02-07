@@ -10,7 +10,7 @@ filebeat.inputs:
     paths:
       - /usr/share/logs/test/etl-zib/etl-zib.log
     multiline:
-      pattern: '^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\]\[' # corresponds to '[datetime]['
+      pattern: '^\['
       negate: true
       match: after
     tags: ["TEST_ETL_ZIB"]
@@ -20,7 +20,7 @@ filebeat.inputs:
     paths:
       - /usr/share/logs/mumc/etl-zib/etl-zib.log
     multiline:
-      pattern: '^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\]\[' # corresponds to '[datetime]['
+      pattern: '^\['
       negate: true
       match: after
     tags: [ "MUMC_ETL_ZIB" ]
@@ -30,7 +30,7 @@ filebeat.inputs:
     paths:
       - /usr/share/logs/zio/etl-zib/etl-zib.log
     multiline:
-      pattern: '^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\]\[' # corresponds to '[datetime]['
+      pattern: '^\['
       negate: true
       match: after
     tags: [ "ZIO_ETL_ZIB" ]
@@ -40,7 +40,7 @@ filebeat.inputs:
     paths:
       - /usr/share/logs/envida/etl-zib/etl-zib.log
     multiline:
-      pattern: '^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\]\[' # corresponds to '[datetime]['
+      pattern: '^\['
       negate: true
       match: after
     tags: [ "ENVIDA_ETL_ZIB" ]
