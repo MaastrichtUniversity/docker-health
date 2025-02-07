@@ -98,7 +98,7 @@ services:
       - ./env_files/zib-templates.env
       - ./env_files/mumc/etl.env
     environment:
-      LOGSTASH_TAGS: MUMC_ETL_ZIB
+      LOGSTASH_TAGS: ETL_ZIB
     depends_on:
       mumc-ehrbase:
         condition: service_healthy

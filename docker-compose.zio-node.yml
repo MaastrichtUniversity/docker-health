@@ -100,7 +100,7 @@ services:
       - ./env_files/zib-templates.env
       - ./env_files/zio/etl.env
     environment:
-      LOGSTASH_TAGS: ZIO_ETL_ZIB
+      LOGSTASH_TAGS: ETL_ZIB
     depends_on:
       zio-ehrbase:
         condition: service_healthy
