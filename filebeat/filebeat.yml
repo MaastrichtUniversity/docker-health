@@ -38,6 +38,16 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
+      - /usr/share/logs/envida/etl-zib/etl-zib.log
+    multiline:
+      pattern: '^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\]\[' # corresponds to '[datetime]['
+      negate: true
+      match: after
+    tags: [ "ENVIDA_ETL_ZIB" ]
+
+  - type: log
+    enabled: true
+    paths:
       - /usr/share/logs/test/ehrbase/ehrbase.log
     tags: ["TEST_EHRBASE"]
 
@@ -56,6 +66,12 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
+      - /usr/share/logs/envida/ehrbase/ehrbase.log
+    tags: ["ENVIDA_EHRBASE"]
+
+  - type: log
+    enabled: true
+    paths:
       - /usr/share/logs/test/ehrdb/postgresql.log
     tags: ["TEST_EHRDB"]
 
@@ -70,6 +86,12 @@ filebeat.inputs:
     paths:
       - /usr/share/logs/zio/ehrdb/postgresql.log
     tags: [ "ZIO_EHRDB" ]
+
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/envida/ehrdb/postgresql.log
+    tags: [ "ENVIDA_EHRDB" ]
 
 # Unused at the moment:
 #  - type: log
