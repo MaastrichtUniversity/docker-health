@@ -8,12 +8,9 @@ This service is based on repositories:
 - [dh-hdp-zib-templates](https://github.com/um-datahub/dh-hdp-zib-templates/tree/2024.1): Custom-made openEHR templates matching the Dutch ZIBs
 - [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2024.1): ETL Python script
 - [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest/tree/2024.1): Java REST API for data class transformation into openEHR compositions
+- [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api/tree/2024.1): Federation service
+- [dh-hdp-node-ui](https://github.com/MaastrichtUniversity/dh-hdp-node-ui/tree/2024.1): Node User Interface service
 - [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2024.1): Jupyter notebooks for an initial data exploration
-
-Aditional proof of concept level repositiory:
-
-- [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api/tree/2024.1): Proof of concept Federation service
-- [dh-hdp-node-ui](https://github.com/MaastrichtUniversity/dh-hdp-node-ui/tree/2024.1): Proof of concept Node User Interface service
 
 ## Requirements
 
