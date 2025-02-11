@@ -113,9 +113,10 @@ fi
 if [[ $1 == "federation" ]]; then
     dev_setup_requirements "mumc"
     dev_setup_requirements "zio"
+    if is_local; then build_and_up_common_services; fi
 
     echo -e "\nStart FastAPI"
-    if is_local; then docker compose build federation-api filebeat; fi
+    if is_local; then docker compose build federation-api; fi
     docker compose up -d federation-api
 
     echo -e "\nExit dh.sh"
