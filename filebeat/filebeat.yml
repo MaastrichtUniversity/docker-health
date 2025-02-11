@@ -21,6 +21,16 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
+      - /usr/share/logs/federation-api/federation-api.log
+    multiline:
+      pattern: '^\['
+      negate: true
+      match: after
+    tags: ["FEDERATION_API"]
+
+  - type: log
+    enabled: true
+    paths:
       - /usr/share/logs/test/ehrbase/ehrbase.log
     tags: ["TEST_EHRBASE"]
 
@@ -65,14 +75,6 @@ filebeat.inputs:
     paths:
       - /usr/share/logs/envida/ehrdb/postgresql.log
     tags: [ "ENVIDA_EHRDB" ]
-
-# Unused at the moment:
-#  - type: log
-#    enabled: true
-#    paths:
-#      - /usr/share/logs/federation-api/federation-api.log
-#      - /usr/share/logs/
-#    tags: ["FEDERATION_API"]
 
 # Disable filebeat monitoring
 logging.metrics.enabled: false
