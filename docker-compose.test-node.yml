@@ -117,7 +117,6 @@ services:
       - test-ehrbase
     ports:
       - "9000:9000"
-    command: ["flask", "run", "--host=0.0.0.0", "--port=9000"]
     environment:
       VIRTUAL_HOST: test.openehrtool.${RIT_ENV}.dh.unimaas.nl
     networks:
