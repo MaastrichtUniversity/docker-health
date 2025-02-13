@@ -20,7 +20,7 @@ services:
       retries: 10
     #     start_period: 10s
     ports:
-      - "8081:8080"
+      - "8082:8080"
     networks:
       dev-hdp_hdp-dh-zio-net:
         aliases:
@@ -70,7 +70,7 @@ services:
       timeout: 5s
       retries: 12
     ports:
-      - "5433:5432"
+      - "5434:5432"
     networks:
       - dev-hdp_hdp-dh-zio-net
   zio-etl-zib:
@@ -119,8 +119,7 @@ services:
     depends_on:
       - zio-ehrbase
     ports:
-      - "9001:9000"
-    command: ["flask", "run", "--host=0.0.0.0", "--port=9000"]
+      - "9002:9000"
     environment:
       VIRTUAL_HOST: zio.openehrtool.${RIT_ENV}.dh.unimaas.nl
     networks:
@@ -136,8 +135,7 @@ services:
         NODE_NAME_BUILD: zio
     depends_on:
       federation-api:
-        condition:
-          service_started
+        condition: service_started
     volumes:
       - "./externals/dh-hdp-node-ui/src:/app/src" #DEV
       - "./externals/dh-hdp-node-ui/public:/app/public" #DEV
@@ -147,9 +145,7 @@ services:
       AUTH_USER: demo@zio.nl
       AUTH_PASS: foobar
     networks:
-     dev-hdp_hdp-dh-zio-net:
-        aliases:
-          - mumc-ui.dh.local
+      - dev-hdp_hdp-dh-zio-net
 networks:
   dev-hdp_hdp-dh-zio-net:
     external: true
