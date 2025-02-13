@@ -12,7 +12,7 @@ services:
       - ./env_files/timezone.env
       - ./env_files/zio/ehrbase.env
     environment:
-      VIRTUAL_HOST: zio.ehrbase.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: ehrbase.zio.${RIT_ENV}.dh.unimaas.nl
     healthcheck:
       test: "wget -T5 -qO- -Y off localhost:8080/ehrbase/management/health | grep UP || exit 1"
       interval: 5s
@@ -121,7 +121,7 @@ services:
     ports:
       - "9002:9000"
     environment:
-      VIRTUAL_HOST: zio.openehrtool.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: openehrtool.zio.${RIT_ENV}.dh.unimaas.nl
     networks:
       dev-hdp_hdp-dh-zio-net:
         aliases:
@@ -140,7 +140,7 @@ services:
       - "./externals/dh-hdp-node-ui/src:/app/src" #DEV
       - "./externals/dh-hdp-node-ui/public:/app/public" #DEV
     environment:
-      VIRTUAL_HOST: zio-ui.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: portal.zio.${RIT_ENV}.dh.unimaas.nl
       NEXT_PUBLIC_NODE_NAME: zio
       AUTH_USER: demo@zio.nl
       AUTH_PASS: foobar

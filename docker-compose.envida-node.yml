@@ -12,7 +12,7 @@ services:
       - ./env_files/timezone.env
       - ./env_files/envida/ehrbase.env
     environment:
-      VIRTUAL_HOST: envida.ehrbase.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: ehrbase.envida.${RIT_ENV}.dh.unimaas.nl
     healthcheck:
       test: "wget -T5 -qO- -Y off localhost:8080/ehrbase/management/health | grep UP || exit 1"
       interval: 5s
@@ -121,7 +121,7 @@ services:
     ports:
       - "9003:9000"
     environment:
-      VIRTUAL_HOST: envida.openehrtool.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: openehrtool.envida.${RIT_ENV}.dh.unimaas.nl
     networks:
       dev-hdp_hdp-dh-envida-net:
         aliases:
@@ -140,7 +140,7 @@ services:
       - "./externals/dh-hdp-node-ui/src:/app/src" #DEV
       - "./externals/dh-hdp-node-ui/public:/app/public" #DEV
     environment:
-      VIRTUAL_HOST: envida-ui.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: portal.envida.${RIT_ENV}.dh.unimaas.nl
       NEXT_PUBLIC_NODE_NAME: envida
       AUTH_USER: demo@envida.nl
       AUTH_PASS: foobar
