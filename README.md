@@ -162,6 +162,9 @@ SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
 127.0.0.1 zio.ehrbase.local.dh.unimaas.nl
 127.0.0.1 zio.openehrtool.local.dh.unimaas.nl
 127.0.0.1 zio-ui.local.dh.unimaas.nl
+127.0.0.1 envida.ehrbase.local.dh.unimaas.nl
+127.0.0.1 envida.openehrtool.local.dh.unimaas.nl
+127.0.0.1 envida-ui.local.dh.unimaas.nl
 127.0.0.1 federation.local.dh.unimaas.nl
 ```
 
@@ -182,10 +185,10 @@ To run the node UI on all nodes:
 ./dh.sh node-ui
 ```
 
-User Interfaces available at [mumc-ui.local.dh.unimaas.nl](mumc-ui.local.dh.unimaas.nl) & [zio-ui.local.dh.unimaas.nl](zio-ui.local.dh.unimaas.nl)
+User Interfaces available at [mumc-ui.local.dh.unimaas.nl](mumc-ui.local.dh.unimaas.nl), [zio-ui.local.dh.unimaas.nl](zio-ui.local.dh.unimaas.nl) & [envida-ui.local.dh.unimaas.nl](envida-ui.local.dh.unimaas.nl)
 
 (Optional)
 To run openEHR tool on each node:
 ```
-./dh.sh openehrtool mumc; ./dh.sh openehrtool zio
+./dh.sh openehrtool mumc; ./dh.sh openehrtool zio; ./dh.sh openehrtool envida
 ```

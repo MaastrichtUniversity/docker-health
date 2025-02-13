@@ -34,19 +34,25 @@ externals/dh-hdp-node-ui https://github.com/MaastrichtUniversitydh-hdp-node-ui.g
 # Create docker network dev-hdp_hdp-dh-mumc-net if it does not exists
 if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-mumc-net --format="true") ]; then
   echo "Creating network dev-hdp_hdp-dh-mumc-net"
-  docker network create dev-hdp_hdp-dh-mumc-net --subnet "172.31.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-mumc-net"
+  docker network create dev-hdp_hdp-dh-mumc-net --subnet "172.32.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-mumc-net"
 fi
 
 # Create docker network dev-hdp_hdp-dh-zio-net if it does not exists
 if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-zio-net --format="true") ]; then
   echo "Creating network dev-hdp_hdp-dh-zio-net"
-  docker network create dev-hdp_hdp-dh-zio-net --subnet "172.32.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-zio-net"
+  docker network create dev-hdp_hdp-dh-zio-net --subnet "172.33.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-zio-net"
+fi
+
+# Create docker network dev-hdp_hdp-dh-envida-net if it does not exists
+if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-envida-net --format="true") ]; then
+  echo "Creating network dev-hdp_hdp-dh-envida-net"
+  docker network create dev-hdp_hdp-dh-envida-net --subnet "172.34.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-envida-net"
 fi
 
 # Create docker network dev-hdp_hdp-dh-test-net if it does not exists
 if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-test-net --format="true") ]; then
   echo "Creating network dev-hdp_hdp-dh-test-net"
-  docker network create dev-hdp_hdp-dh-test-net --subnet "172.33.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-test-net"
+  docker network create dev-hdp_hdp-dh-test-net --subnet "172.31.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-test-net"
 fi
 
 
@@ -70,9 +76,9 @@ dev_setup_requirements(){
 }
 
 check_argument(){
-  # Check if the second argument is empty or not "zio" or "mumc"
-  if [[ -z "$1" || ( "$1" != "mumc" && "$1" != "zio" ) ]]; then
-    echo "Error: The second argument must be either 'mumc' or 'zio'"
+  # Check if the second argument is empty or not "zio"/"mumc"/"envida"
+  if [[ -z "$1" || ( "$1" != "mumc" && "$1" != "zio" && "$1" != "envida" ) ]]; then
+    echo "Error: The second argument must be either 'mumc', 'zio' or 'envida'"
     exit 1
   fi
 }
@@ -95,6 +101,7 @@ fi
 if [[ $1 == "setup" ]]; then
     setup_requirements "mumc"
     setup_requirements "zio"
+    setup_requirements "envida"
     setup_requirements "test"
 
     echo -e "\nExit dh.sh"
@@ -113,6 +120,7 @@ fi
 if [[ $1 == "federation" ]]; then
     dev_setup_requirements "mumc"
     dev_setup_requirements "zio"
+    dev_setup_requirements "envida"
     if is_local; then build_and_up_common_services; fi
 
     echo -e "\nStart FastAPI"
@@ -188,6 +196,7 @@ fi
 if [[ $1 == "jupyter" ]]; then
     dev_setup_requirements "mumc"
     dev_setup_requirements "zio"
+    dev_setup_requirements "envida"
 
     echo -e "\nExplore zib dataset"
     if is_local; then docker compose build jupyter-zib transform-rest; fi
@@ -223,13 +232,13 @@ run_node-ui(){
 if [[ $1 == "node-ui" ]]; then
     dev_setup_requirements "mumc"
     dev_setup_requirements "zio"
-#    dev_setup_requirements "envida"
+    dev_setup_requirements "envida"
     if is_local; then build_and_up_common_services; fi
 
     if [[ -z "$2" ]]; then
       run_node-ui "mumc"
       run_node-ui "zio"
-#      run_node-ui "envida"
+      run_node-ui "envida"
     else
       check_argument "$2"
       run_node-ui "$2"
@@ -254,7 +263,9 @@ run_single_node_tests(){
 run_federation_tests(){
     dev_setup_requirements "mumc"
     dev_setup_requirements "zio"
+    dev_setup_requirements "envida"
     if is_local; then build_and_up_common_services; docker compose build federation-api; fi
+
     echo -e "\nStart federation tests"
     docker compose run --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
 }
