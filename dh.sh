@@ -258,6 +258,11 @@ run_single_node_tests(){
     docker compose run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5
 #    docker compose run --rm --entrypoint pytest test-etl-zib -s
 #    docker compose run --rm --entrypoint pytest test-etl-zib -o log_cli=true --log-cli-level=INFO
+
+    # Clean up
+    if [[ $RIT_ENV != "local" ]]; then
+      docker compose rm -s -f test-ehrbase test-ehrdb
+    fi
 }
 
 run_federation_tests(){
