@@ -221,10 +221,17 @@ run_node-ui(){
 }
 
 if [[ $1 == "node-ui" ]]; then
+    if is_local; then build_and_up_common_services; fi
     if [[ -z "$2" ]]; then
-       echo -e "Missing node name"
-       exit 1
+      dev_setup_requirements "mumc"
+      dev_setup_requirements "zio"
+#      dev_setup_requirements "envida"
+
+      run_node-ui "mumc"
+      run_node-ui "zio"
+#       run_node-ui "envida"
     else
+      dev_setup_requirements "$2"
       check_argument "$2"
       run_node-ui "$2"
     fi
