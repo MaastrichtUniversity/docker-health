@@ -177,9 +177,9 @@ To run the federation service API integration test:
 ./dh.sh test federation
 ```
 
-To run the node UI on each node:
+To run the node UI on all nodes:
 ```
-./dh.sh node-ui mumc; ./dh.sh node-ui zio
+./dh.sh node-ui
 ```
 
 User Interfaces available at [mumc-ui.local.dh.unimaas.nl](mumc-ui.local.dh.unimaas.nl) & [zio-ui.local.dh.unimaas.nl](zio-ui.local.dh.unimaas.nl)
