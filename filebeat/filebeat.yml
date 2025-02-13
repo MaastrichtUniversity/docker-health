@@ -81,6 +81,6 @@ logging.metrics.enabled: false
 
 output.logstash:
   hosts: ["elk.dh.local:5044"]
-  ssl.certificate_authorities: ["/etc/certs/ca.crt"]
-  ssl.certificate: "/etc/certs/filebeat.dh.local.crt"
-  ssl.key: "/etc/certs/filebeat.dh.local.key"
+#  ssl.certificate_authorities: ["/etc/certs/ca.crt"]
+#  ssl.certificate: "/etc/certs/filebeat.dh.local.crt"
+#  ssl.key: "/etc/certs/filebeat.dh.local.key"

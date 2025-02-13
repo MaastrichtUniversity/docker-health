@@ -14,7 +14,7 @@ This service is based on repositories:
 
 ## Requirements
 
-### Encryption between filebeat and elk
+### Encryption between filebeat and elk [UNUSED ATM!]
 
 CA certificates need to be manually stored in folder `filebeat/certs`.
 The present files are used for development-purposes.
