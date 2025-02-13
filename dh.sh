@@ -28,7 +28,7 @@ externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-t
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git
 externals/dh-hdp-federation-api https://github.com/MaastrichtUniversity/dh-hdp-federation-api.git
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
-externals/dh-hdp-node-ui https://github.com/MaastrichtUniversitydh-hdp-node-ui.git"
+externals/dh-hdp-portal https://github.com/MaastrichtUniversity/dh-hdp-portal.git"
 
 
 # Create docker network dev-hdp_hdp-dh-mumc-net if it does not exists
@@ -223,25 +223,25 @@ if [[ $1 == "openehrtool" ]]; then
     exit 0
 fi
 
-run_node-ui(){
-    if is_local; then docker compose build federation-api $1-node-ui; fi
-    docker compose up -d $1-node-ui
+run_portal(){
+    if is_local; then docker compose build federation-api $1-portal; fi
+    docker compose up -d $1-portal
     echo -e "\nNode userinterface on $1 node up and running"
 }
 
-if [[ $1 == "node-ui" ]]; then
+if [[ $1 == "portal" ]]; then
     dev_setup_requirements "mumc"
     dev_setup_requirements "zio"
     dev_setup_requirements "envida"
     if is_local; then build_and_up_common_services; fi
 
     if [[ -z "$2" ]]; then
-      run_node-ui "mumc"
-      run_node-ui "zio"
-      run_node-ui "envida"
+      run_portal "mumc"
+      run_portal "zio"
+      run_portal "envida"
     else
       check_argument "$2"
-      run_node-ui "$2"
+      run_portal "$2"
     fi
 
     echo -e "\nExit dh.sh"

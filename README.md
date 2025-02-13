@@ -9,7 +9,7 @@ This service is based on repositories:
 - [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2024.1): ETL Python script
 - [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest/tree/2024.1): Java REST API for data class transformation into openEHR compositions
 - [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api/tree/2024.1): Federation service
-- [dh-hdp-node-ui](https://github.com/MaastrichtUniversity/dh-hdp-node-ui/tree/2024.1): Node User Interface service
+- [dh-hdp-portal](https://github.com/MaastrichtUniversity/dh-hdp-portal/tree/2024.1): Node User Interface service
 - [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2024.1): Jupyter notebooks for an initial data exploration
 
 ## Requirements
@@ -182,10 +182,10 @@ To run the federation service API integration test:
 
 To run the node UI on all nodes:
 ```
-./dh.sh node-ui
+./dh.sh portal
 ```
 
-User Interfaces available at [portal.mumc.local.dh.unimaas.nl](portal.mumc.local.dh.unimaas.nl), [portal.zio.local.dh.unimaas.nl](portal.zio.local.dh.unimaas.nl) & [portal.envida.local.dh.unimaas.nl](portal.envida.local.dh.unimaas.nl)
+User Interfaces available at [portal.mumc.local.dh.unimaas.nl](http://portal.mumc.local.dh.unimaas.nl), [portal.zio.local.dh.unimaas.nl](http://portal.zio.local.dh.unimaas.nl) & [portal.envida.local.dh.unimaas.nl](http://portal.envida.local.dh.unimaas.nl)
 
 (Optional)
 To run openEHR tool on each node:

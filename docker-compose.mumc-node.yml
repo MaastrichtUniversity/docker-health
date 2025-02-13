@@ -126,9 +126,9 @@ services:
       dev-hdp_hdp-dh-mumc-net:
         aliases:
           - mumc.openehrtool.dh.local
-  mumc-node-ui:
+  mumc-portal:
     build:
-      context: externals/dh-hdp-node-ui/
+      context: externals/dh-hdp-portal/
       dockerfile: Dockerfile
       target: development  # Use the 'production' stage from Dockerfile for production
       args:
@@ -137,8 +137,8 @@ services:
       federation-api:
         condition: service_started
     volumes:
-      - "./externals/dh-hdp-node-ui/src:/app/src" #DEV
-      - "./externals/dh-hdp-node-ui/public:/app/public" #DEV
+      - "./externals/dh-hdp-portal/src:/app/src" #DEV
+      - "./externals/dh-hdp-portal/public:/app/public" #DEV
     environment:
       VIRTUAL_HOST: portal.mumc.${RIT_ENV}.dh.unimaas.nl
       NEXT_PUBLIC_NODE_NAME: mumc
