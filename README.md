@@ -22,8 +22,8 @@ The present files are used for development-purposes.
 ### Add these virtual host entries in your /etc/hosts file
 
 ```
-127.0.0.1 test.ehrbase.local.dh.unimaas.nl
-127.0.0.1 test.openehrtool.local.dh.unimaas.nl
+127.0.0.1 ehrbase.test.local.dh.unimaas.nl
+127.0.0.1 openehrtool.test.local.dh.unimaas.nl
 
 127.0.0.1 transform.local.dh.unimaas.nl
 127.0.0.1 jupyter.local.dh.unimaas.nl
@@ -156,15 +156,15 @@ SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
 #### Add these virtual host entries in your /etc/hosts file
 
 ```
-127.0.0.1 mumc.ehrbase.local.dh.unimaas.nl
-127.0.0.1 mumc.openehrtool.local.dh.unimaas.nl
-127.0.0.1 mumc-ui.local.dh.unimaas.nl
-127.0.0.1 zio.ehrbase.local.dh.unimaas.nl
-127.0.0.1 zio.openehrtool.local.dh.unimaas.nl
-127.0.0.1 zio-ui.local.dh.unimaas.nl
-127.0.0.1 envida.ehrbase.local.dh.unimaas.nl
-127.0.0.1 envida.openehrtool.local.dh.unimaas.nl
-127.0.0.1 envida-ui.local.dh.unimaas.nl
+127.0.0.1 ehrbase.mumc.local.dh.unimaas.nl
+127.0.0.1 openehrtool.mumc.local.dh.unimaas.nl
+127.0.0.1 portal.mumc.local.dh.unimaas.nl
+127.0.0.1 ehrbase.zio.local.dh.unimaas.nl
+127.0.0.1 openehrtool.zio.local.dh.unimaas.nl
+127.0.0.1 portal.zio.local.dh.unimaas.nl
+127.0.0.1 ehrbase.envida.local.dh.unimaas.nl
+127.0.0.1 openehrtool.envida.local.dh.unimaas.nl
+127.0.0.1 portal.envida.local.dh.unimaas.nl
 127.0.0.1 federation.local.dh.unimaas.nl
 ```
 
@@ -185,7 +185,7 @@ To run the node UI on all nodes:
 ./dh.sh node-ui
 ```
 
-User Interfaces available at [mumc-ui.local.dh.unimaas.nl](mumc-ui.local.dh.unimaas.nl), [zio-ui.local.dh.unimaas.nl](zio-ui.local.dh.unimaas.nl) & [envida-ui.local.dh.unimaas.nl](envida-ui.local.dh.unimaas.nl)
+User Interfaces available at [portal.mumc.local.dh.unimaas.nl](portal.mumc.local.dh.unimaas.nl), [portal.zio.local.dh.unimaas.nl](portal.zio.local.dh.unimaas.nl) & [portal.envida.local.dh.unimaas.nl](portal.envida.local.dh.unimaas.nl)
 
 (Optional)
 To run openEHR tool on each node:
