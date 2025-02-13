@@ -28,7 +28,7 @@ externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-t
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git
 externals/dh-hdp-federation-api https://github.com/MaastrichtUniversity/dh-hdp-federation-api.git
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
-externals/dh-hdp-node-ui https://github.com/MaastrichtUniversitydh-hdp-node-ui.git"
+externals/dh-hdp-node-ui https://github.com/MaastrichtUniversity/dh-hdp-node-ui.git"
 
 
 # Create docker network dev-hdp_hdp-dh-mumc-net if it does not exists
