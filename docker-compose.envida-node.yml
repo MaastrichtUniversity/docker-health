@@ -59,6 +59,8 @@ services:
     # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
     volumes:
       - ./filebeat/logs/envida/ehrdb:/tmp/postgreslog
+      # Uncomment the following line to create a volume binds to make the postgresql data persistent
+#      - ./ehrbase/mumc/.pgdata:/var/lib/postgresql/data
     env_file:
       - ./env_files/timezone.env
       - ./env_files/envida/ehrdb.env
@@ -100,7 +102,7 @@ services:
       - ./env_files/zib-templates.env
       - ./env_files/envida/etl.env
     environment:
-      LOGSTASH_TAGS: ENVIDA_ETL_ZIB
+      LOGSTASH_TAGS: ETL_ZIB
     depends_on:
       envida-ehrbase:
         condition: service_healthy
@@ -140,6 +142,8 @@ services:
     environment:
       VIRTUAL_HOST: envida-ui.${RIT_ENV}.dh.unimaas.nl
       NEXT_PUBLIC_NODE_NAME: envida
+      AUTH_USER: demo@envida.nl
+      AUTH_PASS: foobar
     networks:
       - dev-hdp_hdp-dh-envida-net
 networks:
