@@ -125,8 +125,8 @@ fi
 
 run_etl_zib(){
     dev_setup_requirements $1
-    if is_local; then build_and_up_common_services; fi
-    docker compose build $1-etl-zib
+    if is_local; then build_and_up_common_services; docker compose build $1-etl-zib; fi
+
     echo -e "\nRunning $1-etl-zib"
     docker compose up -d $1-etl-zib
     # Add a safe guard against infinite loop during a CI execution
@@ -215,7 +215,7 @@ if [[ $1 == "openehrtool" ]]; then
 fi
 
 run_node-ui(){
-    docker compose build federation-api $1-node-ui
+    if is_local; then docker compose build federation-api $1-node-ui; fi
     docker compose up -d $1-node-ui
     echo -e "\nNode userinterface on $1 node up and running"
 }
@@ -237,10 +237,9 @@ fi
 
 run_single_node_tests(){
     dev_setup_requirements "test"
-    if is_local; then build_and_up_common_services; fi
+    if is_local; then build_and_up_common_services; docker compose build test-etl-zib; fi
 
     echo -e "\nStart single node tests on test-etl-zib"
-    docker compose build test-etl-zib
     docker compose run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5
 #    docker compose run --rm --entrypoint pytest test-etl-zib -s
 #    docker compose run --rm --entrypoint pytest test-etl-zib -o log_cli=true --log-cli-level=INFO
@@ -249,9 +248,9 @@ run_single_node_tests(){
 run_federation_tests(){
     dev_setup_requirements "mumc"
     dev_setup_requirements "zio"
-    if is_local; then build_and_up_common_services; fi
+    if is_local; then build_and_up_common_services; docker compose build federation-api; fi
     echo -e "\nStart federation tests"
-    docker compose run --build --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
+    docker compose run --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
 }
 
 if [[ $1 == "test" ]]; then
