@@ -224,7 +224,7 @@ if [[ $1 == "openehrtool" ]]; then
 fi
 
 run_portal(){
-    if is_local; then docker compose build federation-api $1-portal; fi
+    if is_local; then docker compose build $1-portal; fi
     docker compose up -d $1-portal
     echo -e "\nNode userinterface on $1 node up and running"
 }
@@ -233,7 +233,7 @@ if [[ $1 == "portal" ]]; then
     dev_setup_requirements "mumc"
     dev_setup_requirements "zio"
     dev_setup_requirements "envida"
-    if is_local; then build_and_up_common_services; fi
+    if is_local; then build_and_up_common_services; docker compose build federation-api; fi
 
     if [[ -z "$2" ]]; then
       run_portal "mumc"
