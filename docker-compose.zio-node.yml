@@ -60,7 +60,7 @@ services:
     volumes:
       - ./filebeat/logs/zio/ehrdb:/tmp/postgreslog
       # Uncomment the following line to create a volume mount to make the postgresql data persistent
-#      - ./ehrbase/zio/.pgdata:/var/lib/postgresql/data
+#      - ./ehrdb_pgdata/zio:/var/lib/postgresql/data
     env_file:
       - ./env_files/timezone.env
       - ./env_files/zio/ehrdb.env

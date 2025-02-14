@@ -60,7 +60,7 @@ services:
     volumes:
       - ./filebeat/logs/mumc/ehrdb:/tmp/postgreslog
       # Uncomment the following line to create a volume binds to make the postgresql data persistent
-#      - ./ehrbase/mumc/.pgdata:/var/lib/postgresql/data
+#      - ./ehrdb_pgdata/mumc:/var/lib/postgresql/data
     env_file:
       - ./env_files/timezone.env
       - ./env_files/mumc/ehrdb.env
