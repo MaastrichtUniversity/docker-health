@@ -178,6 +178,7 @@ services:
       - "8078:8080"
     volumes:
       - "./openFHIR/maastrichtuni_license_2025.json:/app/openfhir-license.json"
+      - "./openFHIR/bootstrap/:/app/bootstrap/"
     environment:
       VIRTUAL_HOST: openfhir.${RIT_ENV}.dh.unimaas.nl
       SPRING_DATA_MONGODB_URI: "mongodb://openfhir:openfhir@mongodb:27017/openfhir"
