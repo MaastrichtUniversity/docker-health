@@ -172,6 +172,34 @@ services:
       hdp-dh-zio-net:
         aliases:
           - redis.dh.local
+  openfhir:
+    image: openfhir/openfhir:latest
+    ports:
+      - "8078:8080"
+    volumes:
+      - "./openFHIR/maastrichtuni_license_2025.json:/app/openfhir-license.json"
+    environment:
+      VIRTUAL_HOST: openfhir.${RIT_ENV}.dh.unimaas.nl
+      SPRING_DATA_MONGODB_URI: "mongodb://openfhir:openfhir@mongodb:27017/openfhir"
+      LICENSE: "/app/openfhir-license.json" # could also be left out, as this is the default
+      BOOTSTRAP_DIR: "/app/bootstrap/" # could also be left out, as this is the default
+    depends_on:
+      - mongodb
+      - proxy
+    networks:
+      - hdp-dh-test-net
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "admin"
+      MONGO_INITDB_ROOT_PASSWORD: "admin"
+      MONGO_INITDB_DATABASE: "openfhir"
+    volumes:
+      - ./openFHIR/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - hdp-dh-test-net
 networks:
   default:
     ipam:
