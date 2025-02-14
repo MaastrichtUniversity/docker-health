@@ -43,5 +43,8 @@ outputs/
 # Jupyter notebooks
 notebooks/.ipynb_checkpoints
 
+# openFHIR license
+openFHIR/*license*.json
+
 # Symbolic link from dh.sh to rit.sh (old name)
 rit.sh
