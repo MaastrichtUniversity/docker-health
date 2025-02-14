@@ -142,8 +142,8 @@ services:
     environment:
       VIRTUAL_HOST: portal.zio.${RIT_ENV}.dh.unimaas.nl
       NEXT_PUBLIC_NODE_NAME: zio
-      AUTH_USER: demo@zio.nl
-      AUTH_PASS: foobar
+      AUTH_USER: ${PORTAL_NEXT_AUTH_USER_ZIO_NODE}
+      AUTH_PASS: ${PORTAL_NEXT_AUTH_PASS_ZIO_NODE}
     networks:
       - dev-hdp_hdp-dh-zio-net
 networks:

@@ -142,8 +142,8 @@ services:
     environment:
       VIRTUAL_HOST: portal.envida.${RIT_ENV}.dh.unimaas.nl
       NEXT_PUBLIC_NODE_NAME: envida
-      AUTH_USER: demo@envida.nl
-      AUTH_PASS: foobar
+      AUTH_USER: ${PORTAL_NEXT_AUTH_USER_ENVIDA_NODE}
+      AUTH_PASS: ${PORTAL_NEXT_AUTH_PASS_ENVIDA_NODE}
     networks:
       - dev-hdp_hdp-dh-envida-net
 networks:

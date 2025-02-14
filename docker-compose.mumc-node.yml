@@ -142,8 +142,8 @@ services:
     environment:
       VIRTUAL_HOST: portal.mumc.${RIT_ENV}.dh.unimaas.nl
       NEXT_PUBLIC_NODE_NAME: mumc
-      AUTH_USER: demo@mumc.nl
-      AUTH_PASS: foobar
+      AUTH_USER: ${PORTAL_NEXT_AUTH_USER_MUMC_NODE}
+      AUTH_PASS: ${PORTAL_NEXT_AUTH_PASS_MUMC_NODE}
     networks:
       - dev-hdp_hdp-dh-mumc-net
 networks:
