@@ -139,11 +139,10 @@ services:
     volumes:
       - "./externals/dh-hdp-portal/src:/app/src" #DEV
       - "./externals/dh-hdp-portal/public:/app/public" #DEV
+    env_file:
+      - ./env_files/envida/portal.env
     environment:
       VIRTUAL_HOST: portal.envida.${RIT_ENV}.dh.unimaas.nl
-      NEXT_PUBLIC_NODE_NAME: envida
-      AUTH_USER: ${PORTAL_NEXT_AUTH_USER_ENVIDA_NODE}
-      AUTH_PASS: ${PORTAL_NEXT_AUTH_PASS_ENVIDA_NODE}
     networks:
       - dev-hdp_hdp-dh-envida-net
 networks:

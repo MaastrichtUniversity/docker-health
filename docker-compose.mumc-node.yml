@@ -139,11 +139,10 @@ services:
     volumes:
       - "./externals/dh-hdp-portal/src:/app/src" #DEV
       - "./externals/dh-hdp-portal/public:/app/public" #DEV
+    env_file:
+      - ./env_files/mumc/portal.env
     environment:
       VIRTUAL_HOST: portal.mumc.${RIT_ENV}.dh.unimaas.nl
-      NEXT_PUBLIC_NODE_NAME: mumc
-      AUTH_USER: ${PORTAL_NEXT_AUTH_USER_MUMC_NODE}
-      AUTH_PASS: ${PORTAL_NEXT_AUTH_PASS_MUMC_NODE}
     networks:
       - dev-hdp_hdp-dh-mumc-net
 networks:
