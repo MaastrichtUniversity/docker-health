@@ -1,8 +1,8 @@
 services:
-  zio-ehrbase:
+  envida-ehrbase:
     image: ehrbase/ehrbase:2.6.0
     depends_on:
-      zio-ehrdb:
+      envida-ehrdb:
         condition: service_started
       proxy:
         condition: service_started
@@ -10,9 +10,9 @@ services:
         condition: service_started
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/zio/ehrbase.env
+      - ./env_files/envida/ehrbase.env
     environment:
-      VIRTUAL_HOST: zio.ehrbase.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: envida.ehrbase.${RIT_ENV}.dh.unimaas.nl
     healthcheck:
       test: "wget -T5 -qO- -Y off localhost:8080/ehrbase/management/health | grep UP || exit 1"
       interval: 5s
@@ -20,11 +20,11 @@ services:
       retries: 10
     #     start_period: 10s
     ports:
-      - "8082:8080"
+      - "8083:8080"
     networks:
-      dev-hdp_hdp-dh-zio-net:
+      dev-hdp_hdp-dh-envida-net:
         aliases:
-          - zio.ehrbase.dh.local
+          - envida.ehrbase.dh.local
     entrypoint:
       - java
       - -jar
@@ -32,9 +32,9 @@ services:
       - -Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log
       - ehrbase.jar
     volumes:
-      - ./filebeat/logs/zio/ehrbase:/tmp/ehrbaselog
+      - ./filebeat/logs/envida/ehrbase:/tmp/ehrbaselog
     restart: on-failure
-  zio-ehrdb:
+  envida-ehrdb:
     image: ehrbase/ehrbase-v2-postgres:16.2
     environment:
       - PGPORT=5432
@@ -58,20 +58,20 @@ services:
       ]
     # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
     volumes:
-      - ./filebeat/logs/zio/ehrdb:/tmp/postgreslog
+      - ./filebeat/logs/envida/ehrdb:/tmp/postgreslog
     env_file:
       - ./env_files/timezone.env
-      - ./env_files/zio/ehrdb.env
+      - ./env_files/envida/ehrdb.env
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 12
     ports:
-      - "5434:5432"
+      - "5435:5432"
     networks:
-      - dev-hdp_hdp-dh-zio-net
-  zio-etl-zib:
+      - dev-hdp_hdp-dh-envida-net
+  envida-etl-zib:
     build:
       context: ./externals/dh-hdp-etl
       dockerfile: Dockerfile
@@ -79,15 +79,15 @@ services:
         - SRC_SUBPROJECT=zib
       additional_contexts:
         hdp_templates: ./externals/dh-hdp-zib-templates
-    image: ${ENV_REGISTRY_HOST}/docker-health/zio-etl-zib:${ENV_TAG}
+    image: ${ENV_REGISTRY_HOST}/docker-health/envida-etl-zib:${ENV_TAG}
     healthcheck:
-      test: "tail -n 10 /code/logs/zio/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
+      test: "tail -n 10 /code/logs/envida/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
       interval: 5s
       timeout: 3s
       retries: 10
     volumes:
-      - ./data/zio-demo-data:/code/data/zio-demo-data
-      - ./filebeat/logs/zio/etl-zib:/code/logs/zio
+      - ./data/envida-demo-data:/code/data/envida-demo-data
+      - ./filebeat/logs/envida/etl-zib:/code/logs/envida
       - ./outputs/etl-zib:/code/outputs
       # Volume binds to auto-reload the code inside the container
       - ./externals/dh-hdp-etl/etl.py:/code/etl.py
@@ -98,39 +98,39 @@ services:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
       - ./env_files/zib-templates.env
-      - ./env_files/zio/etl.env
+      - ./env_files/envida/etl.env
     environment:
-      LOGSTASH_TAGS: ZIO_ETL_ZIB
+      LOGSTASH_TAGS: ENVIDA_ETL_ZIB
     depends_on:
-      zio-ehrbase:
+      envida-ehrbase:
         condition: service_healthy
       transform-rest:
         condition: service_started
     networks:
-      - dev-hdp_hdp-dh-zio-net
-  zio-openehrtool:
+      - dev-hdp_hdp-dh-envida-net
+  envida-openehrtool:
     image: surfercrs4/openehrtool:latest
     volumes:
-      - ./openEHR-tool/zio-openehrtool.cfg:/code/config/openehrtool.cfg
+      - ./openEHR-tool/envida-openehrtool.cfg:/code/config/openehrtool.cfg
     env_file:
       - ./openEHR-tool/.env
     depends_on:
-      - zio-ehrbase
+      - envida-ehrbase
     ports:
-      - "9002:9000"
+      - "9003:9000"
     environment:
-      VIRTUAL_HOST: zio.openehrtool.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: envida.openehrtool.${RIT_ENV}.dh.unimaas.nl
     networks:
-      dev-hdp_hdp-dh-zio-net:
+      dev-hdp_hdp-dh-envida-net:
         aliases:
-          - zio.openehrtool.dh.local
-  zio-node-ui:
+          - envida.openehrtool.dh.local
+  envida-node-ui:
     build:
       context: externals/dh-hdp-node-ui/
       dockerfile: Dockerfile
       target: development  # Use the 'production' stage from Dockerfile for production
       args:
-        NODE_NAME_BUILD: zio
+        NODE_NAME_BUILD: envida
     depends_on:
       federation-api:
         condition: service_started
@@ -138,10 +138,10 @@ services:
       - "./externals/dh-hdp-node-ui/src:/app/src" #DEV
       - "./externals/dh-hdp-node-ui/public:/app/public" #DEV
     environment:
-      VIRTUAL_HOST: zio-ui.${RIT_ENV}.dh.unimaas.nl
-      NEXT_PUBLIC_NODE_NAME: zio
+      VIRTUAL_HOST: envida-ui.${RIT_ENV}.dh.unimaas.nl
+      NEXT_PUBLIC_NODE_NAME: envida
     networks:
-      - dev-hdp_hdp-dh-zio-net
+      - dev-hdp_hdp-dh-envida-net
 networks:
-  dev-hdp_hdp-dh-zio-net:
+  dev-hdp_hdp-dh-envida-net:
     external: true
