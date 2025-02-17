@@ -18,6 +18,25 @@ This service is based on repositories:
 
 CA certificates need to be manually stored in folder `filebeat/certs`.
 The present files are used for development-purposes.
+Right now, we're not using encryption, but we've kept these configurations in case we decide to enable them in the future, hence the commented configurations, for example:
+
+In `docker-compose.yml` :
+
+```
+#   - ./filebeat/certs:/etc/certs:ro
+```
+
+In `filebeat/filebeat.yml` :
+
+```
+#  ssl.certificate_authorities: ["/etc/certs/ca.crt"]
+#  ssl.certificate: "/etc/certs/filebeat.dh.local.crt"
+#  ssl.key: "/etc/certs/filebeat.dh.local.key"
+```
+
+and others.
+
+If encryption needs to be restored, uncomment the configurations and see `2025.1-ssl` branch of `docker-common`.
 
 ### Add these virtual host entries in your /etc/hosts file
 
