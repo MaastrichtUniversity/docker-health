@@ -8,20 +8,12 @@ fhirConfig:
       targetAttribute: "meta.profile"
       operator: "one of"
       criteria: "[http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient]"
-#      targetAttribute: "id"
-#      operator: "one of"
-#      criteria: "Patient/nl-core-Patient-01"
 openEhrConfig:
   archetype: "openEHR-EHR-EVALUATION.social_network.v1"
 
 mappings:
   - name: "maritalStatus"
     with:
-      fhir: "$fhirResource.maritalStatus.coding"
+      fhir: "$fhirResource.maritalStatus"
       openehr: "$openEhrArchetype.burgerlijkestaat-v3.burgerlijkestaat"
-      type: "DV_CODED_TEXT"
-    condition:
-      targetRoot: "$fhirResource"
-      targetAttribute: "maritalStatus.coding.system"
-      operator: "one of"
-      criteria: "[http://terminology.hl7.org/CodeSystem/v3-MaritalStatus]"
+      type: "CODEABLECONCEPT"
