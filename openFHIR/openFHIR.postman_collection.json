@@ -202,6 +202,110 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "BurgerlijkeStaat",
+			"item": [
+				{
+					"name": "FHIR to openEHR",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resourceType\": \"Bundle\",\n    \"entry\": [\n        {\n            \"resource\": {\n                \"resourceType\": \"Patient\",\n                \"id\": \"nl-core-Patient-01\",\n                \"meta\": {\n                    \"profile\": [\n                        \"http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient\"\n                    ]\n                },\n                \"maritalStatus\": {\n                    \"coding\": [\n                        {\n                            \"system\": \"http://terminology.hl7.org/CodeSystem/v3-MaritalStatus\",\n                            \"code\": \"M\",\n                            \"display\": \"Married\"\n                        }\n                    ]\n                }\n            }\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://openfhir.local.dh.unimaas.nl/openfhir/toopenehr"
+					},
+					"response": []
+				},
+				{
+					"name": "openEHR flat to FHIR",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"datahub-burgerlijkestaat-2017/_uid\": \"ddd4f9f1-a968-4af6-9dba-78050ce32132::mumc.server.dh.unimaas.nl::1\",\n \"datahub-burgerlijkestaat-2017/burgerlijkestaat-v3/burgerlijkestaat|code\": \"M\",\n \"datahub-burgerlijkestaat-2017/burgerlijkestaat-v3/burgerlijkestaat|terminology\": \"MaritalStatus\",\n \"datahub-burgerlijkestaat-2017/burgerlijkestaat-v3/burgerlijkestaat|value\": \"Married\",\n \"datahub-burgerlijkestaat-2017/burgerlijkestaat-v3/encoding|code\": \"UTF-8\",\n \"datahub-burgerlijkestaat-2017/burgerlijkestaat-v3/encoding|terminology\": \"IANA_character-sets\",\n \"datahub-burgerlijkestaat-2017/burgerlijkestaat-v3/language|code\": \"nl\",\n \"datahub-burgerlijkestaat-2017/burgerlijkestaat-v3/language|terminology\": \"ISO_639-1\",\n \"datahub-burgerlijkestaat-2017/category|code\": \"433\",\n \"datahub-burgerlijkestaat-2017/category|terminology\": \"openehr\",\n \"datahub-burgerlijkestaat-2017/category|value\": \"event\",\n \"datahub-burgerlijkestaat-2017/composer|name\": \"DataHub\",\n \"datahub-burgerlijkestaat-2017/context/setting|code\": \"225\",\n \"datahub-burgerlijkestaat-2017/context/setting|terminology\": \"openehr\",\n \"datahub-burgerlijkestaat-2017/context/setting|value\": \"home\",\n \"datahub-burgerlijkestaat-2017/context/start_time\": \"1970-03-10T23:59:59.871\",\n \"datahub-burgerlijkestaat-2017/language|code\": \"nl\",\n \"datahub-burgerlijkestaat-2017/language|terminology\": \"ISO_639-1\",\n \"datahub-burgerlijkestaat-2017/territory|code\": \"NL\",\n \"datahub-burgerlijkestaat-2017/territory|terminology\": \"ISO_3166-1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://openfhir.local.dh.unimaas.nl/openfhir/tofhir?templateId=DataHub-BurgerlijkeStaat-2017",
+							"protocol": "http",
+							"host": [
+								"openfhir",
+								"local",
+								"dh",
+								"unimaas",
+								"nl"
+							],
+							"path": [
+								"openfhir",
+								"tofhir"
+							],
+							"query": [
+								{
+									"key": "templateId",
+									"value": "DataHub-BurgerlijkeStaat-2017"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "openEHR canonical to FHIR",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"_type\": \"COMPOSITION\",\n    \"name\": {\n        \"_type\": \"DV_TEXT\",\n        \"value\": \"DataHub-BurgerlijkeStaat-2017\"\n    },\n    \"archetype_details\": {\n        \"archetype_id\": {\n            \"value\": \"openEHR-EHR-COMPOSITION.social_summary.v0\"\n        },\n        \"template_id\": {\n            \"value\": \"DataHub-BurgerlijkeStaat-2017\"\n        },\n        \"rm_version\": \"1.0.4\"\n    },\n    \"language\": {\n        \"_type\": \"CODE_PHRASE\",\n        \"terminology_id\": {\n            \"_type\": \"TERMINOLOGY_ID\",\n            \"value\": \"ISO_639-1\"\n        },\n        \"code_string\": \"en\"\n    },\n    \"territory\": {\n        \"_type\": \"CODE_PHRASE\",\n        \"terminology_id\": {\n            \"_type\": \"TERMINOLOGY_ID\",\n            \"value\": \"ISO_3166-1\"\n        },\n        \"code_string\": \"DE\"\n    },\n    \"category\": {\n        \"_type\": \"DV_CODED_TEXT\",\n        \"value\": \"event\",\n        \"defining_code\": {\n            \"_type\": \"CODE_PHRASE\",\n            \"terminology_id\": {\n                \"_type\": \"TERMINOLOGY_ID\",\n                \"value\": \"openehr\"\n            },\n            \"code_string\": \"433\"\n        }\n    },\n    \"composer\": {\n        \"_type\": \"PARTY_SELF\"\n    },\n    \"context\": {\n        \"_type\": \"EVENT_CONTEXT\",\n        \"start_time\": {\n            \"_type\": \"DV_DATE_TIME\",\n            \"value\": \"2025-02-20T10:51:21.398402626Z\"\n        },\n        \"setting\": {\n            \"_type\": \"DV_CODED_TEXT\",\n            \"value\": \"other care\",\n            \"defining_code\": {\n                \"_type\": \"CODE_PHRASE\",\n                \"terminology_id\": {\n                    \"_type\": \"TERMINOLOGY_ID\",\n                    \"value\": \"openehr\"\n                },\n                \"code_string\": \"238\"\n            }\n        }\n    },\n    \"content\": [\n        {\n            \"_type\": \"EVALUATION\",\n            \"name\": {\n                \"_type\": \"DV_TEXT\",\n                \"value\": \"BurgerlijkeStaat-v3\"\n            },\n            \"archetype_details\": {\n                \"archetype_id\": {\n                    \"value\": \"openEHR-EHR-EVALUATION.social_network.v1\"\n                },\n                \"rm_version\": \"1.0.4\"\n            },\n            \"language\": {\n                \"_type\": \"CODE_PHRASE\",\n                \"terminology_id\": {\n                    \"_type\": \"TERMINOLOGY_ID\",\n                    \"value\": \"ISO_639-1\"\n                },\n                \"code_string\": \"en\"\n            },\n            \"encoding\": {\n                \"_type\": \"CODE_PHRASE\",\n                \"terminology_id\": {\n                    \"_type\": \"TERMINOLOGY_ID\",\n                    \"value\": \"IANA_character-sets\"\n                },\n                \"code_string\": \"UTF-8\"\n            },\n            \"subject\": {\n                \"_type\": \"PARTY_SELF\"\n            },\n            \"data\": {\n                \"_type\": \"ITEM_TREE\",\n                \"name\": {\n                    \"_type\": \"DV_TEXT\",\n                    \"value\": \"Tree\"\n                },\n                \"items\": [\n                    {\n                        \"_type\": \"ELEMENT\",\n                        \"name\": {\n                            \"_type\": \"DV_TEXT\",\n                            \"value\": \"BurgerlijkeStaat\"\n                        },\n                        \"value\": {\n                            \"_type\": \"DV_CODED_TEXT\",\n                            \"value\": \"Married\",\n                            \"defining_code\": {\n                                \"_type\": \"CODE_PHRASE\",\n                                \"terminology_id\": {\n                                    \"_type\": \"TERMINOLOGY_ID\",\n                                    \"value\": \"http://terminology.hl7.org/CodeSystem/v3-MaritalStatus\"\n                                },\n                                \"code_string\": \"M\"\n                            }\n                        },\n                        \"archetype_node_id\": \"at0002\"\n                    }\n                ],\n                \"archetype_node_id\": \"at0001\"\n            },\n            \"archetype_node_id\": \"openEHR-EHR-EVALUATION.social_network.v1\"\n        }\n    ],\n    \"archetype_node_id\": \"openEHR-EHR-COMPOSITION.social_summary.v0\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://openfhir.local.dh.unimaas.nl/openfhir/tofhir"
+					},
+					"response": []
+				},
+				{
+					"name": "Composion to EHRbase",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "foobar1",
+								"username": "user1"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"_type\": \"COMPOSITION\",\n    \"name\": {\n        \"_type\": \"DV_TEXT\",\n        \"value\": \"DataHub-BurgerlijkeStaat-2017\"\n    },\n    \"archetype_details\": {\n        \"archetype_id\": {\n            \"value\": \"openEHR-EHR-COMPOSITION.social_summary.v0\"\n        },\n        \"template_id\": {\n            \"value\": \"DataHub-BurgerlijkeStaat-2017\"\n        },\n        \"rm_version\": \"1.0.4\"\n    },\n    \"language\": {\n        \"_type\": \"CODE_PHRASE\",\n        \"terminology_id\": {\n            \"_type\": \"TERMINOLOGY_ID\",\n            \"value\": \"ISO_639-1\"\n        },\n        \"code_string\": \"en\"\n    },\n    \"territory\": {\n        \"_type\": \"CODE_PHRASE\",\n        \"terminology_id\": {\n            \"_type\": \"TERMINOLOGY_ID\",\n            \"value\": \"ISO_3166-1\"\n        },\n        \"code_string\": \"DE\"\n    },\n    \"category\": {\n        \"_type\": \"DV_CODED_TEXT\",\n        \"value\": \"event\",\n        \"defining_code\": {\n            \"_type\": \"CODE_PHRASE\",\n            \"terminology_id\": {\n                \"_type\": \"TERMINOLOGY_ID\",\n                \"value\": \"openehr\"\n            },\n            \"code_string\": \"433\"\n        }\n    },\n    \"composer\": {\n        \"_type\": \"PARTY_SELF\"\n    },\n    \"context\": {\n        \"_type\": \"EVENT_CONTEXT\",\n        \"start_time\": {\n            \"_type\": \"DV_DATE_TIME\",\n            \"value\": \"2025-02-24T12:40:26.615566808Z\"\n        },\n        \"setting\": {\n            \"_type\": \"DV_CODED_TEXT\",\n            \"value\": \"other care\",\n            \"defining_code\": {\n                \"_type\": \"CODE_PHRASE\",\n                \"terminology_id\": {\n                    \"_type\": \"TERMINOLOGY_ID\",\n                    \"value\": \"openehr\"\n                },\n                \"code_string\": \"238\"\n            }\n        }\n    },\n    \"content\": [\n        {\n            \"_type\": \"EVALUATION\",\n            \"name\": {\n                \"_type\": \"DV_TEXT\",\n                \"value\": \"BurgerlijkeStaat-v3\"\n            },\n            \"archetype_details\": {\n                \"archetype_id\": {\n                    \"value\": \"openEHR-EHR-EVALUATION.social_network.v1\"\n                },\n                \"rm_version\": \"1.0.4\"\n            },\n            \"language\": {\n                \"_type\": \"CODE_PHRASE\",\n                \"terminology_id\": {\n                    \"_type\": \"TERMINOLOGY_ID\",\n                    \"value\": \"ISO_639-1\"\n                },\n                \"code_string\": \"en\"\n            },\n            \"encoding\": {\n                \"_type\": \"CODE_PHRASE\",\n                \"terminology_id\": {\n                    \"_type\": \"TERMINOLOGY_ID\",\n                    \"value\": \"IANA_character-sets\"\n                },\n                \"code_string\": \"UTF-8\"\n            },\n            \"subject\": {\n                \"_type\": \"PARTY_SELF\"\n            },\n            \"data\": {\n                \"_type\": \"ITEM_TREE\",\n                \"name\": {\n                    \"_type\": \"DV_TEXT\",\n                    \"value\": \"Tree\"\n                },\n                \"items\": [\n                    {\n                        \"_type\": \"ELEMENT\",\n                        \"name\": {\n                            \"_type\": \"DV_TEXT\",\n                            \"value\": \"BurgerlijkeStaat\"\n                        },\n                        \"value\": {\n                            \"_type\": \"DV_CODED_TEXT\",\n                            \"value\": \"Married\",\n                            \"defining_code\": {\n                                \"_type\": \"CODE_PHRASE\",\n                                \"terminology_id\": {\n                                    \"_type\": \"TERMINOLOGY_ID\",\n                                    \"value\": \"http://terminology.hl7.org/CodeSystem/v3-MaritalStatus\"\n                                },\n                                \"code_string\": \"M\"\n                            }\n                        },\n                        \"archetype_node_id\": \"at0002\"\n                    }\n                ],\n                \"archetype_node_id\": \"at0001\"\n            },\n            \"archetype_node_id\": \"openEHR-EHR-EVALUATION.social_network.v1\"\n        }\n    ],\n    \"archetype_node_id\": \"openEHR-EHR-COMPOSITION.social_summary.v0\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "mumc.ehrbase.local.dh.unimaas.nl/ehrbase/rest/openehr/v1/ehr/{{ehrID}}/composition"
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
