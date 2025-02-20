@@ -1,0 +1,10 @@
+format: "0.2.0"
+
+openEHR:
+  templateId: "datahub-woonsituatie"
+  archetypes:
+    - "openEHR-EHR-EVALUATION.housing_summary.v1"
+    - "openEHR-EHR-CLUSTER.housing_record.v1"
+
+fhir:
+  resourceType: "Bundle"

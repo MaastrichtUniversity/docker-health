@@ -1,0 +1,20 @@
+format: "0.2.0"
+version: "0.0.1"
+
+fhirConfig:
+  resource: "Observation"
+  condition:
+    - targetRoot: "$fhirResource"
+      targetAttribute: "meta.profile"
+      operator: "one of"
+      criteria: "[http://nictiz.nl/fhir/StructureDefinition/zib-LivingSituation]"
+openEhrConfig:
+  archetype: "openEHR-EHR-EVALUATION.housing_summary.v1"
+
+mappings:
+  - name: "housing-record"
+    with:
+      fhir: "$fhirResource"
+      openehr: "$openEhrArchetype.housing_summary.woonsituatie-v3"
+      type: "NONE"
+    slotArchetype: "openEHR-EHR-CLUSTER.housing_record.v1"
