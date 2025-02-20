@@ -9,19 +9,24 @@ filebeat.inputs:
     enabled: true
     paths:
       - /usr/share/logs/test/etl-zib/etl-zib.log
-    tags: ["TEST_ETL_ZIB"]
-
-  - type: log
-    enabled: true
-    paths:
       - /usr/share/logs/mumc/etl-zib/etl-zib.log
-    tags: [ "MUMC_ETL_ZIB" ]
+      - /usr/share/logs/zio/etl-zib/etl-zib.log
+      - /usr/share/logs/envida/etl-zib/etl-zib.log
+    multiline:
+      pattern: '^\['
+      negate: true
+      match: after
+    tags: ["ETL_ZIB"]
 
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/zio/etl-zib/etl-zib.log
-    tags: [ "ZIO_ETL_ZIB" ]
+      - /usr/share/logs/federation-api/federation-api.log
+    multiline:
+      pattern: '^\['
+      negate: true
+      match: after
+    tags: ["FEDERATION_API"]
 
   - type: log
     enabled: true
@@ -44,6 +49,12 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
+      - /usr/share/logs/envida/ehrbase/ehrbase.log
+    tags: ["ENVIDA_EHRBASE"]
+
+  - type: log
+    enabled: true
+    paths:
       - /usr/share/logs/test/ehrdb/postgresql.log
     tags: ["TEST_EHRDB"]
 
@@ -59,19 +70,17 @@ filebeat.inputs:
       - /usr/share/logs/zio/ehrdb/postgresql.log
     tags: [ "ZIO_EHRDB" ]
 
-# Unused at the moment:
-#  - type: log
-#    enabled: true
-#    paths:
-#      - /usr/share/logs/federation-api/federation-api.log
-#      - /usr/share/logs/
-#    tags: ["FEDERATION_API"]
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/envida/ehrdb/postgresql.log
+    tags: [ "ENVIDA_EHRDB" ]
 
 # Disable filebeat monitoring
 logging.metrics.enabled: false
 
 output.logstash:
   hosts: ["elk.dh.local:5044"]
-  ssl.certificate_authorities: ["/etc/certs/ca.crt"]
-  ssl.certificate: "/etc/certs/filebeat.dh.local.crt"
-  ssl.key: "/etc/certs/filebeat.dh.local.key"
+#  ssl.certificate_authorities: ["/etc/certs/ca.crt"]
+#  ssl.certificate: "/etc/certs/filebeat.dh.local.crt"
+#  ssl.key: "/etc/certs/filebeat.dh.local.key"

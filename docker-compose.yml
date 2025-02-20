@@ -75,19 +75,16 @@ services:
       envida-etl-zib:
         condition: service_healthy
     volumes:
-      - ./filebeat/logs/federation-api:/var/log
-      - ./filebeat/logs/mumc/etl-zib:/code/logs/mumc
-      - ./filebeat/logs/zio/etl-zib:/code/logs/zio
-      - ./filebeat/logs/envida/etl-zib:/code/logs/envida
+      - ./filebeat/logs/federation-api:/code/logs/federation-api
+      - ./outputs/etl-zib:/code/outputs
     env_file:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
       - ./env_files/zib-templates.env
       - ./env_files/federation.env
     environment:
-      #      LOGSTASH_TAGS: FEDERATION_API
+      LOGSTASH_TAGS: FEDERATION_API
       VIRTUAL_HOST: federation.${RIT_ENV}.dh.unimaas.nl
-    command: ["uvicorn", "federation_api:app", "--host", "0.0.0.0", "--port", "8000"]
     ports:
       - "8000:8000"
     networks:
@@ -109,7 +106,7 @@ services:
     volumes:
       - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml:ro
       - ./filebeat/logs:/usr/share/logs/
-      - ./filebeat/certs:/etc/certs:ro
+#      - ./filebeat/certs:/etc/certs:ro
     networks:
       hdp-dh-test-net:
         aliases:

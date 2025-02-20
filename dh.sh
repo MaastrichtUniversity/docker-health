@@ -28,7 +28,7 @@ externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-t
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git
 externals/dh-hdp-federation-api https://github.com/MaastrichtUniversity/dh-hdp-federation-api.git
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
-externals/dh-hdp-node-ui https://github.com/MaastrichtUniversity/dh-hdp-node-ui.git"
+externals/dh-hdp-portal https://github.com/MaastrichtUniversity/dh-hdp-portal.git"
 
 
 # Create docker network dev-hdp_hdp-dh-mumc-net if it does not exists
@@ -121,9 +121,10 @@ if [[ $1 == "federation" ]]; then
     dev_setup_requirements "mumc"
     dev_setup_requirements "zio"
     dev_setup_requirements "envida"
+    if is_local; then build_and_up_common_services; fi
 
     echo -e "\nStart FastAPI"
-    if is_local; then docker compose build federation-api filebeat; fi
+    if is_local; then docker compose build federation-api; fi
     docker compose up -d federation-api
 
     echo -e "\nExit dh.sh"
@@ -132,8 +133,8 @@ fi
 
 run_etl_zib(){
     dev_setup_requirements $1
-    if is_local; then build_and_up_common_services; fi
-    docker compose build $1-etl-zib
+    if is_local; then build_and_up_common_services; docker compose build $1-etl-zib; fi
+
     echo -e "\nRunning $1-etl-zib"
     docker compose up -d $1-etl-zib
     # Add a safe guard against infinite loop during a CI execution
@@ -222,19 +223,25 @@ if [[ $1 == "openehrtool" ]]; then
     exit 0
 fi
 
-run_node-ui(){
-    docker compose build federation-api $1-node-ui
-    docker compose up -d $1-node-ui
+run_portal(){
+    if is_local; then docker compose build $1-portal; fi
+    docker compose up -d $1-portal
     echo -e "\nNode userinterface on $1 node up and running"
 }
 
-if [[ $1 == "node-ui" ]]; then
+if [[ $1 == "portal" ]]; then
+    dev_setup_requirements "mumc"
+    dev_setup_requirements "zio"
+    dev_setup_requirements "envida"
+    if is_local; then build_and_up_common_services; docker compose build federation-api; fi
+
     if [[ -z "$2" ]]; then
-       echo -e "Missing node name"
-       exit 1
+      run_portal "mumc"
+      run_portal "zio"
+      run_portal "envida"
     else
       check_argument "$2"
-      run_node-ui "$2"
+      run_portal "$2"
     fi
 
     echo -e "\nExit dh.sh"
@@ -245,22 +252,27 @@ fi
 
 run_single_node_tests(){
     dev_setup_requirements "test"
-    if is_local; then build_and_up_common_services; fi
+    if is_local; then build_and_up_common_services; docker compose build test-etl-zib; fi
 
     echo -e "\nStart single node tests on test-etl-zib"
-    docker compose build test-etl-zib
     docker compose run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5
 #    docker compose run --rm --entrypoint pytest test-etl-zib -s
 #    docker compose run --rm --entrypoint pytest test-etl-zib -o log_cli=true --log-cli-level=INFO
+
+    # Clean up
+    if [[ $RIT_ENV != "local" ]]; then
+      docker compose rm -s -f test-ehrbase test-ehrdb
+    fi
 }
 
 run_federation_tests(){
     dev_setup_requirements "mumc"
     dev_setup_requirements "zio"
     dev_setup_requirements "envida"
-    if is_local; then build_and_up_common_services; fi
+    if is_local; then build_and_up_common_services; docker compose build federation-api; fi
+
     echo -e "\nStart federation tests"
-    docker compose run --build --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
+    docker compose run --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
 }
 
 if [[ $1 == "test" ]]; then

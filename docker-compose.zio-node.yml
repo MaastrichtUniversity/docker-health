@@ -12,7 +12,7 @@ services:
       - ./env_files/timezone.env
       - ./env_files/zio/ehrbase.env
     environment:
-      VIRTUAL_HOST: zio.ehrbase.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: ehrbase.zio.${RIT_ENV}.dh.unimaas.nl
     healthcheck:
       test: "wget -T5 -qO- -Y off localhost:8080/ehrbase/management/health | grep UP || exit 1"
       interval: 5s
@@ -59,6 +59,8 @@ services:
     # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
     volumes:
       - ./filebeat/logs/zio/ehrdb:/tmp/postgreslog
+      # Uncomment the following line to create a volume mount to make the postgresql data persistent
+#      - ./ehrdb_pgdata/zio:/var/lib/postgresql/data
     env_file:
       - ./env_files/timezone.env
       - ./env_files/zio/ehrdb.env
@@ -100,7 +102,7 @@ services:
       - ./env_files/zib-templates.env
       - ./env_files/zio/etl.env
     environment:
-      LOGSTASH_TAGS: ZIO_ETL_ZIB
+      LOGSTASH_TAGS: ETL_ZIB
     depends_on:
       zio-ehrbase:
         condition: service_healthy
@@ -119,14 +121,14 @@ services:
     ports:
       - "9002:9000"
     environment:
-      VIRTUAL_HOST: zio.openehrtool.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: openehrtool.zio.${RIT_ENV}.dh.unimaas.nl
     networks:
       dev-hdp_hdp-dh-zio-net:
         aliases:
           - zio.openehrtool.dh.local
-  zio-node-ui:
+  zio-portal:
     build:
-      context: externals/dh-hdp-node-ui/
+      context: externals/dh-hdp-portal/
       dockerfile: Dockerfile
       target: development  # Use the 'production' stage from Dockerfile for production
       args:
@@ -135,11 +137,12 @@ services:
       federation-api:
         condition: service_started
     volumes:
-      - "./externals/dh-hdp-node-ui/src:/app/src" #DEV
-      - "./externals/dh-hdp-node-ui/public:/app/public" #DEV
+      - "./externals/dh-hdp-portal/src:/app/src" #DEV
+      - "./externals/dh-hdp-portal/public:/app/public" #DEV
+    env_file:
+      - ./env_files/zio/portal.env
     environment:
-      VIRTUAL_HOST: zio-ui.${RIT_ENV}.dh.unimaas.nl
-      NEXT_PUBLIC_NODE_NAME: zio
+      VIRTUAL_HOST: portal.zio.${RIT_ENV}.dh.unimaas.nl
     networks:
       - dev-hdp_hdp-dh-zio-net
 networks:
