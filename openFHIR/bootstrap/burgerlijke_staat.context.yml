@@ -1,0 +1,9 @@
+format: "0.2.0"
+
+openEHR:
+  templateId: "DataHub-BurgerlijkeStaat-2017"
+  archetypes:
+    - "openEHR-EHR-EVALUATION.social_network.v1"
+
+fhir:
+  resourceType: "Bundle"
