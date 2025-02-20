@@ -12,7 +12,7 @@ services:
       - ./env_files/timezone.env
       - ./env_files/envida/ehrbase.env
     environment:
-      VIRTUAL_HOST: envida.ehrbase.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: ehrbase.envida.${RIT_ENV}.dh.unimaas.nl
     healthcheck:
       test: "wget -T5 -qO- -Y off localhost:8080/ehrbase/management/health | grep UP || exit 1"
       interval: 5s
@@ -59,6 +59,8 @@ services:
     # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
     volumes:
       - ./filebeat/logs/envida/ehrdb:/tmp/postgreslog
+      # Uncomment the following line to create a volume binds to make the postgresql data persistent
+#      - ./ehrdb_pgdata/envida:/var/lib/postgresql/data
     env_file:
       - ./env_files/timezone.env
       - ./env_files/envida/ehrdb.env
@@ -100,7 +102,7 @@ services:
       - ./env_files/zib-templates.env
       - ./env_files/envida/etl.env
     environment:
-      LOGSTASH_TAGS: ENVIDA_ETL_ZIB
+      LOGSTASH_TAGS: ETL_ZIB
     depends_on:
       envida-ehrbase:
         condition: service_healthy
@@ -119,14 +121,14 @@ services:
     ports:
       - "9003:9000"
     environment:
-      VIRTUAL_HOST: envida.openehrtool.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: openehrtool.envida.${RIT_ENV}.dh.unimaas.nl
     networks:
       dev-hdp_hdp-dh-envida-net:
         aliases:
           - envida.openehrtool.dh.local
-  envida-node-ui:
+  envida-portal:
     build:
-      context: externals/dh-hdp-node-ui/
+      context: externals/dh-hdp-portal/
       dockerfile: Dockerfile
       target: development  # Use the 'production' stage from Dockerfile for production
       args:
@@ -135,11 +137,12 @@ services:
       federation-api:
         condition: service_started
     volumes:
-      - "./externals/dh-hdp-node-ui/src:/app/src" #DEV
-      - "./externals/dh-hdp-node-ui/public:/app/public" #DEV
+      - "./externals/dh-hdp-portal/src:/app/src" #DEV
+      - "./externals/dh-hdp-portal/public:/app/public" #DEV
+    env_file:
+      - ./env_files/envida/portal.env
     environment:
-      VIRTUAL_HOST: envida-ui.${RIT_ENV}.dh.unimaas.nl
-      NEXT_PUBLIC_NODE_NAME: envida
+      VIRTUAL_HOST: portal.envida.${RIT_ENV}.dh.unimaas.nl
     networks:
       - dev-hdp_hdp-dh-envida-net
 networks:

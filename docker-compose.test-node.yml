@@ -12,7 +12,7 @@ services:
       - ./env_files/timezone.env
       - ./env_files/test/ehrbase.env
     environment:
-      VIRTUAL_HOST: test.ehrbase.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: ehrbase.test.${RIT_ENV}.dh.unimaas.nl
     healthcheck:
       test: "wget -T5 -qO- -Y off localhost:8080/ehrbase/management/health | grep UP || exit 1"
       interval: 5s
@@ -99,7 +99,7 @@ services:
       - ./env_files/zib-templates.env
       - ./env_files/test/etl.env
     environment:
-      LOGSTASH_TAGS: TEST_ETL_ZIB
+      LOGSTASH_TAGS: ETL_ZIB
     depends_on:
       test-ehrbase:
         condition: service_healthy
@@ -118,7 +118,7 @@ services:
     ports:
       - "9000:9000"
     environment:
-      VIRTUAL_HOST: test.openehrtool.${RIT_ENV}.dh.unimaas.nl
+      VIRTUAL_HOST: openehrtool.test.${RIT_ENV}.dh.unimaas.nl
     networks:
       dev-hdp_hdp-dh-test-net:
         aliases:
