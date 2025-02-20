@@ -7,18 +7,11 @@ openEhrConfig:
 mappings:
   - name: "WoningType"
     with:
-      fhir: "$fhirResource.valueCodeableConcept.coding.code"
+      fhir: "$fhirResource.value"
       openehr: "$openEhrArchetype.woningtype"
       type: "CODEABLECONCEPT"
-    condition:
-      targetRoot: "$fhirResource"
-      targetAttribute: "code.coding.code"
-      operator: "one of"
-      criteria: "[http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.7.8.1--20171231000000]" 
-
-  # - name: "Toelichting"
-  #   with:
-  #     fhir: "$fhirResource.text"
-  #     openehr: $openEhrArchetype.woonsituatie-v3.toelichting"
-  #     type: "TEXT"
-
+  - name: "Toelichting"
+    with:
+     fhir: "$fhirResource.note.text"
+     openehr: "$openEhrArchetype.toelichting"
+     type: "TEXT"
