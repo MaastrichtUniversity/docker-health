@@ -130,9 +130,8 @@ services:
     build:
       context: externals/dh-hdp-portal/
       dockerfile: Dockerfile
-      target: development  # Use the 'production' stage from Dockerfile for production
-      args:
-        NODE_NAME_BUILD: mumc
+      target: development
+    image: ${ENV_REGISTRY_HOST}/docker-health/portal:${ENV_TAG}
     depends_on:
       federation-api:
         condition: service_started
