@@ -81,7 +81,7 @@ services:
         - SRC_SUBPROJECT=zib
       additional_contexts:
         hdp_templates: ./externals/dh-hdp-zib-templates
-    image: ${ENV_REGISTRY_HOST}/docker-health/envida-etl-zib:${ENV_TAG}
+    image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
     healthcheck:
       test: "tail -n 10 /code/logs/envida/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
       interval: 5s
