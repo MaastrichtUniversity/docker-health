@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "2f8c8974-36cd-4403-9c99-3d4609a71c88",
+		"_postman_id": "267a13b3-9f36-4787-84eb-bcd54ae91f34",
 		"name": "openFHIR",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "37353402"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36298614"
 	},
 	"item": [
 		{
@@ -26,7 +26,20 @@
 										}
 									}
 								},
-								"url": "http://openfhir.local.dh.unimaas.nl/opt"
+								"url": {
+									"raw": "http://openfhir.local.dh.unimaas.nl/opt",
+									"protocol": "http",
+									"host": [
+										"openfhir",
+										"local",
+										"dh",
+										"unimaas",
+										"nl"
+									],
+									"path": [
+										"opt"
+									]
+								}
 							},
 							"response": []
 						},
@@ -44,7 +57,21 @@
 										}
 									}
 								},
-								"url": "http://openfhir.local.dh.unimaas.nl/fc/context"
+								"url": {
+									"raw": "http://openfhir.local.dh.unimaas.nl/fc/context",
+									"protocol": "http",
+									"host": [
+										"openfhir",
+										"local",
+										"dh",
+										"unimaas",
+										"nl"
+									],
+									"path": [
+										"fc",
+										"context"
+									]
+								}
 							},
 							"response": []
 						},
@@ -62,7 +89,21 @@
 										}
 									}
 								},
-								"url": "http://openfhir.local.dh.unimaas.nl/fc/model"
+								"url": {
+									"raw": "http://openfhir.local.dh.unimaas.nl/fc/model",
+									"protocol": "http",
+									"host": [
+										"openfhir",
+										"local",
+										"dh",
+										"unimaas",
+										"nl"
+									],
+									"path": [
+										"fc",
+										"model"
+									]
+								}
 							},
 							"response": []
 						},
@@ -80,7 +121,21 @@
 										}
 									}
 								},
-								"url": "http://openfhir.local.dh.unimaas.nl/fc/model"
+								"url": {
+									"raw": "http://openfhir.local.dh.unimaas.nl/fc/model",
+									"protocol": "http",
+									"host": [
+										"openfhir",
+										"local",
+										"dh",
+										"unimaas",
+										"nl"
+									],
+									"path": [
+										"fc",
+										"model"
+									]
+								}
 							},
 							"response": []
 						},
@@ -98,7 +153,21 @@
 										}
 									}
 								},
-								"url": "http://openfhir.local.dh.unimaas.nl/fc/model"
+								"url": {
+									"raw": "http://openfhir.local.dh.unimaas.nl/fc/model",
+									"protocol": "http",
+									"host": [
+										"openfhir",
+										"local",
+										"dh",
+										"unimaas",
+										"nl"
+									],
+									"path": [
+										"fc",
+										"model"
+									]
+								}
 							},
 							"response": []
 						},
@@ -116,7 +185,21 @@
 										}
 									}
 								},
-								"url": "http://openfhir.local.dh.unimaas.nl/fc/model"
+								"url": {
+									"raw": "http://openfhir.local.dh.unimaas.nl/fc/model",
+									"protocol": "http",
+									"host": [
+										"openfhir",
+										"local",
+										"dh",
+										"unimaas",
+										"nl"
+									],
+									"path": [
+										"fc",
+										"model"
+									]
+								}
 							},
 							"response": []
 						}
@@ -177,7 +260,21 @@
 										}
 									}
 								},
-								"url": "http://openfhir.local.dh.unimaas.nl/openfhir/tofhir"
+								"url": {
+									"raw": "http://openfhir.local.dh.unimaas.nl/openfhir/tofhir",
+									"protocol": "http",
+									"host": [
+										"openfhir",
+										"local",
+										"dh",
+										"unimaas",
+										"nl"
+									],
+									"path": [
+										"openfhir",
+										"tofhir"
+									]
+								}
 							},
 							"response": []
 						},
@@ -195,7 +292,21 @@
 										}
 									}
 								},
-								"url": "http://openfhir.local.dh.unimaas.nl/openfhir/toopenehr"
+								"url": {
+									"raw": "http://openfhir.local.dh.unimaas.nl/openfhir/toopenehr",
+									"protocol": "http",
+									"host": [
+										"openfhir",
+										"local",
+										"dh",
+										"unimaas",
+										"nl"
+									],
+									"path": [
+										"openfhir",
+										"toopenehr"
+									]
+								}
 							},
 							"response": []
 						}
@@ -220,7 +331,27 @@
 								}
 							}
 						},
-						"url": "http://openfhir.local.dh.unimaas.nl/openfhir/toopenehr"
+						"url": {
+							"raw": "http://openfhir.local.dh.unimaas.nl/openfhir/toopenehr?templateId=DataHub-BurgerlijkeStaat-2017",
+							"protocol": "http",
+							"host": [
+								"openfhir",
+								"local",
+								"dh",
+								"unimaas",
+								"nl"
+							],
+							"path": [
+								"openfhir",
+								"toopenehr"
+							],
+							"query": [
+								{
+									"key": "templateId",
+									"value": "DataHub-BurgerlijkeStaat-2017"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -276,7 +407,21 @@
 								}
 							}
 						},
-						"url": "http://openfhir.local.dh.unimaas.nl/openfhir/tofhir"
+						"url": {
+							"raw": "http://openfhir.local.dh.unimaas.nl/openfhir/tofhir",
+							"protocol": "http",
+							"host": [
+								"openfhir",
+								"local",
+								"dh",
+								"unimaas",
+								"nl"
+							],
+							"path": [
+								"openfhir",
+								"tofhir"
+							]
+						}
 					},
 					"response": []
 				},
@@ -285,10 +430,18 @@
 					"request": {
 						"auth": {
 							"type": "basic",
-							"basic": {
-								"password": "foobar1",
-								"username": "user1"
-							}
+							"basic": [
+								{
+									"key": "password",
+									"value": "foobar1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user1",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
@@ -301,7 +454,26 @@
 								}
 							}
 						},
-						"url": "ehrbase.mumc.local.dh.unimaas.nl/ehrbase/rest/openehr/v1/ehr/{{ehrID}}/composition"
+						"url": {
+							"raw": "ehrbase.mumc.local.dh.unimaas.nl/ehrbase/rest/openehr/v1/ehr/{{ehrID}}/composition",
+							"host": [
+								"ehrbase",
+								"mumc",
+								"local",
+								"dh",
+								"unimaas",
+								"nl"
+							],
+							"path": [
+								"ehrbase",
+								"rest",
+								"openehr",
+								"v1",
+								"ehr",
+								"{{ehrID}}",
+								"composition"
+							]
+						}
 					},
 					"response": []
 				}
@@ -324,7 +496,27 @@
 								}
 							}
 						},
-						"url": "http://openfhir.local.dh.unimaas.nl/openfhir/toopenehr"
+						"url": {
+							"raw": "http://openfhir.local.dh.unimaas.nl/openfhir/toopenehr?templateId=DataHub-Woonsituatie-2017",
+							"protocol": "http",
+							"host": [
+								"openfhir",
+								"local",
+								"dh",
+								"unimaas",
+								"nl"
+							],
+							"path": [
+								"openfhir",
+								"toopenehr"
+							],
+							"query": [
+								{
+									"key": "templateId",
+									"value": "DataHub-Woonsituatie-2017"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -380,7 +572,21 @@
 								}
 							}
 						},
-						"url": "http://openfhir.local.dh.unimaas.nl/openfhir/tofhir"
+						"url": {
+							"raw": "http://openfhir.local.dh.unimaas.nl/openfhir/tofhir",
+							"protocol": "http",
+							"host": [
+								"openfhir",
+								"local",
+								"dh",
+								"unimaas",
+								"nl"
+							],
+							"path": [
+								"openfhir",
+								"tofhir"
+							]
+						}
 					},
 					"response": []
 				},
@@ -389,10 +595,18 @@
 					"request": {
 						"auth": {
 							"type": "basic",
-							"basic": {
-								"password": "foobar1",
-								"username": "user1"
-							}
+							"basic": [
+								{
+									"key": "password",
+									"value": "foobar1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user1",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
@@ -405,7 +619,26 @@
 								}
 							}
 						},
-						"url": "ehrbase.mumc.local.dh.unimaas.nl/ehrbase/rest/openehr/v1/ehr/{{ehrID}}/composition"
+						"url": {
+							"raw": "ehrbase.mumc.local.dh.unimaas.nl/ehrbase/rest/openehr/v1/ehr/{{ehrID}}/composition",
+							"host": [
+								"ehrbase",
+								"mumc",
+								"local",
+								"dh",
+								"unimaas",
+								"nl"
+							],
+							"path": [
+								"ehrbase",
+								"rest",
+								"openehr",
+								"v1",
+								"ehr",
+								"{{ehrID}}",
+								"composition"
+							]
+						}
 					},
 					"response": []
 				}
