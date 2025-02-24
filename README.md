@@ -219,3 +219,24 @@ To run openEHR tool on each node:
 ```
 ./dh.sh openehrtool mumc; ./dh.sh openehrtool zio; ./dh.sh openehrtool envida
 ```
+
+### openFHIR (POC)
+
+#### Prerequisites
+
+Before running the openFHIR, ensure the following:
+
+- Add the required `license.json` files to the `openFHIR` folder.
+
+- Add the following to your `/etc/hosts` file:
+  ```
+  127.0.0.1 openfhir.local.dh.unimaas.nl
+  ```
+
+To start openFHIR service:
+
+```
+./dh.sh openfhir
+```
+
+Import `openFHIR.postman_collection.json` in Postman to interact with the openFHIR service.

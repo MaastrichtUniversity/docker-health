@@ -291,5 +291,13 @@ if [[ $1 == "test" ]]; then
     fi
 fi
 
+if [[ $1 == "openfhir" ]]; then
+    docker compose build openfhir;
+    docker compose up -d openfhir;
+
+    echo -e "\nExit dh.sh"
+    exit 0
+fi
+
 
 docker compose $ARGS
