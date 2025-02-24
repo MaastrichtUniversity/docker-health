@@ -106,7 +106,7 @@ services:
     volumes:
       - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml:ro
       - ./filebeat/logs:/usr/share/logs/
-#      - ./filebeat/certs:/etc/certs:ro
+    #      - ./filebeat/certs:/etc/certs:ro
     networks:
       hdp-dh-test-net:
         aliases:
@@ -193,7 +193,6 @@ services:
     volumes:
       - "./openFHIR/maastrichtuni_license_2025.json:/app/openfhir-license.json"
       - "./openFHIR/bootstrap/:/app/bootstrap/"
-#      - "./openFHIR/bootstrap-woonsituatie/:/app/bootstrap/"
     environment:
       VIRTUAL_HOST: openfhir.${RIT_ENV}.dh.unimaas.nl
       SPRING_DATA_MONGODB_URI: "mongodb://openfhir:openfhir@mongodb:27017/openfhir"
