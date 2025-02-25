@@ -8,3 +8,8 @@ openEHR:
 
 fhir:
   resourceType: "Bundle"
+  condition:
+      targetRoot: "$fhirResource"
+      targetAttribute: "entry.resource.meta.profile"
+      operator: "one of"
+      criteria: "[http://nictiz.nl/fhir/StructureDefinition/zib-LivingSituation]"

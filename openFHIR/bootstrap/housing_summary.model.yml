@@ -3,11 +3,6 @@ version: "0.0.1"
 
 fhirConfig:
   resource: "Observation"
-  condition:
-    - targetRoot: "$fhirResource"
-      targetAttribute: "meta.profile"
-      operator: "one of"
-      criteria: "[http://nictiz.nl/fhir/StructureDefinition/zib-LivingSituation]"
 openEhrConfig:
   archetype: "openEHR-EHR-EVALUATION.housing_summary.v1"
 

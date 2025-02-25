@@ -3,11 +3,6 @@ version: "0.0.1"
 
 fhirConfig:
   resource: "Patient"
-  condition:
-    - targetRoot: "$fhirResource"
-      targetAttribute: "meta.profile"
-      operator: "one of"
-      criteria: "[http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient]"
 openEhrConfig:
   archetype: "openEHR-EHR-EVALUATION.social_network.v1"
 
