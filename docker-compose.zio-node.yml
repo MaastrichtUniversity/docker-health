@@ -81,7 +81,7 @@ services:
         - SRC_SUBPROJECT=zib
       additional_contexts:
         hdp_templates: ./externals/dh-hdp-zib-templates
-    image: ${ENV_REGISTRY_HOST}/docker-health/zio-etl-zib:${ENV_TAG}
+    image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
     healthcheck:
       test: "tail -n 10 /code/logs/zio/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
       interval: 5s
@@ -130,9 +130,8 @@ services:
     build:
       context: externals/dh-hdp-portal/
       dockerfile: Dockerfile
-      target: development  # Use the 'production' stage from Dockerfile for production
-      args:
-        NODE_NAME_BUILD: zio
+      target: development
+    image: ${ENV_REGISTRY_HOST}/docker-health/portal:${ENV_TAG}
     depends_on:
       federation-api:
         condition: service_started
