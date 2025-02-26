@@ -79,11 +79,6 @@ services:
       additional_contexts:
         hdp_templates: ./externals/dh-hdp-zib-templates
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
-    healthcheck:
-      test: "tail -n 10 /code/logs/test/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
-      interval: 5s
-      timeout: 3s
-      retries: 10
     volumes:
       - ./data/test-demo-data:/code/data/test-demo-data
       - ./filebeat/logs/test/etl-zib:/code/logs/test
