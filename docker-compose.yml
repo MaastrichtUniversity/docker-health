@@ -101,12 +101,13 @@ services:
     build:
       context: ./filebeat
       dockerfile: Dockerfile
+    image: ${ENV_REGISTRY_HOST}/docker-health/filebeat:${ENV_TAG}
     env_file:
       - ./env_files/timezone.env
     volumes:
       - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml:ro
       - ./filebeat/logs:/usr/share/logs/
-#      - ./filebeat/certs:/etc/certs:ro
+    #      - ./filebeat/certs:/etc/certs:ro
     networks:
       hdp-dh-test-net:
         aliases:

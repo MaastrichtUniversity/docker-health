@@ -154,19 +154,28 @@ run_etl_zib(){
       echo -e "\nPrint logs for $1-etl-zib"
       docker compose logs $1-etl-zib
       echo -e "\nExit dh.sh"
-      exit 0
+      return 0
     else
       echo -e "\nFailed to run $1-etl-zib"
-      exit 1
+      return 1
     fi
 }
 
 if [[ $1 == "etl" ]]; then
     if [[ -z "$2" ]]; then
         run_etl_zib "test"
+        exit_code=$?
+
+        # Clean up
+        if [[ $RIT_ENV != "local" ]]; then
+          docker compose rm -s -f test-ehrbase test-ehrdb test-etl-zib
+        fi
+
+        exit $exit_code
     else
         check_argument "$2"
         run_etl_zib "$2"
+        exit $?
     fi
 fi
 
@@ -258,11 +267,13 @@ run_single_node_tests(){
     docker compose run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5
 #    docker compose run --rm --entrypoint pytest test-etl-zib -s
 #    docker compose run --rm --entrypoint pytest test-etl-zib -o log_cli=true --log-cli-level=INFO
+    exit_code=$?
 
     # Clean up
     if [[ $RIT_ENV != "local" ]]; then
       docker compose rm -s -f test-ehrbase test-ehrdb
     fi
+    exit $exit_code
 }
 
 run_federation_tests(){
