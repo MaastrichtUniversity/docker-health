@@ -60,7 +60,7 @@ services:
     volumes:
       - ./filebeat/logs/envida/ehrdb:/tmp/postgreslog
       # Uncomment the following line to create a volume binds to make the postgresql data persistent
-#      - ./ehrdb_pgdata/envida:/var/lib/postgresql/data
+    #      - ./ehrdb_pgdata/envida:/var/lib/postgresql/data
     env_file:
       - ./env_files/timezone.env
       - ./env_files/envida/ehrdb.env
@@ -140,6 +140,7 @@ services:
       - "./externals/dh-hdp-portal/public:/app/public" #DEV
     env_file:
       - ./env_files/envida/portal.env
+      - ./env_files/portal_common.env
     environment:
       VIRTUAL_HOST: portal.envida.${RIT_ENV}.dh.unimaas.nl
     networks:

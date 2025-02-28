@@ -60,7 +60,7 @@ services:
     volumes:
       - ./filebeat/logs/zio/ehrdb:/tmp/postgreslog
       # Uncomment the following line to create a volume mount to make the postgresql data persistent
-#      - ./ehrdb_pgdata/zio:/var/lib/postgresql/data
+    #      - ./ehrdb_pgdata/zio:/var/lib/postgresql/data
     env_file:
       - ./env_files/timezone.env
       - ./env_files/zio/ehrdb.env
@@ -140,6 +140,7 @@ services:
       - "./externals/dh-hdp-portal/public:/app/public" #DEV
     env_file:
       - ./env_files/zio/portal.env
+      - ./env_files/portal_common.env
     environment:
       VIRTUAL_HOST: portal.zio.${RIT_ENV}.dh.unimaas.nl
     networks:
