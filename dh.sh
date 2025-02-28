@@ -30,32 +30,6 @@ externals/dh-hdp-federation-api https://github.com/MaastrichtUniversity/dh-hdp-f
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
 externals/dh-hdp-portal https://github.com/MaastrichtUniversity/dh-hdp-portal.git"
 
-
-# Create docker network dev-hdp_hdp-dh-mumc-net if it does not exists
-if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-mumc-net --format="true") ]; then
-  echo "Creating network dev-hdp_hdp-dh-mumc-net"
-  docker network create dev-hdp_hdp-dh-mumc-net --subnet "172.32.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-mumc-net"
-fi
-
-# Create docker network dev-hdp_hdp-dh-zio-net if it does not exists
-if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-zio-net --format="true") ]; then
-  echo "Creating network dev-hdp_hdp-dh-zio-net"
-  docker network create dev-hdp_hdp-dh-zio-net --subnet "172.33.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-zio-net"
-fi
-
-# Create docker network dev-hdp_hdp-dh-envida-net if it does not exists
-if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-envida-net --format="true") ]; then
-  echo "Creating network dev-hdp_hdp-dh-envida-net"
-  docker network create dev-hdp_hdp-dh-envida-net --subnet "172.34.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-envida-net"
-fi
-
-# Create docker network dev-hdp_hdp-dh-test-net if it does not exists
-if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-test-net --format="true") ]; then
-  echo "Creating network dev-hdp_hdp-dh-test-net"
-  docker network create dev-hdp_hdp-dh-test-net --subnet "172.31.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-test-net"
-fi
-
-
 is_local(){
     if [[ $RIT_ENV == "local" ]]; then
       return 0;
