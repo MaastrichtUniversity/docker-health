@@ -60,7 +60,7 @@ services:
     volumes:
       - ./filebeat/logs/envida/ehrdb:/tmp/postgreslog
       # Uncomment the following line to create a volume binds to make the postgresql data persistent
-#      - ./ehrdb_pgdata/envida:/var/lib/postgresql/data
+    #      - ./ehrdb_pgdata/envida:/var/lib/postgresql/data
     env_file:
       - ./env_files/timezone.env
       - ./env_files/envida/ehrdb.env
@@ -81,7 +81,7 @@ services:
         - SRC_SUBPROJECT=zib
       additional_contexts:
         hdp_templates: ./externals/dh-hdp-zib-templates
-    image: ${ENV_REGISTRY_HOST}/docker-health/envida-etl-zib:${ENV_TAG}
+    image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
     healthcheck:
       test: "tail -n 10 /code/logs/envida/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
       interval: 5s
@@ -130,9 +130,8 @@ services:
     build:
       context: externals/dh-hdp-portal/
       dockerfile: Dockerfile
-      target: development  # Use the 'production' stage from Dockerfile for production
-      args:
-        NODE_NAME_BUILD: envida
+      target: development
+    image: ${ENV_REGISTRY_HOST}/docker-health/portal:${ENV_TAG}
     depends_on:
       federation-api:
         condition: service_started
@@ -141,6 +140,7 @@ services:
       - "./externals/dh-hdp-portal/public:/app/public" #DEV
     env_file:
       - ./env_files/envida/portal.env
+      - ./env_files/portal_common.env
     environment:
       VIRTUAL_HOST: portal.envida.${RIT_ENV}.dh.unimaas.nl
     networks:

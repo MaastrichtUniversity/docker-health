@@ -30,32 +30,6 @@ externals/dh-hdp-federation-api https://github.com/MaastrichtUniversity/dh-hdp-f
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
 externals/dh-hdp-portal https://github.com/MaastrichtUniversity/dh-hdp-portal.git"
 
-
-# Create docker network dev-hdp_hdp-dh-mumc-net if it does not exists
-if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-mumc-net --format="true") ]; then
-  echo "Creating network dev-hdp_hdp-dh-mumc-net"
-  docker network create dev-hdp_hdp-dh-mumc-net --subnet "172.32.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-mumc-net"
-fi
-
-# Create docker network dev-hdp_hdp-dh-zio-net if it does not exists
-if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-zio-net --format="true") ]; then
-  echo "Creating network dev-hdp_hdp-dh-zio-net"
-  docker network create dev-hdp_hdp-dh-zio-net --subnet "172.33.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-zio-net"
-fi
-
-# Create docker network dev-hdp_hdp-dh-envida-net if it does not exists
-if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-envida-net --format="true") ]; then
-  echo "Creating network dev-hdp_hdp-dh-envida-net"
-  docker network create dev-hdp_hdp-dh-envida-net --subnet "172.34.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-envida-net"
-fi
-
-# Create docker network dev-hdp_hdp-dh-test-net if it does not exists
-if [ ! $(docker network ls --filter name=dev-hdp_hdp-dh-test-net --format="true") ]; then
-  echo "Creating network dev-hdp_hdp-dh-test-net"
-  docker network create dev-hdp_hdp-dh-test-net --subnet "172.31.1.0/24" --label "com.docker.compose.project"="dev-hdp" --label "com.docker.compose.network"="hdp-dh-test-net"
-fi
-
-
 is_local(){
     if [[ $RIT_ENV == "local" ]]; then
       return 0;
@@ -154,19 +128,28 @@ run_etl_zib(){
       echo -e "\nPrint logs for $1-etl-zib"
       docker compose logs $1-etl-zib
       echo -e "\nExit dh.sh"
-      exit 0
+      return 0
     else
       echo -e "\nFailed to run $1-etl-zib"
-      exit 1
+      return 1
     fi
 }
 
 if [[ $1 == "etl" ]]; then
     if [[ -z "$2" ]]; then
         run_etl_zib "test"
+        exit_code=$?
+
+        # Clean up
+        if [[ $RIT_ENV != "local" ]]; then
+          docker compose rm -s -f test-ehrbase test-ehrdb test-etl-zib
+        fi
+
+        exit $exit_code
     else
         check_argument "$2"
         run_etl_zib "$2"
+        exit $?
     fi
 fi
 
@@ -258,11 +241,13 @@ run_single_node_tests(){
     docker compose run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5
 #    docker compose run --rm --entrypoint pytest test-etl-zib -s
 #    docker compose run --rm --entrypoint pytest test-etl-zib -o log_cli=true --log-cli-level=INFO
+    exit_code=$?
 
     # Clean up
     if [[ $RIT_ENV != "local" ]]; then
       docker compose rm -s -f test-ehrbase test-ehrdb
     fi
+    exit $exit_code
 }
 
 run_federation_tests(){
