@@ -183,6 +183,7 @@ if [[ $1 == "jupyter" ]]; then
 
     echo -e "\nExplore zib dataset"
     if is_local; then docker compose build jupyter-zib transform-rest; fi
+    docker compose up -d proxy
     docker compose up -d jupyter-zib
     exit_code=$?
 
