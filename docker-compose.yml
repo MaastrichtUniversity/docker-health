@@ -106,7 +106,7 @@ services:
     volumes:
       - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml:ro
       - ./filebeat/logs:/usr/share/logs/
-#      - ./filebeat/certs:/etc/certs:ro
+    #      - ./filebeat/certs:/etc/certs:ro
     networks:
       hdp-dh-test-net:
         aliases:
@@ -191,6 +191,9 @@ services:
       context: ./terminology-proxy
       dockerfile: Dockerfile
     image: ${ENV_REGISTRY_HOST}/docker-health/terminology:${ENV_TAG}
+    depends_on:
+      proxy:
+        condition: service_started
     ports:
       - "8099:80"
     environment:
