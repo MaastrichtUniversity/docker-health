@@ -132,14 +132,8 @@ services:
     image: ${ENV_REGISTRY_HOST}/docker-health/jupyter-zib:${ENV_TAG}
     command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
     depends_on:
-      transform-rest:
+      proxy:
         condition: service_started
-      mumc-ehrbase:
-        condition: service_healthy
-      zio-ehrbase:
-        condition: service_healthy
-      envida-ehrbase:
-        condition: service_healthy
       federation-api:
         condition: service_started
     env_file:
