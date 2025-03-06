@@ -211,6 +211,11 @@ fi
 run_portal(){
     if is_local; then docker compose build $1-portal; fi
     docker compose up -d $1-portal
+    exit_code=$?
+    if [ $exit_code -ne 0 ]; then
+      echo -e "\nExit dh.sh with status code $exit_code"
+      exit 1
+    fi
     echo -e "\nNode userinterface on $1 node up and running"
 }
 
