@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filebeat
+  namespace: dh-health
+  labels:
+    app: filebeat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: filebeat
+  template:
+    metadata:
+      labels:
+        app: filebeat
+    spec:
+      containers:
+        - name: filebeat
+          image: registry.prod.dh.unimaas.nl/docker-health/filebeat:latest
+          envFrom:
+            - configMapRef:
+                name: timezone-config
+          volumeMounts:
+            - name: filebeat-config
+              mountPath: /etc/filebeat/filebeat.yml
+              subPath: filebeat.yml
+              readOnly: true
+            - name: logs
+              mountPath: /usr/share/logs/
+      volumes:
+        - name: filebeat-config
+          configMap:
+            name: filebeat-config
+        - name: logs
+          emptyDir: {}
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: regcred

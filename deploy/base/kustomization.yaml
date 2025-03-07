@@ -1,0 +1,55 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dh-health
+
+resources:
+- namespace.yaml
+# Only include configmaps.yaml if you kept it for additional configs
+#- common/configmaps.yaml
+- transform-rest/deployment.yaml
+- transform-rest/service.yaml
+- transform-rest/configmap.yaml
+- transform-rest/ingress.yaml
+- federation-api/deployment.yaml
+- federation-api/service.yaml
+- federation-api/configmap.yaml
+- federation-api/ingress.yaml
+- filebeat/deployment.yaml
+- filebeat/configmap.yaml
+- jupyter-zib/deployment.yaml
+- jupyter-zib/service.yaml
+- jupyter-zib/configmap.yaml
+- jupyter-zib/ingress.yaml
+- jupyter-zib/pvc.yaml
+- redis/deployment.yaml
+- redis/service.yaml
+- redis/configmap.yaml
+
+configMapGenerator:
+- name: env-config
+  namespace: dh-health
+  literals:
+  - RIT_ENV=local
+  - ENV_TAG=latest
+  - ENV_REGISTRY_HOST="registry.dh.unimaas.nl"
+
+- name: timezone-config
+  namespace: dh-health
+  envs:
+  - env_files/timezone.env
+
+- name: transform-server-config
+  namespace: dh-health
+  envs:
+  - env_files/transform_server.env
+
+- name: zib-templates-config
+  namespace: dh-health
+  envs:
+  - env_files/zib-templates.env
+
+- name: federation-config
+  namespace: dh-health
+  envs:
+  - env_files/federation.env

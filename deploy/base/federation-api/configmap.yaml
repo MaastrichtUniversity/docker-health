@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: federation-api-config
+  namespace: dh-health
+data:
+  LOGSTASH_TAGS: "FEDERATION_API"

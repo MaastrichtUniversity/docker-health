@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebeat-config
+  namespace: dh-health
+data:
+  filebeat.yml: |
+    # Filebeat configuration would go here
+    # This would be extracted from your docker filebeat.yml

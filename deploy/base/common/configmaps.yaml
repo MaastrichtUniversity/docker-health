@@ -1,0 +1,8 @@
+# If you need additional ConfigMaps that aren't generated from env files, you can keep them here:
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: additional-config
+  namespace: dh-health
+data:
+  some-key: "some-value"

@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyter-zib
+  namespace: dh-health
+  labels:
+    app: jupyter-zib
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jupyter-zib
+  template:
+    metadata:
+      labels:
+        app: jupyter-zib
+    spec:
+      containers:
+        - name: jupyter-zib
+          image: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib:latest
+          command: ["start-notebook.sh"]
+          args: ["--ServerApp.token=${SERVER_APP_TOKEN}"]
+          ports:
+            - containerPort: 8888
+          envFrom:
+            - configMapRef:
+                name: timezone-config
+            - configMapRef:
+                name: transform-server-config
+            - configMapRef:
+                name: zib-templates-config
+            - configMapRef:
+                name: jupyter-zib-config
+          volumeMounts:
+            - name: mumc-demo-data
+              mountPath: /home/jovyan/data/mumc-demo-data
+            - name: zio-demo-data
+              mountPath: /home/jovyan/data/zio-demo-data
+            - name: envida-demo-data
+              mountPath: /home/jovyan/data/envida-demo-data
+            - name: etl-py
+              mountPath: /home/jovyan/etl.py
+            - name: etl-requirements
+              mountPath: /home/jovyan/requirements.txt
+            - name: etl-src
+              mountPath: /home/jovyan/src
+            - name: notebooks
+              mountPath: /home/jovyan/notebooks
+      volumes:
+        - name: mumc-demo-data
+          persistentVolumeClaim:
+            claimName: mumc-demo-data-pvc
+        - name: zio-demo-data
+          persistentVolumeClaim:
+            claimName: zio-demo-data-pvc
+        - name: envida-demo-data
+          persistentVolumeClaim:
+            claimName: envida-demo-data-pvc
+        - name: etl-py
+          configMap:
+            name: etl-config
+            items:
+              - key: etl.py
+                path: etl.py
+        - name: etl-requirements
+          configMap:
+            name: etl-config
+            items:
+              - key: requirements.txt
+                path: requirements.txt
+        - name: etl-src
+          emptyDir: {}  # This would actually need to be populated
+        - name: notebooks
+          emptyDir: {}  # This would actually need to be populated

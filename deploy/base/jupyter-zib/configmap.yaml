@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jupyter-zib-config
+  namespace: dh-health
+data:
+  SERVER_APP_TOKEN: "<your_server_app_token_here>"
+  # Add any additional configuration data needed for the jupyter-zib service here.

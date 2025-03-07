@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: federation-api
+  namespace: dh-health
+  labels:
+    app: federation-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: federation-api
+  template:
+    metadata:
+      labels:
+        app: federation-api
+    spec:
+      containers:
+        - name: federation-api
+          image: registry.prod.dh.unimaas.nl/docker-health/federation-api:latest
+          envFrom:
+            - configMapRef:
+                name: timezone-config
+            - configMapRef:
+                name: transform-server-config
+            - configMapRef:
+                name: zib-templates-config
+            - configMapRef:
+                name: federation-config
+            - configMapRef:
+                name: federation-api-config
+          volumeMounts:
+            - name: logs
+              mountPath: /code/logs/federation-api
+            - name: outputs
+              mountPath: /code/outputs
+          ports:
+            - containerPort: 8000
+      volumes:
+        - name: logs
+          emptyDir: {}
+        - name: outputs
+          persistentVolumeClaim:
+            claimName: etl-zib-pvc
+      imagePullSecrets:
+        - name: regcred
