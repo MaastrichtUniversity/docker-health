@@ -3,12 +3,10 @@ kind: Ingress
 metadata:
   name: jupyter-zib-ingress
   namespace: dh-health
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   ingressClassName: nginx
   rules:
-  - host: jupyter.ENV.dh.unimaas.nl
+  - host: jupyter.env.dh.unimaas.nl
     http:
       paths:
       - path: /

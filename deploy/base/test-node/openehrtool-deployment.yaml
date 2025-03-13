@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-openehrtool
+  namespace: dh-health
+  labels:
+    app: test-openehrtool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-openehrtool
+  template:
+    metadata:
+      labels:
+        app: test-openehrtool
+    spec:
+      containers:
+      - name: test-openehrtool
+        image: surfercrs4/openehrtool:latest
+        ports:
+        - containerPort: 9000
+        envFrom:
+        - configMapRef:
+            name: openehrtool-config
+        volumeMounts:
+        - name: config-file
+          mountPath: /code/config/openehrtool.cfg
+          subPath: openehrtool.cfg
+      volumes:
+      - name: config-file
+        configMap:
+          name: test-openehrtool-config

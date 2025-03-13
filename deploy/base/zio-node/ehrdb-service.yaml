@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zio-ehrdb
+  namespace: dh-health
+spec:
+  selector:
+    app: zio-ehrdb
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: postgres
+  type: ClusterIP

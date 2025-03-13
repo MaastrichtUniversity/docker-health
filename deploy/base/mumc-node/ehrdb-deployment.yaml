@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mumc-ehrdb
+  namespace: dh-health
+  labels:
+    app: mumc-ehrdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mumc-ehrdb
+  template:
+    metadata:
+      labels:
+        app: mumc-ehrdb
+    spec:
+      containers:
+      - name: mumc-ehrdb
+        image: ehrbase/ehrbase-v2-postgres:16.2
+        ports:
+        - containerPort: 5432
+        env:
+        - name: PGPORT
+          value: "5432"
+        args:
+        - postgres
+        - -c
+        - logging_collector=on
+        - -c
+        - log_directory=/tmp/postgreslog/
+        - -c
+        - log_filename=postgresql.log
+        - -c
+        - log_statement=none
+        - -c
+        - log_file_mode=0777
+        - -c
+        - log_rotation_age=0
+        - -c
+        - log_rotation_size=0
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: mumc-ehrdb-config
+        volumeMounts:
+        - name: logs
+          mountPath: /tmp/postgreslog/postgresql.log
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+          requests:
+            memory: "512Mi"
+            cpu: "0.5"
+      volumes:
+      - name: logs
+        hostPath:
+          path: /filebeat/logs/test/ehrdb/postgresql.log
+          type: File

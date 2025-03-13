@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+- ehrbase-deployment.yaml
+- ehrbase-service.yaml
+- ehrbase-ingress.yaml
+- ehrdb-deployment.yaml
+- ehrdb-service.yaml
+- etl-zib-deployment.yaml
+- openehrtool-deployment.yaml
+- openehrtool-service.yaml
+- openehrtool-ingress.yaml
+
+configMapGenerator:
+- name: test-ehrbase-config
+  namespace: dh-health
+  envs:
+  - test/ehrbase.env
+
+- name: test-ehrdb-config
+  namespace: dh-health
+  envs:
+  - test/ehrdb.env
+  
+- name: test-etl-config
+  namespace: dh-health
+  envs:
+  - test/etl.env
+
+- name: test-openehrtool-config
+  namespace: dh-health
+  files:
+  - openehrtool.cfg=test-openehrtool.cfg

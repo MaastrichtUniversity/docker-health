@@ -22,9 +22,9 @@ spec:
           ports:
             - containerPort: 6379
           volumeMounts:
-            - name: redis-config
-              mountPath: /redis.conf
-              subPath: redis.conf
+          - name: redis-config
+            mountPath: /redis.conf
+            subPath: redis.conf
       volumes:
         - name: redis-config
           configMap:

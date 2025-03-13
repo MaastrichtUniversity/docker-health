@@ -16,59 +16,50 @@ spec:
         app: jupyter-zib
     spec:
       containers:
-        - name: jupyter-zib
-          image: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib:latest
-          command: ["start-notebook.sh"]
-          args: ["--ServerApp.token=${SERVER_APP_TOKEN}"]
-          ports:
-            - containerPort: 8888
-          envFrom:
-            - configMapRef:
-                name: timezone-config
-            - configMapRef:
-                name: transform-server-config
-            - configMapRef:
-                name: zib-templates-config
-            - configMapRef:
-                name: jupyter-zib-config
-          volumeMounts:
-            - name: mumc-demo-data
-              mountPath: /home/jovyan/data/mumc-demo-data
-            - name: zio-demo-data
-              mountPath: /home/jovyan/data/zio-demo-data
-            - name: envida-demo-data
-              mountPath: /home/jovyan/data/envida-demo-data
-            - name: etl-py
-              mountPath: /home/jovyan/etl.py
-            - name: etl-requirements
-              mountPath: /home/jovyan/requirements.txt
-            - name: etl-src
-              mountPath: /home/jovyan/src
-            - name: notebooks
-              mountPath: /home/jovyan/notebooks
+      - name: jupyter-zib
+        image: docker-health/jupyter-zib:latest
+        command: ["start-notebook.sh", "--ServerApp.token=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7"]
+        ports:
+          - containerPort: 8888
+        envFrom:
+          - configMapRef:
+              name: timezone-config
+          - configMapRef:
+              name: transform-server-config
+          - configMapRef:
+              name: zib-templates-config
+          - configMapRef:
+              name: jupyter-zib-config
+        volumeMounts:
+          - name: demo-data
+            mountPath: /home/jovyan/data
+          - name: notebooks
+            mountPath: /home/jovyan/notebooks
+          - name: etl
+            mountPath: /home/jovyan/etl.py
+          - name: requirements
+            mountPath: /home/jovyan/requirements.txt
+          - name: src
+            mountPath: /home/jovyan/src
       volumes:
-        - name: mumc-demo-data
-          persistentVolumeClaim:
-            claimName: mumc-demo-data-pvc
-        - name: zio-demo-data
-          persistentVolumeClaim:
-            claimName: zio-demo-data-pvc
-        - name: envida-demo-data
-          persistentVolumeClaim:
-            claimName: envida-demo-data-pvc
-        - name: etl-py
-          configMap:
-            name: etl-config
-            items:
-              - key: etl.py
-                path: etl.py
-        - name: etl-requirements
-          configMap:
-            name: etl-config
-            items:
-              - key: requirements.txt
-                path: requirements.txt
-        - name: etl-src
-          emptyDir: {}  # This would actually need to be populated
+        - name: demo-data
+          hostPath:
+            path: /health/data
+            type: Directory
         - name: notebooks
-          emptyDir: {}  # This would actually need to be populated
+          hostPath:
+            path: /health/externals/dh-hdp-notebooks
+            type: Directory
+        - name: etl
+          hostPath:
+            path: /health/externals/dh-hdp-etl/etl.py
+            type: File
+        - name: requirements
+          hostPath:
+            path: /health/externals/dh-hdp-etl/requirements.txt
+            type: File
+        - name: src
+          hostPath:
+            path: /health/externals/dh-hdp-etl/src
+            type: Directory
+            

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: envida-openehrtool
+  namespace: dh-health
+  labels:
+    app: envida-openehrtool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: envida-openehrtool
+  template:
+    metadata:
+      labels:
+        app: envida-openehrtool
+    spec:
+      containers:
+      - name: envida-openehrtool
+        image: surfercrs4/openehrtool:latest
+        ports:
+        - containerPort: 9000
+        envFrom:
+        - configMapRef:
+            name: openehrtool-config
+        volumeMounts:
+        - name: config
+          mountPath: /code/config
+      volumes:
+      - name: config
+        configMap:
+          name: envida-openehrtool-config
+          items:
+              - key: envida-openehrtool.cfg
+                path: openehrtool.cfg

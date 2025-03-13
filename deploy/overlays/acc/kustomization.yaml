@@ -4,9 +4,12 @@ kind: Kustomization
 resources:
 - ../../base
 
-configMapGenerator:
-- name: env-config
-  namespace: dh-health
-  literals:
-  - RIT_ENV=acc
-  behavior: merge
+patches:
+- path: ingress-patches.yaml
+
+- target:
+    kind: Deployment
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Never

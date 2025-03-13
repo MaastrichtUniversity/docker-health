@@ -5,10 +5,80 @@ resources:
 - ../../base
 
 patches:
-- path: ingress-patches.yaml
 - target:
     kind: Deployment
   patch: |-
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Never
+
+# Individual ingress host patches
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-openehrtool-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: openehrtool.zio.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-portal-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: portal.zio.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: envida-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.envida.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: envida-openehrtool-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: openehrtool.envida.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: envida-portal-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: portal.envida.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: test-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.test.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: test-openehrtool-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: openehrtool.test.local.dh.unimaas.nl

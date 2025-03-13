@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zio-openehrtool
+  namespace: dh-health
+  labels:
+    app: zio-openehrtool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zio-openehrtool
+  template:
+    metadata:
+      labels:
+        app: zio-openehrtool
+    spec:
+      containers:
+      - name: zio-openehrtool
+        image: surfercrs4/openehrtool:latest
+        ports:
+        - containerPort: 9000
+        envFrom:
+        - configMapRef:
+            name: openehrtool-config
+        volumeMounts:
+        - name: config-files
+          mountPath: /code/config/openehrtool.cfg
+          subPath: openehrtool.cfg
+      volumes:
+      - name: config-files
+        configMap:
+          name: zio-openehrtool-config

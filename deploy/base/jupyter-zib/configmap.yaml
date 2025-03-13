@@ -4,5 +4,5 @@ metadata:
   name: jupyter-zib-config
   namespace: dh-health
 data:
-  SERVER_APP_TOKEN: "<your_server_app_token_here>"
+  SERVER_APP_TOKEN: "aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7"
   # Add any additional configuration data needed for the jupyter-zib service here.

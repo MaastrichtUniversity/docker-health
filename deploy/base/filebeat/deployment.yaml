@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: filebeat
-          image: registry.prod.dh.unimaas.nl/docker-health/filebeat:latest
+          image: docker-health/filebeat:latest
           envFrom:
             - configMapRef:
                 name: timezone-config
@@ -34,6 +34,3 @@ spec:
             name: filebeat-config
         - name: logs
           emptyDir: {}
-      restartPolicy: Always
-      imagePullSecrets:
-        - name: regcred

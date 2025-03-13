@@ -8,11 +8,33 @@ This project contains Kubernetes manifests for deploying various services define
 - **Jupyter ZIB**: A Jupyter notebook service for data analysis and visualization.
 - **Redis**: A caching service for fast data retrieval.
 
+## Node-Specific Components
+
+The Docker Health platform includes several node-specific components that represent different healthcare organizations:
+
+- **MUMC Node**: Maastricht University Medical Center components
+- **ZIO Node**: Zorg in Ontwikkeling components
+- **Envida Node**: Envida healthcare organization components
+- **Test Node**: Components for testing and development
+
+Each node includes:
+- EHRBase: OpenEHR clinical data repository
+- EHR Database: PostgreSQL database for EHRBase
+- ETL: Data extraction and transformation service
+- OpenEHR Tool: Browser for OpenEHR data
+- Portal: User interface for healthcare providers
+
+### Accessing Node Portals
+
+Once deployed, you can access the portals at:
+- MUMC Portal: http://portal.mumc.{ENV}.dh.unimaas.nl
+- ZIO Portal: http://portal.zio.{ENV}.dh.unimaas.nl
+- Envida Portal: http://portal.envida.{ENV}.dh.unimaas.nl
+
 ## Directory Structure
 
 - **base/**: Contains base Kubernetes resources for all environments
   - **namespace.yaml**: Defines the dh-health namespace
-  - **network-policies.yaml**: Network policies for service communication
   - **kustomization.yaml**: Main kustomization file that references all resources
   - **common/**: Common resources shared across services
   - **transform-rest/**, **federation-api/**, etc.: Service-specific manifests

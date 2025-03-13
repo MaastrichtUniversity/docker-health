@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mumc-etl-zib
+  namespace: dh-health
+  labels:
+    app: mumc-etl-zib
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mumc-etl-zib
+  template:
+    metadata:
+      labels:
+        app: mumc-etl-zib
+    spec:
+      containers:
+      - name: mumc-etl-zib
+        image: docker-health/etl-zib:latest
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: transform-server-config
+        - configMapRef:
+            name: zib-templates-config
+        - configMapRef:
+            name: mumc-etl-config
+        env:
+        - name: LOGSTASH_TAGS
+          value: ETL_ZIB
+        volumeMounts:
+        - name: logs
+          mountPath: /code/logs/mumc
+        - name: outputs
+          mountPath: /code/outputs
+        - name: data
+          mountPath: /code/data/mumc-demo-data
+        - name: etl
+          mountPath: /code
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "0.5"
+          requests:
+            memory: "256Mi"
+            cpu: "0.2"
+      volumes:
+      - name: logs
+        hostPath:
+          path: /filebeat/logs/mumc/etl-zib/
+          type: Directory
+      - name: outputs
+        hostPath:
+          path: /outputs/etl-zib
+          type: DirectoryOrCreate
+      - name: data
+        hostPath:
+          path: /data/mumc-demo-data
+          type: Directory
+      - name: etl
+        hostPath:
+          path: /externals/dh-hdp-etl
+          type: Directory

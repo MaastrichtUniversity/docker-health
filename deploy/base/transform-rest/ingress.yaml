@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: transform.ENV.dh.unimaas.nl
+  - host: transform.env.dh.unimaas.nl
     http:
       paths:
       - path: /

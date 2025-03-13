@@ -25,27 +25,36 @@ minikube addons enable ingress
 
 ### 3. Set up Local DNS Entries
 
-Add the following entries to your `/etc/hosts` file:
+Add the local hostname entries to your `/etc/hosts` file:
 
 ```bash
-MINIKUBE_IP=$(minikube ip)
-echo "$MINIKUBE_IP transform.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
-echo "$MINIKUBE_IP federation.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
-echo "$MINIKUBE_IP jupyter.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+./localhost.sh
 ```
 
-### 4. Point to Minikube's Docker Daemon && set RIT_ENV
+
+### 4. Point to Minikube's Docker Daemon && set docker build vars
 
 ```bash
 eval $(minikube docker-env)
 export RIT_ENV=local
+export ENV_TAG=latest
+export SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
+```
+
+### 4a. Pull external images into Minikube's Docker daemon
+
+Some components use external images from Docker Hub. Pull them into Minikube's Docker daemon:
+
+```bash
+# Pull external images
+./pull-external-images.sh
 ```
 
 ### 5. Build Docker Images
 
 ```bash
 # From project root
-docker-compose build
+docker compose build
 ```
 
 ### 6. Deploy to Minikube
@@ -58,10 +67,8 @@ kubectl apply -k deploy/overlays/local
 
 The local overlay applies the following customizations:
 
-1. Sets `RIT_ENV` to `local`
-2. Uses `latest` tag for all images
-3. Sets empty registry host (using images built directly in Minikube)
-4. Sets `imagePullPolicy: Never` to use locally built images
+1. Sets empty registry host (using images built directly in Minikube)
+2. Sets `imagePullPolicy: Never` to use locally built images
 
 ## Development Workflow
 
@@ -83,9 +90,9 @@ kubectl rollout restart deployment [service_name] -n dh-health
 ### Accessing Services
 
 Once deployed, you can access the services at:
-- Transform REST: http://transform.local.dh.unimaas.nl
-- Federation API: http://federation.local.dh.unimaas.nl
-- Jupyter ZIB: http://jupyter.local.dh.unimaas.nl
+- [portal.mumc.local.dh.unimaas.nl](http://portal.mumc.local.dh.unimaas.nl)
+- [portal.zio.local.dh.unimaas.nl](http://portal.zio.local.dh.unimaas.nl)
+- [portal.envida.local.dh.unimaas.nl](http://portal.envida.local.dh.unimaas.nl)
 
 ### Viewing Logs
 

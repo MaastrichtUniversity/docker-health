@@ -3,9 +3,12 @@ kind: Kustomization
 
 namespace: dh-health
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 resources:
 - namespace.yaml
-# Only include configmaps.yaml if you kept it for additional configs
+# include configmaps.yaml for additional configs
 #- common/configmaps.yaml
 - transform-rest/deployment.yaml
 - transform-rest/service.yaml
@@ -21,19 +24,13 @@ resources:
 - jupyter-zib/service.yaml
 - jupyter-zib/configmap.yaml
 - jupyter-zib/ingress.yaml
-- jupyter-zib/pvc.yaml
-- redis/deployment.yaml
-- redis/service.yaml
-- redis/configmap.yaml
+- redis/
+- mumc-node/
+- zio-node/
+- envida-node/
+- test-node/
 
 configMapGenerator:
-- name: env-config
-  namespace: dh-health
-  literals:
-  - RIT_ENV=local
-  - ENV_TAG=latest
-  - ENV_REGISTRY_HOST="registry.dh.unimaas.nl"
-
 - name: timezone-config
   namespace: dh-health
   envs:
@@ -53,3 +50,13 @@ configMapGenerator:
   namespace: dh-health
   envs:
   - env_files/federation.env
+
+- name: portal-common-config
+  namespace: dh-health
+  envs:
+  - env_files/portal_common.env
+
+- name: openehrtool-config
+  namespace: dh-health
+  envs:
+  - env_files/openEHR-tool.env

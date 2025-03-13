@@ -4,11 +4,13 @@ kind: Kustomization
 resources:
 - ../../base
 
-configMapGenerator:
-- name: env-config
-  namespace: dh-health
-  literals:
-  - RIT_ENV=prod
-  - ENV_TAG=main
-  - ENV_REGISTRY_HOST=registry.prod.dh.unimaas.nl
-  behavior: merge
+patches:
+- path: ingress-patches.yaml
+
+- target:
+    kind: Deployment
+  patch: |-
+    - op: add
+      path: /spec/template/spec/imagePullSecrets
+      value:
+      - name: regcred

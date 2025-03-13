@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zio-ehrbase
+  namespace: dh-health
+  labels:
+    app: zio-ehrbase
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zio-ehrbase
+  template:
+    metadata:
+      labels:
+        app: zio-ehrbase
+    spec:
+      containers:
+      - name: zio-ehrbase
+        image: ehrbase/ehrbase:2.6.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: zio-ehrbase-config
+        volumeMounts:
+        - name: logs
+          mountPath: /tmp/ehrbaselog
+        livenessProbe:
+          httpGet:
+            path: /ehrbase/management/health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          httpGet:
+            path: /ehrbase/management/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+          requests:
+            memory: "512Mi"
+            cpu: "0.5"
+      volumes:
+      - name: logs
+        emptyDir: {}

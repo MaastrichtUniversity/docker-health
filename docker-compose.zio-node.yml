@@ -4,8 +4,6 @@ services:
     depends_on:
       zio-ehrdb:
         condition: service_started
-      proxy:
-        condition: service_started
       filebeat:
         condition: service_started
     env_file:
@@ -81,7 +79,7 @@ services:
         - SRC_SUBPROJECT=zib
       additional_contexts:
         hdp_templates: ./externals/dh-hdp-zib-templates
-    image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
+    image: docker-health/etl-zib:${ENV_TAG}
     healthcheck:
       test: "tail -n 10 /code/logs/zio/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
       interval: 5s
@@ -131,7 +129,7 @@ services:
       context: externals/dh-hdp-portal/
       dockerfile: Dockerfile
       target: development
-    image: ${ENV_REGISTRY_HOST}/docker-health/portal:${ENV_TAG}
+    image: docker-health/portal:${ENV_TAG}
     depends_on:
       federation-api:
         condition: service_started

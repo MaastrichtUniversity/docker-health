@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: redis-config
-  namespace: dh-health
-data:
-  redis.conf: |
-    # Redis configuration would go here
-    # This would be extracted from your docker redis.conf

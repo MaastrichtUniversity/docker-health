@@ -17,7 +17,12 @@ spec:
     spec:
       containers:
         - name: federation-api
-          image: registry.prod.dh.unimaas.nl/docker-health/federation-api:latest
+          image: docker-health/federation-api:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              touch /code/logs/federation-api/federation-api.log
+              chmod 664 /code/logs/federation-api/federation-api.log
           envFrom:
             - configMapRef:
                 name: timezone-config
@@ -32,15 +37,11 @@ spec:
           volumeMounts:
             - name: logs
               mountPath: /code/logs/federation-api
-            - name: outputs
-              mountPath: /code/outputs
           ports:
             - containerPort: 8000
       volumes:
         - name: logs
-          emptyDir: {}
-        - name: outputs
-          persistentVolumeClaim:
-            claimName: etl-zib-pvc
-      imagePullSecrets:
-        - name: regcred
+          hostPath:
+            path: /filebeat/logs/federation-api
+            type: DirectoryOrCreate
+        

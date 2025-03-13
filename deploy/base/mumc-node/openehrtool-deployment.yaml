@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mumc-openehrtool
+  namespace: dh-health
+  labels:
+    app: mumc-openehrtool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mumc-openehrtool
+  template:
+    metadata:
+      labels:
+        app: mumc-openehrtool
+    spec:
+      containers:
+      - name: mumc-openehrtool
+        image: surfercrs4/openehrtool:latest
+        ports:
+        - containerPort: 9000
+        envFrom:
+        - configMapRef:
+            name: openehrtool-config
+        volumeMounts:
+        - name: config
+          mountPath: /code/config
+      volumes:
+      - name: config
+        configMap:
+          name: mumc-openehrtool-config
+          items:
+              - key: mumc-openehrtool.cfg
+                path: openehrtool.cfg

@@ -4,8 +4,6 @@ services:
     depends_on:
       test-ehrdb:
         condition: service_started
-      proxy:
-        condition: service_started
       filebeat:
         condition: service_started
     env_file:
@@ -78,7 +76,7 @@ services:
         - SRC_SUBPROJECT=zib
       additional_contexts:
         hdp_templates: ./externals/dh-hdp-zib-templates
-    image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
+    image: docker-health/etl-zib:${ENV_TAG}
     volumes:
       - ./data/test-demo-data:/code/data/test-demo-data
       - ./filebeat/logs/test/etl-zib:/code/logs/test

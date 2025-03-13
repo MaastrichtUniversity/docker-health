@@ -16,15 +16,13 @@ spec:
     spec:
       containers:
       - name: transform-rest
-        image: registry.prod.dh.unimaas.nl/docker-health/transform-rest:latest'
+        image: docker-health/transform-rest:latest
         ports:
         - containerPort: 8080
         volumeMounts:
         - name: logs
           mountPath: /var/log
         envFrom:
-        - configMapRef:
-            name: env-config
         - configMapRef:
             name: timezone-config
         - configMapRef:
@@ -36,5 +34,3 @@ spec:
       volumes:
       - name: logs
         emptyDir: {}
-      imagePullSecrets:
-        - name: regcred

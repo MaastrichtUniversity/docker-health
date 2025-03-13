@@ -1,0 +1,46 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+- ehrbase-deployment.yaml
+- ehrbase-service.yaml
+- ehrbase-ingress.yaml
+- ehrdb-deployment.yaml
+- ehrdb-service.yaml
+- ehrdb-pvc.yaml
+- etl-zib-deployment.yaml
+- openehrtool-deployment.yaml
+- openehrtool-service.yaml
+- openehrtool-ingress.yaml
+- portal-deployment.yaml
+- portal-service.yaml
+- portal-ingress.yaml
+
+configMapGenerator:
+- name: envida-ehrbase-config
+  namespace: dh-health
+  envs:
+  - envida/ehrbase.env
+  
+- name: envida-ehrdb-config
+  namespace: dh-health
+  envs:
+  - envida/ehrdb.env
+
+- name: envida-etl-config
+  namespace: dh-health
+  envs:
+  - envida/etl.env
+
+- name: envida-portal-config
+  namespace: dh-health
+  envs:
+  - envida/portal.env
+
+- name: envida-openehrtool-config
+  namespace: dh-health
+  files:
+  - openehrtool.cfg=envida-openehrtool.cfg

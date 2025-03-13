@@ -4,21 +4,6 @@ include:
   - docker-compose.zio-node.yml
   - docker-compose.envida-node.yml
 services:
-  proxy:
-    image: jwilder/nginx-proxy:${ENV_TAG_PROXY}
-    env_file:
-      - ./env_files/timezone.env
-    volumes:
-      - /etc/ssl/certs:/etc/nginx/certs/
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    ports:
-      - "80:80"
-      - "443:443"
-    networks:
-      - hdp-dh-test-net
-      - hdp-dh-mumc-net
-      - hdp-dh-zio-net
-      - hdp-dh-envida-net
   transform-rest:
     build:
       context: ./externals/dh-hdp-transform-rest
@@ -27,7 +12,7 @@ services:
         - MAVEN_VERSION=${MAVEN_VERSION}
       additional_contexts:
         hdp_templates: ./externals/dh-hdp-zib-templates
-    image: ${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}
+    image: /docker-health/transform-rest:${ENV_TAG}
     depends_on:
       - proxy
       - filebeat

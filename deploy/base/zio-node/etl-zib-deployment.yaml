@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zio-etl-zib
+  namespace: dh-health
+  labels:
+    app: zio-etl-zib
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zio-etl-zib
+  template:
+    metadata:
+      labels:
+        app: zio-etl-zib
+    spec:
+      containers:
+      - name: zio-etl-zib
+        image: docker-health/etl-zib:latest
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: transform-server-config
+        - configMapRef:
+            name: zib-templates-config
+        - configMapRef:
+            name: zio-etl-config
+        env:
+        - name: LOGSTASH_TAGS
+          value: ETL_ZIB
+        volumeMounts:
+        - name: logs
+          mountPath: /code/logs/zio
+        - name: outputs
+          mountPath: /code/outputs
+        - name: data
+          mountPath: /code/data/zio-demo-data
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "tail -n 10 /code/logs/zio/etl-zib.log | grep 'Print all EHR ids available on the server'"
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 6
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "0.5"
+          requests:
+            memory: "256Mi"
+            cpu: "0.2"
+      volumes:
+      - name: logs
+        emptyDir: {}
+      - name: outputs
+        persistentVolumeClaim:
+          claimName: etl-zib-pvc
+      - name: data
+        emptyDir: {} # For demo data, consider using a ConfigMap or PVC for real data
