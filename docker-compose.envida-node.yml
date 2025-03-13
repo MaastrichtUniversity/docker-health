@@ -60,7 +60,7 @@ services:
     volumes:
       - ./filebeat/logs/envida/ehrdb:/tmp/postgreslog
       # Uncomment the following line to create a docker volume to make the postgresql data persistent
-#      - envida-ehrbase-db-data:/var/lib/postgresql/data
+      #- envida-ehrbase-db-data:/var/lib/postgresql/data
     env_file:
       - ./env_files/timezone.env
       - ./env_files/envida/ehrdb.env

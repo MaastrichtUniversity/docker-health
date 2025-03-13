@@ -150,7 +150,7 @@ services:
 #      # DEV only - Volume bind mount to auto-reload the notebooks inside the container
 #      - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
       # TST - Docker volume for data persistence between re-deployment
-#      - jupyter-zib-notebooks-bck:/home/jovyan/work
+      #- jupyter-zib-notebooks-bck:/home/jovyan/work
     ports:
       - "8888:8888"
     networks:

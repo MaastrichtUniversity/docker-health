@@ -60,7 +60,7 @@ services:
     volumes:
       - ./filebeat/logs/zio/ehrdb:/tmp/postgreslog
       # Uncomment the following line to create a docker volume to make the postgresql data persistent
-#      - zio-ehrbase-db-data:/var/lib/postgresql/data
+      #- zio-ehrbase-db-data:/var/lib/postgresql/data
     env_file:
       - ./env_files/timezone.env
       - ./env_files/zio/ehrdb.env
