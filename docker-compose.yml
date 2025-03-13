@@ -150,8 +150,10 @@ services:
       - ./externals/dh-hdp-etl/etl.py:/home/jovyan/etl.py
       - ./externals/dh-hdp-etl/requirements.txt:/home/jovyan/requirements.txt
       - ./externals/dh-hdp-etl/src:/home/jovyan/src
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
+#      # DEV only - Volume bind mount to auto-reload the notebooks inside the container
+#      - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
+      # TST - Docker volume for data persistence between re-deployment
+#      - jupyter-zib-notebooks-bck:/home/jovyan/work
     ports:
       - "8888:8888"
     networks:
@@ -207,3 +209,6 @@ networks:
       driver: default
       config:
         - subnet: "172.34.1.0/24"
+
+volumes:
+  jupyter-zib-notebooks-bck:
