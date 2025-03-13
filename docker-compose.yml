@@ -109,9 +109,6 @@ services:
       - ./filebeat/logs:/usr/share/logs/
     #      - ./filebeat/certs:/etc/certs:ro
     networks:
-      hdp-dh-test-net:
-        aliases:
-          - filebeat.dh.local
       hdp-dh-mumc-net:
         aliases:
           - filebeat.dh.local
