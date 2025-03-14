@@ -1,15 +1,15 @@
-Id,Rol,Relatie,Voornamen,Initialen,Roepnaam,Naamgebruik,Voorvoegsels,Achternaam,VoorvoegselsPartner,AchternaamPartner,Telefoonnummer,TelecomType,NummerSoort,EmailAdres,EmailSoort,Straat,Huisnummer,Huisnummerletter,Huisnummertoevoeging,AanduidingBijNummer,Postcode,Woonplaats,Gemeente,Land,AdditioneleInformatie,AdresSoort,DATE_TIME
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Contactpersoon,Daughter,Johanna Petronella Maria,J.P.M.,Jo,Eigen geslachtsnaam,van,Putten,van der,Giessen,+31611234567,Mobile Phone,Work Place,giesput@myweb.nl,Primary Home,1e Jacob van Campenstr,15,BV,TG,Bij,1012 NX,Hoogmade,Kaag en Braassem,Nederland,Data Max,Visit Address,2023-11-14T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Contactpersoon,Daughter,Johanna Petronella Maria,J.P.M.,Jo,Eigen geslachtsnaam,van,Putten,van der,Giessen,+31611234567,Mobile Phone,Work Place,giesput@myweb.nl,Primary Home,1e Jacob van Campenstr,15,BV,TG,Bij,1012 NX,Hoogmade,Kaag en Braassem,Nederland,Data Max,Visit Address,2024-11-14T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Contactpersoon,Daughter,Johanna Petronella Maria,J.P.M.,Jo,Eigen geslachtsnaam,van,Putten,van der,Giessen,+31611234567,Mobile Phone,Work Place,giesput@myweb.nl,Primary Home,1e Jacob van Campenstr,15,BV,TG,Bij,1012 NX,Hoogmade,Kaag en Braassem,Nederland,Data Max,Visit Address,2023-11-14T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91b,Cliëntondersteuner,Other,Anakin,A.,Chosen One,,,Skywalker,,Naberrie,r2-d2,Pager,Tempory Address,darth.papa@jedi.sw,Work Place,,,,,,,Tatooine,,,,Tempory Address,2005-01-19T09:43:13.174
-6ad5591f-896a-4c1c-4421-8c43633fa91c,Eerste relatie/contactpersoon,Wife,Padmé Amidala,P.A.,,Eigen geslachtsnaam,,Naberrie,Darth,Papa,,,,,,,,,,,,Naboo,,,,Vacation Home,2023-12-31T23:59:59.871
-6ad5591f-896a-4c1c-4421-8c43633fa91d,,,Chewbacca,,Chewie,,,,,,,,,,,,,,,,,,,,,,
-6ad5591f-896a-4c1c-4421-8c43633fa91e,Padawan,,Ahsoka,,Snips,,,Tano,,,R7-A7,Pager,Tempory Address,a.tano@jedi.sw,Work Place,,,,,,,Shili,,,,Postal Addres,2024-10-10T10:10:10.410
-6ad5591f-896a-4c1c-4421-8c43633fa91f,Mentor,,Qui-Gon,,,,,Jinn,,,80BBY,Mobile Phone,Work Place,q.jinn@jedi.sw,Work Place,Palace Court,,,,,Federal District,Coruscant,Imperial City,,,Primary Home,007-12-04T12:09:45.581
-6ad5591f-896a-4c1c-4421-8c43633fa91g,,,,,,,,,,,,,,,,,,,,,,,,,,,
-6ad5591f-896a-4c1c-4421-8c43633fa91h,Bewindvoerder,,Sheev,,Darth Sidious,,,Palpatine,,,Order66,Fax,Primary Home,the.emperor@sith.sw,,,,,,,Senate District,Coruscant,Imperial City,,,Work Place,2016-10-02T06:30:00.046
-6ad5591f-896a-4c1c-4421-8c43633fa91i,Voogd,Brother,Obi-Wan,,Ben,,,Kenobi,,,,,,,,,,,,,,,,,,,1989-01-01T00:00:00.253
-6ad5591f-896a-4c1c-4421-8c43633fa91j,,,,,,,,,,,,,,,,,,,,,,,,Tatooine,Wrong Land,Primary Home,2008-07-13T05:38:29.395
-6ad5591f-896a-4c1c-4421-8c43633fa91k,,Son,Luke,,,,,Skywalker,,,,,,,,,,,,,,,,,,,2005-09-28T22:40:32.518
-6ad5591f-896a-4c1c-4421-8c43633fa91l,Anders,Other,Bob Bobby Billie,B.B.B.,Babette,Unknown,van,Bobbest,van der,Bubu,+31987654321,Land Line,Work Place,b.o.b@mumc.nl,Primary Home,Paul-Henri Spaaklaan,1,S,3rd floor,Bij,"6229 EN ",Maastricht,Maastricht,Nederland,Full contact,Work Place,2022-04-01T18:06:22.000
+BSN,Rol,Relatie,Voornamen,Initialen,Roepnaam,Naamgebruik,Voorvoegsels,Achternaam,VoorvoegselsPartner,AchternaamPartner,Telefoonnummer,TelecomType,NummerSoort,EmailAdres,EmailSoort,Straat,Huisnummer,Huisnummerletter,Huisnummertoevoeging,AanduidingBijNummer,Postcode,Woonplaats,Gemeente,Land,AdditioneleInformatie,AdresSoort,DATE_TIME
+3343558701,Contactpersoon,Daughter,Johanna Petronella Maria,J.P.M.,Jo,Eigen geslachtsnaam,van,Putten,van der,Giessen,+31611234567,Mobile Phone,Work Place,giesput@myweb.nl,Primary Home,1e Jacob van Campenstr,15,BV,TG,Bij,1012 NX,Hoogmade,Kaag en Braassem,Nederland,Data Max,Visit Address,2023-11-14T15:50:14.321
+3343558701,Contactpersoon,Daughter,Johanna Petronella Maria,J.P.M.,Jo,Eigen geslachtsnaam,van,Putten,van der,Giessen,+31611234567,Mobile Phone,Work Place,giesput@myweb.nl,Primary Home,1e Jacob van Campenstr,15,BV,TG,Bij,1012 NX,Hoogmade,Kaag en Braassem,Nederland,Data Max,Visit Address,2024-11-14T15:50:14.321
+3343558701,Contactpersoon,Daughter,Johanna Petronella Maria,J.P.M.,Jo,Eigen geslachtsnaam,van,Putten,van der,Giessen,+31611234567,Mobile Phone,Work Place,giesput@myweb.nl,Primary Home,1e Jacob van Campenstr,15,BV,TG,Bij,1012 NX,Hoogmade,Kaag en Braassem,Nederland,Data Max,Visit Address,2023-11-14T15:50:14.321
+3343558702,Cliëntondersteuner,Other,Anakin,A.,Chosen One,,,Skywalker,,Naberrie,r2-d2,Pager,Tempory Address,darth.papa@jedi.sw,Work Place,,,,,,,Tatooine,,,,Tempory Address,2005-01-19T09:43:13.174
+3343558703,Eerste relatie/contactpersoon,Wife,Padmé Amidala,P.A.,,Eigen geslachtsnaam,,Naberrie,Darth,Papa,,,,,,,,,,,,Naboo,,,,Vacation Home,2023-12-31T23:59:59.871
+3343558704,,,Chewbacca,,Chewie,,,,,,,,,,,,,,,,,,,,,,
+3343558705,Padawan,,Ahsoka,,Snips,,,Tano,,,R7-A7,Pager,Tempory Address,a.tano@jedi.sw,Work Place,,,,,,,Shili,,,,Postal Addres,2024-10-10T10:10:10.410
+3343558706,Mentor,,Qui-Gon,,,,,Jinn,,,80BBY,Mobile Phone,Work Place,q.jinn@jedi.sw,Work Place,Palace Court,,,,,Federal District,Coruscant,Imperial City,,,Primary Home,007-12-04T12:09:45.581
+3343558707,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3343558708,Bewindvoerder,,Sheev,,Darth Sidious,,,Palpatine,,,Order66,Fax,Primary Home,the.emperor@sith.sw,,,,,,,Senate District,Coruscant,Imperial City,,,Work Place,2016-10-02T06:30:00.046
+3343558709,Voogd,Brother,Obi-Wan,,Ben,,,Kenobi,,,,,,,,,,,,,,,,,,,1989-01-01T00:00:00.253
+3343558710,,,,,,,,,,,,,,,,,,,,,,,,Tatooine,Wrong Land,Primary Home,2008-07-13T05:38:29.395
+3343558711,,Son,Luke,,,,,Skywalker,,,,,,,,,,,,,,,,,,,2005-09-28T22:40:32.518
+3343558712,Anders,Other,Bob Bobby Billie,B.B.B.,Babette,Unknown,van,Bobbest,van der,Bubu,+31987654321,Land Line,Work Place,b.o.b@mumc.nl,Primary Home,Paul-Henri Spaaklaan,1,S,3rd floor,Bij,"6229 EN ",Maastricht,Maastricht,Nederland,Full contact,Work Place,2022-04-01T18:06:22.000

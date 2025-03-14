@@ -1,4 +1,4 @@
-Id,WONING_TYPE,TOELICHTING,DATE_TIME
-6ad5591f-896a-4c1c-4421-8c43633fa91c,Eengezinswoning,unsure,2023-10-31T23:59:59.871
-6ad5591f-896a-4c1c-4421-8c43633fa91d,Appartement of flatwoning,wants to move,2008-07-13T05:38:29.395
-6ad5591f-896a-4c1c-4421-8c43633fa91e,Bovenwoning,moved recently,2024-10-10T10:10:10.410
+BSN,WONING_TYPE,TOELICHTING,DATE_TIME
+3343558703,Eengezinswoning,unsure,2023-10-31T23:59:59.871
+3343558704,Appartement of flatwoning,wants to move,2008-07-13T05:38:29.395
+3343558705,Bovenwoning,moved recently,2024-10-10T10:10:10.410
