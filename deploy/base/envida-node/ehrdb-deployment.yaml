@@ -65,5 +65,5 @@ spec:
       volumes:
       - name: logs
         hostPath:
-          path: /filebeat/logs/envida/ehrdb
+          path: /mnt/filebeat/logs/envida/ehrdb
           
