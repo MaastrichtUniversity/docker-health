@@ -28,4 +28,3 @@ echo "Pulling OpenEHRTool image..."
 docker pull surfercrs4/openehrtool:latest
 
 echo "All external images have been pulled into Minikube's Docker daemon."
-echo "You can now deploy with: kubectl apply -k deploy/overlays/local"

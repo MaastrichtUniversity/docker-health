@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MINIKUBE_IP=$(minikube ip)
+MINIKUBE_IP=$(minikube ip -p "$MINIKUBE_PROFILE")
 
 echo "$MINIKUBE_IP transform.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP federation.local.dh.unimaas.nl" | sudo tee -a /etc/hosts

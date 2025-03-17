@@ -52,13 +52,11 @@ Once deployed, you can access the portals at:
 - ConfigMaps are generated from environment files in the `env_files` directory
 - Each service has its own deployment, service, and ingress resources
 - Environment-specific configurations are maintained through Kustomize overlays
+- Internal hostnames are formated `servicename.namespace` example "Redis server" hostname = redis.dh-health
 
 ## Environment Selection
 
 In Kubernetes, environments are managed through Kustomize overlays:
-
-- Each overlay (`dev`, `prod`, etc.) sets the `RIT_ENV` environment variable
-- This replaces the hostname-based detection from the Docker Compose setup
 - To deploy to a specific environment:
   ```bash
   kubectl apply -k deploy/overlays/tst    # For development environment
@@ -72,8 +70,8 @@ In Kubernetes, environments are managed through Kustomize overlays:
 Use Kustomize to deploy all services:
 
 ```bash
-# Deploy tst environment
-kubectl apply -k deploy/overlays/tst
+# Deploy local environment
+kubectl apply -k deploy/overlays/local
 
 # Deploy acceptance environment
 kubectl apply -k deploy/overlays/acc
@@ -100,11 +98,16 @@ kubectl create secret generic my-secret -n dh-health --from-file=./path/to/file
 
 The application uses different configurations for different environments:
 
-1. Environment variables are stored in `env_files/` and loaded via ConfigMap generators
+1. Environment variables are stored in `/deploy/base/env_files/` and loaded via ConfigMap generators
 
 To add or modify environment variables:
-1. Update the appropriate file in `env_files/`
-2. The changes will be automatically picked up by the ConfigMap generators
+1. Update the appropriate file in `/deploy/base/env_files/`
+2. Add this as configMap to `/deploy/base/kustomization.yaml`
+
+### Service Configuration
+
+Some services are using specific .env or .conf files. These are handled with the service structure
+See for example `/deploy/base/redis`
 
 ### Modifying Resources
 

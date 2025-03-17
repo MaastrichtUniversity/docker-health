@@ -1,8 +1,3 @@
-include:
-  - docker-compose.test-node.yml
-  - docker-compose.mumc-node.yml
-  - docker-compose.zio-node.yml
-  - docker-compose.envida-node.yml
 services:
   transform-rest:
     build:
@@ -12,100 +7,22 @@ services:
         - MAVEN_VERSION=${MAVEN_VERSION}
       additional_contexts:
         hdp_templates: ./externals/dh-hdp-zib-templates
-    image: /docker-health/transform-rest:${ENV_TAG}
-    depends_on:
-      - proxy
-      - filebeat
-    volumes:
-      - ./filebeat/logs/transform-rest:/var/log
-    #      - ./externals/dh-hdp-transform-rest/src/:/code/src
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/transform_server.env
-      - ./env_files/zib-templates.env
-    environment:
-      LOGSTASH_TAGS: TRANSFORM_REST
-      VIRTUAL_HOST: transform.${RIT_ENV}.dh.unimaas.nl
-    ports:
-      - "8079:8080"
-    networks:
-      hdp-dh-test-net:
-        aliases:
-          - transform.dh.local
-      hdp-dh-mumc-net:
-        aliases:
-          - transform.dh.local
-      hdp-dh-zio-net:
-        aliases:
-          - transform.dh.local
-      hdp-dh-envida-net:
-        aliases:
-          - transform.dh.local
+    image: docker-health/transform-rest:${ENV_TAG}
+    
   federation-api:
     build:
       context: ./externals/dh-hdp-federation-api
       dockerfile: Dockerfile
       additional_contexts:
         src_etl: ./externals/dh-hdp-etl
-    image: ${ENV_REGISTRY_HOST}/docker-health/federation-api:${ENV_TAG}
-    depends_on:
-      proxy:
-        condition: service_started
-      filebeat:
-        condition: service_started
-      mumc-etl-zib:
-        condition: service_healthy
-      zio-etl-zib:
-        condition: service_healthy
-      envida-etl-zib:
-        condition: service_healthy
-    volumes:
-      - ./filebeat/logs/federation-api:/code/logs/federation-api
-      - ./outputs/etl-zib:/code/outputs
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/transform_server.env
-      - ./env_files/zib-templates.env
-      - ./env_files/federation.env
-    environment:
-      LOGSTASH_TAGS: FEDERATION_API
-      VIRTUAL_HOST: federation.${RIT_ENV}.dh.unimaas.nl
-    ports:
-      - "8000:8000"
-    networks:
-      hdp-dh-mumc-net:
-        aliases:
-          - federation.dh.local
-      hdp-dh-zio-net:
-        aliases:
-          - federation.dh.local
-      hdp-dh-envida-net:
-        aliases:
-          - federation.dh.local
+    image: docker-health/federation-api:${ENV_TAG}
+
   filebeat:
     build:
       context: ./filebeat
       dockerfile: Dockerfile
-    image: ${ENV_REGISTRY_HOST}/docker-health/filebeat:${ENV_TAG}
-    env_file:
-      - ./env_files/timezone.env
-    volumes:
-      - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml:ro
-      - ./filebeat/logs:/usr/share/logs/
-    #      - ./filebeat/certs:/etc/certs:ro
-    networks:
-      hdp-dh-test-net:
-        aliases:
-          - filebeat.dh.local
-      hdp-dh-mumc-net:
-        aliases:
-          - filebeat.dh.local
-      hdp-dh-zio-net:
-        aliases:
-          - filebeat.dh.local
-      hdp-dh-envida-net:
-        aliases:
-          - filebeat.dh.local
+    image: docker-health/filebeat:${ENV_TAG}
+    
   jupyter-zib:
     build:
       context: ./externals/dh-hdp-notebooks
@@ -114,81 +31,21 @@ services:
         - DATA=zib
       additional_contexts:
         hdp_templates: ./externals/dh-hdp-zib-templates
-    image: ${ENV_REGISTRY_HOST}/docker-health/jupyter-zib:${ENV_TAG}
-    command: "start-notebook.sh --ServerApp.token=${SERVER_APP_TOKEN}"
-    depends_on:
-      proxy:
-        condition: service_started
-      federation-api:
-        condition: service_started
-    env_file:
-      - ./env_files/timezone.env
-      - ./env_files/transform_server.env
-      - ./env_files/zib-templates.env
-    environment:
-      VIRTUAL_HOST: jupyter.${RIT_ENV}.dh.unimaas.nl
-    volumes:
-      - ./data/mumc-demo-data:/home/jovyan/data/mumc-demo-data
-      - ./data/zio-demo-data:/home/jovyan/data/zio-demo-data
-      - ./data/envida-demo-data:/home/jovyan/data/envida-demo-data
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-etl/etl.py:/home/jovyan/etl.py
-      - ./externals/dh-hdp-etl/requirements.txt:/home/jovyan/requirements.txt
-      - ./externals/dh-hdp-etl/src:/home/jovyan/src
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-notebooks/:/home/jovyan/notebooks
-    ports:
-      - "8888:8888"
-    networks:
-      hdp-dh-mumc-net:
-        aliases:
-          - jupyter-zib.dh.local
-      hdp-dh-zio-net:
-        aliases:
-          - jupyter-zib.dh.local
-      hdp-dh-envida-net:
-        aliases:
-          - jupyter-zib.dh.local
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
-    command: redis-server  /redis.conf
-    volumes:
-      - ./openEHR-tool/redis.conf:/redis.conf
-    networks:
-      hdp-dh-mumc-net:
-        aliases:
-          - redis.dh.local
-      hdp-dh-zio-net:
-        aliases:
-          - redis.dh.local
-      hdp-dh-envida-net:
-        aliases:
-          - redis.dh.local
-networks:
-  default:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.30.1.0/24"
-  hdp-dh-test-net:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.31.1.0/24"
-  hdp-dh-mumc-net:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.32.1.0/24"
-  hdp-dh-zio-net:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.33.1.0/24"
-  hdp-dh-envida-net:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.34.1.0/24"
+    image: docker-health/jupyter-zib:${ENV_TAG}
+    
+  test-etl-zib:
+    build:
+      context: ./externals/dh-hdp-etl
+      dockerfile: Dockerfile
+      args:
+        - SRC_SUBPROJECT=zib
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
+    image: docker-health/etl-zib:${ENV_TAG}
+
+  portal:
+    build:
+      context: externals/dh-hdp-portal/
+      dockerfile: Dockerfile
+      target: development
+    image: docker-health/portal:${ENV_TAG}

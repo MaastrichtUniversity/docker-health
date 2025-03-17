@@ -49,17 +49,17 @@ spec:
       volumes:
       - name: logs
         hostPath:
-          path: /filebeat/logs/mumc/etl-zib/
+          path: /mnt/filebeat/logs/mumc/etl-zib/
           type: Directory
       - name: outputs
         hostPath:
-          path: /outputs/etl-zib
+          path: /mnt/outputs/etl-zib
           type: DirectoryOrCreate
       - name: data
         hostPath:
-          path: /data/mumc-demo-data
+          path: /mnt/data/mumc-demo-data
           type: Directory
       - name: etl
         hostPath:
-          path: /externals/dh-hdp-etl
+          path: /mnt/externals/dh-hdp-etl
           type: Directory

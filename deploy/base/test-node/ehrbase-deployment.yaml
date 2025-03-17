@@ -59,5 +59,4 @@ spec:
       volumes:
       - name: logs
         hostPath:
-          path: /filebeat/logs/test/ehrbase/ehrbase.log
-          type: File
+          path: /mnt/filebeat/logs/test/ehrbase/ehrbase.log

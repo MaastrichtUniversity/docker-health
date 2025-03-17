@@ -46,7 +46,7 @@ spec:
             name: test-ehrdb-config
         volumeMounts:
         - name: logs
-          mountPath: /tmp/postgreslog/postgresql.log
+          mountPath: /tmp/postgreslog
         livenessProbe:
           exec:
             command:
@@ -65,5 +65,4 @@ spec:
       volumes:
       - name: logs
         hostPath:
-          path: /filebeat/logs/test/ehrdb/postgresql.log
-          type: File
+          path: /mnt/filebeat/logs/test/ehrdb

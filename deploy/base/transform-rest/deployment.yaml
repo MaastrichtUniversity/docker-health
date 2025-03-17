@@ -33,4 +33,6 @@ spec:
             name: transform-rest-config
       volumes:
       - name: logs
-        emptyDir: {}
+        hostPath:
+          path: /mnt/filebeat/logs/transform-rest
+          type: DirectoryOrCreate

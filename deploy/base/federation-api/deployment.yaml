@@ -36,12 +36,12 @@ spec:
                 name: federation-api-config
           volumeMounts:
             - name: logs
-              mountPath: /code/logs/federation-api
+              mountPath: /code/logs/federation-api/
           ports:
             - containerPort: 8000
       volumes:
         - name: logs
           hostPath:
-            path: /filebeat/logs/federation-api
+            path: /filebeat/logs/federation-api/
             type: DirectoryOrCreate
         

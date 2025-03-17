@@ -49,18 +49,18 @@ spec:
       volumes:
       - name: logs
         hostPath:
-          path: /filebeat/logs/test/etl-zib/
+          path: /mnt/filebeat/logs/test/etl-zib/
           type: Directory
       - name: outputs
         hostPath:
-          path: /outputs/etl-zib
+          path: /mnt/outputs/etl-zib
           type: DirectoryOrCreate
       - name: data
         hostPath:
-          path: /data/test-demo-data
+          path: /mnt/data/test-demo-data
           type: Directory
       - name: etl
         hostPath:
-          path: /externals/dh-hdp-etl
+          path: /mnt/externals/dh-hdp-etl
           type: Directory
           

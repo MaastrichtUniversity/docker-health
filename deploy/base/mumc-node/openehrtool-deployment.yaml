@@ -25,11 +25,9 @@ spec:
             name: openehrtool-config
         volumeMounts:
         - name: config
-          mountPath: /code/config
+          mountPath: /code/config/openehrtool.cfg
+          subPath: openehrtool.cfg
       volumes:
       - name: config
         configMap:
           name: mumc-openehrtool-config
-          items:
-              - key: mumc-openehrtool.cfg
-                path: openehrtool.cfg

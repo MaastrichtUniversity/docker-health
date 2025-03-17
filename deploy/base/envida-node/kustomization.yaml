@@ -10,7 +10,6 @@ resources:
 - ehrbase-ingress.yaml
 - ehrdb-deployment.yaml
 - ehrdb-service.yaml
-- ehrdb-pvc.yaml
 - etl-zib-deployment.yaml
 - openehrtool-deployment.yaml
 - openehrtool-service.yaml

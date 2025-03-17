@@ -20,9 +20,13 @@ spec:
         image: ehrbase/ehrbase:2.6.0
         ports:
         - containerPort: 8080
-        env:
-        - name: SPRING_PROFILES_ACTIVE
-          value: docker
+        command:
+          - "java"
+        args:
+          - "-jar"
+          - "-Dspring.profiles.active=docker"
+          - "-Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log"
+          - "ehrbase.jar"
         envFrom:
         - configMapRef:
             name: timezone-config
@@ -54,4 +58,5 @@ spec:
             cpu: "0.5"
       volumes:
       - name: logs
-        emptyDir: {}
+        hostPath:
+          path: /filebeat/logs/envida/ehrbase/ehrbase.log

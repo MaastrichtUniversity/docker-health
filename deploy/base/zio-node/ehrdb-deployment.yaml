@@ -46,9 +46,7 @@ spec:
             name: zio-ehrdb-config
         volumeMounts:
         - name: logs
-          mountPath: /tmp/postgreslog
-        - name: data
-          mountPath: /var/lib/postgresql/data
+          mountPath: /tmp/postgreslog/postgresql.log
         livenessProbe:
           exec:
             command:
@@ -66,5 +64,5 @@ spec:
             cpu: "0.5"
       volumes:
       - name: logs
-        emptyDir: {}
-      - name: data
+        hostPath:
+          path: /mnt/filebeat/logs/zio/ehrdb/postgresql.log

@@ -25,11 +25,10 @@ spec:
             name: openehrtool-config
         volumeMounts:
         - name: config
-          mountPath: /code/config
+          mountPath: /code/config/openehrtool.cfg
+          subPath: openehrtool.cfg
       volumes:
       - name: config
         configMap:
           name: envida-openehrtool-config
-          items:
-              - key: envida-openehrtool.cfg
-                path: openehrtool.cfg
+    

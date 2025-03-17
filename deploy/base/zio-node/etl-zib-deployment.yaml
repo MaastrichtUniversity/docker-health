@@ -37,16 +37,8 @@ spec:
           mountPath: /code/outputs
         - name: data
           mountPath: /code/data/zio-demo-data
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - "tail -n 10 /code/logs/zio/etl-zib.log | grep 'Print all EHR ids available on the server'"
-          initialDelaySeconds: 60
-          periodSeconds: 30
-          timeoutSeconds: 5
-          failureThreshold: 6
+        - name: etl
+          mountPath: /code
         resources:
           limits:
             memory: "512Mi"
@@ -56,9 +48,18 @@ spec:
             cpu: "0.2"
       volumes:
       - name: logs
-        emptyDir: {}
+        hostPath:
+          path: /mnt/filebeat/logs/zio/etl-zib/
+          type: Directory
       - name: outputs
-        persistentVolumeClaim:
-          claimName: etl-zib-pvc
+        hostPath:
+          path: /mnt/outputs/etl-zib
+          type: DirectoryOrCreate
       - name: data
-        emptyDir: {} # For demo data, consider using a ConfigMap or PVC for real data
+        hostPath:
+          path: /mnt/data/zio-demo-data
+          type: Directory
+      - name: etl
+        hostPath:
+          path: /mnt/externals/dh-hdp-etl
+          type: Directory

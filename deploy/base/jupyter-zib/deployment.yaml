@@ -44,22 +44,22 @@ spec:
       volumes:
         - name: demo-data
           hostPath:
-            path: /health/data
+            path: /mnt/data
             type: Directory
         - name: notebooks
           hostPath:
-            path: /health/externals/dh-hdp-notebooks
+            path: /mnt/externals/dh-hdp-notebooks
             type: Directory
         - name: etl
           hostPath:
-            path: /health/externals/dh-hdp-etl/etl.py
+            path: /mnt/externals/dh-hdp-etl/etl.py
             type: File
         - name: requirements
           hostPath:
-            path: /health/externals/dh-hdp-etl/requirements.txt
+            path: /mnt/externals/dh-hdp-etl/requirements.txt
             type: File
         - name: src
           hostPath:
-            path: /health/externals/dh-hdp-etl/src
+            path: /mnt/externals/dh-hdp-etl/src
             type: Directory
             
