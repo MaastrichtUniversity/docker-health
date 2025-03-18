@@ -41,9 +41,11 @@ spec:
         - name: outputs
           mountPath: /code/outputs
         - name: data
-          mountPath: /code/data
+          mountPath: /code/data/zio-demo-data
         - name: etl
           mountPath: /code
+        - name: templates
+          mountPath: /code/data/templates
       volumes:
       - name: logs
         hostPath:
@@ -55,9 +57,13 @@ spec:
           type: DirectoryOrCreate
       - name: data
         hostPath:
-          path: /mnt/data
+          path: /mnt/data/zio-demo-data
           type: Directory
       - name: etl
         hostPath:
           path: /mnt/externals/dh-hdp-etl
+          type: Directory
+      - name: templates
+        hostPath:
+          path: /mnt/externals/dh-hdp-zib-templates/opt-templates
           type: Directory
