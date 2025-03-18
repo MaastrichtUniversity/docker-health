@@ -39,7 +39,7 @@ spec:
           httpGet:
             path: /ehrbase/management/health
             port: 8080
-          initialDelaySeconds: 60
+          initialDelaySeconds: 90
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 6
