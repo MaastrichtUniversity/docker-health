@@ -20,15 +20,6 @@ spec:
           image: docker-health/federation-api:latest
           ports:
             - containerPort: 8000
-          command: ["/bin/sh", "-c"]
-          args:
-            - |
-              touch /code/logs/federation-api/federation-api.log
-              chmod 666 /code/logs/federation-api/federation-api.log
-              echo "Test file location"
-              ls -la /code/logs/federation-api/
-              echo "Run Python code"
-              python /code/test_federation_api.py
           envFrom:
             - configMapRef:
                 name: timezone-config

@@ -33,7 +33,7 @@ services:
         hdp_templates: ./externals/dh-hdp-zib-templates
     image: docker-health/jupyter-zib:${ENV_TAG}
     
-  test-etl-zib:
+  etl-zib:
     build:
       context: ./externals/dh-hdp-etl
       dockerfile: Dockerfile

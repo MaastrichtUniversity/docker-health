@@ -49,13 +49,6 @@ spec:
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 10
-        resources:
-          limits:
-            memory: "1Gi"
-            cpu: "1"
-          requests:
-            memory: "512Mi"
-            cpu: "0.5"
       volumes:
       - name: logs
         hostPath:

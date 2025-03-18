@@ -36,7 +36,7 @@ spec:
         - name: outputs
           mountPath: /code/outputs
         - name: data
-          mountPath: /code/data/test-demo-data
+          mountPath: /code/data
         - name: etl
           mountPath: /code
         resources:
@@ -57,7 +57,7 @@ spec:
           type: DirectoryOrCreate
       - name: data
         hostPath:
-          path: /mnt/data/test-demo-data
+          path: /mnt/data
           type: Directory
       - name: etl
         hostPath:

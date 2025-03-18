@@ -19,16 +19,9 @@ spec:
       - name: zio-portal
         image: docker-health/portal:latest
         ports:
-        - containerPort: 80
+        - containerPort: 3000
         envFrom:
         - configMapRef:
             name: zio-portal-config
         - configMapRef:
             name: portal-common-config
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "0.5"
-          requests:
-            memory: "128Mi"
-            cpu: "0.1"

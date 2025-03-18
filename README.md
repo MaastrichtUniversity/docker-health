@@ -44,6 +44,16 @@ This will start minikube with all needed addons, pull down the external repos, a
 ./dh.sh status
 ```
 
+### 6. For a UI overview of the Minikube kubernetes stack and pods with logs checkout Headlamp
+
+https://headlamp.dev/
+
+Or you can enable the default dashboard with
+
+```bash
+minikube enable dashboard
+```
+
 ## Manual steps
 
 Follow these manual steps to deploy the Docker Health stack in your local Minikube manually:

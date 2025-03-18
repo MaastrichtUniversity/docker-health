@@ -17,4 +17,4 @@ spec:
           service:
             name: mumc-portal
             port:
-              number: 80
+              number: 3000

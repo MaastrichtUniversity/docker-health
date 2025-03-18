@@ -17,4 +17,4 @@ spec:
           service:
             name: envida-portal
             port:
-              number: 80
+              number: 3000

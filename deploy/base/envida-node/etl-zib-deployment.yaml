@@ -15,6 +15,11 @@ spec:
       labels:
         app: envida-etl-zib
     spec:
+      initContainers:
+      - name: init-envida-etl
+        image: docker-health/etl-zib:latest
+        imagePullPolicy: Never
+        command: ['sh', '-c', 'sleep 60']
       containers:
       - name: envida-etl-zib
         image: docker-health/etl-zib:latest
@@ -36,16 +41,9 @@ spec:
         - name: outputs
           mountPath: /code/outputs
         - name: data
-          mountPath: /code/data/envida-demo-data
+          mountPath: /code/data
         - name: etl
           mountPath: /code
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "0.5"
-          requests:
-            memory: "256Mi"
-            cpu: "0.2"
       volumes:
       - name: logs
         hostPath:
@@ -57,7 +55,7 @@ spec:
           type: DirectoryOrCreate
       - name: data
         hostPath:
-          path: /mnt/data/envida-demo-data
+          path: /mnt/data
           type: Directory
       - name: etl
         hostPath:
