@@ -33,7 +33,6 @@ services:
       - ehrbase.jar
     volumes:
       - ./filebeat/logs/envida/ehrbase:/tmp/ehrbaselog
-    restart: on-failure
   envida-ehrdb:
     image: ehrbase/ehrbase-v2-postgres:16.2
     environment:
