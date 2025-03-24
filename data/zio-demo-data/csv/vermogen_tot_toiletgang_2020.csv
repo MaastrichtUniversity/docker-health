@@ -1,4 +1,4 @@
-Id,TOILETGEBRUIK,ZORG_BIJ_MENSTRUATIE,DATE_TIME
-6ad5591f-896a-4c1c-4421-8c43633fa91c,Hulp nodig bij toiletgang,Niet in staat zorg te dragen voor menstruatiehygiëne,1990-10-05T23:59:59.871
-6ad5591f-896a-4c1c-4421-8c43633fa91d,In staat tot onafhankelijke toiletgang,In staat tot onafhankelijk zorgen voor menstruatiehygiëne,1993-07-20T23:59:59.871
-6ad5591f-896a-4c1c-4421-8c43633fa91e,Niet in staat tot toiletgang,,1994-05-02T23:59:59.871
+Id,TOILETGEBRUIK,ZORG_BIJ_MENSTRUATIE,PRODUCT_TYPE,DATE_TIME
+6ad5591f-896a-4c1c-4421-8c43633fa91c,Hulp nodig bij toiletgang,Niet in staat zorg te dragen voor menstruatiehygiëne,Urinaal,1990-10-05T23:59:59.871
+6ad5591f-896a-4c1c-4421-8c43633fa91d,In staat tot onafhankelijke toiletgang,In staat tot onafhankelijk zorgen voor menstruatiehygiëne,Stoma,1993-07-20T23:59:59.871
+6ad5591f-896a-4c1c-4421-8c43633fa91e,Niet in staat tot toiletgang,,Toiletstoel,1994-05-02T23:59:59.871
