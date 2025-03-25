@@ -1,5 +1,5 @@
-Id,ZICH_WASSEN,TE_WASSEN_LICHAAMSDEEL,DATE_TIME
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Onafhankelijk in staat om zich te wassen,,2009-09-14T15:10:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91c,Heeft hulp nodig bij zich wassen,Gehele lichaam in totaliteit,2025-01-14T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91f,Niet in staat zichzelf te wassen,Gehele onderlichaam,2025-02-14T15:50:14.321
+BSN,ZICH_WASSEN,TE_WASSEN_LICHAAMSDEEL,DATE_TIME
+001645201,Onafhankelijk in staat om zich te wassen,,2009-09-14T15:10:14.321
+339055303,Heeft hulp nodig bij zich wassen,Gehele lichaam in totaliteit,2025-01-14T15:50:14.321
+316268306,Niet in staat zichzelf te wassen,Gehele onderlichaam,2025-02-14T15:50:14.321
 

@@ -1,15 +1,15 @@
-Id,ZICH_KLEDEN,TE_KLEDEN_LICHAAMSDEEL,DATE_TIME
-6ad5591f-896a-4c1c-4421-8c43633fa91a,In staat tot onafhankelijk aankleden,Gehele lichaam in totaliteit,2023-11-14T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Hulp nodig bij aankleden,Gehele onderlichaam,2024-11-14T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91a,In staat tot onafhankelijk aankleden,Gehele lichaam in totaliteit,2023-11-14T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91b,Hulp nodig bij aankleden,,2005-01-19T09:43:13.174
-6ad5591f-896a-4c1c-4421-8c43633fa91c,,Gehele bovenlichaam,2023-12-31T23:59:59.871
-6ad5591f-896a-4c1c-4421-8c43633fa91d,Niet in staat zich aan te kleden,Gehele onderlichaam,
-6ad5591f-896a-4c1c-4421-8c43633fa91e,In staat tot onafhankelijk aankleden,,2024-10-10T10:10:10.410
-6ad5591f-896a-4c1c-4421-8c43633fa91f,WRONG VALUE,Gehele bovenlichaam,2024-10-10T10:10:10.410
-6ad5591f-896a-4c1c-4421-8c43633fa91g,Niet in staat zich aan te kleden,Gehele onderlichaam,1996-05-21T17:04:55.941
-6ad5591f-896a-4c1c-4421-8c43633fa91h,,Gehele lichaam in totaliteit,2016-10-02T06:30:00.046
-6ad5591f-896a-4c1c-4421-8c43633fa91i,In staat tot onafhankelijk aankleden,,1989-01-01T00:00:00.253
-6ad5591f-896a-4c1c-4421-8c43633fa91j,Niet in staat zich aan te kleden,Gehele onderlichaam,2008-07-13T05:38:29.395
-6ad5591f-896a-4c1c-4421-8c43633fa91k,Hulp nodig bij aankleden,Gehele lichaam in totaliteit,2005-09-28T22:40:32.518
-6ad5591f-896a-4c1c-4421-8c43633fa91l,,2022-04-01T18:06:22.000
+BSN,ZICH_KLEDEN,TE_KLEDEN_LICHAAMSDEEL,DATE_TIME
+001645201,In staat tot onafhankelijk aankleden,Gehele lichaam in totaliteit,2023-11-14T15:50:14.321
+001645201,Hulp nodig bij aankleden,Gehele onderlichaam,2024-11-14T15:50:14.321
+001645201,In staat tot onafhankelijk aankleden,Gehele lichaam in totaliteit,2023-11-14T15:50:14.321
+083197102,Hulp nodig bij aankleden,,2005-01-19T09:43:13.174
+339055303,,Gehele bovenlichaam,2023-12-31T23:59:59.871
+389370204,Niet in staat zich aan te kleden,Gehele onderlichaam,
+683754105,In staat tot onafhankelijk aankleden,,2024-10-10T10:10:10.410
+316268306,WRONG VALUE,Gehele bovenlichaam,2024-10-10T10:10:10.410
+569973107,Niet in staat zich aan te kleden,Gehele onderlichaam,1996-05-21T17:04:55.941
+011168808,,Gehele lichaam in totaliteit,2016-10-02T06:30:00.046
+363037809,In staat tot onafhankelijk aankleden,,1989-01-01T00:00:00.253
+315071710,Niet in staat zich aan te kleden,Gehele onderlichaam,2008-07-13T05:38:29.395
+362880311,Hulp nodig bij aankleden,Gehele lichaam in totaliteit,2005-09-28T22:40:32.518
+525736712,,2022-04-01T18:06:22.000

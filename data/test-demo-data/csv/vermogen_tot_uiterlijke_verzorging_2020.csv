@@ -1,15 +1,15 @@
-Id,UITERLIJKE_VERZORGING,DATE_TIME
-6ad5591f-896a-4c1c-4421-8c43633fa91a,In staat tot onafhankelijke uiterlijke verzorging,2023-11-14T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Heeft hulp nodig bij uiterlijke verzorging,2024-11-14T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91a,In staat tot onafhankelijke uiterlijke verzorging,2023-11-14T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91b,Heeft hulp nodig bij uiterlijke verzorging,2005-01-19T09:43:13.174
-6ad5591f-896a-4c1c-4421-8c43633fa91c,,2023-12-31T23:59:59.871
-6ad5591f-896a-4c1c-4421-8c43633fa91d,Niet in staat tot uiterlijke verzorging,
-6ad5591f-896a-4c1c-4421-8c43633fa91e,In staat tot onafhankelijke uiterlijke verzorging,2024-10-10T10:10:10.410
-6ad5591f-896a-4c1c-4421-8c43633fa91f,WRONG VALUE,2023-12-31T23:59:59.871
-6ad5591f-896a-4c1c-4421-8c43633fa91g,Niet in staat tot uiterlijke verzorging,1996-05-21T17:04:55.941
-6ad5591f-896a-4c1c-4421-8c43633fa91h,,2016-10-02T06:30:00.046
-6ad5591f-896a-4c1c-4421-8c43633fa91i,In staat tot onafhankelijke uiterlijke verzorging,1989-01-01T00:00:00.253
-6ad5591f-896a-4c1c-4421-8c43633fa91j,Niet in staat tot uiterlijke verzorging,2008-07-13T05:38:29.395
-6ad5591f-896a-4c1c-4421-8c43633fa91k,Heeft hulp nodig bij uiterlijke verzorging,2005-09-28T22:40:32.518
-6ad5591f-896a-4c1c-4421-8c43633fa91l,In staat tot onafhankelijke uiterlijke verzorging,2022-04-01T18:06:22.000
+BSN,UITERLIJKE_VERZORGING,DATE_TIME
+001645201,In staat tot onafhankelijke uiterlijke verzorging,2023-11-14T15:50:14.321
+001645201,Heeft hulp nodig bij uiterlijke verzorging,2024-11-14T15:50:14.321
+001645201,In staat tot onafhankelijke uiterlijke verzorging,2023-11-14T15:50:14.321
+083197102,Heeft hulp nodig bij uiterlijke verzorging,2005-01-19T09:43:13.174
+339055303,,2023-12-31T23:59:59.871
+389370204,Niet in staat tot uiterlijke verzorging,
+683754105,In staat tot onafhankelijke uiterlijke verzorging,2024-10-10T10:10:10.410
+316268306,WRONG VALUE,2023-12-31T23:59:59.871
+569973107,Niet in staat tot uiterlijke verzorging,1996-05-21T17:04:55.941
+011168808,,2016-10-02T06:30:00.046
+363037809,In staat tot onafhankelijke uiterlijke verzorging,1989-01-01T00:00:00.253
+315071710,Niet in staat tot uiterlijke verzorging,2008-07-13T05:38:29.395
+362880311,Heeft hulp nodig bij uiterlijke verzorging,2005-09-28T22:40:32.518
+525736712,In staat tot onafhankelijke uiterlijke verzorging,2022-04-01T18:06:22.000
