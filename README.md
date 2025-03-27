@@ -6,7 +6,7 @@ This directory contains Kubernetes manifests for deploying Docker Health service
 
 ### These services need to be installed on your machine
  - docker
- - kubectl
+ - kubectl or use this alias in your bashrc `alias kubectl="minikube kubectl --"`
  - minikube
 
 ## Quick Start
