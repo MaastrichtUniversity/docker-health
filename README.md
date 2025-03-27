@@ -51,7 +51,7 @@ https://headlamp.dev/
 Or you can enable the default dashboard with
 
 ```bash
-minikube enable dashboard
+minikube dashboard
 ```
 
 ## Manual steps
@@ -104,6 +104,10 @@ docker compose build
 ```
 
 ### 6. Deploy to Minikube
+
+```bash
+kubectl create namespace dh-health
+```
 
 ```bash
 kubectl apply -k deploy/overlays/local
