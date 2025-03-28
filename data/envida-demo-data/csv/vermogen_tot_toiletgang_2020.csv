@@ -1,4 +1,4 @@
-Id,TOILETGEBRUIK,ZORG_BIJ_MENSTRUATIE,PRODUCT_TYPE,DATE_TIME
-6ad5591f-896a-4c1c-4421-8c43633fa91a,In staat tot onafhankelijke toiletgang,In staat tot onafhankelijk zorgen voor menstruatiehygiëne,Toiletstoel,2018-01-14T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91c,Hulp nodig bij toiletgang,,,2021-08-14T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91f,Niet in staat tot toiletgang,Niet in staat zorg te dragen voor menstruatiehygiëne,Stoma,2023-01-14T15:50:14.321
+BSN,TOILETGEBRUIK,ZORG_BIJ_MENSTRUATIE,PRODUCT_TYPE,DATE_TIME
+001645201,In staat tot onafhankelijke toiletgang,In staat tot onafhankelijk zorgen voor menstruatiehygiëne,Toiletstoel,2018-01-14T15:50:14.321
+339055303,Hulp nodig bij toiletgang,,,2021-08-14T15:50:14.321
+316268306,Niet in staat tot toiletgang,Niet in staat zorg te dragen voor menstruatiehygiëne,Stoma,2023-01-14T15:50:14.321

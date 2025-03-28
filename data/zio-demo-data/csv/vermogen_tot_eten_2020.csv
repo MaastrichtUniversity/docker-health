@@ -1,4 +1,4 @@
-Id,ETEN,EET_BEPERKINGEN,DATE_TIME
-6ad5591f-896a-4c1c-4421-8c43633fa91c,Hulp nodig bij eten,Moeite met in stukken snijden van voedsel,2011-11-11T15:10:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91d,In staat tot onafhankelijk eten,,2009-09-11T15:10:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91e,Niet in staat zelf te eten,Moeite met hanteren van eetgerei bij zelfstandig eten,2008-12-11T15:10:14.321
+BSN,ETEN,EET_BEPERKINGEN,DATE_TIME
+339055303,Hulp nodig bij eten,Moeite met in stukken snijden van voedsel,2011-11-11T15:10:14.321
+389370204,In staat tot onafhankelijk eten,,2009-09-11T15:10:14.321
+683754105,Niet in staat zelf te eten,Moeite met hanteren van eetgerei bij zelfstandig eten,2008-12-11T15:10:14.321
