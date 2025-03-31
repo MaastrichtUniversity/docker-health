@@ -32,6 +32,12 @@ This will start minikube with all needed addons, pull down the external repos, a
 ./dh.sh build
 ```
 
+#### 3a The script supports build with custom tag, but not needed for local development, see next example
+
+```bash
+./dh.sh build transform-rest 2.0.0
+```
+
 ### 4. Apply Kubernetes manifests with local overlay
 
 ```bash
