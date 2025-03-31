@@ -136,21 +136,29 @@ check_minikube() {
     eval $(minikube docker-env)
 }
 
-# Build an image with minikube's docker
+# Build an image or all images
 build_images() {
     local service_name=$1
     local image_tag=${2:-latest}
-    # Set environment variables for docker-compose
-    export ENV_TAG=$image_tag
-    export MAVEN_VERSION=3.9.5
-
-    local image_name=""
     
-    echo -e "${YELLOW}Building $service_name using docker-compose...${NC}"
-    # Use docker-compose to build the image
-    docker-compose -f docker-compose.yml build $service_name
+    if [[ -z "$service_name" ]]; then
+        echo -e "${YELLOW}Building all services using docker-bake...${NC}"
+        docker buildx bake
+    else
+        echo -e "${YELLOW}Building service: $service_name using docker-bake...${NC}"
+        docker buildx bake --set=\*.tags=docker-health/$service_name:$image_tag
+    fi
     
-    echo -e "${GREEN}Successfully built $service_name:$image_tag${NC}"
+    if [[ $? -eq 0 ]]; then
+        if [[ -z "$service_name" ]]; then
+            echo -e "${GREEN}Successfully built all services with tag: $image_tag${NC}"
+        else
+            echo -e "${GREEN}Successfully built service: $service_name:$image_tag${NC}"
+        fi
+    else
+        echo -e "${RED}Error building service(s)${NC}"
+        return 1
+    fi
 }
 
 # Apply kubernetes manifests
@@ -236,6 +244,11 @@ clone_externals() {
 
 checkout_externals() {
     local branch=${1:-2024.1}
+    # Check if any externals exist first
+    if [ ! -d "externals" ] || [ -z "$(ls -A externals 2>/dev/null)" ]; then
+        log $INF "External repositories don't exist yet. Cloning first..."
+        clone_externals
+    fi
     run_repo_action "checkout $branch" "${externals}"
 }
 
@@ -280,7 +293,7 @@ main() {
             
         build)
             check_minikube
-            build_images
+            build_images "$@"
             ;;
             
         apply)

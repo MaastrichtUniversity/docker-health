@@ -82,7 +82,7 @@ Add the local hostname entries to your `/etc/hosts` file:
 ### 4. Point to Minikube's Docker Daemon && set docker build vars
 
 ```bash
-eval $(minikube docker-env)
+eval $(minikube -p minukube docker-env)
 export ENV_TAG=latest
 export MAVEN_VERSION=3.9.5
 ```
@@ -100,7 +100,7 @@ Some components use external images from Docker Hub. Pull them into Minikube's D
 
 ```bash
 # From project root
-docker compose build
+docker buildx bake
 ```
 
 ### 6. Deploy to Minikube
