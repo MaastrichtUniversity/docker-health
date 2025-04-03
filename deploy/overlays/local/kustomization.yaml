@@ -37,6 +37,16 @@ patches:
     group: networking.k8s.io
     version: v1
     kind: Ingress
+    name: mumc-portal-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: portal.mumc.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
     name: transform-rest-ingress
   patch: |-
     - op: replace
@@ -107,8 +117,38 @@ patches:
     group: networking.k8s.io
     version: v1
     kind: Ingress
+    name: mumc-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.mumc.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.zio.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
     name: test-openehrtool-ingress
   patch: |-
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.test.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: mumc-openehrtool-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: openehrtool.mumc.local.dh.unimaas.nl
