@@ -1,15 +1,15 @@
 # Create log folders
 echo -e "Create sub folders for filebeat/logs/"
 mkdir -p ./outputs/etl-zib
-mkdir -p ./filebeat/logs/envida/ehrbase ./filebeat/logs/envida/ehrdb ./filebeat/logs/envida/etl-zib
-mkdir -p ./filebeat/logs/zio/ehrbase ./filebeat/logs/zio/ehrdb ./filebeat/logs/zio/etl-zib
-mkdir -p ./filebeat/logs/test/ehrbase ./filebeat/logs/test/ehrdb ./filebeat/logs/test/etl-zib
-mkdir -p ./filebeat/logs/mumc/ehrbase ./filebeat/logs/mumc/ehrdb ./filebeat/logs/mumc/etl-zib
-mkdir -p ./filebeat/logs/federation-api
-mkdir -p ./filebeat/logs/transform-rest
+#mkdir -p ./filebeat/logs/envida/ehrbase ./filebeat/logs/envida/ehrdb ./filebeat/logs/envida/etl-zib
+#mkdir -p ./filebeat/logs/zio/ehrbase ./filebeat/logs/zio/ehrdb ./filebeat/logs/zio/etl-zib
+#mkdir -p ./filebeat/logs/test/ehrbase ./filebeat/logs/test/ehrdb ./filebeat/logs/test/etl-zib
+#mkdir -p ./filebeat/logs/mumc/ehrbase ./filebeat/logs/mumc/ehrdb ./filebeat/logs/mumc/etl-zib
+#mkdir -p ./filebeat/logs/federation-api
+#mkdir -p ./filebeat/logs/transform-rest
 
 # Set explicit permissions on these directories
-chmod -R 777 ./filebeat
+#chmod -R 777 ./filebeat
 chmod -R 777 ./outputs
 
 # Define an array of log files to create and set permissions on

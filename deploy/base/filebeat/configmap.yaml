@@ -34,4 +34,4 @@ data:
       - add_host_metadata:
 
     output.logstash:
-      hosts: ["elk.dh.local:5044"]
+      hosts: ["elk.tst.dh.unimaas.nl:5044"]
