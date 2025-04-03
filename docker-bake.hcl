@@ -8,7 +8,7 @@ variable "MAVEN_VERSION" {
 }
 
 group "default" {
-  targets = ["transform-rest", "federation-api", "etl-zib", "jupyter-zib", "portal", "filebeat"]
+  targets = ["transform-rest", "federation-api", "etl-zib", "jupyter-zib", "portal"]
 }
 
 target "_src_etl" {
@@ -62,10 +62,4 @@ target "portal" {
   target = "development"
   tags = ["docker-health/portal:${ENV_TAG}"]
   context = "./externals/dh-hdp-portal"
-}
-
-target "filebeat" {
-  dockerfile = "Dockerfile"
-  tags = ["docker-health/filebeat:${ENV_TAG}"]
-  context = "./filebeat"
 }

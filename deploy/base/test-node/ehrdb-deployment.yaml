@@ -44,9 +44,6 @@ spec:
             name: timezone-config
         - configMapRef:
             name: test-ehrdb-config
-        volumeMounts:
-        - name: logs
-          mountPath: /tmp/postgreslog
         livenessProbe:
           exec:
             command:
@@ -62,7 +59,3 @@ spec:
           requests:
             memory: "512Mi"
             cpu: "0.5"
-      volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/filebeat/logs/test/ehrdb

@@ -32,9 +32,6 @@ spec:
             name: timezone-config
         - configMapRef:
             name: zio-ehrbase-config
-        volumeMounts:
-        - name: logs
-          mountPath: /tmp/ehrbaselog/ehrbase.log
         livenessProbe:
           httpGet:
             path: /ehrbase/management/health
@@ -49,7 +46,4 @@ spec:
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 10
-      volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/filebeat/logs/zio/ehrbase/ehrbase.log
+          

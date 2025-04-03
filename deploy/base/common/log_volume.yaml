@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: logs
+  namespace: dh-health
+spec:
+  storageClassName: "standard"
+  volumeName: logs
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: logs
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: "standard"
+  local:
+    path: /usr/share/logs
+  claimRef:
+    name: logs
+    namespace: dh-health

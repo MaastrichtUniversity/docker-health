@@ -32,9 +32,6 @@ spec:
             name: timezone-config
         - configMapRef:
             name: test-ehrbase-config
-        volumeMounts:
-        - name: logs
-          mountPath: /tmp/ehrbaselog/ehrbase.log
         livenessProbe:
           httpGet:
             path: /ehrbase/management/health
@@ -56,7 +53,3 @@ spec:
           requests:
             memory: "512Mi"
             cpu: "0.5"
-      volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/filebeat/logs/test/ehrbase/ehrbase.log

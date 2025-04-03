@@ -27,4 +27,8 @@ docker pull ehrbase/ehrbase-v2-postgres:16.2
 echo "Pulling OpenEHRTool image..."
 docker pull surfercrs4/openehrtool:latest
 
+# Filebeat
+echo "Pulling Filebeat image..."
+docker pull docker.elastic.co/beats/filebeat:8.5.1
+
 echo "All external images have been pulled into Minikube's Docker daemon."

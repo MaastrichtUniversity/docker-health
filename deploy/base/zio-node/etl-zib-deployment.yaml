@@ -36,8 +36,6 @@ spec:
         - name: LOGSTASH_TAGS
           value: ETL_ZIB
         volumeMounts:
-        - name: logs
-          mountPath: /code/logs/zio
         - name: outputs
           mountPath: /code/outputs
         - name: data
@@ -47,10 +45,6 @@ spec:
         - name: templates
           mountPath: /code/data/templates
       volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/filebeat/logs/zio/etl-zib/
-          type: Directory
       - name: outputs
         hostPath:
           path: /mnt/outputs/etl-zib

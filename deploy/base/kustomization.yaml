@@ -8,6 +8,7 @@ generatorOptions:
 
 resources:
 - namespace.yaml
+#- common/log_volume.yaml
 # include configmaps.yaml for additional configs
 #- common/configmaps.yaml
 - transform-rest/deployment.yaml
@@ -18,12 +19,11 @@ resources:
 - federation-api/service.yaml
 - federation-api/configmap.yaml
 - federation-api/ingress.yaml
-- filebeat/deployment.yaml
-- filebeat/configmap.yaml
 - jupyter-zib/deployment.yaml
 - jupyter-zib/service.yaml
 - jupyter-zib/configmap.yaml
 - jupyter-zib/ingress.yaml
+- filebeat/
 - redis/
 - mumc-node/
 - zio-node/

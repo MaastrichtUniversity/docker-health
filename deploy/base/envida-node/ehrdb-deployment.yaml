@@ -44,9 +44,6 @@ spec:
             name: timezone-config
         - configMapRef:
             name: envida-ehrdb-config
-        volumeMounts:
-        - name: logs
-          mountPath: /tmp/postgreslog
         livenessProbe:
           exec:
             command:
@@ -55,8 +52,4 @@ spec:
             - postgres
           initialDelaySeconds: 30
           periodSeconds: 10
-      volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/filebeat/logs/envida/ehrdb
           

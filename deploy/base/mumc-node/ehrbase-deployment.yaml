@@ -32,24 +32,17 @@ spec:
             name: timezone-config
         - configMapRef:
             name: mumc-ehrbase-config
-        volumeMounts:
-        - name: logs
-          mountPath: /tmp/ehrbaselog/ehrbase.log
         livenessProbe:
           httpGet:
             path: /ehrbase/management/health
             port: 8080
           initialDelaySeconds: 90
           periodSeconds: 10
-          timeoutSeconds: 5
+          timeoutSeconds: 10
           failureThreshold: 6
         readinessProbe:
           httpGet:
             path: /ehrbase/management/health
             port: 8080
-          initialDelaySeconds: 30
+          initialDelaySeconds: 90
           periodSeconds: 10
-      volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/filebeat/logs/mumc/ehrbase/ehrbase.log

@@ -32,15 +32,9 @@ spec:
             - configMapRef:
                 name: federation-api-config
           volumeMounts:
-            - name: logs
-              mountPath: /code/logs/federation-api/
             - name: outputs
               mountPath: /code/outputs
       volumes:
-        - name: logs
-          hostPath:
-            path: /filebeat/logs/federation-api/
-            type: DirectoryOrCreate
         - name: outputs
           hostPath:
             path: /mnt/outputs
