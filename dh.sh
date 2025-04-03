@@ -205,20 +205,31 @@ EOF
         chmod +x ./localhost.sh
     fi
 
-    # Check if hostname already exist in /etc/hosts
-    echo -e "${YELLOW}Checking for duplicate entries in /etc/hosts...${NC}"
-        hosts=$(grep -o '[a-z0-9.-]\+\.local\.dh\.unimaas\.nl' ./localhost.sh | sort | uniq)
-        
-        for host in $hosts; do
-            if grep -q "$host" /etc/hosts; then
-                echo "Hostname already exist in /etc/hosts"
-            else
-                echo "Adding new entries"
-                ./localhost.sh
-            fi
-        done
+    # Extract hosts from localhost.sh
+    echo -e "${YELLOW}Updating host entries in /etc/hosts...${NC}"
+    hosts=$(grep -o '[a-z0-9.-]\+\.local\.dh\.unimaas\.nl' ./localhost.sh | sort | uniq)
     
-    echo -e "${GREEN}Host entries updated using localhost.sh${NC}"
+    # Create a temporary file
+    temp_file=$(mktemp)
+    
+    # For each host in our list, remove its existing entry from /etc/hosts if present
+    cat /etc/hosts > "$temp_file"
+    for host in $hosts; do
+        # Remove any line containing this specific hostname
+        sed -i "/[[:space:]]$host\$/d" "$temp_file"
+    done
+    
+    # Apply the modified hosts file without our entries
+    sudo cp "$temp_file" /etc/hosts
+    rm "$temp_file"
+    
+    # Now add the hosts with current Minikube IP
+    echo -e "${YELLOW}Adding host entries with current Minikube IP (${minikube_ip})...${NC}"
+    for host in $hosts; do
+        echo "$minikube_ip $host" | sudo tee -a /etc/hosts > /dev/null
+    done
+    
+    echo -e "${GREEN}Host entries updated using current Minikube IP${NC}"
 }
 
 # Mount local directories to minikube
@@ -239,6 +250,16 @@ setup_mounts() {
 
 # Helper functions for external repos
 clone_externals() {
+    # Check if externals directory exists and is not empty
+    if [ -d "externals" ] && [ "$(ls -A externals 2>/dev/null)" ]; then
+        echo $INF "External repositories already exist. Skipping clone."
+        return 0
+    fi
+    
+    # Create externals directory if it doesn't exist
+    mkdir -p externals
+    
+    # Proceed with cloning if directory is empty
     run_repo_action "clone" "${externals}"
 }
 

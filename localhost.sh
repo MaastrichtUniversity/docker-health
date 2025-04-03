@@ -2,6 +2,8 @@
 
 MINIKUBE_IP=$(minikube ip)
 
+echo "" | sudo tee -a /etc/hosts > /dev/null
+echo "# Minikube hosts script" | sudo tee -a /etc/hosts > /dev/null
 echo "$MINIKUBE_IP transform.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP federation.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP jupyter.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
