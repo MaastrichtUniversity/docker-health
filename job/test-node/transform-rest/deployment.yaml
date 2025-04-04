@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transform-rest
+  namespace: dh-health
+  labels:
+    app: transform-rest
+spec:
+  selector:
+    matchLabels:
+      app: transform-rest
+  template:
+    metadata:
+      labels:
+        app: transform-rest
+    spec:
+      containers:
+      - name: transform-rest
+        image: docker-health/transform-rest:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: logs
+          mountPath: /var/log
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: transform-server-config
+        - configMapRef:
+            name: zib-templates-config
+        - configMapRef:
+            name: transform-rest-config
+      volumes:
+      - name: logs
+        hostPath:
+          path: /mnt/filebeat/logs/transform-rest
+          type: DirectoryOrCreate

@@ -1,0 +1,71 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: test-etl-zib-job
+  namespace: dh-health
+  labels:
+    app: test-etl-zib-job
+spec:
+#  selector:
+#    matchLabels:
+#      app: test-etl-zib-job
+  template:
+    metadata:
+      labels:
+        app: test-etl-zib-job
+    spec:
+      initContainers:
+      - name: init-test-etl-job
+        image: docker-health/etl-zib:latest
+        imagePullPolicy: Never
+        command: ['sh', '-c', 'sleep 70']
+      restartPolicy: Never
+      containers:
+      - name: test-etl-zib-job
+        image: docker-health/etl-zib:latest
+        imagePullPolicy: Never
+        command: [ "pytest", ".", "--verbose", "--verbosity=5" ]
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: transform-server-config
+        - configMapRef:
+            name: zib-templates-config
+        - configMapRef:
+            name: test-etl-config
+        env:
+        - name: LOGSTASH_TAGS
+          value: ETL_ZIB
+        volumeMounts:
+        - name: logs
+          mountPath: /code/logs/test
+        - name: outputs
+          mountPath: /code/outputs
+        - name: data
+          mountPath: /code/data/test-demo-data
+        - name: etl
+          mountPath: /code
+        - name: templates
+          mountPath: /code/data/templates
+      volumes:
+      - name: logs
+        hostPath:
+          path: /mnt/filebeat/logs/test/etl-zib/
+          type: Directory
+      - name: outputs
+        hostPath:
+          path: /mnt/outputs/etl-zib
+          type: DirectoryOrCreate
+      - name: data
+        hostPath:
+          path: /mnt/data/test-demo-data
+          type: Directory
+      - name: etl
+        hostPath:
+          path: /mnt/externals/dh-hdp-etl
+          type: Directory
+      - name: templates
+        hostPath:
+          path: /mnt/externals/dh-hdp-zib-templates/opt-templates
+          type: Directory

@@ -1,0 +1,50 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+- namespace.yaml
+- ehrbase-deployment.yaml
+- ehrbase-service.yaml
+- ehrbase-ingress.yaml
+- ehrdb-deployment.yaml
+- ehrdb-service.yaml
+- etl-zib-job.yaml
+- transform-rest/deployment.yaml
+- transform-rest/service.yaml
+- transform-rest/configmap.yaml
+- transform-rest/ingress.yaml
+
+
+configMapGenerator:
+- name: test-ehrbase-config
+  namespace: dh-health
+  envs:
+  - test/ehrbase.env
+
+- name: test-ehrdb-config
+  namespace: dh-health
+  envs:
+  - test/ehrdb.env
+  
+- name: test-etl-config
+  namespace: dh-health
+  envs:
+  - test/etl.env
+
+- name: timezone-config
+  namespace: dh-health
+  envs:
+  - env_files/timezone.env
+
+- name: transform-server-config
+  namespace: dh-health
+  envs:
+  - env_files/transform_server.env
+
+- name: zib-templates-config
+  namespace: dh-health
+  envs:
+  - env_files/zib-templates.env

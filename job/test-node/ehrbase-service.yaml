@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-ehrbase
+  namespace: dh-health
+spec:
+  selector:
+    app: test-ehrbase
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: http
+  type: ClusterIP

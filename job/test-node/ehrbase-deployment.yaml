@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-ehrbase
+  namespace: dh-health
+  labels:
+    app: test-ehrbase
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-ehrbase
+  template:
+    metadata:
+      labels:
+        app: test-ehrbase
+    spec:
+      containers:
+      - name: test-ehrbase
+        image: ehrbase/ehrbase:2.6.0
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        command:
+          - "java"
+        args:
+          - "-jar"
+          - "-Dspring.profiles.active=docker"
+          - "-Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log"
+          - "ehrbase.jar"
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: test-ehrbase-config
+        volumeMounts:
+        - name: logs
+          mountPath: /tmp/ehrbaselog/ehrbase.log
+        livenessProbe:
+          httpGet:
+            path: /ehrbase/management/health
+            port: 8080
+          initialDelaySeconds: 90
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          httpGet:
+            path: /ehrbase/management/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+          requests:
+            memory: "512Mi"
+            cpu: "0.5"
+      volumes:
+      - name: logs
+        hostPath:
+          path: /mnt/filebeat/logs/test/ehrbase/ehrbase.log
