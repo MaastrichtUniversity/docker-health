@@ -1,15 +1,15 @@
-Id,ETEN,EET_BEPERKINGEN,DATE_TIME
-6ad5591f-896a-4c1c-4421-8c43633fa91a,In staat tot onafhankelijk eten,,2021-02-19T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Niet in staat zelf te eten,Moeite met hanteren van eetgerei bij zelfstandig eten,2024-02-19T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91a,In staat tot onafhankelijk eten,,2021-02-19T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91b,Niet in staat zelf te eten,Moeite met in stukken snijden van voedsel,2007-07-19T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91c,In staat tot onafhankelijk eten,,2019-08-19T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91d,Hulp nodig bij eten,Moeite met in stukken snijden van voedsel,
-6ad5591f-896a-4c1c-4421-8c43633fa91e,Niet in staat zelf te eten,Moeite met naar mond brengen van voedsel,2006-03-19T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91f,WrongValue,Moeite met hanteren van eetgerei bij zelfstandig eten,2001-02-19T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91g,Hulp nodig bij eten,WrongValue,2002-07-19T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91h,,,2014-02-19T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91i,In staat tot onafhankelijk eten,Moeite met hanteren van eetgerei bij zelfstandig eten,
-6ad5591f-896a-4c1c-4421-8c43633fa91j,Niet in staat zelf te eten,,2013-01-19T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91k,,Moeite met naar mond brengen van voedsel,2000-02-19T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91l,Hulp nodig bij eten,Moeite met in stukken snijden van voedsel,2021-02-19T15:50:14.321
+BSN,ETEN,EET_BEPERKINGEN,DATE_TIME
+001645201,In staat tot onafhankelijk eten,,2021-02-19T15:50:14.321
+001645201,Niet in staat zelf te eten,Moeite met hanteren van eetgerei bij zelfstandig eten,2024-02-19T15:50:14.321
+001645201,In staat tot onafhankelijk eten,,2021-02-19T15:50:14.321
+083197102,Niet in staat zelf te eten,Moeite met in stukken snijden van voedsel,2007-07-19T15:50:14.321
+339055303,In staat tot onafhankelijk eten,,2019-08-19T15:50:14.321
+389370204,Hulp nodig bij eten,Moeite met in stukken snijden van voedsel,
+683754105,Niet in staat zelf te eten,Moeite met naar mond brengen van voedsel,2006-03-19T15:50:14.321
+316268306,WrongValue,Moeite met hanteren van eetgerei bij zelfstandig eten,2001-02-19T15:50:14.321
+569973107,Hulp nodig bij eten,WrongValue,2002-07-19T15:50:14.321
+011168808,,,2014-02-19T15:50:14.321
+363037809,In staat tot onafhankelijk eten,Moeite met hanteren van eetgerei bij zelfstandig eten,
+315071710,Niet in staat zelf te eten,,2013-01-19T15:50:14.321
+362880311,,Moeite met naar mond brengen van voedsel,2000-02-19T15:50:14.321
+525736712,Hulp nodig bij eten,Moeite met in stukken snijden van voedsel,2021-02-19T15:50:14.321

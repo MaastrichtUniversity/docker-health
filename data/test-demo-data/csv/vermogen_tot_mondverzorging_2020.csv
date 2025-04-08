@@ -1,15 +1,15 @@
-Id,VERZORGEN_TANDEN,PRODUCT_TYPE,DATE_TIME
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Onafhankelijk in staat tot mondverzorging,Tandprothese,2002-01-19T09:43:13.174
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Niet in staat tot mondverzorging,Orthodontische 'bracket',2012-01-19T09:43:13.174
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Onafhankelijk in staat tot mondverzorging,Tandprothese,2002-01-19T09:43:13.174
-6ad5591f-896a-4c1c-4421-8c43633fa91b,Niet in staat tot mondverzorging,,2020-09-19T09:43:13.174
-6ad5591f-896a-4c1c-4421-8c43633fa91c,Onafhankelijk in staat tot mondverzorging,Tandprothese,2025-02-10T11:15:00
-6ad5591f-896a-4c1c-4421-8c43633fa91d,,,2012-11-19T09:43:13.174
-6ad5591f-896a-4c1c-4421-8c43633fa91e,Niet in staat tot mondverzorging,WrongValue,2016-03-19T09:43:13.174
-6ad5591f-896a-4c1c-4421-8c43633fa91f,WrongValue,Tandprothese,2003-03-03T09:43:13.174
-6ad5591f-896a-4c1c-4421-8c43633fa91g,,Orthodontische 'bracket',1980-03-19T09:43:13.174
-6ad5591f-896a-4c1c-4421-8c43633fa91h,Onafhankelijk in staat tot mondverzorging,,
-6ad5591f-896a-4c1c-4421-8c43633fa91i,,Orthodontische 'bracket',1979-10-19T09:43:13.174
-6ad5591f-896a-4c1c-4421-8c43633fa91j,Niet in staat tot mondverzorging,Tandprothese,
-6ad5591f-896a-4c1c-4421-8c43633fa91k,Onafhankelijk in staat tot mondverzorging,Tandprothese,
-6ad5591f-896a-4c1c-4421-8c43633fa91l,,Orthodontische 'bracket',1987-02-19T09:43:13.174
+BSN,VERZORGEN_TANDEN,PRODUCT_TYPE,DATE_TIME
+001645201,Onafhankelijk in staat tot mondverzorging,Tandprothese,2002-01-19T09:43:13.174
+001645201,Niet in staat tot mondverzorging,Orthodontische 'bracket',2012-01-19T09:43:13.174
+001645201,Onafhankelijk in staat tot mondverzorging,Tandprothese,2002-01-19T09:43:13.174
+083197102,Niet in staat tot mondverzorging,,2020-09-19T09:43:13.174
+339055303,Onafhankelijk in staat tot mondverzorging,Tandprothese,2025-02-10T11:15:00
+389370204,,,2012-11-19T09:43:13.174
+683754105,Niet in staat tot mondverzorging,WrongValue,2016-03-19T09:43:13.174
+316268306,WrongValue,Tandprothese,2003-03-03T09:43:13.174
+569973107,,Orthodontische 'bracket',1980-03-19T09:43:13.174
+011168808,Onafhankelijk in staat tot mondverzorging,,
+363037809,,Orthodontische 'bracket',1979-10-19T09:43:13.174
+315071710,Niet in staat tot mondverzorging,Tandprothese,
+362880311,Onafhankelijk in staat tot mondverzorging,Tandprothese,
+525736712,,Orthodontische 'bracket',1987-02-19T09:43:13.174

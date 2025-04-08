@@ -1,15 +1,15 @@
-Id,TOILETGEBRUIK,ZORG_BIJ_MENSTRUATIE,PRODUCT_TYPE,DATE_TIME
-6ad5591f-896a-4c1c-4421-8c43633fa91a,In staat tot onafhankelijke toiletgang,Heeft hulp nodig bij zorgen voor menstruatiehygiëne,Toiletstoel,2006-12-02T06:30:00.046
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Hulp nodig bij toiletgang,In staat tot onafhankelijk zorgen voor menstruatiehygiëne,Urinaal,2008-12-02T06:30:00.046
-6ad5591f-896a-4c1c-4421-8c43633fa91a,In staat tot onafhankelijke toiletgang,Heeft hulp nodig bij zorgen voor menstruatiehygiëne,Toiletstoel,2006-12-02T06:30:00.046
-6ad5591f-896a-4c1c-4421-8c43633fa91b,Hulp nodig bij toiletgang,,,1996-10-06T06:30:00.046
-6ad5591f-896a-4c1c-4421-8c43633fa91c,,Heeft hulp nodig bij zorgen voor menstruatiehygiëne,Verblijfskatheter,1997-05-06T06:30:00.046
-6ad5591f-896a-4c1c-4421-8c43633fa91d,In staat tot onafhankelijke toiletgang,In staat tot onafhankelijk zorgen voor menstruatiehygiëne,Stoma,
-6ad5591f-896a-4c1c-4421-8c43633fa91e,,,,2002-07-03T06:30:00.046
-6ad5591f-896a-4c1c-4421-8c43633fa91f,In staat tot onafhankelijke toiletgang,WrongValue,Urinaal,1999-10-06T06:30:00.046
-6ad5591f-896a-4c1c-4421-8c43633fa91g,WrongValue,Niet in staat zorg te dragen voor menstruatiehygiëne,Stoma,1992-10-06T06:30:00.046
-6ad5591f-896a-4c1c-4421-8c43633fa91h,In staat tot onafhankelijke toiletgang,In staat tot onafhankelijk zorgen voor menstruatiehygiëne,,1989-10-06T06:30:00.046
-6ad5591f-896a-4c1c-4421-8c43633fa91i,Hulp nodig bij toiletgang,,,1979-10-06T06:30:00.046
-6ad5591f-896a-4c1c-4421-8c43633fa91j,In staat tot onafhankelijke toiletgang,Heeft hulp nodig bij zorgen voor menstruatiehygiëne,Verblijfskatheter,1987-04-06T06:30:00.046
-6ad5591f-896a-4c1c-4421-8c43633fa91k,Niet in staat tot toiletgang,Niet in staat zorg te dragen voor menstruatiehygiëne,Toiletstoel,
-6ad5591f-896a-4c1c-4421-8c43633fa91l,Hulp nodig bij toiletgang,,Urinaal,1991-08-19T06:30:00.046
+BSN,TOILETGEBRUIK,ZORG_BIJ_MENSTRUATIE,PRODUCT_TYPE,DATE_TIME
+001645201,In staat tot onafhankelijke toiletgang,Heeft hulp nodig bij zorgen voor menstruatiehygiëne,Toiletstoel,2006-12-02T06:30:00.046
+001645201,Hulp nodig bij toiletgang,In staat tot onafhankelijk zorgen voor menstruatiehygiëne,Urinaal,2008-12-02T06:30:00.046
+001645201,In staat tot onafhankelijke toiletgang,Heeft hulp nodig bij zorgen voor menstruatiehygiëne,Toiletstoel,2006-12-02T06:30:00.046
+083197102,Hulp nodig bij toiletgang,,,1996-10-06T06:30:00.046
+339055303,,Heeft hulp nodig bij zorgen voor menstruatiehygiëne,Verblijfskatheter,1997-05-06T06:30:00.046
+389370204,In staat tot onafhankelijke toiletgang,In staat tot onafhankelijk zorgen voor menstruatiehygiëne,Stoma,
+683754105,,,,2002-07-03T06:30:00.046
+316268306,In staat tot onafhankelijke toiletgang,WrongValue,Urinaal,1999-10-06T06:30:00.046
+569973107,WrongValue,Niet in staat zorg te dragen voor menstruatiehygiëne,Stoma,1992-10-06T06:30:00.046
+011168808,In staat tot onafhankelijke toiletgang,In staat tot onafhankelijk zorgen voor menstruatiehygiëne,,1989-10-06T06:30:00.046
+363037809,Hulp nodig bij toiletgang,,,1979-10-06T06:30:00.046
+315071710,In staat tot onafhankelijke toiletgang,Heeft hulp nodig bij zorgen voor menstruatiehygiëne,Verblijfskatheter,1987-04-06T06:30:00.046
+362880311,Niet in staat tot toiletgang,Niet in staat zorg te dragen voor menstruatiehygiëne,Toiletstoel,
+525736712,Hulp nodig bij toiletgang,,Urinaal,1991-08-19T06:30:00.046

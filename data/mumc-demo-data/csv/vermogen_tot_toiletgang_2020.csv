@@ -1,4 +1,4 @@
-Id,TOILETGEBRUIK,ZORG_BIJ_MENSTRUATIE,PRODUCT_TYPE,DATE_TIME
-6ad5591f-896a-4c1c-4421-8c43633fa91a,Niet in staat tot toiletgang,Heeft hulp nodig bij zorgen voor menstruatiehygiëne,,1980-02-13T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91b,In staat tot onafhankelijke toiletgang,In staat tot onafhankelijk zorgen voor menstruatiehygiëne,Zelf katheteriseren,1999-05-13T15:50:14.321
-6ad5591f-896a-4c1c-4421-8c43633fa91c,Hulp nodig bij toiletgang,,Verblijfskatheter,2010-07-13T15:50:14.321
+BSN,TOILETGEBRUIK,ZORG_BIJ_MENSTRUATIE,PRODUCT_TYPE,DATE_TIME
+001645201,Niet in staat tot toiletgang,Heeft hulp nodig bij zorgen voor menstruatiehygiëne,,1980-02-13T15:50:14.321
+083197102,In staat tot onafhankelijke toiletgang,In staat tot onafhankelijk zorgen voor menstruatiehygiëne,Zelf katheteriseren,1999-05-13T15:50:14.321
+339055303,Hulp nodig bij toiletgang,,Verblijfskatheter,2010-07-13T15:50:14.321
