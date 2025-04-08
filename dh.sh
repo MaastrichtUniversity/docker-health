@@ -264,7 +264,7 @@ clone_externals() {
 }
 
 checkout_externals() {
-    local branch=${1:-2024.1}
+    local branch=${1:-main}
     # Check if any externals exist first
     if [ ! -d "externals" ] || [ -z "$(ls -A externals 2>/dev/null)" ]; then
         log $INF "External repositories don't exist yet. Cloning first..."
