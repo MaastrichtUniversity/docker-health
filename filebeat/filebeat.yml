@@ -8,7 +8,6 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/test/etl-zib/etl-zib.log
       - /usr/share/logs/mumc/etl-zib/etl-zib.log
       - /usr/share/logs/zio/etl-zib/etl-zib.log
       - /usr/share/logs/envida/etl-zib/etl-zib.log
@@ -31,12 +30,6 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /usr/share/logs/test/ehrbase/ehrbase.log
-    tags: ["TEST_EHRBASE"]
-
-  - type: log
-    enabled: true
-    paths:
       - /usr/share/logs/mumc/ehrbase/ehrbase.log
     tags: ["MUMC_EHRBASE"]
     
@@ -51,12 +44,6 @@ filebeat.inputs:
     paths:
       - /usr/share/logs/envida/ehrbase/ehrbase.log
     tags: ["ENVIDA_EHRBASE"]
-
-  - type: log
-    enabled: true
-    paths:
-      - /usr/share/logs/test/ehrdb/postgresql.log
-    tags: ["TEST_EHRDB"]
 
   - type: log
     enabled: true

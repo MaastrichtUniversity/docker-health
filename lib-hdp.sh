@@ -2,7 +2,8 @@
 
 # In case of a new server, it needs to be added here!
 export envs="
-tst fhml-srv016 tst-docker-hdp"
+tst fhml-srv016 tst-docker-hdp
+dev fhml-srv020 dev-jenkins-agent"
 
 export ERR=1
 export WRN=2

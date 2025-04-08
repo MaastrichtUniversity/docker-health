@@ -33,7 +33,6 @@ services:
       - ehrbase.jar
     volumes:
       - ./filebeat/logs/zio/ehrbase:/tmp/ehrbaselog
-    restart: on-failure
   zio-ehrdb:
     image: ehrbase/ehrbase-v2-postgres:16.2
     environment:
@@ -59,8 +58,8 @@ services:
     # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
     volumes:
       - ./filebeat/logs/zio/ehrdb:/tmp/postgreslog
-      # Uncomment the following line to create a volume mount to make the postgresql data persistent
-    #      - ./ehrdb_pgdata/zio:/var/lib/postgresql/data
+      # Uncomment the following line to create a docker volume to make the postgresql data persistent
+      #- zio-ehrbase-db-data:/var/lib/postgresql/data
     env_file:
       - ./env_files/timezone.env
       - ./env_files/zio/ehrdb.env
@@ -148,3 +147,6 @@ services:
 networks:
   dev-hdp_hdp-dh-zio-net:
     external: true
+
+volumes:
+  zio-ehrbase-db-data:

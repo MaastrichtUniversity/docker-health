@@ -6,8 +6,6 @@ services:
         condition: service_started
       proxy:
         condition: service_started
-      filebeat:
-        condition: service_started
     env_file:
       - ./env_files/timezone.env
       - ./env_files/test/ehrbase.env
@@ -31,8 +29,6 @@ services:
       - -Dspring.profiles.active=docker
       - -Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log
       - ehrbase.jar
-    volumes:
-      - ./filebeat/logs/test/ehrbase:/tmp/ehrbaselog
   test-ehrdb:
     image: ehrbase/ehrbase-v2-postgres:16.2
     environment:
@@ -56,8 +52,6 @@ services:
         "log_rotation_size=0",
       ]
     # https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT
-    volumes:
-      - ./filebeat/logs/test/ehrdb:/tmp/postgreslog
     env_file:
       - ./env_files/timezone.env
       - ./env_files/test/ehrdb.env
@@ -81,6 +75,7 @@ services:
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
     volumes:
       - ./data/test-demo-data:/code/data/test-demo-data
+      # Required for CustomLogger, it expects the log file already created during runtime
       - ./filebeat/logs/test/etl-zib:/code/logs/test
       - ./outputs/etl-zib:/code/outputs
       # Volume binds to auto-reload the code inside the container
