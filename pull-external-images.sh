@@ -27,4 +27,8 @@ docker pull ehrbase/ehrbase-v2-postgres:16.2
 echo "Pulling OpenEHRTool image..."
 docker pull surfercrs4/openehrtool:latest
 
+# BusyBox for ETL initContainer
+echo "Pulling busybox:1.28..."
+docker pull  busybox:1.28
+
 echo "All external images have been pulled into Minikube's Docker daemon."
