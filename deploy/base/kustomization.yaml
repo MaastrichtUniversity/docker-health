@@ -3,12 +3,9 @@ kind: Kustomization
 
 namespace: dh-health
 
-generatorOptions:
-  disableNameSuffixHash: true
-
 resources:
 - namespace.yaml
-#- common/log_volume.yaml
+- common/log_volume.yaml
 # include configmaps.yaml for additional configs
 #- common/configmaps.yaml
 - transform-rest/deployment.yaml

@@ -15,6 +15,13 @@ spec:
       labels:
         app: envida-ehrdb
     spec:
+      initContainers:
+      - name: fix-logs
+        image: busybox:1.28
+        command: ["sh", "-c", "mkdir -p /usr/share/logs/envida && chmod -R 777 /usr/share/logs/envida && touch /usr/share/logs/envida/postgresql.log && chmod 666 /usr/share/logs/envida/postgresql.log"]
+        volumeMounts:
+        - name: logs-volume
+          mountPath: /usr/share/logs
       containers:
       - name: envida-ehrdb
         image: ehrbase/ehrbase-v2-postgres:16.2
@@ -28,7 +35,7 @@ spec:
         - -c
         - logging_collector=on
         - -c
-        - log_directory=/tmp/postgreslog/
+        - log_directory=/usr/share/logs/envida
         - -c
         - log_filename=postgresql.log
         - -c
@@ -52,4 +59,10 @@ spec:
             - postgres
           initialDelaySeconds: 30
           periodSeconds: 10
-          
+        volumeMounts:
+        - name: logs-volume
+          mountPath: /usr/share/logs
+      volumes:
+      - name: logs-volume
+        persistentVolumeClaim:
+          claimName: log-pvc

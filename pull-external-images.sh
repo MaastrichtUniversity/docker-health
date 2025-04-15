@@ -31,4 +31,8 @@ docker pull surfercrs4/openehrtool:latest
 echo "Pulling Filebeat image..."
 docker pull docker.elastic.co/beats/filebeat:8.5.1
 
+# BusyBox for ETL initContainer
+echo "Pulling busybox:1.28..."
+docker pull  busybox:1.28
+
 echo "All external images have been pulled into Minikube's Docker daemon."

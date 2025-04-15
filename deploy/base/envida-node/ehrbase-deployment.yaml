@@ -15,6 +15,13 @@ spec:
       labels:
         app: envida-ehrbase
     spec:
+      initContainers:
+      - name: fix-logs
+        image: busybox:1.28
+        command: ["sh", "-c", "chmod -R 777 /usr/share/logs/envida && touch /usr/share/logs/envida/ehrbase.log && chmod 666 /usr/share/logs/envida/ehrbase.log"]
+        volumeMounts:
+        - name: logs-volume
+          mountPath: /usr/share/logs
       containers:
       - name: envida-ehrbase
         image: ehrbase/ehrbase:2.6.0
@@ -25,7 +32,7 @@ spec:
         args:
           - "-jar"
           - "-Dspring.profiles.active=docker"
-          - "-Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log"
+          - "-Dlogging.file.name=/usr/share/logs/envida/ehrbase.log"
           - "ehrbase.jar"
         envFrom:
         - configMapRef:
@@ -46,3 +53,10 @@ spec:
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 10
+        volumeMounts:
+        - name: logs-volume
+          mountPath: /usr/share/logs
+      volumes:
+      - name: logs-volume
+        persistentVolumeClaim:
+          claimName: log-pvc
