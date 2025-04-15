@@ -198,7 +198,18 @@ minikube profile list
 minikube delete; minikube start --driver=docker
 ```
 
-2. The `sed` command, used in checking for- and deleting duplicates related to specific virtual hosts in `/etc/hosts`, is not recognised on MacOS. This can be circumvented by commenting out these lines in the `dh.sh` file. This does result in added duplicates whenever `./dh.sh setup` is ran, and the added ip leads to another possible issue, see point 4.
+2. The `sed` command, used in checking for- and deleting duplicates related to specific virtual hosts in `/etc/hosts`, may not initially be recognised on MacOS. Install it manually through Homebrew via [gnu-sed](https://formulae.brew.sh/formula/gnu-sed). Be sure to add a "gnubin" directory to your PATH from your bashrc/zshrc (on newer macs) to allow for use of the 'sed' command instead of their default 'gsed':
+
+```
+# allows for use of 'sed' instead of 'gsed'; HOMEBREW_PREFIX is the location of your homebrew (`which brew`)
+PATH="$HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin:$PATH"
+``` 
+
+Restart the terminal for the change to take effect:
+
+```bash
+source ~/.zshrc
+```
 
 
 3. Minikube seemingly being starved of resources. This problem in particular could present itself when trying to start the `ehrdb` and `ehrbase` pods, where the pods continuously timeout and restart. Using the following does not work on MacOS:
@@ -216,6 +227,7 @@ These changes take effect after restarting minikube and should persist across se
 
 4. By default, the Minikube ip (through `minikube ip`) will be used and added to the virtual hosts in `/etc/hosts`. However, using the Minikube ip does not work for this purpose on MacOS. Instead, use `127.0.0.1` and add these to `/etc/hosts` manually:
 ```
+# these can replace the minikube ips
 127.0.0.1 ehrbase.envida.local.dh.unimaas.nl
 127.0.0.1 ehrbase.mumc.local.dh.unimaas.nl
 127.0.0.1 ehrbase.test.local.dh.unimaas.nl
