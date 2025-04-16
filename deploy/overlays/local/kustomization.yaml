@@ -234,3 +234,10 @@ secretGenerator:
       - password=testtest
 
 
+configMapGenerator:
+- name: portal-common-config
+  namespace: dh-health
+  behavior: merge
+  literals:
+    - NEXT_PUBLIC_FEDERATION_API_URL=http://federation.local.dh.unimaas.nl
+

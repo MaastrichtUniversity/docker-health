@@ -53,8 +53,8 @@ configMapGenerator:
 
 - name: portal-common-config
   namespace: dh-health
-  envs:
-  - env_files/portal_common.env
+  literals:
+    - FEDERATION_SERVER_URL=http://federation-api.dh-health:8000
 
 - name: openehrtool-config
   namespace: dh-health
