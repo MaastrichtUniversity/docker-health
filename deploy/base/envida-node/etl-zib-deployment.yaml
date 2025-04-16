@@ -55,6 +55,16 @@ spec:
             secretKeyRef:
               name: envida-ehrbase-admin-creds
               key: password
+        - name: TRANSFORM_SPRING_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: username
+        - name: TRANSFORM_SPRING_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: password
         volumeMounts:
         - name: logs
           mountPath: /code/logs/envida

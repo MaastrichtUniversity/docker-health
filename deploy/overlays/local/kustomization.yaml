@@ -232,6 +232,12 @@ secretGenerator:
     literals:
       - username=demo@zio.nl
       - password=testtest
+# transform
+  - name: transform-creds
+    namespace: dh-health
+    literals:
+      - username=user
+      - password=foobar
 
 
 configMapGenerator:

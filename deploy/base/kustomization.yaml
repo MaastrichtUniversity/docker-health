@@ -38,8 +38,8 @@ configMapGenerator:
 
 - name: transform-server-config
   namespace: dh-health
-  envs:
-  - env_files/transform_server.env
+  literals:
+      - TRANSFORM_SPRING_BASE_URL=http://transform-rest.dh-health:8080
 
 - name: zib-templates-config
   namespace: dh-health

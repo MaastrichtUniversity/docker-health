@@ -85,3 +85,11 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.test.tst.dh.unimaas.nl
+      
+
+configMapGenerator:
+- name: portal-common-config
+  namespace: dh-health
+  behavior: merge
+  literals:
+    - NEXT_PUBLIC_FEDERATION_API_URL=http://federation.tst.dh.unimaas.nl
