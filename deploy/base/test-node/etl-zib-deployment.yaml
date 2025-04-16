@@ -35,6 +35,36 @@ spec:
         env:
         - name: LOGSTASH_TAGS
           value: ETL_ZIB
+        - name: EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: test-ehrbase-creds
+              key: username
+        - name: EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: test-ehrbase-creds
+              key: password
+        - name: EHRBASE_ADMIN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: test-ehrbase-admin-creds
+              key: username
+        - name: EHRBASE_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: test-ehrbase-admin-creds
+              key: password
+        - name: TRANSFORM_SPRING_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: username
+        - name: TRANSFORM_SPRING_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: password
         volumeMounts:
         - name: logs
           mountPath: /code/logs/test

@@ -27,6 +27,47 @@ spec:
           - "-Dspring.profiles.active=docker"
           - "-Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log"
           - "ehrbase.jar"
+        env:
+          - name: SECURITY_AUTHUSER
+            valueFrom:
+              secretKeyRef:
+                name: test-ehrbase-creds
+                key: username
+          - name: SECURITY_AUTHPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: test-ehrbase-creds
+                key: password
+          - name: SECURITY_AUTHADMINUSER
+            valueFrom:
+              secretKeyRef:
+                name: test-ehrbase-admin-creds
+                key: username
+          - name: SECURITY_AUTHADMINPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: test-ehrbase-admin-creds
+                key: password
+          - name: DB_USER_ADMIN
+            valueFrom:
+              secretKeyRef:
+                name: test-ehrbase-db-admin-creds
+                key: username
+          - name: DB_PASS_ADMIN
+            valueFrom:
+              secretKeyRef:
+                name: test-ehrbase-db-admin-creds
+                key: password
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: test-ehrbase-db-creds
+                key: username
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: test-ehrbase-db-creds
+                key: password
         envFrom:
         - configMapRef:
             name: timezone-config

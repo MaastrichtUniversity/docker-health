@@ -154,7 +154,7 @@ patches:
       value: openehrtool.mumc.local.dh.unimaas.nl
 
 secretGenerator:
-# Envida
+# Envida-node
   - name: envida-ehrbase-creds
     namespace: dh-health
     literals:
@@ -180,7 +180,7 @@ secretGenerator:
     literals:
     - username=demo@envida.nl
     - password=testtest
-# MUMC
+# MUMC-node
   - name: mumc-ehrbase-creds
     namespace: dh-health
     literals:
@@ -206,7 +206,7 @@ secretGenerator:
     literals:
       - username=demo@mumc.nl
       - password=testtest
-# ZIO
+# ZIO-node
   - name: zio-ehrbase-creds
     namespace: dh-health
     literals:
@@ -232,6 +232,27 @@ secretGenerator:
     literals:
       - username=demo@zio.nl
       - password=testtest
+# TEST-node
+  - name: test-ehrbase-creds
+    namespace: dh-health
+    literals:
+      - username=user0
+      - password=shdiuhdusdhiusdhsiuasdghiudshdasiu
+  - name: test-ehrbase-admin-creds
+    namespace: dh-health
+    literals:
+      - username=admin0
+      - password=dldfhkjlashdkjasdhsdkjhasdkjsa
+  - name: test-ehrbase-db-admin-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase0
+      - password=sadddsaasdasdadsdasasd
+  - name: test-ehrbase-db-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase_restricted0
+      - password=sh7u2349yuihdsia8y98ysdaiusdgha87asd
 # transform
   - name: transform-creds
     namespace: dh-health
