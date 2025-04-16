@@ -25,12 +25,12 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: mumc-portal-creds
-                key: password
+                key: username
           - name: AUTH_PASS
             valueFrom:
               secretKeyRef:
                 name: mumc-portal-creds
-                key: username
+                key: password
         envFrom:
         - configMapRef:
             name: mumc-portal-config

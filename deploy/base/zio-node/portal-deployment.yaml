@@ -25,12 +25,12 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: zio-portal-creds
-                key: password
+                key: username
           - name: AUTH_PASS
             valueFrom:
               secretKeyRef:
                 name: zio-portal-creds
-                key: username
+                key: password
         envFrom:
         - configMapRef:
             name: zio-portal-config

@@ -25,12 +25,12 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: envida-portal-creds
-                key: password
+                key: username
           - name: AUTH_PASS
             valueFrom:
               secretKeyRef:
                 name: envida-portal-creds
-                key: username
+                key: password
         envFrom:
         - configMapRef:
             name: envida-portal-config

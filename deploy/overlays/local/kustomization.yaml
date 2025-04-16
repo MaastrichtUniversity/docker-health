@@ -191,7 +191,7 @@ secretGenerator:
     literals:
       - username=admin1
       - password=sdfiouhfduiohfdsiuhsdfiusfdhisdf
-  - name: munmc-ehrbase-db-admin-creds
+  - name: mumc-ehrbase-db-admin-creds
     namespace: dh-health
     literals:
       - username=ehrbase1
