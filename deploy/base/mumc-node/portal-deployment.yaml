@@ -20,6 +20,17 @@ spec:
         image: docker-health/portal:latest
         ports:
         - containerPort: 3000
+        env:
+          - name: AUTH_USER
+            valueFrom:
+              secretKeyRef:
+                name: mumc-portal-creds
+                key: password
+          - name: AUTH_PASS
+            valueFrom:
+              secretKeyRef:
+                name: mumc-portal-creds
+                key: username
         envFrom:
         - configMapRef:
             name: mumc-portal-config

@@ -35,6 +35,26 @@ spec:
         env:
         - name: LOGSTASH_TAGS
           value: ETL_ZIB
+        - name: EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-creds
+              key: username
+        - name: EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-creds
+              key: password
+        - name: EHRBASE_ADMIN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-admin-creds
+              key: username
+        - name: EHRBASE_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-admin-creds
+              key: password
         volumeMounts:
         - name: logs
           mountPath: /code/logs/zio
