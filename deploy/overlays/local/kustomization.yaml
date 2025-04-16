@@ -260,7 +260,6 @@ secretGenerator:
       - username=user
       - password=foobar
 
-
 configMapGenerator:
 - name: portal-common-config
   namespace: dh-health
@@ -272,16 +271,16 @@ configMapGenerator:
   namespace: dh-health
   behavior: merge
   literals:
-    - EHRBASESERVER_nodename=envida.server.dh.unimaas.nl
+    - EHRBASESERVER_nodename=openehrtool.envida.local.dh.unimaas.nl
 
 - name: mumc-openehrtool-config
   namespace: dh-health
   behavior: merge
   literals:
-    - EHRBASESERVER_nodename=mumc.server.dh.unimaas.nl
+    - EHRBASESERVER_nodename=openehrtool.mumc.local.dh.unimaas.nl
 
 - name: mumc-openehrtool-config
   namespace: dh-health
   behavior: merge
   literals:
-    - EHRBASESERVER_nodename=zio.server.dh.unimaas.nl
+    - EHRBASESERVER_nodename=openehrtool.zio.local.dh.unimaas.nl
