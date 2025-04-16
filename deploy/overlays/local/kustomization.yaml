@@ -152,3 +152,31 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.mumc.local.dh.unimaas.nl
+
+secretGenerator:
+  - name: envida-ehrbase-creds
+    namespace: dh-health
+    literals:
+    - username=user3
+    - password=iasudfyghiausdyfidusywasdiuydasiuasduy
+  - name: envida-ehrbase-admin-creds
+    namespace: dh-health
+    literals:
+    - username=admin3
+    - password=uiysadg8yusadts78dtsdyuasdtuyasdtasd
+  - name: envida-ehrbase-db-admin-creds
+    namespace: dh-health
+    literals:
+    - username=ehrbase3
+    - password=znxjkczxnjkcxjkczxzxcbnkzxcbzxcjk
+  - name: envida-ehrbase-db-creds
+    namespace: dh-health
+    literals:
+    - username=ehrbase_restricted3
+    - password=uisadghasdiuasgdiusdagasduiydasgui
+  - name: envida-portal-creds
+    namespace: dh-health
+    literals:
+    - username=demo@envida.nl
+    - password=testtest
+

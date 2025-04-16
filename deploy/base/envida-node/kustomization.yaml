@@ -18,28 +18,6 @@ resources:
 - portal-service.yaml
 - portal-ingress.yaml
 
-secretGenerator:
-- name: envida-ehrbase-creds
-  literals:
-  - username=user3
-  - password=iasudfyghiausdyfidusywasdiuydasiuasduy
-- name: envida-ehrbase-admin-creds
-  literals:
-  - username=admin3
-  - password=uiysadg8yusadts78dtsdyuasdtuyasdtasd
-- name: envida-ehrbase-db-admin-creds
-  literals:
-  - username=ehrbase3
-  - password=znxjkczxnjkcxjkczxzxcbnkzxcbzxcjk
-- name: envida-ehrbase-db-creds
-  literals:
-  - username=ehrbase_restricted3
-  - password=uisadghasdiuasgdiusdagasduiydasgui
-- name: envida-portal-creds
-  literals:
-  - username=demo@envida.nl
-  - password=testtest
-
 configMapGenerator:
 - name: envida-ehrbase-config
   namespace: dh-health
