@@ -20,14 +20,31 @@ spec:
         image: surfercrs4/openehrtool:latest
         ports:
         - containerPort: 9000
+        env:
+          - name: EHRBASEUSERS_adusername
+            valueFrom:
+              secretKeyRef:
+                name: zio-ehrbase-admin-creds
+                key: username
+          - name: EHRBASEUSERS_adpassword
+            valueFrom:
+              secretKeyRef:
+                name: zio-ehrbase-admin-creds
+                key: password
+          - name: EHRBASEUSERS_username
+            valueFrom:
+              secretKeyRef:
+                name: zio-ehrbase-creds
+                key: username
+          - name: EHRBASEUSERS_password
+            valueFrom:
+              secretKeyRef:
+                name: zio-ehrbase-creds
+                key: password
         envFrom:
         - configMapRef:
             name: openehrtool-config
-        volumeMounts:
-        - name: config-files
-          mountPath: /code/config/openehrtool.cfg
-          subPath: openehrtool.cfg
-      volumes:
-      - name: config-files
-        configMap:
-          name: zio-openehrtool-config
+        - configMapRef:
+            name: openehrtool-general-config
+        - configMapRef:
+            name: zio-openehrtool-config

@@ -41,5 +41,5 @@ configMapGenerator:
 
 - name: zio-openehrtool-config
   namespace: dh-health
-  files:
-  - openehrtool.cfg=zio-openehrtool.cfg
+  literals:
+    - EHRBASESERVER_hostname=zio-ehrbase.dh-health

@@ -247,3 +247,20 @@ configMapGenerator:
   literals:
     - NEXT_PUBLIC_FEDERATION_API_URL=http://federation.local.dh.unimaas.nl
 
+- name: envida-openehrtool-config
+  namespace: dh-health
+  behavior: merge
+  literals:
+    - EHRBASESERVER_nodename=envida.server.dh.unimaas.nl
+
+- name: mumc-openehrtool-config
+  namespace: dh-health
+  behavior: merge
+  literals:
+    - EHRBASESERVER_nodename=mumc.server.dh.unimaas.nl
+
+- name: mumc-openehrtool-config
+  namespace: dh-health
+  behavior: merge
+  literals:
+    - EHRBASESERVER_nodename=zio.server.dh.unimaas.nl

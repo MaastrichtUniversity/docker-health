@@ -60,3 +60,11 @@ configMapGenerator:
   namespace: dh-health
   envs:
   - env_files/openEHR-tool.env
+
+- name: openehrtool-general-config
+  namespace: dh-health
+  literals:
+    - REDISSERVER_hostname=redis.dh-health
+    - REDISSERVER_port=6379
+    - REDISSERVER_eventsrecorded=100
+    - EHRBASESERVER_port=8080
