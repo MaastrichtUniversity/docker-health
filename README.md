@@ -59,6 +59,8 @@ If encryption needs to be restored, uncomment the configurations and see `2025.1
 127.0.0.1 ehrbase.envida.local.dh.unimaas.nl
 127.0.0.1 openehrtool.envida.local.dh.unimaas.nl
 127.0.0.1 portal.envida.local.dh.unimaas.nl
+
+127.0.0.1 etl.mumc.local.dh.unimaas.nl
 ```
 
 ### Template variables

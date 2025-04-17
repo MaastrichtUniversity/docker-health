@@ -144,6 +144,47 @@ services:
       VIRTUAL_HOST: portal.mumc.${RIT_ENV}.dh.unimaas.nl
     networks:
       - dev-hdp_hdp-dh-mumc-net
+  mumc-etl-zib-rest:
+    build:
+      context: ./externals/dh-hdp-etl
+      dockerfile: Dockerfile
+      args:
+        - SRC_SUBPROJECT=zib
+      additional_contexts:
+        hdp_templates: ./externals/dh-hdp-zib-templates
+    image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
+    entrypoint: ["uvicorn", "rest_api:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8042:8000"
+    healthcheck:
+      test: "tail -n 10 /code/logs/mumc/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - ./data/mumc-demo-data:/code/data/mumc-demo-data
+      - ./filebeat/logs/mumc/etl-zib:/code/logs/mumc
+      - ./outputs/etl-zib:/code/outputs
+      # Volume binds to auto-reload the code inside the container
+      - ./externals/dh-hdp-etl/etl.py:/code/etl.py
+      - ./externals/dh-hdp-etl/src/core:/code/src/core
+      - ./externals/dh-hdp-etl/src/subprojects/zib:/code/src/subprojects/zib
+      - ./externals/dh-hdp-etl/tests:/code/tests
+    env_file:
+      - ./env_files/timezone.env
+      - ./env_files/transform_server.env
+      - ./env_files/zib-templates.env
+      - ./env_files/mumc/etl.env
+    environment:
+      LOGSTASH_TAGS: ETL_ZIB
+      VIRTUAL_HOST: etl.mumc.${RIT_ENV}.dh.unimaas.nl
+    depends_on:
+      mumc-ehrbase:
+        condition: service_healthy
+      transform-rest:
+        condition: service_started
+    networks:
+      - dev-hdp_hdp-dh-mumc-net
 networks:
   dev-hdp_hdp-dh-mumc-net:
     external: true
