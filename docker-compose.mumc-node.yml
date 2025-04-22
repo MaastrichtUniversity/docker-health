@@ -155,21 +155,11 @@ services:
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
     entrypoint: ["uvicorn", "rest_api:app", "--host", "0.0.0.0", "--port", "8000"]
     ports:
-      - "8042:8000"
-    healthcheck:
-      test: "tail -n 10 /code/logs/mumc/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
-      interval: 5s
-      timeout: 3s
-      retries: 10
+      - "8041:8000"
     volumes:
       - ./data/mumc-demo-data:/code/data/mumc-demo-data
       - ./filebeat/logs/mumc/etl-zib:/code/logs/mumc
       - ./outputs/etl-zib:/code/outputs
-      # Volume binds to auto-reload the code inside the container
-      - ./externals/dh-hdp-etl/etl.py:/code/etl.py
-      - ./externals/dh-hdp-etl/src/core:/code/src/core
-      - ./externals/dh-hdp-etl/src/subprojects/zib:/code/src/subprojects/zib
-      - ./externals/dh-hdp-etl/tests:/code/tests
     env_file:
       - ./env_files/timezone.env
       - ./env_files/transform_server.env
@@ -184,7 +174,9 @@ services:
       transform-rest:
         condition: service_started
     networks:
-      - dev-hdp_hdp-dh-mumc-net
+      hdp-dh-mumc-net:
+        aliases:
+          - mumc.etl.dh.local
 networks:
   dev-hdp_hdp-dh-mumc-net:
     external: true
