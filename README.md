@@ -11,6 +11,7 @@ This service is based on repositories:
 - [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api/tree/2024.1): Federation service
 - [dh-hdp-portal](https://github.com/MaastrichtUniversity/dh-hdp-portal/tree/2024.1): Node User Interface service
 - [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2024.1): Jupyter notebooks for an initial data exploration
+- [dh-hdp-etl-utils](https://github.com/MaastrichtUniversity/dh-hdp-etl-utils): A package to share dh-hdp-etl utils classes and functions between different code bases
 
 ## Requirements
 
