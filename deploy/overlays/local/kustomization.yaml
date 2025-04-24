@@ -37,6 +37,46 @@ patches:
     group: networking.k8s.io
     version: v1
     kind: Ingress
+    name: mumc-portal-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: portal.mumc.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: transform-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: transform.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: federation-api-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: federation.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: jupyter-zib-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: jupyter.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
     name: envida-ehrbase-ingress
   patch: |-
     - op: replace
@@ -77,6 +117,26 @@ patches:
     group: networking.k8s.io
     version: v1
     kind: Ingress
+    name: mumc-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.mumc.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.zio.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
     name: test-openehrtool-ingress
   patch: |-
     - op: replace
@@ -87,8 +147,8 @@ patches:
     group: networking.k8s.io
     version: v1
     kind: Ingress
-    name: grafana
+    name: mumc-openehrtool-ingress
   patch: |-
     - op: replace
       path: /spec/rules/0/host
-      value: grafana.local.dh.unimaas.nl
+      value: openehrtool.mumc.local.dh.unimaas.nl
