@@ -1,11 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: dh-health
-
 resources:
 - namespace.yaml
-- common/log_volume.yaml
+- common/volumes.yaml
 # include configmaps.yaml for additional configs
 #- common/configmaps.yaml
 - transform-rest/deployment.yaml
@@ -20,7 +18,6 @@ resources:
 - jupyter-zib/service.yaml
 - jupyter-zib/configmap.yaml
 - jupyter-zib/ingress.yaml
-- filebeat/
 - redis/
 - mumc-node/
 - zio-node/

@@ -82,3 +82,13 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.test.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: grafana
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: grafana.local.dh.unimaas.nl

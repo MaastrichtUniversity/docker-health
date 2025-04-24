@@ -25,7 +25,6 @@ spec:
         args:
           - "-jar"
           - "-Dspring.profiles.active=docker"
-          - "-Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log"
           - "ehrbase.jar"
         envFrom:
         - configMapRef:
@@ -38,11 +37,11 @@ spec:
             port: 8080
           initialDelaySeconds: 90
           periodSeconds: 10
-          timeoutSeconds: 10
+          timeoutSeconds: 5
           failureThreshold: 6
         readinessProbe:
           httpGet:
             path: /ehrbase/management/health
             port: 8080
-          initialDelaySeconds: 90
+          initialDelaySeconds: 30
           periodSeconds: 10

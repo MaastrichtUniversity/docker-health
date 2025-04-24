@@ -27,12 +27,20 @@ docker pull ehrbase/ehrbase-v2-postgres:16.2
 echo "Pulling OpenEHRTool image..."
 docker pull surfercrs4/openehrtool:latest
 
-# Filebeat
-echo "Pulling Filebeat image..."
-docker pull docker.elastic.co/beats/filebeat:8.5.1
-
 # BusyBox for ETL initContainer
-echo "Pulling busybox:1.28..."
-docker pull  busybox:1.28
+echo "Pulling busybox image..."
+docker pull busybox:1.28
+
+# Grafana
+echo "Pulling Grafana.."
+docker pull grafana/grafana:10.2.3
+
+# Loki
+echo "Pulling Loki.."
+docker pull grafana/loki:2.9.2
+
+# Loki
+echo "Pulling Node-Exporter.."
+docker pull prom/node-exporter:v1.9.1
 
 echo "All external images have been pulled into Minikube's Docker daemon."

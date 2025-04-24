@@ -25,3 +25,4 @@ spec:
             name: mumc-portal-config
         - configMapRef:
             name: portal-common-config
+          

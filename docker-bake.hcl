@@ -48,7 +48,7 @@ target "etl-zib" {
 }
 
 target "jupyter-zib" {
-  inherits = ["_hdp_templates"]
+  inherits = ["_hdp_templates", "_src_etl"]
   args = {
     DATA = "zib"
   }
