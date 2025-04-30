@@ -11,6 +11,7 @@ This service is based on repositories:
 - [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api/tree/2024.1): Federation service
 - [dh-hdp-portal](https://github.com/MaastrichtUniversity/dh-hdp-portal/tree/2024.1): Node User Interface service
 - [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2024.1): Jupyter notebooks for an initial data exploration
+- [dh-hdp-etl-utils](https://github.com/MaastrichtUniversity/dh-hdp-etl-utils): A package to share dh-hdp-etl utils classes and functions between different code bases
 
 ## Requirements
 
@@ -51,14 +52,17 @@ If encryption needs to be restored, uncomment the configurations and see `2025.1
 127.0.0.1 ehrbase.mumc.local.dh.unimaas.nl
 127.0.0.1 openehrtool.mumc.local.dh.unimaas.nl
 127.0.0.1 portal.mumc.local.dh.unimaas.nl
+127.0.0.1 etl.mumc.local.dh.unimaas.nl
 
 127.0.0.1 ehrbase.zio.local.dh.unimaas.nl
 127.0.0.1 openehrtool.zio.local.dh.unimaas.nl
 127.0.0.1 portal.zio.local.dh.unimaas.nl
+127.0.0.1 etl.zio.local.dh.unimaas.nl
 
 127.0.0.1 ehrbase.envida.local.dh.unimaas.nl
 127.0.0.1 openehrtool.envida.local.dh.unimaas.nl
 127.0.0.1 portal.envida.local.dh.unimaas.nl
+127.0.0.1 etl.envida.local.dh.unimaas.nl
 ```
 
 ### Template variables

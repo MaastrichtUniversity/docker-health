@@ -28,7 +28,8 @@ externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-t
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git
 externals/dh-hdp-federation-api https://github.com/MaastrichtUniversity/dh-hdp-federation-api.git
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
-externals/dh-hdp-portal https://github.com/MaastrichtUniversity/dh-hdp-portal.git"
+externals/dh-hdp-portal https://github.com/MaastrichtUniversity/dh-hdp-portal.git
+externals/dh-hdp-etl-utils https://github.com/MaastrichtUniversity/dh-hdp-etl-utils"
 
 is_local(){
     if [[ $RIT_ENV == "local" ]]; then

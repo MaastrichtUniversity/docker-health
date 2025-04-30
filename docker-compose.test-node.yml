@@ -68,8 +68,6 @@ services:
     build:
       context: ./externals/dh-hdp-etl
       dockerfile: Dockerfile
-      args:
-        - SRC_SUBPROJECT=zib
       additional_contexts:
         hdp_templates: ./externals/dh-hdp-zib-templates
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
