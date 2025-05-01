@@ -35,4 +35,5 @@ configMapGenerator:
   namespace: dh-health
   literals:
     - EHRBASESERVER_hostname=test-ehrbase.dh-health
+    - EHRBASESERVER_nodename=test.server.dh.unimaas.nl
 

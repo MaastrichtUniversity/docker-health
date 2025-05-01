@@ -43,3 +43,4 @@ configMapGenerator:
   namespace: dh-health
   literals:
     - EHRBASESERVER_hostname=mumc-ehrbase.dh-health
+    - EHRBASESERVER_nodename=mumc.server.dh.unimaas.nl

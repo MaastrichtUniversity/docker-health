@@ -43,4 +43,5 @@ configMapGenerator:
   namespace: dh-health
   literals:
     - EHRBASESERVER_hostname=envida-ehrbase.dh-health
+    - EHRBASESERVER_nodename=envida.server.dh.unimaas.nl
 

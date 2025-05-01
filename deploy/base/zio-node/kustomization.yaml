@@ -43,3 +43,4 @@ configMapGenerator:
   namespace: dh-health
   literals:
     - EHRBASESERVER_hostname=zio-ehrbase.dh-health
+    - EHRBASESERVER_nodename=zio.server.dh.unimaas.nl
