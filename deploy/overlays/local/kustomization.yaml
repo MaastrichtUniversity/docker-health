@@ -279,7 +279,7 @@ configMapGenerator:
   literals:
     - EHRBASESERVER_nodename=openehrtool.mumc.local.dh.unimaas.nl
 
-- name: mumc-openehrtool-config
+- name: zio-openehrtool-config
   namespace: dh-health
   behavior: merge
   literals:
