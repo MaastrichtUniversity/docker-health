@@ -8,7 +8,7 @@ variable "MAVEN_VERSION" {
 }
 
 group "default" {
-  targets = ["transform-rest", "federation-api", "etl-zib", "jupyter-zib", "portal", "filebeat"]
+  targets = ["transform-rest", "federation-api", "etl-zib", "jupyter-zib", "portal"]
 }
 
 target "_src_etl" {
@@ -48,7 +48,7 @@ target "etl-zib" {
 }
 
 target "jupyter-zib" {
-  inherits = ["_hdp_templates"]
+  inherits = ["_hdp_templates", "_src_etl"]
   args = {
     DATA = "zib"
   }
@@ -62,10 +62,4 @@ target "portal" {
   target = "development"
   tags = ["docker-health/portal:${ENV_TAG}"]
   context = "./externals/dh-hdp-portal"
-}
-
-target "filebeat" {
-  dockerfile = "Dockerfile"
-  tags = ["docker-health/filebeat:${ENV_TAG}"]
-  context = "./filebeat"
 }

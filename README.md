@@ -50,9 +50,11 @@ This will start minikube with all needed addons, pull down the external repos, a
 ./dh.sh status
 ```
 
-### 6. For a UI overview of the Minikube kubernetes stack and pods with logs checkout Headlamp
+### 6. For a UI overview of the Minikube kubernetes stack and pods with logs checkout Headlamp or Freelens
 
 https://headlamp.dev/
+
+https://github.com/freelensapp/freelens
 
 Or you can enable the default dashboard with
 
@@ -152,6 +154,13 @@ Once deployed, you can access the services at their local dns name
 ```bash
 # View logs for a specific deployment
 kubectl logs -l app=transform-rest -n dh-health
+```
+#### Log files
+Some log files are still saved in a volumeclaim inside the kubernetes cluster.
+You can access them from the terminal:
+```bash
+minikube ssh
+cd /usr/share/logs
 ```
 
 ### Troubleshooting

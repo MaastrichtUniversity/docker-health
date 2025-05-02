@@ -1,13 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: dh-health
-
-generatorOptions:
-  disableNameSuffixHash: true
-
 resources:
 - namespace.yaml
+- common/volumes.yaml
 # include configmaps.yaml for additional configs
 #- common/configmaps.yaml
 - transform-rest/deployment.yaml
@@ -18,8 +14,6 @@ resources:
 - federation-api/service.yaml
 - federation-api/configmap.yaml
 - federation-api/ingress.yaml
-- filebeat/deployment.yaml
-- filebeat/configmap.yaml
 - jupyter-zib/deployment.yaml
 - jupyter-zib/service.yaml
 - jupyter-zib/configmap.yaml

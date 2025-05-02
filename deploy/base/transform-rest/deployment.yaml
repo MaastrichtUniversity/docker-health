@@ -19,9 +19,6 @@ spec:
         image: docker-health/transform-rest:latest
         ports:
         - containerPort: 8080
-        volumeMounts:
-        - name: logs
-          mountPath: /var/log
         envFrom:
         - configMapRef:
             name: timezone-config
@@ -31,8 +28,3 @@ spec:
             name: zib-templates-config
         - configMapRef:
             name: transform-rest-config
-      volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/filebeat/logs/transform-rest
-          type: DirectoryOrCreate
