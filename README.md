@@ -1,82 +1,132 @@
-# Docker Health - Local Development with Minikube
+# Health Data Platform
 
-This directory contains Kubernetes manifests for deploying Docker Health services to a local Minikube environment. This setup allows developers to test the complete stack without requiring external resources.
 
-# Prerequisites
+## Project Overview
 
-### These services need to be installed on your machine
+This project builds a federated network of Clinical Data Repositories (CDRs) using the [EHRbase](https://ehrbase.org/about-ehrbase/), an open-source electronic health record (EHR) backend.
+It follows the [openEHR standard](https://specifications.openehr.org/) to support interoperable sharing and querying of clinical data across multiple systems.
+Templates are based on the Dutch Healthcare Information Building Blocks ([ZIBs](https://zibs.nl/wiki/HCIM_Mainpage)), ensuring consistent and structured health information.
+
+Each node in the federated network represents a Dutch health organization. The currently supported nodes are:
+
+- **MUMC**: Maastricht University Medical Center (hospital)
+- **ZIO**: Zorg in Ontwikkeling (general practitioners)
+- **ENVIDA**: Envida healthcare organization
+- (**TEST**: Separate node used for testing)
+
+The implementation relies on the following services:
+- [dh-hdp-zib-templates](https://github.com/um-datahub/dh-hdp-zib-templates/tree/2024.1): OpenEHR templates matching the ZIBs
+- [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest/tree/2024.1): REST API for data class transformation into openEHR compositions
+- [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2024.1): ETL workflow for loading data into a CDR
+- [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api/tree/2024.1): Federation service for querying across multiple CDRs
+- [dh-hdp-etl-utils](https://github.com/MaastrichtUniversity/dh-hdp-etl-utils): A package to share ETL utils classes and functions between different code bases
+- [dh-hdp-portal](https://github.com/MaastrichtUniversity/dh-hdp-portal/tree/2024.1): Node User Interface service
+- [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2024.1): Jupyter notebooks for data exploration
+
+
+## Pre-requisites
+
+### Install the following services on your local machine
+
  - docker
- - kubectl or use this alias in your bashrc `alias kubectl="minikube kubectl --"`
+ - kubectl
  - minikube
 
-## Quick Start
+> ### Encryption between filebeat and elk [UNUSED ATM!]
+>
+> CA certificates need to be manually stored in folder `filebeat/certs`.
+> The present files are used for development-purposes.
+> Right now, we're not using encryption, but we've kept these configurations in case we decide to enable them in the future, hence the commented configurations, for example:
+>
+> In `docker-compose.yml` :
+>
+> ```
+> #   - ./filebeat/certs:/etc/certs:ro
+> ```
+>
+> In `filebeat/filebeat.yml` :
+>
+> ```
+> #  ssl.certificate_authorities: ["/etc/certs/ca.crt"]
+> #  ssl.certificate: "/etc/certs/filebeat.dh.local.crt"
+> #  ssl.key: "/etc/certs/filebeat.dh.local.key"
+> ```
+>
+> and others.
+>
+> If encryption needs to be restored, uncomment the configurations and see `2025.1-ssl` branch of `docker-common`.
 
-I've tried to keep the process as easy as it was with dh.sh script
 
-### 1. Setup the Kubernetes cluster and folders
+## Quick start installation with Minikube
+
+The services are deployed to a local Minikube environment using Kubernetes manifests.
+
+Check out `deploy/README.md` for more information.
+
+
+1. Setup the Kubernetes cluster and folders
 
 ```bash
 ./dh.sh setup
 ```
 This will start minikube with all needed addons, pull down the external repos, add log folders to filebeat and set hostnames in /etc/hosts with the minikube ip.
 
-### 2. Pull default docker images from Dockerhub
+2. Pull default docker images from Dockerhub
 
 ```bash
 ./dh.sh pull
 ```
 
-### 3. Build the docker images from externals
+3. Build the docker images from externals
 
 ```bash
 ./dh.sh build
 ```
 
-#### 3a The script supports build with custom tag, but not needed for local development, see next example
+3a. The script supports build with custom tag, but not needed for local development, see next example
 
 ```bash
 ./dh.sh build transform-rest 2.0.0
 ```
 
-### 4. Apply Kubernetes manifests with local overlay
+4. Apply Kubernetes manifests with local overlay
 
 ```bash
 ./dh.sh apply
 ```
 
-### 5. Show status of all pods
+5. Show status of all pods
 
 ```bash
 ./dh.sh status
 ```
 
-### 6. For a UI overview of the Minikube kubernetes stack and pods with logs checkout Headlamp
+6. For a UI overview of the Minikube kubernetes stack and pods with logs
 
-https://headlamp.dev/
+- Headlamp: https://headlamp.dev/
 
-Or you can enable the default dashboard with
+- Freelens: https://github.com/freelensapp/freelens
 
-```bash
-minikube dashboard
-```
+- Or you can enable the default dashboard with `minikube dashboard`
+
 
 ## Manual steps
 
-Follow these manual steps to deploy the Docker Health stack in your local Minikube manually:
+Follow these manual steps to deploy the stack in your local Minikube manually:
 
-### 1. Start Minikube
+1. Start Minikube
 
 ```bash
 minikube start --cpus 4 --memory 8192 --disk-size=30g --driver=docker
 ```
 
-### 2. Enable the Ingress Controller
+2. Enable the Ingress Controller
 
 ```bash
 minikube addons enable ingress
 ```
 
-### 3. Set up Local DNS Entries
+3. Set up Local DNS Entries
 
 Add the local hostname entries to your `/etc/hosts` file:
 
@@ -84,8 +134,7 @@ Add the local hostname entries to your `/etc/hosts` file:
 ./localhost.sh
 ```
 
-
-### 4. Point to Minikube's Docker Daemon && set docker build vars
+4. Point to Minikube's Docker Daemon && set docker build vars
 
 ```bash
 eval $(minikube -p minukube docker-env)
@@ -93,7 +142,7 @@ export ENV_TAG=latest
 export MAVEN_VERSION=3.9.5
 ```
 
-### 4a. Pull external images into Minikube's Docker daemon
+4a. Pull external images into Minikube's Docker daemon
 
 Some components use external images from Docker Hub. Pull them into Minikube's Docker daemon:
 
@@ -102,14 +151,14 @@ Some components use external images from Docker Hub. Pull them into Minikube's D
 ./pull-external-images.sh
 ```
 
-### 5. Build Docker Images
+5. Build Docker Images
 
 ```bash
 # From project root
 docker buildx bake
 ```
 
-### 6. Deploy to Minikube
+6. Deploy to Minikube
 
 ```bash
 kubectl create namespace dh-health
@@ -119,7 +168,7 @@ kubectl create namespace dh-health
 kubectl apply -k deploy/overlays/local
 ```
 
-## Configuration Details
+**Note: Configuration Details**
 
 The local overlay applies the following customizations:
 
@@ -184,7 +233,7 @@ kubectl get pods -n ingress-nginx
 ```
 
 
-### Troubleshooting MacOS specifically
+#### Troubleshooting MacOS specifically
 
 Kubernetes on MacOS is less straight forward unfortunately. While trying to run Kubernetes, you may run into the following issues:
 
