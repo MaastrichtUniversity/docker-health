@@ -120,7 +120,8 @@ externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-t
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git
 externals/dh-hdp-federation-api https://github.com/MaastrichtUniversity/dh-hdp-federation-api.git
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
-externals/dh-hdp-portal https://github.com/MaastrichtUniversity/dh-hdp-portal.git"
+externals/dh-hdp-portal https://github.com/MaastrichtUniversity/dh-hdp-portal.git
+externals/dh-hdp-etl-utils https://github.com/MaastrichtUniversity/dh-hdp-etl-utils.git"
 
 # Check if minikube is running
 check_minikube() {
@@ -264,13 +265,24 @@ clone_externals() {
 }
 
 checkout_externals() {
-    local branch=${1:-main}
+    local branch=${1:-2024.1}
     # Check if any externals exist first
     if [ ! -d "externals" ] || [ -z "$(ls -A externals 2>/dev/null)" ]; then
         log $INF "External repositories don't exist yet. Cloning first..."
         clone_externals
     fi
-    run_repo_action "checkout $branch" "${externals}"
+
+    # dh-hdp-etl-utils is on main branch instead of 2024.1
+    etl_utils_repo="externals/dh-hdp-etl-utils https://github.com/MaastrichtUniversity/dh-hdp-etl-utils.git"
+
+    while IFS= read -r repo_path; do
+    repo_path=$(echo "$repo_path" | xargs)  # Trim leading/trailing whitespace
+    if [[ "$repo_path" == "$etl_utils_repo" ]]; then
+        run_repo_action "checkout main" "$repo_path"
+    else
+        run_repo_action "checkout $branch" "$repo_path"
+    fi
+done <<< "$externals"
 }
 
 # Print usage
