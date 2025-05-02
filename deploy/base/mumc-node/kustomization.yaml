@@ -41,5 +41,6 @@ configMapGenerator:
 
 - name: mumc-openehrtool-config
   namespace: dh-health
-  files:
-  - openehrtool.cfg=mumc-openehrtool.cfg
+  literals:
+    - EHRBASESERVER_hostname=mumc-ehrbase.dh-health
+    - EHRBASESERVER_nodename=mumc.server.dh.unimaas.nl

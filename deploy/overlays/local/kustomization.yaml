@@ -152,3 +152,117 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.mumc.local.dh.unimaas.nl
+
+secretGenerator:
+# Envida-node
+  - name: envida-ehrbase-creds
+    namespace: dh-health
+    literals:
+    - username=user3
+    - password=iasudfyghiausdyfidusywasdiuydasiuasduy
+  - name: envida-ehrbase-admin-creds
+    namespace: dh-health
+    literals:
+    - username=admin3
+    - password=uiysadg8yusadts78dtsdyuasdtuyasdtasd
+  - name: envida-ehrbase-db-admin-creds
+    namespace: dh-health
+    literals:
+    - username=ehrbase3
+    - password=znxjkczxnjkcxjkczxzxcbnkzxcbzxcjk
+  - name: envida-ehrbase-db-creds
+    namespace: dh-health
+    literals:
+    - username=ehrbase_restricted3
+    - password=uisadghasdiuasgdiusdagasduiydasgui
+  - name: envida-portal-creds
+    namespace: dh-health
+    literals:
+    - username=demo@envida.nl
+    - password=testtest
+# MUMC-node
+  - name: mumc-ehrbase-creds
+    namespace: dh-health
+    literals:
+      - username=user1
+      - password=dgfuhdfgsdufygfsduysdfguysdfg
+  - name: mumc-ehrbase-admin-creds
+    namespace: dh-health
+    literals:
+      - username=admin1
+      - password=sdfiouhfduiohfdsiuhsdfiusfdhisdf
+  - name: mumc-ehrbase-db-admin-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase1
+      - password=sdioudshjoiusuydlknasclkhc789-
+  - name: mumc-ehrbase-db-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase_restricted1
+      - password=usghdiugasdiyusdguiyasdgdasuyasdg
+  - name: mumc-portal-creds
+    namespace: dh-health
+    literals:
+      - username=demo@mumc.nl
+      - password=testtest
+# ZIO-node
+  - name: zio-ehrbase-creds
+    namespace: dh-health
+    literals:
+      - username=user2
+      - password=igwASDGHASDIUYASGDUYGASDYUGASD
+  - name: zio-ehrbase-admin-creds
+    namespace: dh-health
+    literals:
+      - username=admin2
+      - password=sdouifhsiufghsdfiyugsdfy
+  - name: zio-ehrbase-db-admin-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase2
+      - password=uihasduidhdaiushuisdahsd
+  - name: zio-ehrbase-db-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase_restricted2
+      - password=sadsdadassdasd
+  - name: zio-portal-creds
+    namespace: dh-health
+    literals:
+      - username=demo@zio.nl
+      - password=testtest
+# TEST-node
+  - name: test-ehrbase-creds
+    namespace: dh-health
+    literals:
+      - username=user0
+      - password=shdiuhdusdhiusdhsiuasdghiudshdasiu
+  - name: test-ehrbase-admin-creds
+    namespace: dh-health
+    literals:
+      - username=admin0
+      - password=dldfhkjlashdkjasdhsdkjhasdkjsa
+  - name: test-ehrbase-db-admin-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase0
+      - password=sadddsaasdasdadsdasasd
+  - name: test-ehrbase-db-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase_restricted0
+      - password=sh7u2349yuihdsia8y98ysdaiusdgha87asd
+# transform
+  - name: transform-creds
+    namespace: dh-health
+    literals:
+      - username=user
+      - password=foobar
+
+configMapGenerator:
+- name: portal-common-config
+  namespace: dh-health
+  behavior: merge
+  literals:
+    - NEXT_PUBLIC_FEDERATION_API_URL=http://federation.local.dh.unimaas.nl

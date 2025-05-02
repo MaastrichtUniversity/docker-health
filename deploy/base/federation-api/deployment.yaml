@@ -20,6 +20,47 @@ spec:
           image: docker-health/federation-api:latest
           ports:
             - containerPort: 8000
+          env:
+            - name: MUMC__EHRBASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mumc-ehrbase-creds
+                  key: username
+            - name: MUMC__EHRBASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mumc-ehrbase-creds
+                  key: password
+            - name: ZIO__EHRBASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: zio-ehrbase-creds
+                  key: username
+            - name: ZIO__EHRBASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: zio-ehrbase-creds
+                  key: password
+            - name: ENVIDA__EHRBASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: envida-ehrbase-creds
+                  key: username
+            - name: ENVIDA__EHRBASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: envida-ehrbase-creds
+                  key: password
+            - name: TRANSFORM_SPRING_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: transform-creds
+                  key: username
+            - name: TRANSFORM_SPRING_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: transform-creds
+                  key: password
           envFrom:
             - configMapRef:
                 name: timezone-config

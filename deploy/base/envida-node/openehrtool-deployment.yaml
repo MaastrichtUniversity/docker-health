@@ -20,14 +20,32 @@ spec:
         image: surfercrs4/openehrtool:latest
         ports:
         - containerPort: 9000
+        env:
+        - name: EHRBASEUSERS_adusername
+          valueFrom:
+            secretKeyRef:
+              name: envida-ehrbase-admin-creds
+              key: username
+        - name: EHRBASEUSERS_adpassword
+          valueFrom:
+            secretKeyRef:
+              name: envida-ehrbase-admin-creds
+              key: password
+        - name: EHRBASEUSERS_username
+          valueFrom:
+            secretKeyRef:
+              name: envida-ehrbase-creds
+              key: username
+        - name: EHRBASEUSERS_password
+          valueFrom:
+            secretKeyRef:
+              name: envida-ehrbase-creds
+              key: password
         envFrom:
         - configMapRef:
             name: openehrtool-config
-        volumeMounts:
-        - name: config
-          mountPath: /code/config/openehrtool.cfg
-          subPath: openehrtool.cfg
-      volumes:
-      - name: config
-        configMap:
-          name: envida-openehrtool-config
+        - configMapRef:
+            name: openehrtool-general-config
+        - configMapRef:
+            name: envida-openehrtool-config
+    
