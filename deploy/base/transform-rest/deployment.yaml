@@ -43,8 +43,3 @@ spec:
             name: zib-templates-config
         - configMapRef:
             name: transform-rest-config
-      volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/filebeat/logs/transform-rest
-          type: DirectoryOrCreate

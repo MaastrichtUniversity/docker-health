@@ -74,7 +74,7 @@ patches:
   patch: |-
     - op: replace
       path: /spec/rules/0/host
-      value: ehrbase.test.tst.dh.unimaas.nl
+      value: ehrbase.tst.dh.unimaas.nl
 
 - target:
     group: networking.k8s.io
@@ -84,8 +84,17 @@ patches:
   patch: |-
     - op: replace
       path: /spec/rules/0/host
-      value: openehrtool.test.tst.dh.unimaas.nl
-      
+      value: openehrtool.tst.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: grafana
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: grafana.tst.dh.unimaas.nl
 
 configMapGenerator:
 - name: portal-common-config

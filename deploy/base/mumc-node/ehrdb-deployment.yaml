@@ -15,6 +15,20 @@ spec:
       labels:
         app: mumc-ehrdb
     spec:
+      volumes:
+      - name: postgres-logs
+        persistentVolumeClaim:
+          claimName: log-pvc
+      initContainers:
+      - name: init-log-dir
+        image: busybox:1.28
+        command: ["/bin/sh", "-c"]
+        args:
+          - mkdir -p /var/log/postgresql && chown 70:70 /var/log/postgresql
+        volumeMounts:
+          - name: postgres-logs
+            mountPath: /var/log/postgresql
+            subPath: mumc
       containers:
       - name: mumc-ehrdb
         image: ehrbase/ehrbase-v2-postgres:16.2
@@ -48,13 +62,13 @@ spec:
         - -c
         - logging_collector=on
         - -c
-        - log_directory=/tmp/postgreslog/
+        - log_directory=/var/log/postgresql
         - -c
         - log_filename=postgresql.log
         - -c
         - log_statement=none
         - -c
-        - log_file_mode=0777
+        - log_file_mode=0644
         - -c
         - log_rotation_age=0
         - -c
@@ -64,9 +78,6 @@ spec:
             name: timezone-config
         - configMapRef:
             name: mumc-ehrdb-config
-        volumeMounts:
-        - name: logs
-          mountPath: /tmp/postgreslog
         livenessProbe:
           exec:
             command:
@@ -75,7 +86,7 @@ spec:
             - postgres
           initialDelaySeconds: 30
           periodSeconds: 10
-      volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/filebeat/logs/mumc/ehrdb
+        volumeMounts:
+        - name: postgres-logs
+          mountPath: /var/log/postgresql
+          subPath: mumc

@@ -31,4 +31,16 @@ docker pull surfercrs4/openehrtool:latest
 echo "Pulling busybox:1.28..."
 docker pull  busybox:1.28
 
+# Grafana
+echo "Pulling Grafana.."
+docker pull grafana/grafana:10.2.3
+
+# Loki
+echo "Pulling Loki.."
+docker pull grafana/loki:2.9.2
+
+# Loki
+echo "Pulling Node-Exporter.."
+docker pull prom/node-exporter:v1.9.1
+
 echo "All external images have been pulled into Minikube's Docker daemon."

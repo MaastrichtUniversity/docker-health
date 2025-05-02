@@ -66,35 +66,22 @@ spec:
               name: transform-creds
               key: password
         volumeMounts:
-        - name: logs
-          mountPath: /code/logs/test
         - name: outputs
           mountPath: /code/outputs
         - name: data
           mountPath: /code/data/test-demo-data
-        - name: etl
-          mountPath: /code
-        - name: templates
-          mountPath: /code/data/templates
+        - name: etl-logs
+          mountPath: /code/logs/test
+          subPath: test
       volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/filebeat/logs/test/etl-zib/
-          type: Directory
       - name: outputs
-        hostPath:
-          path: /mnt/outputs/etl-zib
-          type: DirectoryOrCreate
+        persistentVolumeClaim:
+            claimName: output-pvc
       - name: data
         hostPath:
           path: /mnt/data/test-demo-data
           type: Directory
-      - name: etl
-        hostPath:
-          path: /mnt/externals/dh-hdp-etl
-          type: Directory
-      - name: templates
-        hostPath:
-          path: /mnt/externals/dh-hdp-zib-templates/opt-templates
-          type: Directory
-          
+      - name: etl-logs
+        persistentVolumeClaim:
+          claimName: log-pvc
+  
