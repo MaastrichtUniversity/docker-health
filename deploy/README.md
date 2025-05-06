@@ -1,51 +1,55 @@
-# Kubernetes Deployment for Docker Health Project
+# Kubernetes Deployment
 
-This project contains Kubernetes manifests for deploying various services defined in the Docker Compose configuration. The services include:
+This repository includes Kubernetes manifests for deploying the federated network of CDRs.
 
-- **Transform REST**: A service that handles transformation requests.
-- **Federation API**: A service that provides a federated API.
-- **Filebeat**: A service for shipping logs to a central location.
-- **Jupyter ZIB**: A Jupyter notebook service for data analysis and visualization.
-- **Redis**: A caching service for fast data retrieval.
+## Services
 
-## Node-Specific Components
+Currently supported nodes in the network:
+- **mumc**
+- **zio**
+- **envida**
+- **test**
 
-The Docker Health platform includes several node-specific components that represent different healthcare organizations:
+Each node includes the following components:
+- **ehrbase**: open-source openEHR backend
+  - Hosts available at: http://ehrbase.{NODENAME}.{ENV}.dh.unimaas.nl
+- **ehrdb**: PostgreSQL database linked to EHRBase
+- **etl-zib**: Data extraction, transformation and loading service
+  - Hosts available at: http://etl.{NODENAME}.{ENV}.dh.unimaas.nl
+- **openehrtool**: Development tool for openEHR
+  - Hosts available at: http://openehrtool.{NODENAME}.{ENV}.dh.unimaas.nl
+- **portal**: User Interface of the federated network 
+  - Hosts available at: http://portal.{NODENAME}.{ENV}.dh.unimaas.nl
 
-- **MUMC Node**: Maastricht University Medical Center components
-- **ZIO Node**: Zorg in Ontwikkeling components
-- **Envida Node**: Envida healthcare organization components
-- **Test Node**: Components for testing and development
+Additional deployed services:
 
-Each node includes:
-- EHRBase: OpenEHR clinical data repository
-- EHR Database: PostgreSQL database for EHRBase
-- ETL: Data extraction and transformation service
-- OpenEHR Tool: Browser for OpenEHR data
-- Portal: User interface for healthcare providers
+- **transform-rest**: Performs transformation of data to openEHR composition via a REST api
+  - Host available at: http://transform.{ENV}.dh.unimaas.nl
+- **federation-api**: Provides a federation API for querying data of multiple nodes
+  - Host available at: http://federation.{ENV}.dh.unimaas.nl
+- **etl-rest**: Permits the loading of data via a REST api
+- **filebeat**: A service used for shipping logs to a central location
+- **jupyter-zib**: Jupyter notebook for data analysis and visualization
+  - Host available at: http://jupyter.{ENV}.dh.unimaas.nl
+- **redis**: A caching service for fast data retrieval (related to openehrtools)
 
-### Accessing Node Portals
-
-Once deployed, you can access the portals at:
-- MUMC Portal: http://portal.mumc.{ENV}.dh.unimaas.nl
-- ZIO Portal: http://portal.zio.{ENV}.dh.unimaas.nl
-- Envida Portal: http://portal.envida.{ENV}.dh.unimaas.nl
 
 ## Directory Structure
 
 - **base/**: Contains base Kubernetes resources for all environments
   - **namespace.yaml**: Defines the dh-health namespace
   - **kustomization.yaml**: Main kustomization file that references all resources
+  - **env_files/**: Environment variable files referenced by ConfigMap generators
   - **common/**: Common resources shared across services
   - **transform-rest/**, **federation-api/**, etc.: Service-specific manifests
 - **overlays/**: Environment-specific configurations
+  - **local/**: Local development environment 
   - **tst/**: Development test environment customizations
   - **acc/**: Acceptance environment customizations
   - **prod/**: Production environment customizations
-- **secrets/**: Contains guidelines for managing sensitive information
-- **env_files/**: Environment variable files referenced by ConfigMap generators
+- (**secrets/**: Contains guidelines for managing sensitive information)
 
-## Architecture
+### Notes
 
 - All services are deployed in the `dh-health` namespace
 - Services are exposed via Nginx Ingress controller
@@ -53,15 +57,25 @@ Once deployed, you can access the portals at:
 - Each service has its own deployment, service, and ingress resources
 - Environment-specific configurations are maintained through Kustomize overlays
 - Internal hostnames are formated `servicename.namespace` example "Redis server" hostname = redis.dh-health
-
-## Environment Selection
-
-In Kubernetes, environments are managed through Kustomize overlays:
 - To deploy to a specific environment:
   ```bash
   kubectl apply -k deploy/overlays/tst    # For development environment
   kubectl apply -k deploy/overlays/prod   # For production environment
   ```
+
+## Instructions for new code integration
+
+### Adding a new template
+
+Follow instructions in [dh-hdp-etl/README.md](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2024.1?tab=readme-ov-file#how-to-add-a-new-zib-template-in-the-codebase)
+
+### Adding a new service
+
+TODO
+
+### Adding a new node
+
+TODO
 
 ## Usage
 
