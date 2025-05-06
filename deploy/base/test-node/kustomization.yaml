@@ -33,5 +33,7 @@ configMapGenerator:
 
 - name: test-openehrtool-config
   namespace: dh-health
-  files:
-  - openehrtool.cfg=test-openehrtool.cfg
+  literals:
+    - EHRBASESERVER_hostname=test-ehrbase.dh-health
+    - EHRBASESERVER_nodename=test.server.dh.unimaas.nl
+

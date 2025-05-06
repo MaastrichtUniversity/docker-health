@@ -20,6 +20,17 @@ spec:
         image: docker-health/portal:latest
         ports:
         - containerPort: 3000
+        env:
+          - name: AUTH_USER
+            valueFrom:
+              secretKeyRef:
+                name: envida-portal-creds
+                key: username
+          - name: AUTH_PASS
+            valueFrom:
+              secretKeyRef:
+                name: envida-portal-creds
+                key: password
         envFrom:
         - configMapRef:
             name: envida-portal-config

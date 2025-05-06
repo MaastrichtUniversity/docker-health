@@ -21,6 +21,18 @@ spec:
         command: ["start-notebook.sh", "--ServerApp.token=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7"]
         ports:
           - containerPort: 8888
+        env:
+          - name: TRANSFORM_SPRING_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: transform-creds
+                key: username
+          - name: TRANSFORM_SPRING_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: transform-creds
+                key:
+                  password
         envFrom:
           - configMapRef:
               name: timezone-config

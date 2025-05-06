@@ -19,6 +19,18 @@ spec:
         image: docker-health/transform-rest:latest
         ports:
         - containerPort: 8080
+        env:
+          - name: TRANSFORM_SPRING_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: transform-creds
+                key: username
+          - name: TRANSFORM_SPRING_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: transform-creds
+                key:
+                  password
         envFrom:
         - configMapRef:
             name: timezone-config

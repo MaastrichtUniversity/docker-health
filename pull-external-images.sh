@@ -28,8 +28,8 @@ echo "Pulling OpenEHRTool image..."
 docker pull surfercrs4/openehrtool:latest
 
 # BusyBox for ETL initContainer
-echo "Pulling busybox image..."
-docker pull busybox:1.28
+echo "Pulling busybox:1.28..."
+docker pull  busybox:1.28
 
 # Grafana
 echo "Pulling Grafana.."

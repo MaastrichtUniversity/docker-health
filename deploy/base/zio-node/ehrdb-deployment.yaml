@@ -37,6 +37,26 @@ spec:
         env:
         - name: PGPORT
           value: "5432"
+        - name: EHRBASE_USER_ADMIN
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-db-admin-creds
+              key: username
+        - name: EHRBASE_PASSWORD_ADMIN
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-db-admin-creds
+              key: password
+        - name: EHRBASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-db-creds
+              key: username
+        - name: EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-db-creds
+              key: password
         args:
         - postgres
         - -c

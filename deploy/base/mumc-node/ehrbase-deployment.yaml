@@ -26,6 +26,48 @@ spec:
           - "-jar"
           - "-Dspring.profiles.active=docker"
           - "ehrbase.jar"
+        env:
+          - name: SECURITY_AUTHUSER
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-creds
+                key: username
+          - name: SECURITY_AUTHPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-creds
+                key: password
+          - name: SECURITY_AUTHADMINUSER
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-admin-creds
+                key: username
+          - name: SECURITY_AUTHADMINPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-admin-creds
+                key: password
+          - name: DB_USER_ADMIN
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-db-admin-creds
+                key: username
+          - name: DB_PASS_ADMIN
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-db-admin-creds
+                key: password
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-db-creds
+                key: username
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-db-creds
+                key:
+                  password
         envFrom:
         - configMapRef:
             name: timezone-config
