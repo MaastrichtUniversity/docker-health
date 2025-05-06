@@ -24,7 +24,7 @@ Each node includes the following components:
 Additional deployed services:
 
 - **transform-rest**: Performs transformation of data to openEHR composition via a REST api
-  - Host available at: http://transform.local.dh.unimaas.nl
+  - Host available at: http://transform.{ENV}.dh.unimaas.nl
 - **federation-api**: Provides a federation API for querying data of multiple nodes
   - Host available at: http://federation.{ENV}.dh.unimaas.nl
 - **etl-rest**: Permits the loading of data via a REST api
@@ -63,20 +63,19 @@ Additional deployed services:
   kubectl apply -k deploy/overlays/prod   # For production environment
   ```
 
+## Instructions for new code integration
 
-## Instructions to add a template
+### Adding a new template
 
-For each new template
-- In `base/env_files/zib-templates.env`:
-Add its template id, its semantic version, api route and filename
-- In each `deploy/base/{NODENAME}-node/{NODENAME}/etl.env`:
-Append the template ID to the TEMPLATE_IDS variable.
+Follow instructions in [dh-hdp-etl/README.md](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2024.1?tab=readme-ov-file#how-to-add-a-new-zib-template-in-the-codebase)
 
-
-## Instructions to add a node
+### Adding a new service
 
 TODO
 
+### Adding a new node
+
+TODO
 
 ## Usage
 
