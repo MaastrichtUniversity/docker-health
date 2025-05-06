@@ -132,23 +132,3 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.mumc.local.dh.unimaas.nl
-
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: zio-openehrtool-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: openehrtool.zio.local.dh.unimaas.nl
-
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: envida-openehrtool-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: openehrtool.envida.local.dh.unimaas.nl

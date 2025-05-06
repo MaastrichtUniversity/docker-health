@@ -313,9 +313,9 @@ main() {
     case $command in
         setup)
             check_minikube
-            setup_hosts
             clone_externals
             checkout_externals $1
+            setup_hosts
             setup_mounts
             ;;
 

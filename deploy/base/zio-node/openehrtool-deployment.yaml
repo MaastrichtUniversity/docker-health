@@ -24,10 +24,10 @@ spec:
         - configMapRef:
             name: openehrtool-config
         volumeMounts:
-        - name: config-files
+        - name: config
           mountPath: /code/config/openehrtool.cfg
           subPath: openehrtool.cfg
       volumes:
-      - name: config-files
+      - name: config
         configMap:
           name: zio-openehrtool-config

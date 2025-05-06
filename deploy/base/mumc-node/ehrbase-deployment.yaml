@@ -25,16 +25,12 @@ spec:
         args:
           - "-jar"
           - "-Dspring.profiles.active=docker"
-          - "-Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log"
           - "ehrbase.jar"
         envFrom:
         - configMapRef:
             name: timezone-config
         - configMapRef:
             name: mumc-ehrbase-config
-        volumeMounts:
-        - name: logs
-          mountPath: /tmp/ehrbaselog/ehrbase.log
         livenessProbe:
           httpGet:
             path: /ehrbase/management/health
@@ -49,7 +45,3 @@ spec:
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 10
-      volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/filebeat/logs/mumc/ehrbase/ehrbase.log

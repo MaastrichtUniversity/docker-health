@@ -33,33 +33,9 @@ spec:
         volumeMounts:
           - name: demo-data
             mountPath: /home/jovyan/data
-          - name: notebooks
-            mountPath: /home/jovyan/notebooks
-          - name: etl
-            mountPath: /home/jovyan/etl.py
-          - name: requirements
-            mountPath: /home/jovyan/requirements.txt
-          - name: src
-            mountPath: /home/jovyan/src
       volumes:
         - name: demo-data
           hostPath:
             path: /mnt/data
-            type: Directory
-        - name: notebooks
-          hostPath:
-            path: /mnt/externals/dh-hdp-notebooks
-            type: Directory
-        - name: etl
-          hostPath:
-            path: /mnt/externals/dh-hdp-etl/etl.py
-            type: File
-        - name: requirements
-          hostPath:
-            path: /mnt/externals/dh-hdp-etl/requirements.txt
-            type: File
-        - name: src
-          hostPath:
-            path: /mnt/externals/dh-hdp-etl/src
             type: Directory
             
