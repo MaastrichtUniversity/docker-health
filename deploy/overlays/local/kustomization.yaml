@@ -87,6 +87,36 @@ patches:
     group: networking.k8s.io
     version: v1
     kind: Ingress
+    name: mumc-etl-zib-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: etl.mumc.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-etl-zib-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: etl.zio.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: envida-etl-zib-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: etl.envida.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
     name: mumc-portal-ingress
   patch: |-
     - op: replace

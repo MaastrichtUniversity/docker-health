@@ -18,3 +18,6 @@ echo "$MINIKUBE_IP ehrbase.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP ehrbase.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP ehrbase.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP ehrbase.test.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts

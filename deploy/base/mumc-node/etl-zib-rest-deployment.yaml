@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mumc-etl-zib-rest
+  namespace: dh-health
+  labels:
+    app: mumc-etl-zib-rest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mumc-etl-zib-rest
+  template:
+    metadata:
+      labels:
+        app: mumc-etl-zib-rest
+    spec:
+      containers:
+      - name: mumc-etl-zib-rest
+        image: docker-health/etl-zib:latest
+        ports:
+          - containerPort: 8040
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: transform-server-config
+        - configMapRef:
+            name: zib-templates-config
+        - configMapRef:
+            name: mumc-etl-config
+        env:
+        - name: LOGSTASH_TAGS
+          value: ETL_ZIB
+        volumeMounts:
+        - name: logs
+          mountPath: /code/logs/mumc
+        - name: outputs
+          mountPath: /code/outputs
+        - name: data
+          mountPath: /code/data/mumc-demo-data
+        - name: etl
+          mountPath: /code
+        - name: templates
+          mountPath: /code/data/templates
+      volumes:
+      - name: logs
+        hostPath:
+          path: /mnt/filebeat/logs/mumc/etl-zib/
+          type: Directory
+      - name: outputs
+        hostPath:
+          path: /mnt/outputs/etl-zib
+          type: DirectoryOrCreate
+      - name: data
+        hostPath:
+          path: /mnt/data/mumc-demo-data
+          type: Directory
+      - name: etl
+        hostPath:
+          path: /mnt/externals/dh-hdp-etl
+          type: Directory
+      - name: templates
+        hostPath:
+          path: /mnt/externals/dh-hdp-zib-templates/opt-templates
+          type: Directory

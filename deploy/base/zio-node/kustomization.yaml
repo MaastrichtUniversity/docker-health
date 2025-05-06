@@ -11,6 +11,9 @@ resources:
 - ehrdb-deployment.yaml
 - ehrdb-service.yaml
 - etl-zib-deployment.yaml
+- etl-zib-rest-deployment.yaml
+- etl-zib-rest-service.yaml
+- etl-zib-rest-ingress.yaml
 - openehrtool-deployment.yaml
 - openehrtool-service.yaml
 - openehrtool-ingress.yaml
