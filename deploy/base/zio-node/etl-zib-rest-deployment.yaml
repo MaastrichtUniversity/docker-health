@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: zio-etl-zib-rest
-        image: docker-health/etl-zib:latest
+        image: docker-health/etl-zib-rest:latest
         ports:
           - containerPort: 8040
         envFrom:

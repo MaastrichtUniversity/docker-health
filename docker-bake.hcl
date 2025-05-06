@@ -50,7 +50,7 @@ target "etl-zib" {
 target "etl-zib-rest" {
   inherits = ["_hdp_templates"]
   dockerfile = "Dockerfile.etl-zib-rest"
-  tags = ["docker-health/etl-zib:${ENV_TAG}"]
+  tags = ["docker-health/etl-zib-rest:${ENV_TAG}"]
   context = "./externals/dh-hdp-etl"
 }
 
