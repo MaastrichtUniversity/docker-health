@@ -5,8 +5,6 @@ resources:
 - ../../base
 
 patches:
-- path: ingress-patches.yaml
-
 - target:
     kind: Deployment
   patch: |-
@@ -74,7 +72,7 @@ patches:
   patch: |-
     - op: replace
       path: /spec/rules/0/host
-      value: ehrbase.test.acc.dh.unimaas.nl
+      value: ehrbase.acc.dh.unimaas.nl
 
 - target:
     group: networking.k8s.io
@@ -84,5 +82,15 @@ patches:
   patch: |-
     - op: replace
       path: /spec/rules/0/host
-      value: openehrtool.test.acc.dh.unimaas.nl
+      value: openehrtool.acc.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: grafana
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: grafana.acc.dh.unimaas.nl
 

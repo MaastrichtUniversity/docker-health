@@ -1,13 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: dh-health
-
-generatorOptions:
-  disableNameSuffixHash: true
-
 resources:
 - namespace.yaml
+- common/volumes.yaml
 # include configmaps.yaml for additional configs
 #- common/configmaps.yaml
 - transform-rest/deployment.yaml
@@ -18,8 +14,6 @@ resources:
 - federation-api/service.yaml
 - federation-api/configmap.yaml
 - federation-api/ingress.yaml
-- filebeat/deployment.yaml
-- filebeat/configmap.yaml
 - jupyter-zib/deployment.yaml
 - jupyter-zib/service.yaml
 - jupyter-zib/configmap.yaml
@@ -38,8 +32,8 @@ configMapGenerator:
 
 - name: transform-server-config
   namespace: dh-health
-  envs:
-  - env_files/transform_server.env
+  literals:
+      - TRANSFORM_SPRING_BASE_URL=http://transform-rest.dh-health:8080
 
 - name: zib-templates-config
   namespace: dh-health
@@ -53,10 +47,18 @@ configMapGenerator:
 
 - name: portal-common-config
   namespace: dh-health
-  envs:
-  - env_files/portal_common.env
+  literals:
+    - FEDERATION_SERVER_URL=http://federation-api.dh-health:8000
 
 - name: openehrtool-config
   namespace: dh-health
   envs:
   - env_files/openEHR-tool.env
+
+- name: openehrtool-general-config
+  namespace: dh-health
+  literals:
+    - REDISSERVER_hostname=redis.dh-health
+    - REDISSERVER_port=6379
+    - REDISSERVER_eventsrecorded=100
+    - EHRBASESERVER_port=8080

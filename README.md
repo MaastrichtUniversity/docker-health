@@ -1,6 +1,5 @@
 # Health Data Platform
 
-
 ## Project Overview
 
 This project builds a federated network of Clinical Data Repositories (CDRs) using the [EHRbase](https://ehrbase.org/about-ehrbase/), an open-source electronic health record (EHR) backend.
@@ -15,6 +14,7 @@ Each node in the federated network represents a Dutch health organization. The c
 - (**TEST**: Separate node used for testing)
 
 The implementation relies on the following services:
+
 - [dh-hdp-zib-templates](https://github.com/um-datahub/dh-hdp-zib-templates/tree/2024.1): OpenEHR templates matching the ZIBs
 - [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest/tree/2024.1): REST API for data class transformation into openEHR compositions
 - [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2024.1): ETL workflow for loading data into a CDR
@@ -23,14 +23,13 @@ The implementation relies on the following services:
 - [dh-hdp-portal](https://github.com/MaastrichtUniversity/dh-hdp-portal/tree/2024.1): Node User Interface service
 - [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2024.1): Jupyter notebooks for data exploration
 
-
 ## Pre-requisites
 
 ### Install the following services on your local machine
 
- - docker
- - kubectl
- - minikube
+- docker
+- kubectl
+- minikube
 
 > ### Encryption between filebeat and elk [UNUSED ATM!]
 >
@@ -56,19 +55,18 @@ The implementation relies on the following services:
 >
 > If encryption needs to be restored, uncomment the configurations and see `2025.1-ssl` branch of `docker-common`.
 
-
 ## Quick start installation with Minikube
 
 The services are deployed to a local Minikube environment using Kubernetes manifests.
 
 Check out `deploy/README.md` for more information.
 
-
 1. Setup the Kubernetes cluster and folders
 
 ```bash
 ./dh.sh setup
 ```
+
 This will start minikube with all needed addons, pull down the external repos, add log folders to filebeat and set hostnames in /etc/hosts with the minikube ip.
 
 2. Pull default docker images from Dockerhub
@@ -101,14 +99,13 @@ This will start minikube with all needed addons, pull down the external repos, a
 ./dh.sh status
 ```
 
-6. For a UI overview of the Minikube kubernetes stack and pods with logs
+### 6. For a UI overview of the Minikube kubernetes stack and pods with logs checkout Headlamp or Freelens
 
 - Headlamp: https://headlamp.dev/
 
-- Freelens: https://github.com/freelensapp/freelens
+https://github.com/freelensapp/freelens
 
-- Or you can enable the default dashboard with `minikube dashboard`
-
+Or you can enable the default dashboard with
 
 ## Manual steps
 
@@ -203,9 +200,20 @@ Once deployed, you can access the services at their local dns name
 kubectl logs -l app=transform-rest -n dh-health
 ```
 
+#### Log files
+
+Some log files are still saved in a volumeclaim inside the kubernetes cluster.
+You can access them from the terminal:
+
+```bash
+minikube ssh
+cd /usr/share/logs
+```
+
 ### Troubleshooting
 
 #### Images Not Found
+
 If you see `ImagePullBackOff` errors, ensure you've built the images with Minikube's Docker daemon:
 
 ```bash
@@ -215,6 +223,7 @@ kubectl rollout restart deployment -n dh-health
 ```
 
 #### Storage Issues
+
 For persistent storage issues:
 
 ```bash
@@ -226,12 +235,12 @@ kubectl get pvc -n dh-health
 ```
 
 #### Ingress Not Working
+
 Check if the ingress controller is properly installed:
 
 ```bash
 kubectl get pods -n ingress-nginx
 ```
-
 
 #### Troubleshooting MacOS specifically
 
@@ -252,7 +261,7 @@ minikube delete; minikube start --driver=docker
 ```
 # allows for use of 'sed' instead of 'gsed'; HOMEBREW_PREFIX is the location of your homebrew (`which brew`)
 PATH="$HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin:$PATH"
-``` 
+```
 
 Restart the terminal for the change to take effect:
 
@@ -260,21 +269,23 @@ Restart the terminal for the change to take effect:
 source ~/.zshrc
 ```
 
-
 3. Minikube seemingly being starved of resources. This problem in particular could present itself when trying to start the `ehrdb` and `ehrbase` pods, where the pods continuously timeout and restart. Using the following does not work on MacOS:
 
 ```bash
 minikube start --cpus 4 --memory 8192 --disk-size=30g --driver=docker
 ```
+
 Instead, specify the allocated resources through the minikube config file with the number of cpus and amount of memory you require. Good practise is to leave some breathing room for your OS, so do not max the amount of cpus and memory based on your specific system specs:
+
 ```bash
 minikube config set cpus 4 # specify number of cpus you require
 minikube config set memory 8192 # specify amount of memory you require
 ```
+
 These changes take effect after restarting minikube and should persist across sessions.
 
-
 4. By default, the Minikube ip (through `minikube ip`) will be used and added to the virtual hosts in `/etc/hosts`. However, using the Minikube ip does not work for this purpose on MacOS. Instead, use `127.0.0.1` and add these to `/etc/hosts` manually:
+
 ```
 # these can replace the minikube ips
 127.0.0.1 ehrbase.envida.local.dh.unimaas.nl
@@ -294,12 +305,14 @@ These changes take effect after restarting minikube and should persist across se
 ```
 
 5. There is an issue regarding the ingress and ingress-dns addons on MacOS. In order to work around this, use `minikube tunnel`. This tunnel creates a route to services deployed with the LoadBalancer type and sets their Ingress to their ClusterIPs. Use a different terminal for this because it has to stay open:
+
 ```bash
 # in a different terminal; sudo is required
 sudo minikube tunnel
 ```
 
 After all that, the following seems to work:
+
 ```bash
 minikube start --driver=docker
 minikube addons enable ingress

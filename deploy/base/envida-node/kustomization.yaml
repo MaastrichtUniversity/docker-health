@@ -44,5 +44,7 @@ configMapGenerator:
 
 - name: envida-openehrtool-config
   namespace: dh-health
-  files:
-  - openehrtool.cfg=envida-openehrtool.cfg
+  literals:
+    - EHRBASESERVER_hostname=envida-ehrbase.dh-health
+    - EHRBASESERVER_nodename=envida.server.dh.unimaas.nl
+

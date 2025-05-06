@@ -15,6 +15,20 @@ spec:
       labels:
         app: zio-ehrdb
     spec:
+      volumes:
+      - name: postgres-logs
+        persistentVolumeClaim:
+          claimName: log-pvc
+      initContainers:
+      - name: init-log-dir
+        image: busybox:1.28
+        command: ["/bin/sh", "-c"]
+        args:
+          - mkdir -p /var/log/postgresql && chown 70:70 /var/log/postgresql
+        volumeMounts:
+          - name: postgres-logs
+            mountPath: /var/log/postgresql
+            subPath: zio
       containers:
       - name: zio-ehrdb
         image: ehrbase/ehrbase-v2-postgres:16.2
@@ -23,30 +37,47 @@ spec:
         env:
         - name: PGPORT
           value: "5432"
+        - name: EHRBASE_USER_ADMIN
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-db-admin-creds
+              key: username
+        - name: EHRBASE_PASSWORD_ADMIN
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-db-admin-creds
+              key: password
+        - name: EHRBASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-db-creds
+              key: username
+        - name: EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-db-creds
+              key: password
         args:
         - postgres
         - -c
         - logging_collector=on
         - -c
-        - log_directory=/tmp/postgreslog/
+        - log_directory=/var/log/postgresql
         - -c
         - log_filename=postgresql.log
         - -c
         - log_statement=none
         - -c
-        - log_file_mode=0777
+        - log_file_mode=0644
         - -c
-        - log_rotation_age=0
+        - log_rotation_age=1d
         - -c
-        - log_rotation_size=0
+        - log_rotation_size=100MB
         envFrom:
         - configMapRef:
             name: timezone-config
         - configMapRef:
             name: zio-ehrdb-config
-        volumeMounts:
-        - name: logs
-          mountPath: /tmp/postgreslog/postgresql.log
         livenessProbe:
           exec:
             command:
@@ -55,7 +86,7 @@ spec:
             - postgres
           initialDelaySeconds: 30
           periodSeconds: 10
-      volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/filebeat/logs/zio/ehrdb/postgresql.log
+        volumeMounts:
+        - name: postgres-logs
+          mountPath: /var/log/postgresql
+          subPath: zio

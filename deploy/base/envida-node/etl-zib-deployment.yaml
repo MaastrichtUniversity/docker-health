@@ -17,9 +17,9 @@ spec:
     spec:
       initContainers:
       - name: init-envida-etl
-        image: docker-health/etl-zib:latest
+        image: busybox:1.28
         imagePullPolicy: Never
-        command: ['sh', '-c', 'sleep 70']
+        command: [ 'sh', '-c', 'for i in 1 2 3 4 5 6 7 8 9 ; do echo waiting; sleep 10; if wget -T5 -qO- -Y off envida-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then exit 0; fi; done; exit 1' ]
       containers:
       - name: envida-etl-zib
         image: docker-health/etl-zib:latest
@@ -33,37 +33,52 @@ spec:
         - configMapRef:
             name: envida-etl-config
         env:
-        - name: LOGSTASH_TAGS
-          value: ETL_ZIB
+        - name: EHRBASE_USERNAME
+          valueFrom:
+           secretKeyRef:
+             name: envida-ehrbase-creds
+             key: username
+        - name: EHRBASE_PASSWORD
+          valueFrom:
+             secretKeyRef:
+               name: envida-ehrbase-creds
+               key: password
+        - name: EHRBASE_ADMIN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: envida-ehrbase-admin-creds
+              key: username
+        - name: EHRBASE_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: envida-ehrbase-admin-creds
+              key: password
+        - name: TRANSFORM_SPRING_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: username
+        - name: TRANSFORM_SPRING_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: password
         volumeMounts:
-        - name: logs
-          mountPath: /code/logs/envida
         - name: outputs
           mountPath: /code/outputs
         - name: data
           mountPath: /code/data/envida-demo-data
-        - name: etl
-          mountPath: /code
-        - name: templates
-          mountPath: /code/data/templates
+        - name: etl-logs
+          mountPath: /code/logs/envida
+          subPath: envida
       volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/filebeat/logs/envida/etl-zib/
-          type: Directory
       - name: outputs
-        hostPath:
-          path: /mnt/outputs/etl-zib
-          type: DirectoryOrCreate
+        persistentVolumeClaim:
+          claimName: output-pvc
       - name: data
         hostPath:
           path: /mnt/data/envida-demo-data
           type: Directory
-      - name: etl
-        hostPath:
-          path: /mnt/externals/dh-hdp-etl
-          type: Directory
-      - name: templates
-        hostPath:
-          path: /mnt/externals/dh-hdp-zib-templates/opt-templates
-          type: Directory
+      - name: etl-logs
+        persistentVolumeClaim:
+          claimName: log-pvc
