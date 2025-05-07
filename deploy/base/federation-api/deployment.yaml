@@ -21,6 +21,21 @@ spec:
           ports:
             - containerPort: 8000
           env:
+            - name: MUMC__NODENAME
+              valueFrom:
+                secretKeyRef:
+                  name: mumc-federation-key # or mumc-federation-break-the-glass-key
+                  key: name
+            - name: MUMC__FEDERATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mumc-federation-key
+                  key: key
+            - name: MUMC__FEDERATION_BTG_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mumc-federation-break-the-glass-key
+                  key: key
             - name: MUMC__EHRBASE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -31,6 +46,21 @@ spec:
                 secretKeyRef:
                   name: mumc-ehrbase-creds
                   key: password
+            - name: ZIO__NODENAME
+              valueFrom:
+                secretKeyRef:
+                  name: zio-federation-key # or zio-federation-break-the-glass-key
+                  key: name
+            - name: ZIO__FEDERATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: zio-federation-key
+                  key: key
+            - name: ZIO__FEDERATION_BTG_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: zio-federation-break-the-glass-key
+                  key: key
             - name: ZIO__EHRBASE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -51,6 +81,21 @@ spec:
                 secretKeyRef:
                   name: envida-ehrbase-creds
                   key: password
+            - name: ENVIDA__NODENAME
+              valueFrom:
+                secretKeyRef:
+                  name: envida-federation-key # or envida-federation-break-the-glass-key
+                  key: name
+            - name: ENVIDA__FEDERATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: envida-federation-key
+                  key: key
+            - name: ENVIDA__FEDERATION_BTG_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: envida-federation-break-the-glass-key
+                  key: key
             - name: TRANSFORM_SPRING_USERNAME
               valueFrom:
                 secretKeyRef:
