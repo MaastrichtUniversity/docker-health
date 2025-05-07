@@ -21,11 +21,6 @@ spec:
           ports:
             - containerPort: 8000
           env:
-            - name: MUMC__NODENAME
-              valueFrom:
-                secretKeyRef:
-                  name: mumc-federation-key # or mumc-federation-break-the-glass-key
-                  key: name
             - name: MUMC__FEDERATION_KEY
               valueFrom:
                 secretKeyRef:
@@ -46,11 +41,6 @@ spec:
                 secretKeyRef:
                   name: mumc-ehrbase-creds
                   key: password
-            - name: ZIO__NODENAME
-              valueFrom:
-                secretKeyRef:
-                  name: zio-federation-key # or zio-federation-break-the-glass-key
-                  key: name
             - name: ZIO__FEDERATION_KEY
               valueFrom:
                 secretKeyRef:
@@ -81,11 +71,6 @@ spec:
                 secretKeyRef:
                   name: envida-ehrbase-creds
                   key: password
-            - name: ENVIDA__NODENAME
-              valueFrom:
-                secretKeyRef:
-                  name: envida-federation-key # or envida-federation-break-the-glass-key
-                  key: name
             - name: ENVIDA__FEDERATION_KEY
               valueFrom:
                 secretKeyRef:

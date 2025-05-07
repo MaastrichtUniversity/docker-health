@@ -193,12 +193,10 @@ secretGenerator:
   - name: envida-federation-key
     namespace: dh-health
     literals:
-      - name=envida
       - key=key3
   - name: envida-federation-break-the-glass-key
     namespace: dh-health
     literals:
-      - name=envida
       - key=btgkey3
 # MUMC-node
   - name: mumc-ehrbase-creds
@@ -229,12 +227,10 @@ secretGenerator:
   - name: mumc-federation-key
     namespace: dh-health
     literals:
-      - name=mumc
       - key=key1
   - name: mumc-federation-break-the-glass-key
     namespace: dh-health
     literals:
-      - name=mumc
       - key=btgkey1
 # ZIO-node
   - name: zio-ehrbase-creds
@@ -265,12 +261,10 @@ secretGenerator:
   - name: zio-federation-key
     namespace: dh-health
     literals:
-      - name=zio
       - key=key2
   - name: zio-federation-break-the-glass-key
     namespace: dh-health
     literals:
-      - name=zio
       - key=btgkey2
 # TEST-node
   - name: test-ehrbase-creds

@@ -5,3 +5,7 @@ metadata:
   namespace: dh-health
 data:
   LOGSTASH_TAGS: "FEDERATION_API"
+  FEDERATION_LOGGER_FILENAME: "logs/federation-api/federation-api.log"
+  MUMC__NODENAME: "mumc"
+  ZIO__NODENAME: "zio"
+  ENVIDA__NODENAME: "envida"
