@@ -18,49 +18,56 @@ spec:
       containers:
       - name: mumc-etl-zib-rest
         image: docker-health/etl-zib-rest:latest
-        ports:
-          - containerPort: 8040
         envFrom:
         - configMapRef:
             name: timezone-config
         - configMapRef:
             name: transform-server-config
         - configMapRef:
-            name: zib-templates-config
-        - configMapRef:
             name: mumc-etl-config
         env:
         - name: LOGSTASH_TAGS
           value: ETL_ZIB
+        - name: EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mumc-ehrbase-creds
+              key: username
+        - name: EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mumc-ehrbase-creds
+              key: password
+        - name: EHRBASE_ADMIN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mumc-ehrbase-admin-creds
+              key: username
+        - name: EHRBASE_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mumc-ehrbase-admin-creds
+              key: password
+        - name: TRANSFORM_SPRING_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: username
+        - name: TRANSFORM_SPRING_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: password
         volumeMounts:
-        - name: logs
-          mountPath: /code/logs/mumc
         - name: outputs
           mountPath: /code/outputs
-        - name: data
-          mountPath: /code/data/mumc-demo-data
-        - name: etl
-          mountPath: /code
-        - name: templates
-          mountPath: /code/data/templates
+        - name: etl-logs
+          mountPath: /code/logs/mumc
+          subPath: mumc
       volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/filebeat/logs/mumc/etl-zib/
-          type: Directory
       - name: outputs
-        hostPath:
-          path: /mnt/outputs/etl-zib
-          type: DirectoryOrCreate
-      - name: data
-        hostPath:
-          path: /mnt/data/mumc-demo-data
-          type: Directory
-      - name: etl
-        hostPath:
-          path: /mnt/externals/dh-hdp-etl
-          type: Directory
-      - name: templates
-        hostPath:
-          path: /mnt/externals/dh-hdp-zib-templates/opt-templates
-          type: Directory
+        persistentVolumeClaim:
+          claimName: output-pvc
+      - name: etl-logs
+        persistentVolumeClaim:
+          claimName: log-pvc
