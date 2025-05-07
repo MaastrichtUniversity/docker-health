@@ -31,6 +31,16 @@ spec:
               secretKeyRef:
                 name: zio-portal-creds
                 key: password
+          - name: NEXT_PUBLIC_FEDERATION_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: zio-federation-key
+                key: key
+          - name: NEXT_PUBLIC_FEDERATION_BTG_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: zio-federation-break-the-glass-key
+                key: key
         envFrom:
         - configMapRef:
             name: zio-portal-config
