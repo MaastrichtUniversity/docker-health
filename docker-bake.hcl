@@ -42,14 +42,16 @@ target "federation-api" {
 
 target "etl-zib" {
   inherits = ["_hdp_templates"]
-  dockerfile = "Dockerfile.etl-zib"
+  target = "pipeline"
+  dockerfile = "Dockerfile"
   tags = ["docker-health/etl-zib:${ENV_TAG}"]
   context = "./externals/dh-hdp-etl"
 }
 
 target "etl-zib-rest" {
   inherits = ["_hdp_templates"]
-  dockerfile = "Dockerfile.etl-zib-rest"
+  target = "rest"
+  dockerfile = "Dockerfile"
   tags = ["docker-health/etl-zib-rest:${ENV_TAG}"]
   context = "./externals/dh-hdp-etl"
 }
