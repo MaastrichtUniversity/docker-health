@@ -24,6 +24,8 @@ spec:
         - configMapRef:
             name: transform-server-config
         - configMapRef:
+            name: zib-templates-config
+        - configMapRef:
             name: envida-etl-config
         env:
         - name: LOGSTASH_TAGS
