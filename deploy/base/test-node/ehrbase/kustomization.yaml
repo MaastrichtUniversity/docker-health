@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+- ehrbase-deployment.yaml
+- ehrbase-service.yaml
+- ehrbase-ingress.yaml
+
+configMapGenerator:
+- name: test-ehrbase-config
+  namespace: dh-health
+  envs:
+  - ehrbase.env

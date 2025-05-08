@@ -7,7 +7,9 @@ resources:
 - ../../jobs
 - ../../base/common
 - ../../base/transform-rest
-- ../../base/test-node
+- ../../base/test-node/ehrbase
+- ../../base/test-node/ehrdb
+- ../../base/test-node/etl-config
 - ../../base/env_files
 
 patches:
