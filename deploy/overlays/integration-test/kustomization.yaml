@@ -1,0 +1,88 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: dh-health
+
+resources:
+- namespace.yaml
+- ../../jobs
+- ../../base/common
+- ../../base/transform-rest
+- ../../base/test-node
+- ../../base/env_files
+
+patches:
+- target:
+    kind: Deployment
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Never
+- target:
+    kind: Job
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Never
+
+# Individual ingress host patches
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: transform-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: transform.local.dh.unimaas.nl
+
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: test-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.test.local.dh.unimaas.nl
+
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: test-openehrtool-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: openehrtool.test.local.dh.unimaas.nl
+
+
+secretGenerator:
+# TEST-node
+  - name: test-ehrbase-creds
+    namespace: dh-health
+    literals:
+      - username=user0
+      - password=shdiuhdusdhiusdhsiuasdghiudshdasiu
+  - name: test-ehrbase-admin-creds
+    namespace: dh-health
+    literals:
+      - username=admin0
+      - password=dldfhkjlashdkjasdhsdkjhasdkjsa
+  - name: test-ehrbase-db-admin-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase0
+      - password=sadddsaasdasdadsdasasd
+  - name: test-ehrbase-db-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase_restricted0
+      - password=sh7u2349yuihdsia8y98ysdaiusdgha87asd
+# transform
+  - name: transform-creds
+    namespace: dh-health
+    literals:
+      - username=user
+      - password=foobar

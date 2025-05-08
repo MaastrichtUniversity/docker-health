@@ -1,0 +1,66 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: etl-zib-test
+  namespace: dh-health
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: test-etl-zib-runner
+        image: docker-health/etl-zib-test:latest
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: transform-server-config
+        - configMapRef:
+            name: zib-templates-config
+        - configMapRef:
+            name: test-etl-config
+        env:
+        - name: EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: test-ehrbase-creds
+              key: username
+        - name: EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: test-ehrbase-creds
+              key: password
+        - name: EHRBASE_ADMIN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: test-ehrbase-admin-creds
+              key: username
+        - name: EHRBASE_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: test-ehrbase-admin-creds
+              key: password
+        - name: TRANSFORM_SPRING_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: username
+        - name: TRANSFORM_SPRING_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: password
+        volumeMounts:
+        - name: data
+          mountPath: /code/data/test-demo-data
+        - name: logs
+          mountPath: /code/logs/test
+      volumes:
+      - name: data
+        hostPath:
+          path: /mnt/data/test-demo-data
+          type: Directory
+      - name: logs
+        hostPath:
+          path: /mnt/logs
+          type: DirectoryOrCreate
