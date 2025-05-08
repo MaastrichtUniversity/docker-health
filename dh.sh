@@ -167,8 +167,8 @@ apply_manifests() {
     local overlay=${1:-local}
     
     echo -e "${YELLOW}Applying Kubernetes manifests using kustomize overlay: $overlay${NC}"
-    kubectl apply -k deploy/overlays/$overlay
-    
+    kubectl apply -k deploy/overlays/$overlay | awk '/created|configured/ {print "\033[1;34m" $0 "\033[0m"; next} {print}'
+
     echo -e "${GREEN}Successfully applied manifests${NC}"
 }
 
