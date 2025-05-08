@@ -169,27 +169,27 @@ secretGenerator:
     namespace: dh-health
     literals:
     - username=user3
-    - password=iasudfyghiausdyfidusywasdiuydasiuasduy
+    - password=foobar3
   - name: envida-ehrbase-admin-creds
     namespace: dh-health
     literals:
     - username=admin3
-    - password=uiysadg8yusadts78dtsdyuasdtuyasdtasd
+    - password=admin3
   - name: envida-ehrbase-db-admin-creds
     namespace: dh-health
     literals:
     - username=ehrbase3
-    - password=znxjkczxnjkcxjkczxzxcbnkzxcbzxcjk
+    - password=ehrbase3
   - name: envida-ehrbase-db-creds
     namespace: dh-health
     literals:
     - username=ehrbase_restricted3
-    - password=uisadghasdiuasgdiusdagasduiydasgui
+    - password=ehrbase_restricted3
   - name: envida-portal-creds
     namespace: dh-health
     literals:
     - username=demo@envida.nl
-    - password=testtest
+    - password=foobar
   - name: envida-federation-key
     namespace: dh-health
     literals:
@@ -203,27 +203,27 @@ secretGenerator:
     namespace: dh-health
     literals:
       - username=user1
-      - password=dgfuhdfgsdufygfsduysdfguysdfg
+      - password=foobar1
   - name: mumc-ehrbase-admin-creds
     namespace: dh-health
     literals:
       - username=admin1
-      - password=sdfiouhfduiohfdsiuhsdfiusfdhisdf
+      - password=admin1
   - name: mumc-ehrbase-db-admin-creds
     namespace: dh-health
     literals:
       - username=ehrbase1
-      - password=sdioudshjoiusuydlknasclkhc789-
+      - password=ehrbase1
   - name: mumc-ehrbase-db-creds
     namespace: dh-health
     literals:
       - username=ehrbase_restricted1
-      - password=usghdiugasdiyusdguiyasdgdasuyasdg
+      - password=ehrbase_restricted1
   - name: mumc-portal-creds
     namespace: dh-health
     literals:
       - username=demo@mumc.nl
-      - password=testtest
+      - password=foobar
   - name: mumc-federation-key
     namespace: dh-health
     literals:
@@ -237,27 +237,27 @@ secretGenerator:
     namespace: dh-health
     literals:
       - username=user2
-      - password=igwASDGHASDIUYASGDUYGASDYUGASD
+      - password=foobar2
   - name: zio-ehrbase-admin-creds
     namespace: dh-health
     literals:
       - username=admin2
-      - password=sdouifhsiufghsdfiyugsdfy
+      - password=admin2
   - name: zio-ehrbase-db-admin-creds
     namespace: dh-health
     literals:
       - username=ehrbase2
-      - password=uihasduidhdaiushuisdahsd
+      - password=ehrbase2
   - name: zio-ehrbase-db-creds
     namespace: dh-health
     literals:
       - username=ehrbase_restricted2
-      - password=sadsdadassdasd
+      - password=ehrbase_restricted2
   - name: zio-portal-creds
     namespace: dh-health
     literals:
       - username=demo@zio.nl
-      - password=testtest
+      - password=foobar
   - name: zio-federation-key
     namespace: dh-health
     literals:
@@ -271,22 +271,22 @@ secretGenerator:
     namespace: dh-health
     literals:
       - username=user0
-      - password=shdiuhdusdhiusdhsiuasdghiudshdasiu
+      - password=foobar0
   - name: test-ehrbase-admin-creds
     namespace: dh-health
     literals:
       - username=admin0
-      - password=dldfhkjlashdkjasdhsdkjhasdkjsa
+      - password=admin0
   - name: test-ehrbase-db-admin-creds
     namespace: dh-health
     literals:
       - username=ehrbase0
-      - password=sadddsaasdasdadsdasasd
+      - password=ehrbase0
   - name: test-ehrbase-db-creds
     namespace: dh-health
     literals:
       - username=ehrbase_restricted0
-      - password=sh7u2349yuihdsia8y98ysdaiusdgha87asd
+      - password=ehrbase_restricted0
 # transform
   - name: transform-creds
     namespace: dh-health
