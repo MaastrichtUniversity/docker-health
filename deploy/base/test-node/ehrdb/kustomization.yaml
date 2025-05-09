@@ -5,8 +5,8 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- ehrdb-deployment.yaml
-- ehrdb-service.yaml
+- deployment.yaml
+- service.yaml
 
 configMapGenerator:
 - name: test-ehrdb-config
