@@ -193,6 +193,25 @@ kubectl rollout restart deployment [service_name] -n dh-health
 
 Once deployed, you can access the services at their local dns name
 
+### Running tests
+
+To run tests on single node:
+
+```bash
+# Clean up exsisting overlay
+kubectl delete -k deploy/overlays/local
+
+# Run the test job
+kubectl apply -k deploy/overlays/test-single-node
+
+# Manually clean up the containers
+kubectl delete -k deploy/overlays/test-single-node
+```
+
+To run tests on federation:
+
+#TODO
+
 ### Viewing Logs
 
 ```bash
