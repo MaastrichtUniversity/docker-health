@@ -198,7 +198,7 @@ Once deployed, you can access the services at their local dns name
 To run tests on single node:
 
 ```bash
-# Clean up exsisting overlay
+# Clean up existing overlay
 kubectl delete -k deploy/overlays/local
 
 # Run the test job. Check the logs of test-single-node pod to see the result

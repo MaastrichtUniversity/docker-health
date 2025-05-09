@@ -5,9 +5,9 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- ehrbase-deployment.yaml
-- ehrbase-service.yaml
-- ehrbase-ingress.yaml
+- deployment.yaml
+- service.yaml
+- ingress.yaml
 
 configMapGenerator:
 - name: test-ehrbase-config
