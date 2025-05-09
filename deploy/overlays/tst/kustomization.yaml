@@ -12,6 +12,8 @@ patches:
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Never
 
+# Updated deployment patches
+- path: ehrdb-deployment-patch.yaml
 
 # Individual ingress host patches
 - target:
