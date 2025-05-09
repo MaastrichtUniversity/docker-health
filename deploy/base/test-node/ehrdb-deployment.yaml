@@ -15,10 +15,6 @@ spec:
       labels:
         app: test-ehrdb
     spec:
-      volumes:
-      - name: postgres-logs
-        persistentVolumeClaim:
-          claimName: log-pvc
       initContainers:
       - name: init-log-dir
         image: busybox:1.28
@@ -89,5 +85,8 @@ spec:
         volumeMounts:
         - name: postgres-logs
           mountPath: /var/log/postgresql
-
           subPath: test/ehrdb
+      volumes:
+      - name: postgres-logs
+        persistentVolumeClaim:
+          claimName: log-pvc
