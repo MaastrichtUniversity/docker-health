@@ -4,7 +4,7 @@ namespace: dh-health
 
 resources:
 - namespace.yaml
-- ../../jobs
+- ../../jobs/test-single-node
 - ../../base/common
 - ../../base/transform-rest
 - ../../base/test-node/ehrbase
