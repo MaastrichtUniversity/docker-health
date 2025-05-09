@@ -6,10 +6,7 @@ resources:
 - common/volumes.yaml
 # include configmaps.yaml for additional configs
 #- common/configmaps.yaml
-- transform-rest/deployment.yaml
-- transform-rest/service.yaml
-- transform-rest/configmap.yaml
-- transform-rest/ingress.yaml
+- transform-rest
 - federation-api/deployment.yaml
 - federation-api/service.yaml
 - federation-api/configmap.yaml
@@ -30,7 +27,9 @@ configMapGenerator:
   envs:
   - env_files/timezone.env
 
+#ToDo duplicate?
 - name: transform-server-config
+  behavior: merge
   namespace: dh-health
   literals:
       - TRANSFORM_SPRING_BASE_URL=http://transform-rest.dh-health:8080

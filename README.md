@@ -201,7 +201,7 @@ To run tests on single node:
 # Clean up exsisting overlay
 kubectl delete -k deploy/overlays/local
 
-# Run the test job
+# Run the test job. Check the logs of etl-zib-test pod to see the result
 kubectl apply -k deploy/overlays/test-single-node
 
 # Manually clean up the containers
