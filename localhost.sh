@@ -21,3 +21,22 @@ echo "$MINIKUBE_IP ehrbase.test.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP etl.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP etl.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP etl.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+
+# TODO: Remove lines below?
+echo "$MINIKUBE_IP transform.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP federation.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP jupyter.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP portal.mumc.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP portal.zio.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP portal.envida.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP openehrtool.mumc.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP openehrtool.zio.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP openehrtool.envida.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP openehrtool.test.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP ehrbase.mumc.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP ehrbase.zio.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP ehrbase.envida.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP ehrbase.test.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.mumc.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.zio.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.envida.tst.dh.unimaas.nl" | sudo tee -a /etc/hosts
