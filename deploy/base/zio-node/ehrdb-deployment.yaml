@@ -28,7 +28,7 @@ spec:
         volumeMounts:
           - name: postgres-logs
             mountPath: /var/log/postgresql
-            subPath: zio
+            subPath: zio/ehrdb
       containers:
       - name: zio-ehrdb
         image: ehrbase/ehrbase-v2-postgres:16.2
@@ -89,4 +89,5 @@ spec:
         volumeMounts:
         - name: postgres-logs
           mountPath: /var/log/postgresql
-          subPath: zio
+
+          subPath: zio/ehrdb

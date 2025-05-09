@@ -28,7 +28,7 @@ spec:
         volumeMounts:
           - name: postgres-logs
             mountPath: /var/log/postgresql
-            subPath: envida
+            subPath: envida/ehrdb
       containers:
       - name: envida-ehrdb
         image: ehrbase/ehrbase-v2-postgres:16.2
@@ -89,5 +89,5 @@ spec:
         volumeMounts:
         - name: postgres-logs
           mountPath: /var/log/postgresql
-          subPath: envida
    
+          subPath: envida/ehrdb
