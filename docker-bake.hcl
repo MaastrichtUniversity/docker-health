@@ -8,7 +8,7 @@ variable "MAVEN_VERSION" {
 }
 
 group "default" {
-  targets = ["transform-rest", "federation-api", "etl-zib", "etl-zib-rest", "etl-zib-test", "jupyter-zib", "portal"]
+  targets = ["transform-rest", "federation-api", "etl-zib", "etl-zib-rest", "test-single-node", "jupyter-zib", "portal"]
 }
 
 target "_src_etl" {
@@ -56,7 +56,7 @@ target "etl-zib-rest" {
   context = "./externals/dh-hdp-etl"
 }
 
-target "etl-zib-test" {
+target "test-single-node" {
   inherits = ["_hdp_templates"]
   target = "test"
   dockerfile = "Dockerfile"

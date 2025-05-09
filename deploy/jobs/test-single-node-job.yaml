@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: etl-zib-test
+  name: test-single-node
   namespace: dh-health
 spec:
   template:
