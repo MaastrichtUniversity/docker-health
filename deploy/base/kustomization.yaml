@@ -7,10 +7,7 @@ resources:
 # include configmaps.yaml for additional configs
 #- common/configmaps.yaml
 - transform-rest
-- federation-api/deployment.yaml
-- federation-api/service.yaml
-- federation-api/configmap.yaml
-- federation-api/ingress.yaml
+- federation-api
 - jupyter-zib/deployment.yaml
 - jupyter-zib/service.yaml
 - jupyter-zib/configmap.yaml
@@ -31,11 +28,6 @@ configMapGenerator:
   namespace: dh-health
   envs:
   - env_files/zib-templates.env
-
-- name: federation-config
-  namespace: dh-health
-  envs:
-  - env_files/federation.env
 
 - name: portal-common-config
   namespace: dh-health
