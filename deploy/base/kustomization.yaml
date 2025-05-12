@@ -24,8 +24,8 @@ resources:
 configMapGenerator:
 - name: timezone-config
   namespace: dh-health
-  envs:
-  - env_files/timezone.env
+  literals:
+  - TZ=Europe/Amsterdam
 
 #ToDo duplicate?
 - name: transform-server-config
