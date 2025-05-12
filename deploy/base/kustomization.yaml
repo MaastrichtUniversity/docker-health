@@ -3,9 +3,7 @@ kind: Kustomization
 
 resources:
 - namespace.yaml
-- common/volumes.yaml
-# include configmaps.yaml for additional configs
-#- common/configmaps.yaml
+- common
 - transform-rest
 - federation-api
 - jupyter-zib
@@ -20,11 +18,6 @@ configMapGenerator:
   namespace: dh-health
   literals:
   - TZ=Europe/Amsterdam
-
-- name: zib-templates-config
-  namespace: dh-health
-  envs:
-  - env_files/zib-templates.env
 
 - name: portal-common-config
   namespace: dh-health
