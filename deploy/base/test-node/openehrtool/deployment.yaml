@@ -45,6 +45,4 @@ spec:
         - configMapRef:
             name: openehrtool-config
         - configMapRef:
-            name: openehrtool-general-config
-        - configMapRef:
             name: test-openehrtool-config

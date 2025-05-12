@@ -8,20 +8,6 @@ resources:
 - ehrbase
 - ehrdb
 - etl-config
-- etl-zib-deployment.yaml
-- openehrtool-deployment.yaml
-- openehrtool-service.yaml
-- openehrtool-ingress.yaml
-
-configMapGenerator:
-- name: test-etl-config
-  namespace: dh-health
-  envs:
-  - etl-config/etl.env
-
-- name: test-openehrtool-config
-  namespace: dh-health
-  literals:
-    - EHRBASESERVER_hostname=test-ehrbase.dh-health
-    - EHRBASESERVER_nodename=test.server.dh.unimaas.nl
+- etl-zib
+- openehrtool
 
