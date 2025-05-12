@@ -27,13 +27,6 @@ configMapGenerator:
   literals:
   - TZ=Europe/Amsterdam
 
-#ToDo duplicate?
-- name: transform-server-config
-  behavior: merge
-  namespace: dh-health
-  literals:
-      - TRANSFORM_SPRING_BASE_URL=http://transform-rest.dh-health:8080
-
 - name: zib-templates-config
   namespace: dh-health
   envs:
