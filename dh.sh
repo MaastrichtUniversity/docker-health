@@ -146,7 +146,7 @@ build_images() {
         docker buildx bake
     else
         echo -e "${YELLOW}Building service: $service_name using docker-bake...${NC}"
-        docker buildx bake --set=\*.tags=docker-health/$service_name:$image_tag
+        docker buildx bake --set=\*.tags=registry.prod.dh.unimaas.nl/docker-health/$service_name:$image_tag
     fi
     
     if [[ $? -eq 0 ]]; then
@@ -288,7 +288,7 @@ print_usage() {
     echo
     echo "Examples:"
     echo "  $0 setup               Setup Kubernetes environment"
-    echo "  $0 build all           Build all Docker images"
+    echo "  $0 build               Build all Docker images"
     echo "  $0 backend mumc        Build EHRBase image for MUMC node"
     echo "  $0 apply               Apply Kubernetes manifests with local overlay"
 }

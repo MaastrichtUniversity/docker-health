@@ -7,6 +7,10 @@ variable "MAVEN_VERSION" {
   default = "3.9.5"
 }
 
+variable "ENV_REGISTRY_HOST" {
+  default = "registry.prod.dh.unimaas.nl"
+}
+
 group "default" {
   targets = ["transform-rest", "federation-api", "etl-zib", "jupyter-zib", "portal"]
 }
@@ -26,24 +30,24 @@ target "_hdp_templates" {
 target "transform-rest" {
   inherits = ["_hdp_templates"]
   args = {
-    MAVEN_VERSION = "3.9.5"
+    MAVEN_VERSION = "${MAVEN_VERSION}"
   }
   dockerfile = "Dockerfile"
-  tags = ["docker-health/transform-rest:${ENV_TAG}"]
+  tags = ["${ENV_REGISTRY_HOST}/docker-health/transform-rest:${ENV_TAG}"]
   context = "./externals/dh-hdp-transform-rest"
 }
 
 target "federation-api" {
   inherits = ["_src_etl"]
   dockerfile = "Dockerfile"
-  tags = ["docker-health/federation-api:${ENV_TAG}"]
+  tags = ["${ENV_REGISTRY_HOST}/docker-health/federation-api:${ENV_TAG}"]
   context = "./externals/dh-hdp-federation-api"
 }
 
 target "etl-zib" {
   inherits = ["_hdp_templates"]
   dockerfile = "Dockerfile"
-  tags = ["docker-health/etl-zib:${ENV_TAG}"]
+  tags = ["${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}"]
   context = "./externals/dh-hdp-etl"
 }
 
@@ -53,13 +57,13 @@ target "jupyter-zib" {
     DATA = "zib"
   }
   dockerfile = "Dockerfile"
-  tags = ["docker-health/jupyter-zib:${ENV_TAG}"]
+  tags = ["${ENV_REGISTRY_HOST}/docker-health/jupyter-zib:${ENV_TAG}"]
   context = "./externals/dh-hdp-notebooks"
 }
 
 target "portal" {
   dockerfile = "Dockerfile"
   target = "development"
-  tags = ["docker-health/portal:${ENV_TAG}"]
+  tags = ["${ENV_REGISTRY_HOST}/docker-health/portal:${ENV_TAG}"]
   context = "./externals/dh-hdp-portal"
 }

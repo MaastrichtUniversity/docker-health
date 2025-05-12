@@ -6,10 +6,6 @@ namespace: dh-health
 resources:
 - ../../base
 
-images:
-- newName: registry.prod.dh.unimaas.nl/docker-health
-  newTag: main
-
 patches:
 - target:
     kind: Deployment

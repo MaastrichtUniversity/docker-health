@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: transform-rest
-        image: docker-health/transform-rest:latest
+        image: registry.prod.dh.unimaas.nl/docker-health/transform-rest:latest
         ports:
         - containerPort: 8080
         env:

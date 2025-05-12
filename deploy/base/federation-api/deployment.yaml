@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: federation-api
-          image: docker-health/federation-api:latest
+          image: registry.prod.dh.unimaas.nl/docker-health/federation-api:latest
           ports:
             - containerPort: 8000
           env:

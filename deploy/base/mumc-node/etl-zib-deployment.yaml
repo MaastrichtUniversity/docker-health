@@ -22,7 +22,7 @@ spec:
         command: [ 'sh', '-c', 'for i in 1 2 3 4 5 6 7 8 9 ; do echo waiting; sleep 10; if wget -T5 -qO- -Y off mumc-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then exit 0; fi; done; exit 1' ]
       containers:
       - name: mumc-etl-zib
-        image: docker-health/etl-zib:latest
+        image: registry.prod.dh.unimaas.nl/docker-health/etl-zib:latest
         envFrom:
         - configMapRef:
             name: timezone-config
