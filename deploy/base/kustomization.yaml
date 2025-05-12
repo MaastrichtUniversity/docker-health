@@ -8,10 +8,7 @@ resources:
 #- common/configmaps.yaml
 - transform-rest
 - federation-api
-- jupyter-zib/deployment.yaml
-- jupyter-zib/service.yaml
-- jupyter-zib/configmap.yaml
-- jupyter-zib/ingress.yaml
+- jupyter-zib
 - redis/
 - mumc-node/
 - zio-node/
