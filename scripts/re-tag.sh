@@ -10,28 +10,28 @@ cp docker-bake.hcl docker-bake.hcl.bak
 cd externals/dh-hdp-transform-rest
 TRANSFORM_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 cd ../..
-sed -i s/transform-rest:\${ENV_TAG}/transform-rest:${TRANSFORM_BRANCH}/ docker-bake.hcl
+sed -i "s#\${ENV_REGISTRY_HOST}/docker-health/transform-rest:\${ENV_TAG}#\registry.prod.dh.unimaas.nl/docker-health/transform-rest:${TRANSFORM_BRANCH}#" docker-bake.hcl
 
 # dh-hdp-federation-api
 cd externals/dh-hdp-federation-api
 FEDERATION_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 cd ../..
-sed -i s/federation-api:\${ENV_TAG}/federation-api:${FEDERATION_BRANCH}/ docker-bake.hcl
+sed -i "s#\${ENV_REGISTRY_HOST}/docker-health/federation-api:\${ENV_TAG}#\registry.prod.dh.unimaas.nl/docker-health/federation-api:${FEDERATION_BRANCH}#" docker-bake.hcl
 
 # dh-hdp-notebooks
 cd externals/dh-hdp-notebooks
-NOTEBOOKS_TAG=$(git rev-parse --abbrev-ref HEAD)
+NOTEBOOKS_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 cd ../..
-sed -i s/jupyter-zib:\${ENV_TAG}/jupyter-zib:${NOTEBOOKS_TAG}/ docker-bake.hcl
+sed -i "s#\${ENV_REGISTRY_HOST}/docker-health/jupyter-zib:\${ENV_TAG}#\registry.prod.dh.unimaas.nl/docker-health/jupyter-zib:${NOTEBOOKS_BRANCH}#" docker-bake.hcl
 
 # dh-hdp-etl
 cd externals/dh-hdp-etl
 ETL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 cd ../..
-sed -i s/etl-zib:\${ENV_TAG}/etl-zib:${ETL_BRANCH}/ docker-bake.hcl
+sed -i "s#\${ENV_REGISTRY_HOST}/docker-health/etl-zib:\${ENV_TAG}#\registry.prod.dh.unimaas.nl/docker-health/etl-zib:${ETL_BRANCH}#" docker-bake.hcl
 
 # dh-hdp-portal
 cd externals/dh-hdp-portal
 PORTAL_TAG=$(git rev-parse --abbrev-ref HEAD)
 cd ../..
-sed -i s/portal:\${ENV_TAG}/portal:${PORTAL_TAG}/ docker-bake.hcl
+sed -i "s#\${ENV_REGISTRY_HOST}/docker-health/portal:\${ENV_TAG}#\registry.prod.dh.unimaas.nl/docker-health/portal:${PORTAL_TAG}#" docker-bake.hcl
