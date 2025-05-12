@@ -25,6 +25,7 @@ spec:
         args:
           - "-jar"
           - "-Dspring.profiles.active=docker"
+          - "-Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log"
           - "ehrbase.jar"
         env:
           - name: SECURITY_AUTHUSER

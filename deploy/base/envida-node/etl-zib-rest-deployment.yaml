@@ -65,7 +65,7 @@ spec:
           mountPath: /code/outputs
         - name: etl-logs
           mountPath: /code/logs/envida
-          subPath: envida
+          subPath: envida/etl
       volumes:
       - name: outputs
         persistentVolumeClaim:

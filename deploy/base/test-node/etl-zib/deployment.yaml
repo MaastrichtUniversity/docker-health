@@ -72,7 +72,7 @@ spec:
           mountPath: /code/data/test-demo-data
         - name: etl-logs
           mountPath: /code/logs/test
-          subPath: test
+          subPath: test/etl
       volumes:
       - name: outputs
         persistentVolumeClaim:

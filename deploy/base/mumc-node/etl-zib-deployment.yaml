@@ -72,7 +72,7 @@ spec:
           mountPath: /code/data/mumc-demo-data
         - name: etl-logs
           mountPath: /code/logs/mumc
-          subPath: mumc
+          subPath: mumc/etl
       volumes:
       - name: outputs
         persistentVolumeClaim:

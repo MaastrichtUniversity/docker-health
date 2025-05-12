@@ -70,7 +70,7 @@ spec:
           mountPath: /code/data/zio-demo-data
         - name: etl-logs
           mountPath: /code/logs/zio
-          subPath: zio
+          subPath: zio/etl
       volumes:
       - name: outputs
         persistentVolumeClaim:
