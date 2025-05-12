@@ -348,3 +348,4 @@ if [ $# -eq 0 ]; then
 fi
 
 main "$@"
+# End of script
