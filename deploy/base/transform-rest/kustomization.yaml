@@ -8,9 +8,4 @@ resources:
 - deployment.yaml
 - service.yaml
 - ingress.yaml
-
-configMapGenerator:
-- name: transform-server-config
-  namespace: dh-health
-  literals:
-      - TRANSFORM_SPRING_BASE_URL=http://transform-rest.dh-health:8080
+- configmap.yaml
