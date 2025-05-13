@@ -18,10 +18,15 @@ spec:
       containers:
       - name: jupyter-zib
         image: docker-health/jupyter-zib:latest
-        command: ["start-notebook.sh", "--ServerApp.token=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7"]
+        command: ["start-notebook.sh", "--ServerApp.token=$(APP_TOKEN)"]
         ports:
           - containerPort: 8888
         env:
+          - name: APP_TOKEN
+            valueFrom:
+              configMapKeyRef:
+                name: jupyter-zib-config
+                key: SERVER_APP_TOKEN
           - name: TRANSFORM_SPRING_USERNAME
             valueFrom:
               secretKeyRef:
