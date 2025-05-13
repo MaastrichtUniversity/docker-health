@@ -5,7 +5,7 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- common/envida-etl-common.yaml
+- common/envida-etl-config.yaml
 - ehrbase
 - ehrdb
 - etl-zib
