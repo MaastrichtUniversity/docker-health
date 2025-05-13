@@ -5,12 +5,14 @@ This repository includes Kubernetes manifests for deploying the federated networ
 ## Services
 
 Currently supported nodes in the network:
+
 - **mumc**
 - **zio**
 - **envida**
 - **test**
 
 Each node includes the following components:
+
 - **ehrbase**: open-source openEHR backend
   - Hosts available at: http://ehrbase.{NODENAME}.{ENV}.dh.unimaas.nl
 - **ehrdb**: PostgreSQL database linked to EHRBase
@@ -18,7 +20,7 @@ Each node includes the following components:
   - Hosts available at: http://etl.{NODENAME}.{ENV}.dh.unimaas.nl
 - **openehrtool**: Development tool for openEHR
   - Hosts available at: http://openehrtool.{NODENAME}.{ENV}.dh.unimaas.nl
-- **portal**: User Interface of the federated network 
+- **portal**: User Interface of the federated network
   - Hosts available at: http://portal.{NODENAME}.{ENV}.dh.unimaas.nl
 
 Additional deployed services:
@@ -31,8 +33,6 @@ Additional deployed services:
 - **filebeat**: A service used for shipping logs to a central location
 - **jupyter-zib**: Jupyter notebook for data analysis and visualization
   - Host available at: http://jupyter.{ENV}.dh.unimaas.nl
-- **redis**: A caching service for fast data retrieval (related to openehrtools)
-
 
 ## Directory Structure
 
@@ -43,7 +43,7 @@ Additional deployed services:
   - **common/**: Common resources shared across services
   - **transform-rest/**, **federation-api/**, etc.: Service-specific manifests
 - **overlays/**: Environment-specific configurations
-  - **local/**: Local development environment 
+  - **local/**: Local development environment
   - **tst/**: Development test environment customizations
   - **acc/**: Acceptance environment customizations
   - **prod/**: Production environment customizations
@@ -56,7 +56,7 @@ Additional deployed services:
 - ConfigMaps are generated from environment files in the `env_files` directory
 - Each service has its own deployment, service, and ingress resources
 - Environment-specific configurations are maintained through Kustomize overlays
-- Internal hostnames are formated `servicename.namespace` example "Redis server" hostname = redis.dh-health
+- Internal hostnames are formated `servicename.namespace` example "Envida ehrbase server" hostname = envida-ehrbase.dh-health
 - To deploy to a specific environment:
   ```bash
   kubectl apply -k deploy/overlays/tst    # For development environment
@@ -115,13 +115,13 @@ The application uses different configurations for different environments:
 1. Environment variables are stored in `/deploy/base/env_files/` and loaded via ConfigMap generators
 
 To add or modify environment variables:
+
 1. Update the appropriate file in `/deploy/base/env_files/`
 2. Add this as configMap to `/deploy/base/kustomization.yaml`
 
 ### Service Configuration
 
 Some services are using specific .env or .conf files. These are handled with the service structure
-See for example `/deploy/base/redis`
 
 ### Modifying Resources
 

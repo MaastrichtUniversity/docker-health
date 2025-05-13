@@ -11,10 +11,6 @@ fi
 
 echo "Pulling external images into Minikube's Docker daemon..."
 
-# Redis
-echo "Pulling Redis image..."
-docker pull redis:latest
-
 # EHRBase images
 echo "Pulling EHRBase image..."
 docker pull ehrbase/ehrbase:2.6.0
