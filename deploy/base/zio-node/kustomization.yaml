@@ -5,7 +5,7 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- common/configmap.yaml
+- common/zio-etl-config.yaml
 - ehrbase
 - ehrdb
 - etl-zib
