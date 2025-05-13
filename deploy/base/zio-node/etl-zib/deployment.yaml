@@ -82,4 +82,3 @@ spec:
       - name: etl-logs
         persistentVolumeClaim:
           claimName: log-pvc
-          
