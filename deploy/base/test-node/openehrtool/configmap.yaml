@@ -4,5 +4,5 @@ metadata:
   name: test-openehrtool-config
   namespace: dh-health
 data:
-  EHRBASESERVER_hostname: "test-ehrbase.dh-health"
-  EHRBASESERVER_nodename: "test.server.dh.unimaas.nl"
+  EHRBASESERVER_hostname: test-ehrbase.dh-health
+  EHRBASESERVER_nodename: test.server.dh.unimaas.nl
