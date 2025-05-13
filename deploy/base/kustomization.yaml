@@ -13,11 +13,6 @@ resources:
 - test-node/
 
 configMapGenerator:
-- name: timezone-config
-  namespace: dh-health
-  literals:
-  - TZ=Europe/Amsterdam
-
 - name: portal-common-config
   namespace: dh-health
   literals:

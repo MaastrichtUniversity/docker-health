@@ -10,7 +10,6 @@ resources:
 - ../../base/test-node/ehrbase
 - ../../base/test-node/ehrdb
 - ../../base/test-node/etl-config
-- ../../base/env_files
 
 patches:
 - target:

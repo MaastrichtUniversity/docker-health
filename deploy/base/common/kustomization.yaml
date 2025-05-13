@@ -8,3 +8,4 @@ resources:
 - volumes.yaml
 - zib-templates-config.yaml
 - openehrtool-config.yaml
+- timezone-config.yaml
