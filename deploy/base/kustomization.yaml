@@ -23,11 +23,3 @@ configMapGenerator:
   literals:
     - FEDERATION_SERVER_URL=http://federation-api:8000
 
-- name: openehrtool-config
-  namespace: dh-health
-  literals:
-    - EHRBASESERVER_port=8080
-    - FLASK_APP=app.py
-    - FLASK_ENV=development
-    - SEND_FILE_MAX_AGE_DEFAULT=0
-
