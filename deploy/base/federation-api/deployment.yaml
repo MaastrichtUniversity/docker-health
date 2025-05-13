@@ -21,6 +21,38 @@ spec:
           ports:
             - containerPort: 8000
           env:
+            # NODENAME
+            - name: MUMC__NODENAME
+              valueFrom:
+                configMapKeyRef:
+                  name: mumc-etl-config
+                  key: NODENAME
+            - name: ZIO__NODENAME
+              valueFrom:
+                configMapKeyRef:
+                  name: zio-etl-config
+                  key: NODENAME
+            - name: ENVIDA__NODENAME
+              valueFrom:
+                configMapKeyRef:
+                  name: envida-etl-config
+                  key: NODENAME
+            # EHRBASE_BASE_URL
+            - name: MUMC__EHRBASE_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mumc-etl-config
+                  key: EHRBASE_BASE_URL
+            - name: ZIO__EHRBASE_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: zio-etl-config
+                  key: EHRBASE_BASE_URL
+            - name: ENVIDA__EHRBASE_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: envida-etl-config
+                  key: EHRBASE_BASE_URL
             # Credentials for MUMC
             - name: MUMC__FEDERATION_KEY
               valueFrom:
