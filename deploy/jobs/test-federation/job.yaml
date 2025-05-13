@@ -1,0 +1,127 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: test-federation
+  namespace: dh-health
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+      - name: init-test-federation-api-runner
+        image: busybox:1.28
+        imagePullPolicy: Never
+        # TODO: Improve healthcheck to avoid tests to fail
+        command: [ 'sh', '-c', 'for i in 1 2 3 4 5 6 7 8 9 ; do echo waiting; sleep 20; if wget -T5 -qO- -Y off mumc-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then exit 0; fi; done; exit 1' ]
+      containers:
+      - name: test-federation-api-runner
+        image: docker-health/federation-test:latest
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: federation-api-config
+        env:
+        # NODENAME
+        - name: MUMC__NODENAME
+          valueFrom:
+            configMapKeyRef:
+              name: mumc-etl-config
+              key: NODENAME
+        - name: ZIO__NODENAME
+          valueFrom:
+            configMapKeyRef:
+              name: zio-etl-config
+              key: NODENAME
+        - name: ENVIDA__NODENAME
+          valueFrom:
+            configMapKeyRef:
+              name: envida-etl-config
+              key: NODENAME
+        # EHRBASE_BASE_URL
+        - name: MUMC__EHRBASE_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: mumc-etl-config
+              key: EHRBASE_BASE_URL
+        - name: ZIO__EHRBASE_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: zio-etl-config
+              key: EHRBASE_BASE_URL
+        - name: ENVIDA__EHRBASE_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: envida-etl-config
+              key: EHRBASE_BASE_URL
+        # Credentials for MUMC
+        - name: MUMC__FEDERATION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: mumc-federation-key
+              key: key
+        - name: MUMC__FEDERATION_BTG_KEY
+          valueFrom:
+            secretKeyRef:
+              name: mumc-federation-break-the-glass-key
+              key: key
+        - name: MUMC__EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mumc-ehrbase-creds
+              key: username
+        - name: MUMC__EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mumc-ehrbase-creds
+              key: password
+        # Credentials for ZIO
+        - name: ZIO__FEDERATION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: zio-federation-key
+              key: key
+        - name: ZIO__FEDERATION_BTG_KEY
+          valueFrom:
+            secretKeyRef:
+              name: zio-federation-break-the-glass-key
+              key: key
+        - name: ZIO__EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-creds
+              key: username
+        - name: ZIO__EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-creds
+              key: password
+        # Credentials for ENVIDA
+        - name: ENVIDA__FEDERATION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: envida-federation-key
+              key: key
+        - name: ENVIDA__FEDERATION_BTG_KEY
+          valueFrom:
+            secretKeyRef:
+              name: envida-federation-break-the-glass-key
+              key: key
+        - name: ENVIDA__EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: envida-ehrbase-creds
+              key: username
+        - name: ENVIDA__EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: envida-ehrbase-creds
+              key: password
+        volumeMounts:
+          - name: logs
+            mountPath: /code/logs/federation-api
+      volumes:
+      - name: logs
+        hostPath:
+          path: /mnt/logs # TODO: change path
+          type: DirectoryOrCreate
