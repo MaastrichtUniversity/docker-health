@@ -17,9 +17,7 @@ resources:
 - openehrtool-deployment.yaml
 - openehrtool-service.yaml
 - openehrtool-ingress.yaml
-- portal-deployment.yaml
-- portal-service.yaml
-- portal-ingress.yaml
+- portal
 
 configMapGenerator:
 - name: envida-ehrbase-config
@@ -36,11 +34,6 @@ configMapGenerator:
   namespace: dh-health
   envs:
   - envida/etl.env
-
-- name: envida-portal-config
-  namespace: dh-health
-  envs:
-  - envida/portal.env
 
 - name: envida-openehrtool-config
   namespace: dh-health
