@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: envida-ehrdb-config
+  namespace: dh-health
+data:
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
