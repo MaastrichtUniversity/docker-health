@@ -46,4 +46,3 @@ spec:
             name: openehrtool-config
         - configMapRef:
             name: envida-openehrtool-config
-    
