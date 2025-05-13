@@ -218,6 +218,11 @@ secretGenerator:
     namespace: dh-health
     literals:
       - key=btgkey3
+  - name: envida-ehrdb-creds
+    namespace: dh-health
+    literals:
+      - username=postgres
+      - password=postgres
 # MUMC-node
   - name: mumc-ehrbase-creds
     namespace: dh-health
@@ -252,6 +257,11 @@ secretGenerator:
     namespace: dh-health
     literals:
       - key=btgkey1
+  - name: mumc-ehrdb-creds
+    namespace: dh-health
+    literals:
+      - username=postgres
+      - password=postgres
 # ZIO-node
   - name: zio-ehrbase-creds
     namespace: dh-health
@@ -286,6 +296,11 @@ secretGenerator:
     namespace: dh-health
     literals:
       - key=btgkey2
+  - name: zio-ehrdb-creds
+    namespace: dh-health
+    literals:
+      - username=postgres
+      - password=postgres
 # TEST-node
   - name: test-ehrbase-creds
     namespace: dh-health
