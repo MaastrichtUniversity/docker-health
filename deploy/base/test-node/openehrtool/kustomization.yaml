@@ -7,10 +7,11 @@ generatorOptions:
 resources:
 - deployment.yaml
 - service.yaml
+- ingress.yaml
 
 configMapGenerator:
-- name: test-ehrdb-config
+- name: test-openehrtool-config
   namespace: dh-health
   literals:
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=postgres
+    - EHRBASESERVER_hostname=test-ehrbase.dh-health
+    - EHRBASESERVER_nodename=test.server.dh.unimaas.nl

@@ -7,9 +7,7 @@ generatorOptions:
 resources:
 - deployment.yaml
 - service.yaml
+- ingress.yaml
+- configmap.yaml
 
-configMapGenerator:
-- name: redis-config
-  namespace: dh-health
-  files:
-  - redis.conf=config/redis.conf
+

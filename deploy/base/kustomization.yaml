@@ -3,19 +3,10 @@ kind: Kustomization
 
 resources:
 - namespace.yaml
-- common/volumes.yaml
-# include configmaps.yaml for additional configs
-#- common/configmaps.yaml
+- common
 - transform-rest
-- federation-api/deployment.yaml
-- federation-api/service.yaml
-- federation-api/configmap.yaml
-- federation-api/ingress.yaml
-- jupyter-zib/deployment.yaml
-- jupyter-zib/service.yaml
-- jupyter-zib/configmap.yaml
-- jupyter-zib/ingress.yaml
-- redis/
+- federation-api
+- jupyter-zib
 - mumc-node/
 - zio-node/
 - envida-node/
@@ -24,25 +15,8 @@ resources:
 configMapGenerator:
 - name: timezone-config
   namespace: dh-health
-  envs:
-  - env_files/timezone.env
-
-#ToDo duplicate?
-- name: transform-server-config
-  behavior: merge
-  namespace: dh-health
   literals:
-      - TRANSFORM_SPRING_BASE_URL=http://transform-rest.dh-health:8080
-
-- name: zib-templates-config
-  namespace: dh-health
-  envs:
-  - env_files/zib-templates.env
-
-- name: federation-config
-  namespace: dh-health
-  envs:
-  - env_files/federation.env
+  - TZ=Europe/Amsterdam
 
 - name: portal-common-config
   namespace: dh-health
@@ -51,13 +25,9 @@ configMapGenerator:
 
 - name: openehrtool-config
   namespace: dh-health
-  envs:
-  - env_files/openEHR-tool.env
-
-- name: openehrtool-general-config
-  namespace: dh-health
   literals:
-    - REDISSERVER_hostname=redis.dh-health
-    - REDISSERVER_port=6379
-    - REDISSERVER_eventsrecorded=100
     - EHRBASESERVER_port=8080
+    - FLASK_APP=app.py
+    - FLASK_ENV=development
+    - SEND_FILE_MAX_AGE_DEFAULT=0
+

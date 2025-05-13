@@ -6,3 +6,4 @@ generatorOptions:
 
 resources:
 - volumes.yaml
+- zib-templates-config.yaml

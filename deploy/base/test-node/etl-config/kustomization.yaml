@@ -1,7 +1,18 @@
+# Separeted from etl-zib on test-node folder, because we want to include this config in test-single-node overlay,
+# but exclude the test-etl-zib service
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 configMapGenerator:
 - name: test-etl-config
-  envs:
-  - etl.env
+  namespace: dh-health
+  literals:
+  - NODENAME=test
+  - DATASET=test-demo-data
+  - LOGGER_FILENAME=logs/test/etl-zib.log
+  - SUBJECT_IDS=["001645201","083197102","339055303","389370204","683754105","316268306","569973107","011168808","363037809","315071710","362880311","525736712"]
+  - TEMPLATE_IDS=["DataHub-Patient-2024", "DataHub-AlcoholGebruik-2017", "DataHub-AlcoholGebruik-2023", "DataHub-BurgerlijkeStaat-2017", "DataHub-BurgerlijkeStaat-2023", "DataHub-Woonsituatie-2017", "DataHub-Contactpersoon-2017", "DataHub-VermogenTotZichWassen-2020", "DataHub-VermogenTotZichKleden-2020", "DataHub-VermogenTotUiterlijkeVerzorging-2020", "DataHub-VermogenTotZelfstandigMedicatiegebruik-2020", "DataHub-VermogenTotDrinken-2020", "DataHub-VermogenTotEten-2020", "DataHub-VermogenTotMondverzorging-2020", "DataHub-VermogenTotToiletgang-2020", "DataHub-InformedConsent"]
+  - WRITE_COMPOSITION=False
+  - EHRBASE_BASE_URL=http://test-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
+  # Environment variables meant for development while running the test teardown:
+  - EHRBASE_ADMIN_BASE_URL=http://test-ehrbase.dh-health:8080/ehrbase/rest/admin

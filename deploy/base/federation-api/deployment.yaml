@@ -99,8 +99,6 @@ spec:
             - configMapRef:
                 name: zib-templates-config
             - configMapRef:
-                name: federation-config
-            - configMapRef:
                 name: federation-api-config
           volumeMounts:
             - name: outputs
