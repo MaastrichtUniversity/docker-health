@@ -33,6 +33,16 @@ spec:
         env:
         - name: PGPORT
           value: "5432"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: test-ehrdb-config
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: test-ehrdb-config
+              key: password
         - name: EHRBASE_USER_ADMIN
           valueFrom:
             secretKeyRef:
@@ -72,14 +82,12 @@ spec:
         envFrom:
         - configMapRef:
             name: timezone-config
-        - configMapRef:
-            name: test-ehrdb-config
         livenessProbe:
           exec:
             command:
             - pg_isready
             - -U
-            - postgres
+            - $POSTGRES_USER
           initialDelaySeconds: 30
           periodSeconds: 10
         volumeMounts:

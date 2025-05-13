@@ -7,10 +7,3 @@ generatorOptions:
 resources:
 - deployment.yaml
 - service.yaml
-
-configMapGenerator:
-- name: test-ehrdb-config
-  namespace: dh-health
-  literals:
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=postgres

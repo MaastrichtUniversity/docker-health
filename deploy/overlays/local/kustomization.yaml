@@ -307,6 +307,11 @@ secretGenerator:
     literals:
       - username=ehrbase_restricted0
       - password=ehrbase_restricted0
+  - name: test-ehrdb-config
+    namespace: dh-health
+    literals:
+      - username=postgress
+      - password=postgress
 # transform
   - name: transform-creds
     namespace: dh-health
