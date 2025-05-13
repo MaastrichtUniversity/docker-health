@@ -5,10 +5,7 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- common/configmap.yaml
-- ehrbase
-- ehrdb
-- etl-zib
-- etl-zib-rest
-- openehrtool
-- portal
+- deployment.yaml
+- service.yaml
+- configmap.yaml
+
