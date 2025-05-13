@@ -12,9 +12,3 @@ resources:
 - envida-node/
 - test-node/
 
-configMapGenerator:
-- name: portal-common-config
-  namespace: dh-health
-  literals:
-    - FEDERATION_SERVER_URL=http://federation-api:8000
-
