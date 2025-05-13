@@ -81,23 +81,9 @@ spec:
                 secretKeyRef:
                   name: envida-federation-break-the-glass-key
                   key: key
-            - name: TRANSFORM_SPRING_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: transform-creds
-                  key: username
-            - name: TRANSFORM_SPRING_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: transform-creds
-                  key: password
           envFrom:
             - configMapRef:
                 name: timezone-config
-            - configMapRef:
-                name: transform-server-config
-            - configMapRef:
-                name: zib-templates-config
             - configMapRef:
                 name: federation-api-config
           volumeMounts:
