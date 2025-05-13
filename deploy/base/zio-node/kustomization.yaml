@@ -5,45 +5,10 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- ehrbase-deployment.yaml
-- ehrbase-service.yaml
-- ehrbase-ingress.yaml
-- ehrdb-deployment.yaml
-- ehrdb-service.yaml
-- etl-zib-deployment.yaml
-- etl-zib-rest-deployment.yaml
-- etl-zib-rest-service.yaml
-- etl-zib-rest-ingress.yaml
-- openehrtool-deployment.yaml
-- openehrtool-service.yaml
-- openehrtool-ingress.yaml
-- portal-deployment.yaml
-- portal-service.yaml
-- portal-ingress.yaml
-
-configMapGenerator:
-- name: zio-ehrbase-config
-  namespace: dh-health
-  envs:
-  - zio/ehrbase.env
-  
-- name: zio-ehrdb-config
-  namespace: dh-health
-  envs:
-  - zio/ehrdb.env
-
-- name: zio-etl-config
-  namespace: dh-health
-  envs:
-  - zio/etl.env
-
-- name: zio-portal-config
-  namespace: dh-health
-  envs:
-  - zio/portal.env
-
-- name: zio-openehrtool-config
-  namespace: dh-health
-  literals:
-    - EHRBASESERVER_hostname=zio-ehrbase.dh-health
-    - EHRBASESERVER_nodename=zio.server.dh.unimaas.nl
+- common/configmap.yaml
+- ehrbase
+- ehrdb
+- etl-zib
+- etl-zib-rest
+- openehrtool
+- portal
