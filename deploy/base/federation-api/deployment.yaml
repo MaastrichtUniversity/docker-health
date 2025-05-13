@@ -21,6 +21,39 @@ spec:
           ports:
             - containerPort: 8000
           env:
+            # NODENAME
+            - name: MUMC__NODENAME
+              valueFrom:
+                configMapKeyRef:
+                  name: mumc-etl-config
+                  key: NODENAME
+            - name: ZIO__NODENAME
+              valueFrom:
+                configMapKeyRef:
+                  name: zio-etl-config
+                  key: NODENAME
+            - name: ENVIDA__NODENAME
+              valueFrom:
+                configMapKeyRef:
+                  name: envida-etl-config
+                  key: NODENAME
+            # EHRBASE_BASE_URL
+            - name: MUMC__EHRBASE_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mumc-etl-config
+                  key: EHRBASE_BASE_URL
+            - name: ZIO__EHRBASE_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: zio-etl-config
+                  key: EHRBASE_BASE_URL
+            - name: ENVIDA__EHRBASE_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: envida-etl-config
+                  key: EHRBASE_BASE_URL
+            # Credentials for MUMC
             - name: MUMC__FEDERATION_KEY
               valueFrom:
                 secretKeyRef:
@@ -41,6 +74,7 @@ spec:
                 secretKeyRef:
                   name: mumc-ehrbase-creds
                   key: password
+            # Credentials for ZIO
             - name: ZIO__FEDERATION_KEY
               valueFrom:
                 secretKeyRef:
@@ -61,16 +95,7 @@ spec:
                 secretKeyRef:
                   name: zio-ehrbase-creds
                   key: password
-            - name: ENVIDA__EHRBASE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: envida-ehrbase-creds
-                  key: username
-            - name: ENVIDA__EHRBASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: envida-ehrbase-creds
-                  key: password
+            # Credentials for ENVIDA
             - name: ENVIDA__FEDERATION_KEY
               valueFrom:
                 secretKeyRef:
@@ -81,34 +106,25 @@ spec:
                 secretKeyRef:
                   name: envida-federation-break-the-glass-key
                   key: key
-            - name: TRANSFORM_SPRING_USERNAME
+            - name: ENVIDA__EHRBASE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: transform-creds
+                  name: envida-ehrbase-creds
                   key: username
-            - name: TRANSFORM_SPRING_PASSWORD
+            - name: ENVIDA__EHRBASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: transform-creds
+                  name: envida-ehrbase-creds
                   key: password
           envFrom:
             - configMapRef:
                 name: timezone-config
             - configMapRef:
-                name: transform-server-config
-            - configMapRef:
-                name: zib-templates-config
-            - configMapRef:
                 name: federation-api-config
           volumeMounts:
-            - name: outputs
-              mountPath: /code/outputs
             - name: logs
               mountPath: /code/logs/federation-api
       volumes:
-        - name: outputs
-          persistentVolumeClaim:
-            claimName: output-pvc
         - name: logs
           persistentVolumeClaim:
             claimName: log-pvc

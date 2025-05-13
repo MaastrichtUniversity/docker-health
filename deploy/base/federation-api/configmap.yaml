@@ -6,9 +6,3 @@ metadata:
 data:
   LOGSTASH_TAGS: "FEDERATION_API"
   FEDERATION_LOGGER_FILENAME: "logs/federation-api/federation-api.log"
-  MUMC__NODENAME: "mumc"
-  ZIO__NODENAME: "zio"
-  ENVIDA__NODENAME: "envida"
-  MUMC__EHRBASE_BASE_URL: "http://mumc-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1"
-  ZIO__EHRBASE_BASE_URL: "http://zio-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1"
-  ENVIDA__EHRBASE_BASE_URL: "http://envida-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1"
