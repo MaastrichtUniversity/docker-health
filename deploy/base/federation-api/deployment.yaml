@@ -101,14 +101,9 @@ spec:
             - configMapRef:
                 name: federation-api-config
           volumeMounts:
-            - name: outputs
-              mountPath: /code/outputs
             - name: logs
               mountPath: /code/logs/federation-api
       volumes:
-        - name: outputs
-          persistentVolumeClaim:
-            claimName: output-pvc
         - name: logs
           persistentVolumeClaim:
             claimName: log-pvc
