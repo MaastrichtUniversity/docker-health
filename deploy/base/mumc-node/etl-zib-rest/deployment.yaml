@@ -61,6 +61,7 @@ spec:
         volumeMounts:
         - name: outputs
           mountPath: /code/outputs
+          subPath: mumc/rest
         - name: etl-logs
           mountPath: /code/logs/mumc
           subPath: mumc/etl

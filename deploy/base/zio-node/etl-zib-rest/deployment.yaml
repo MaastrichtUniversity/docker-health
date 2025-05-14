@@ -61,6 +61,7 @@ spec:
         volumeMounts:
         - name: outputs
           mountPath: /code/outputs
+          subPath: zio/rest
         - name: etl-logs
           mountPath: /code/logs/zio
           subPath: zio/etl

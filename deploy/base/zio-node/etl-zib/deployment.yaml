@@ -66,6 +66,7 @@ spec:
         volumeMounts:
         - name: outputs
           mountPath: /code/outputs
+          subPath: zio/pipeline
         - name: data
           mountPath: /code/data/zio-demo-data
         - name: etl-logs

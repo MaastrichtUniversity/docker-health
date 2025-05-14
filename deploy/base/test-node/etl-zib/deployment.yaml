@@ -66,6 +66,7 @@ spec:
         volumeMounts:
         - name: outputs
           mountPath: /code/outputs
+          subPath: test/pipeline
         - name: data
           mountPath: /code/data/test-demo-data
         - name: etl-logs
