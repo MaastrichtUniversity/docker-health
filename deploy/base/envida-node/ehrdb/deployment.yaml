@@ -53,6 +53,16 @@ spec:
             secretKeyRef:
               name: envida-ehrbase-db-creds
               key: password
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: envida-ehrdb-creds
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: envida-ehrdb-creds
+              key: password
         args:
         - postgres
         - -c
@@ -72,14 +82,12 @@ spec:
         envFrom:
         - configMapRef:
             name: timezone-config
-        - configMapRef:
-            name: envida-ehrdb-config
         livenessProbe:
           exec:
             command:
             - pg_isready
             - -U
-            - postgres
+            - $POSTGRES_USER
           initialDelaySeconds: 30
           periodSeconds: 10
         volumeMounts:

@@ -36,12 +36,12 @@ spec:
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
-              name: test-ehrdb-config
+              name: test-ehrdb-creds
               key: username
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: test-ehrdb-config
+              name: test-ehrdb-creds
               key: password
         - name: EHRBASE_USER_ADMIN
           valueFrom:
