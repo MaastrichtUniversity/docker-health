@@ -1,24 +1,21 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: zio-etl-zib
   namespace: dh-health
   labels:
     app: zio-etl-zib
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: zio-etl-zib
   template:
     metadata:
       labels:
         app: zio-etl-zib
     spec:
+      restartPolicy: Never
       initContainers:
-      - name: init-zio-etl
+      - name: wait-zio-ehrbase-healthy
         image: busybox:1.28
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         command:
           - sh
           - -c

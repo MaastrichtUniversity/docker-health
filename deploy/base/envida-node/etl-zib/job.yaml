@@ -1,24 +1,21 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: envida-etl-zib
   namespace: dh-health
   labels:
     app: envida-etl-zib
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: envida-etl-zib
   template:
     metadata:
       labels:
         app: envida-etl-zib
     spec:
+      restartPolicy: Never
       initContainers:
       - name: wait-envida-ehrbase-healthy
         image: busybox:1.28
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         command:
           - sh
           - -c

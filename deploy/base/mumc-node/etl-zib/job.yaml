@@ -1,24 +1,21 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: mumc-etl-zib
   namespace: dh-health
   labels:
     app: mumc-etl-zib
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: mumc-etl-zib
   template:
     metadata:
       labels:
         app: mumc-etl-zib
     spec:
+      restartPolicy: Never
       initContainers:
-      - name: init-mumc-etl
+      - name: wait-mumc-ehrbase-healthy
         image: busybox:1.28
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         command:
           - sh
           - -c
