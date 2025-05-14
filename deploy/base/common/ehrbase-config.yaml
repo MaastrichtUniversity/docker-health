@@ -5,7 +5,7 @@ metadata:
   namespace: dh-health
 data:
   SECURITY_AUTHTYPE: BASIC
-  # MANAGEMENT_ENDPOINTS need to be enabled for livenessProbe and readinessProbe of the ehrbase pods 
+  # MANAGEMENT_ENDPOINT 'health' needs to be enabled for livenessProbe and readinessProbe of the ehrbase pods 
   MANAGEMENT_ENDPOINTS_WEB_EXPOSURE: health
   MANAGEMENT_ENDPOINTS_WEB_BASEPATH: /management
   MANAGEMENT_ENDPOINT_HEALTH_ENABLED: "true"
