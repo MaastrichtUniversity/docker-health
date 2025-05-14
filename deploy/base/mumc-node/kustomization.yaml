@@ -5,7 +5,7 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- common/mumc-etl-config.yaml
+- etl-config
 - ehrbase
 - ehrdb
 - etl-zib
