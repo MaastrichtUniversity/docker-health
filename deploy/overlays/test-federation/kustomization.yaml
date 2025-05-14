@@ -41,11 +41,11 @@ secretGenerator:
     literals:
     - username=ehrbase_restricted3
     - password=ehrbase_restricted3
-  - name: envida-portal-creds
+  - name: envida-ehrdb-creds
     namespace: dh-health
     literals:
-    - username=demo@envida.nl
-    - password=foobar
+      - username=postgress
+      - password=postgress
   - name: envida-federation-key
     namespace: dh-health
     literals:
@@ -75,11 +75,11 @@ secretGenerator:
     literals:
       - username=ehrbase_restricted1
       - password=ehrbase_restricted1
-  - name: mumc-portal-creds
+  - name: mumc-ehrdb-creds
     namespace: dh-health
     literals:
-      - username=demo@mumc.nl
-      - password=foobar
+      - username=postgress
+      - password=postgress
   - name: mumc-federation-key
     namespace: dh-health
     literals:
@@ -109,11 +109,11 @@ secretGenerator:
     literals:
       - username=ehrbase_restricted2
       - password=ehrbase_restricted2
-  - name: zio-portal-creds
+  - name: zio-ehrdb-creds
     namespace: dh-health
     literals:
-      - username=demo@zio.nl
-      - password=foobar
+      - username=postgress
+      - password=postgress
   - name: zio-federation-key
     namespace: dh-health
     literals:
