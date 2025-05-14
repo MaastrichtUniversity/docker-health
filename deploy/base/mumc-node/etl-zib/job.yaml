@@ -1,27 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: envida-etl-zib
+  name: mumc-etl-zib
   namespace: dh-health
   labels:
-    app: envida-etl-zib
+    app: mumc-etl-zib
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: envida-etl-zib
+      app: mumc-etl-zib
   template:
     metadata:
       labels:
-        app: envida-etl-zib
+        app: mumc-etl-zib
     spec:
       initContainers:
-      - name: init-envida-etl
+      - name: init-mumc-etl
         image: busybox:1.28
         imagePullPolicy: Never
-        command: [ 'sh', '-c', 'for i in 1 2 3 4 5 6 7 8 9 ; do echo waiting; sleep 10; if wget -T5 -qO- -Y off envida-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then exit 0; fi; done; exit 1' ]
+        command:
+          - sh
+          - -c
+          - |
+            for i in 1 2 3 4 5 6 7 8 9; do
+              echo "waiting"
+              sleep 10
+              if wget -T5 -qO- -Y off mumc-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then
+                exit 0
+              fi
+            done
+            exit 1
       containers:
-      - name: envida-etl-zib
+      - name: mumc-etl-zib
         image: docker-health/etl-zib:latest
         envFrom:
         - configMapRef:
@@ -31,27 +42,27 @@ spec:
         - configMapRef:
             name: zib-templates-config
         - configMapRef:
-            name: envida-etl-config
+            name: mumc-etl-config
         env:
         - name: EHRBASE_USERNAME
           valueFrom:
-           secretKeyRef:
-             name: envida-ehrbase-creds
-             key: username
+            secretKeyRef:
+              name: mumc-ehrbase-creds
+              key: username
         - name: EHRBASE_PASSWORD
           valueFrom:
-             secretKeyRef:
-               name: envida-ehrbase-creds
-               key: password
+            secretKeyRef:
+              name: mumc-ehrbase-creds
+              key: password
         - name: EHRBASE_ADMIN_USERNAME
           valueFrom:
             secretKeyRef:
-              name: envida-ehrbase-admin-creds
+              name: mumc-ehrbase-admin-creds
               key: username
         - name: EHRBASE_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: envida-ehrbase-admin-creds
+              name: mumc-ehrbase-admin-creds
               key: password
         - name: TRANSFORM_SPRING_USERNAME
           valueFrom:
@@ -66,19 +77,19 @@ spec:
         volumeMounts:
         - name: outputs
           mountPath: /code/outputs
-          subPath: envida/pipeline
+          subPath: mumc/pipeline
         - name: data
-          mountPath: /code/data/envida-demo-data
+          mountPath: /code/data/mumc-demo-data
         - name: etl-logs
-          mountPath: /code/logs/envida
-          subPath: envida/etl
+          mountPath: /code/logs/mumc
+          subPath: mumc/etl
       volumes:
       - name: outputs
         persistentVolumeClaim:
           claimName: output-pvc
       - name: data
         hostPath:
-          path: /mnt/data/envida-demo-data
+          path: /mnt/data/mumc-demo-data
           type: Directory
       - name: etl-logs
         persistentVolumeClaim:
