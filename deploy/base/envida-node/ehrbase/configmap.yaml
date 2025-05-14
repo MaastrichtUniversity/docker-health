@@ -20,7 +20,5 @@ data:
   MANAGEMENT_ENDPOINT_METRICS_ENABLED: "false"
   MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED: "false"
   MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: "true"
-  # Set ADMIN_API_ACTIVE: "true" for development purposes while running the tests teardown.
-  ADMIN_API_ACTIVE: "true"
 
   DB_URL: jdbc:postgresql://envida-ehrdb:5432/ehrbase
