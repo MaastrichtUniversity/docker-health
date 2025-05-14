@@ -11,6 +11,12 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Never
+- target:
+    kind: Job
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Never
 
 # Updated deployment patches
 - path: ehrdb-deployment-patch.yaml
