@@ -3,3 +3,19 @@ kind: Kustomization
 
 resources:
 - job.yaml
+- namespace.yaml
+- ../../base/common
+- ../../base/federation-api
+- ../../base/transform-rest
+- ../../base/mumc-node/ehrbase
+- ../../base/mumc-node/ehrdb
+- ../../base/mumc-node/etl-config
+- ../../base/mumc-node/etl-zib
+- ../../base/zio-node/ehrbase
+- ../../base/zio-node/ehrdb
+- ../../base/zio-node/etl-config
+- ../../base/zio-node/etl-zib
+- ../../base/envida-node/ehrbase
+- ../../base/envida-node/ehrdb
+- ../../base/envida-node/etl-config
+- ../../base/envida-node/etl-zib

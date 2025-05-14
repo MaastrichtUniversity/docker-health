@@ -3,14 +3,7 @@ kind: Kustomization
 namespace: dh-health
 
 resources:
-- namespace.yaml
 - ../../jobs/test-federation
-- ../../base/common
-- ../../base/federation-api
-- ../../base/transform-rest
-- ../../base/mumc-node # need mumc-etl-config
-- ../../base/zio-node
-- ../../base/envida-node
 
 patches:
 - target:
