@@ -54,22 +54,22 @@ secretGenerator:
     namespace: dh-health
     literals:
       - username=user0
-      - password=shdiuhdusdhiusdhsiuasdghiudshdasiu
+      - password=foobar0
   - name: test-ehrbase-admin-creds
     namespace: dh-health
     literals:
       - username=admin0
-      - password=dldfhkjlashdkjasdhsdkjhasdkjsa
+      - password=admin0
   - name: test-ehrbase-db-admin-creds
     namespace: dh-health
     literals:
       - username=ehrbase0
-      - password=sadddsaasdasdadsdasasd
+      - password=ehrbase0
   - name: test-ehrbase-db-creds
     namespace: dh-health
     literals:
       - username=ehrbase_restricted0
-      - password=sh7u2349yuihdsia8y98ysdaiusdgha87asd
+      - password=ehrbase_restricted0
   - name: test-ehrdb-creds
     namespace: dh-health
     literals:
