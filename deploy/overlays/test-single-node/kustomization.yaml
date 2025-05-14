@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: dh-health
 
 resources:
-- ../../jobs/test-single-node
+- ../../tests/test-single-node
 
 patches:
 - target:

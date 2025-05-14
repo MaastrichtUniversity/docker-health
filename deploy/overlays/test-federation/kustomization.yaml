@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: dh-health
 
 resources:
-- ../../jobs/test-federation
+- ../../tests/test-federation
 
 patches:
 - target:
