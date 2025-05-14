@@ -33,8 +33,6 @@ spec:
         - configMapRef:
             name: test-etl-config
         env:
-        - name: LOGSTASH_TAGS
-          value: ETL_ZIB
         - name: EHRBASE_USERNAME
           valueFrom:
             secretKeyRef:
