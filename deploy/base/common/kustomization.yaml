@@ -16,3 +16,4 @@ resources:
 - openehrtool-config.yaml
 - timezone-config.yaml
 - portal-common-config.yaml
+- ehrbase-config.yaml

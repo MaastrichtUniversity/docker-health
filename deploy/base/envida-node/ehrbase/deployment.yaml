@@ -73,6 +73,8 @@ spec:
             name: timezone-config
         - configMapRef:
             name: envida-ehrbase-config
+        - configMapRef:
+            name: ehrbase-config
         livenessProbe:
           httpGet:
             path: /ehrbase/management/health
