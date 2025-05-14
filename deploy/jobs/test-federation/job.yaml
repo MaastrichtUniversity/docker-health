@@ -120,8 +120,8 @@ spec:
         volumeMounts:
           - name: logs
             mountPath: /code/logs/federation-api
+            subPath: test-federation
       volumes:
-      - name: logs
-        hostPath:
-          path: /mnt/logs # TODO: change path
-          type: DirectoryOrCreate
+        - name: logs
+          persistentVolumeClaim:
+            claimName: log-pvc
