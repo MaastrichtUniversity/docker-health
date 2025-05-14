@@ -22,7 +22,5 @@ data:
   MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: "true"
   # Set ADMIN_API_ACTIVE: "true" for development purposes while running the tests teardown.
   ADMIN_API_ACTIVE: "true"
-  # For FHIR-Bridge
-  SERVER_DISABLESTRICTVALIDATION: "true"
 
   DB_URL: jdbc:postgresql://mumc-ehrdb:5432/ehrbase
