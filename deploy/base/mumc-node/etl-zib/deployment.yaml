@@ -68,6 +68,7 @@ spec:
         volumeMounts:
         - name: outputs
           mountPath: /code/outputs
+          subPath: mumc/pipeline
         - name: data
           mountPath: /code/data/mumc-demo-data
         - name: etl-logs

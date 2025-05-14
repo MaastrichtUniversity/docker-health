@@ -66,6 +66,7 @@ spec:
         volumeMounts:
         - name: outputs
           mountPath: /code/outputs
+          subPath: envida/pipeline
         - name: data
           mountPath: /code/data/envida-demo-data
         - name: etl-logs

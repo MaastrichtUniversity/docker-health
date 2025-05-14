@@ -63,6 +63,7 @@ spec:
         volumeMounts:
         - name: outputs
           mountPath: /code/outputs
+          subPath: envida/rest
         - name: etl-logs
           mountPath: /code/logs/envida
           subPath: envida/etl
