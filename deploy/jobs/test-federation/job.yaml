@@ -8,13 +8,27 @@ spec:
     spec:
       restartPolicy: Never
       initContainers:
-      - name: init-test-federation-api-runner
-        image: busybox:1.28
-        imagePullPolicy: Never
-        # TODO: Improve healthcheck to avoid tests to fail
-        command: [ 'sh', '-c', 'for i in 1 2 3 4 5 6 7 8 9 ; do echo waiting; sleep 20; if wget -T5 -qO- -Y off mumc-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then exit 0; fi; done; exit 1' ]
+      - name: wait-etl-jobs
+        image: bitnami/kubectl:1.27.13
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+          - |
+            for job in envida-etl-zib mumc-etl-zib zio-etl-zib; do
+              echo "Waiting for job $job to complete..."
+              while true; do
+                status=$(kubectl get job $job -n dh-health -o jsonpath='{.status.succeeded}')
+                if [ "$status" = "1" ]; then
+                  echo "$job is complete"
+                  break
+                fi
+                echo "$job not completed yet, sleeping 10s..."
+                sleep 10
+              done
+            done
       containers:
-      - name: test-federation-api-runner
+      - name: test-federation-runner
         image: docker-health/federation-test:latest
         envFrom:
         - configMapRef:

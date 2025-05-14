@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
 - job.yaml
 - namespace.yaml
+- job-reader.yaml
 - ../../base/common
 - ../../base/federation-api
 - ../../base/transform-rest
