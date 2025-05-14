@@ -69,14 +69,14 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /code/data/test-demo-data
-        - name: logs
+        - name: etl-logs
           mountPath: /code/logs/test
+          subPath: test/etl
       volumes:
       - name: data
         hostPath:
           path: /mnt/data/test-demo-data
           type: Directory
-      - name: logs
-        hostPath:
-          path: /mnt/logs
-          type: DirectoryOrCreate
+      - name: etl-logs
+        persistentVolumeClaim:
+          claimName: log-pvc
