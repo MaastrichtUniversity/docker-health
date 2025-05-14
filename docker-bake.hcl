@@ -73,9 +73,6 @@ target "test-single-node" {
 
 target "jupyter-zib" {
   inherits = ["_hdp_templates", "_src_etl"]
-  args = {
-    DATA = "zib"
-  }
   dockerfile = "Dockerfile"
   tags = ["docker-health/jupyter-zib:${ENV_TAG}"]
   context = "./externals/dh-hdp-notebooks"

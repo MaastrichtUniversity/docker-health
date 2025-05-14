@@ -15,6 +15,8 @@ spec:
       labels:
         app: jupyter-zib
     spec:
+      securityContext:
+        runAsUser: 0 # Run as Root to avoid permission issue with volume mount
       containers:
       - name: jupyter-zib
         image: docker-health/jupyter-zib:latest
@@ -50,9 +52,14 @@ spec:
         volumeMounts:
           - name: demo-data
             mountPath: /home/jovyan/data
+          - name: notebooks
+            mountPath: /home/jovyan/work
       volumes:
         - name: demo-data
           hostPath:
             path: /mnt/data
             type: Directory
+        - name: notebooks
+          persistentVolumeClaim:
+              claimName: notebooks-pvc
             
