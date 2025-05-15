@@ -85,4 +85,8 @@ configMapGenerator:
   behavior: merge
   literals:
     - ADMIN_API_ACTIVE=true
+- name: test-etl-config
+  namespace: dh-health
+  behavior: merge
+  literals:
     - EHRBASE_ADMIN_BASE_URL=http://test-ehrbase.dh-health:8080/ehrbase/rest/admin
