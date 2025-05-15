@@ -19,6 +19,27 @@ patches:
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Never
 
+# Individual ingress host patches
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: transform-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: transform.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: test-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.test.local.dh.unimaas.nl
+
 secretGenerator:
 # TEST-node
   - name: test-ehrbase-creds

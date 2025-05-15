@@ -19,6 +19,57 @@ patches:
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Never
 
+# Individual ingress host patches
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: transform-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: transform.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: federation-api-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: federation.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: mumc-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.mumc.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.zio.local.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: envida-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.envida.local.dh.unimaas.nl
+
 secretGenerator:
 # Envida-node
   - name: envida-ehrbase-creds
