@@ -10,8 +10,8 @@ spec:
       restartPolicy: Never
       initContainers:
       - name: wait-etl-jobs
-        image: bitnami/kubectl:1.27.13
-        imagePullPolicy: IfNotPresent
+        image: bitnami/kubectl:1.27.13 # TODO: Try not to use a third-party docker image
+        imagePullPolicy: Never
         command:
           - sh
           - -c

@@ -25,7 +25,11 @@ docker pull surfercrs4/openehrtool:latest
 
 # BusyBox for ETL initContainer
 echo "Pulling busybox:1.28..."
-docker pull  busybox:1.28
+docker pull busybox:1.28
+
+# kubectl for test-federation initContainer
+echo "Pulling kubectl:1.27.13..."
+docker pull bitnami/kubectl:1.27.13
 
 # Grafana
 echo "Pulling Grafana.."
