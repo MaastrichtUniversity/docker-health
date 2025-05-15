@@ -3,7 +3,13 @@ kind: Kustomization
 namespace: dh-health
 
 resources:
-- ../../tests/test-single-node
+- job.yaml
+- namespace.yaml
+- ../../base/common
+- ../../base/transform-rest
+- ../../base/test-node/ehrbase
+- ../../base/test-node/ehrdb
+- ../../base/test-node/etl-config
 
 patches:
 - target:
