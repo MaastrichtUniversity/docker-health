@@ -110,8 +110,8 @@ secretGenerator:
   - name: envida-ehrbase-db-postgres-creds
     namespace: dh-health
     literals:
-      - username=postgress
-      - password=postgress
+      - username=postgres
+      - password=postgres
   - name: envida-federation-key
     namespace: dh-health
     literals:
@@ -144,8 +144,8 @@ secretGenerator:
   - name: mumc-ehrbase-db-postgres-creds
     namespace: dh-health
     literals:
-      - username=postgress
-      - password=postgress
+      - username=postgres
+      - password=postgres
   - name: mumc-federation-key
     namespace: dh-health
     literals:
@@ -178,8 +178,8 @@ secretGenerator:
   - name: zio-ehrbase-db-postgres-creds
     namespace: dh-health
     literals:
-      - username=postgress
-      - password=postgress
+      - username=postgres
+      - password=postgres
   - name: zio-federation-key
     namespace: dh-health
     literals:
