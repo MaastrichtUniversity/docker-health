@@ -5,6 +5,7 @@ resources:
 - ../../base
 
 patches:
+# imagePullPolicy patches
 - target:
     kind: Deployment
   patch: |-

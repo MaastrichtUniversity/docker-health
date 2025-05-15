@@ -21,6 +21,7 @@ resources:
 - ../../base/envida-node/etl-zib
 
 patches:
+# imagePullPolicy patches
 - target:
     kind: Deployment
   patch: |-

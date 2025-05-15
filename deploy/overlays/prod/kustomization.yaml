@@ -7,6 +7,7 @@ resources:
 patches:
 - path: ingress-patches.yaml
 
+# imagePullPolicy patches
 - target:
     kind: Deployment
   patch: |-

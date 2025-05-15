@@ -10,6 +10,7 @@ resources:
 - ../../base/test-node/etl-config
 
 patches:
+# imagePullPolicy patches
 - target:
     kind: Deployment
   patch: |-
