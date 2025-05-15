@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
 - job.yaml
-- job-reader.yaml
+- role.yaml
 - ../../base/common
 - ../../base/federation-api
 - ../../base/transform-rest
