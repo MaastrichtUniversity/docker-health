@@ -4,5 +4,5 @@ metadata:
   name: portal-common-config
   namespace: dh-health
 data:
-  FEDERATION_SERVER_URL: http://federation-api:8000
+  FEDERATION_SERVER_URL: http://federation-api.dh-health:8000
 
