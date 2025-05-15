@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: federation-api
+  name: federation-rest
   namespace: dh-health
   labels:
-    app: federation-api
+    app: federation-rest
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: federation-api
+      app: federation-rest
   template:
     metadata:
       labels:
-        app: federation-api
+        app: federation-rest
     spec:
       containers:
-        - name: federation-api
+        - name: federation-rest
           image: docker-health/federation-rest:latest
           ports:
             - containerPort: 8000
@@ -120,10 +120,10 @@ spec:
             - configMapRef:
                 name: timezone-config
             - configMapRef:
-                name: federation-api-config
+                name: federation-rest-config
           volumeMounts:
             - name: logs
-              mountPath: /code/logs/federation-api
+              mountPath: /code/logs/federation-rest
               subPath: federation
       volumes:
         - name: logs

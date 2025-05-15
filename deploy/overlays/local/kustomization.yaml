@@ -33,7 +33,7 @@ patches:
     group: networking.k8s.io
     version: v1
     kind: Ingress
-    name: federation-api-ingress
+    name: federation-rest-ingress
   patch: |-
     - op: replace
       path: /spec/rules/0/host
@@ -363,4 +363,4 @@ configMapGenerator:
   namespace: dh-health
   behavior: merge
   literals:
-    - NEXT_PUBLIC_FEDERATION_API_URL=http://federation.local.dh.unimaas.nl
+    - NEXT_PUBLIC_FEDERATION_BASE_URL=http://federation.local.dh.unimaas.nl

@@ -8,7 +8,7 @@ variable "MAVEN_VERSION" {
 }
 
 group "default" {
-  targets = ["transform-rest", "federation-api", "test-federation-api", "etl-zib", "etl-zib-rest", "test-single-node", "jupyter-zib", "portal"]
+  targets = ["transform-rest", "federation-rest", "test-federation-rest", "etl-zib", "etl-zib-rest", "test-single-node", "jupyter-zib", "portal"]
 }
 
 target "_src_etl" {
@@ -33,14 +33,14 @@ target "transform-rest" {
   context = "./externals/dh-hdp-transform-rest"
 }
 
-target "federation-api" {
+target "federation-rest" {
   target = "rest"
   dockerfile = "Dockerfile"
   tags = ["docker-health/federation-rest:${ENV_TAG}"]
   context = "./externals/dh-hdp-federation-api"
 }
 
-target "test-federation-api" {
+target "test-federation-rest" {
   target = "test"
   dockerfile = "Dockerfile"
   tags = ["docker-health/federation-test:${ENV_TAG}"]

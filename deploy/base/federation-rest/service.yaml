@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: federation-api
+  name: federation-rest
   namespace: dh-health
 spec:
   type: ClusterIP
@@ -10,4 +10,4 @@ spec:
       targetPort: 8000
       protocol: TCP
   selector:
-    app: federation-api
+    app: federation-rest

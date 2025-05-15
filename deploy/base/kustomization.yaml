@@ -4,10 +4,9 @@ kind: Kustomization
 resources:
 - common
 - transform-rest
-- federation-api
+- federation-rest
 - jupyter-zib
 - mumc-node
 - zio-node
 - envida-node
 - test-node
-

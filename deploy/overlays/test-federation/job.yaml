@@ -43,7 +43,7 @@ spec:
         - configMapRef:
             name: timezone-config
         - configMapRef:
-            name: federation-api-config
+            name: federation-rest-config
         env:
         # NODENAME
         - name: MUMC__NODENAME
@@ -142,7 +142,7 @@ spec:
               key: password
         volumeMounts:
           - name: logs
-            mountPath: /code/logs/federation-api
+            mountPath: /code/logs/federation-rest
             subPath: test-federation
       volumes:
         - name: logs

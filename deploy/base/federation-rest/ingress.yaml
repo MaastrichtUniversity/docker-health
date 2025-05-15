@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: federation-api-ingress
+  name: federation-rest-ingress
   namespace: dh-health
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -15,6 +15,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: federation-api
+            name: federation-rest
             port:
               number: 8000

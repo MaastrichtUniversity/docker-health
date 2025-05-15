@@ -27,7 +27,7 @@ Additional deployed services:
 
 - **transform-rest**: Performs transformation of data to openEHR composition via a REST api
   - Host available at: http://transform.{ENV}.dh.unimaas.nl
-- **federation-api**: Provides a federation API for querying data of multiple nodes
+- **federation-rest**: Provides a federation REST api for querying data of multiple nodes
   - Host available at: http://federation.{ENV}.dh.unimaas.nl
 - **etl-rest**: Permits the loading of data via a REST api
 - **filebeat**: A service used for shipping logs to a central location
@@ -41,7 +41,7 @@ Additional deployed services:
   - **kustomization.yaml**: Main kustomization file that references all resources
   - **env_files/**: Environment variable files referenced by ConfigMap generators
   - **common/**: Common resources shared across services
-  - **transform-rest/**, **federation-api/**, etc.: Service-specific manifests
+  - **transform-rest/**, **federation-rest/**, etc.: Service-specific manifests
 - **overlays/**: Environment-specific configurations
   - **local/**: Local development environment
   - **tst/**: Development test environment customizations
