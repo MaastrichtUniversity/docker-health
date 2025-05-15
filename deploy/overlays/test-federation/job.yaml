@@ -16,14 +16,21 @@ spec:
           - sh
           - -c
           - |
+            set -e
             JOBS=$(kubectl get jobs -n dh-health -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n' | grep 'etl-zib$')
             for job in $JOBS; do
               echo "Waiting for job $job to complete..."
               while true; do
-                status=$(kubectl get job $job -n dh-health -o jsonpath='{.status.succeeded}')
-                if [ "$status" = "1" ]; then
+                succeeded=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.succeeded}')                
+                if [ "$succeeded" = "1" ]; then
                   echo "$job is complete"
                   break
+                fi
+
+                failed=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.failed}')
+                if [ "$failed" != "" ] && [ "$failed" -ge 1 ]; then
+                  echo "❌ $job has failed. Exiting."
+                  exit 1
                 fi
                 echo "$job not completed yet, sleeping 10s..."
                 sleep 10
