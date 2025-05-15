@@ -11,5 +11,3 @@ data:
   TEMPLATE_IDS: '["DataHub-Patient-2024", "DataHub-BurgerlijkeStaat-2017", "DataHub-Woonsituatie-2017", "DataHub-Contactpersoon-2017", "DataHub-VermogenTotZichWassen-2020", "DataHub-VermogenTotZichKleden-2020", "DataHub-VermogenTotUiterlijkeVerzorging-2020", "DataHub-VermogenTotZelfstandigMedicatiegebruik-2020", "DataHub-VermogenTotDrinken-2020", "DataHub-VermogenTotEten-2020", "DataHub-VermogenTotMondverzorging-2020", "DataHub-VermogenTotToiletgang-2020", "DataHub-InformedConsent"]'
   WRITE_COMPOSITION: "True"
   EHRBASE_BASE_URL: http://envida-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
-  # Environment variables meant for development while running the test teardown:
-  EHRBASE_ADMIN_BASE_URL: http://envida-ehrbase.dh-health:8080/ehrbase/rest/admin

@@ -78,10 +78,11 @@ secretGenerator:
       - username=user
       - password=foobar
       
-# Set ADMIN_API_ACTIVE: "true" for development purposes while running the tests teardown.
+# Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
 configMapGenerator:
 - name: test-ehrbase-config
   namespace: dh-health
   behavior: merge
   literals:
     - ADMIN_API_ACTIVE=true
+    - EHRBASE_ADMIN_BASE_URL=http://test-ehrbase.dh-health:8080/ehrbase/rest/admin
