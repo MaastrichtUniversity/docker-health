@@ -11,6 +11,7 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
+- namespace.yaml
 - volumes.yaml
 - zib-templates-config.yaml
 - openehrtool-config.yaml

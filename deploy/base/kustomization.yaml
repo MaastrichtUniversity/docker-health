@@ -2,13 +2,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- namespace.yaml
 - common
 - transform-rest
 - federation-api
 - jupyter-zib
-- mumc-node/
-- zio-node/
-- envida-node/
-- test-node/
+- mumc-node
+- zio-node
+- envida-node
+- test-node
 
