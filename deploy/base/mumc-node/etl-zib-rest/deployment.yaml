@@ -38,16 +38,6 @@ spec:
             secretKeyRef:
               name: mumc-ehrbase-creds
               key: password
-        - name: EHRBASE_ADMIN_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: mumc-ehrbase-admin-creds
-              key: username
-        - name: EHRBASE_ADMIN_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mumc-ehrbase-admin-creds
-              key: password
         - name: TRANSFORM_SPRING_USERNAME
           valueFrom:
             secretKeyRef:
