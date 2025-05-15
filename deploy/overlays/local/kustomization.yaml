@@ -364,3 +364,10 @@ configMapGenerator:
   behavior: merge
   literals:
     - NEXT_PUBLIC_FEDERATION_API_URL=http://federation.local.dh.unimaas.nl
+
+# Set ADMIN_API_ACTIVE: "true" in all nodes for development purposes for openEHRtool ADMIN methods.
+- name: ehrbase-config
+  namespace: dh-health
+  behavior: merge
+  literals:
+    - ADMIN_API_ACTIVE=true
