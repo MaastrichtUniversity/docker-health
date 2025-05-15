@@ -3,13 +3,7 @@ kind: Kustomization
 namespace: dh-health
 
 resources:
-- namespace.yaml
-- ../../jobs/test-single-node
-- ../../base/common
-- ../../base/transform-rest
-- ../../base/test-node/ehrbase
-- ../../base/test-node/ehrdb
-- ../../base/test-node/etl-config
+- ../../tests/test-single-node
 
 patches:
 - target:
@@ -24,29 +18,6 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Never
-
-# Individual ingress host patches
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: transform-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: transform.local.dh.unimaas.nl
-
-
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: test-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.test.local.dh.unimaas.nl
-
 
 secretGenerator:
 # TEST-node

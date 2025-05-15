@@ -124,6 +124,7 @@ spec:
           volumeMounts:
             - name: logs
               mountPath: /code/logs/federation-api
+              subPath: federation
       volumes:
         - name: logs
           persistentVolumeClaim:

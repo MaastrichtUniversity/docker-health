@@ -11,6 +11,12 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Never
+- target:
+    kind: Job
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Never
 
 # Individual ingress host patches
 - target:
@@ -188,28 +194,28 @@ secretGenerator:
   - name: envida-ehrbase-creds
     namespace: dh-health
     literals:
-    - username=user3
-    - password=foobar3
+      - username=user3
+      - password=foobar3
   - name: envida-ehrbase-admin-creds
     namespace: dh-health
     literals:
-    - username=admin3
-    - password=admin3
+      - username=admin3
+      - password=admin3
   - name: envida-ehrbase-db-admin-creds
     namespace: dh-health
     literals:
-    - username=ehrbase3
-    - password=ehrbase3
+      - username=ehrbase3
+      - password=ehrbase3
   - name: envida-ehrbase-db-creds
     namespace: dh-health
     literals:
-    - username=ehrbase_restricted3
-    - password=ehrbase_restricted3
+      - username=ehrbase_restricted3
+      - password=ehrbase_restricted3
   - name: envida-portal-creds
     namespace: dh-health
     literals:
-    - username=demo@envida.nl
-    - password=foobar
+      - username=demo@envida.nl
+      - password=foobar
   - name: envida-federation-key
     namespace: dh-health
     literals:

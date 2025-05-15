@@ -1,27 +1,35 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: mumc-etl-zib
+  name: test-etl-zib
   namespace: dh-health
   labels:
-    app: mumc-etl-zib
+    app: test-etl-zib
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: mumc-etl-zib
   template:
     metadata:
       labels:
-        app: mumc-etl-zib
+        app: test-etl-zib
     spec:
+      restartPolicy: Never
       initContainers:
-      - name: init-mumc-etl
+      - name: wait-test-ehrbase-healthy
         image: busybox:1.28
-        imagePullPolicy: Never
-        command: [ 'sh', '-c', 'for i in 1 2 3 4 5 6 7 8 9 ; do echo waiting; sleep 10; if wget -T5 -qO- -Y off mumc-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then exit 0; fi; done; exit 1' ]
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+          - |
+            for i in 1 2 3 4 5 6 7 8 9; do
+              echo "waiting"
+              sleep 10
+              if wget -T5 -qO- -Y off test-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then
+                exit 0
+              fi
+            done
+            exit 1
       containers:
-      - name: mumc-etl-zib
+      - name: test-etl-zib
         image: docker-health/etl-zib:latest
         envFrom:
         - configMapRef:
@@ -31,27 +39,27 @@ spec:
         - configMapRef:
             name: zib-templates-config
         - configMapRef:
-            name: mumc-etl-config
+            name: test-etl-config
         env:
         - name: EHRBASE_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mumc-ehrbase-creds
+              name: test-ehrbase-creds
               key: username
         - name: EHRBASE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mumc-ehrbase-creds
+              name: test-ehrbase-creds
               key: password
         - name: EHRBASE_ADMIN_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mumc-ehrbase-admin-creds
+              name: test-ehrbase-admin-creds
               key: username
         - name: EHRBASE_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mumc-ehrbase-admin-creds
+              name: test-ehrbase-admin-creds
               key: password
         - name: TRANSFORM_SPRING_USERNAME
           valueFrom:
@@ -66,20 +74,21 @@ spec:
         volumeMounts:
         - name: outputs
           mountPath: /code/outputs
-          subPath: mumc/pipeline
+          subPath: test/pipeline
         - name: data
-          mountPath: /code/data/mumc-demo-data
+          mountPath: /code/data/test-demo-data
         - name: etl-logs
-          mountPath: /code/logs/mumc
-          subPath: mumc/etl
+          mountPath: /code/logs/test
+          subPath: test/etl
       volumes:
       - name: outputs
         persistentVolumeClaim:
-          claimName: output-pvc
+            claimName: output-pvc
       - name: data
         hostPath:
-          path: /mnt/data/mumc-demo-data
+          path: /mnt/data/test-demo-data
           type: Directory
       - name: etl-logs
         persistentVolumeClaim:
           claimName: log-pvc
+  

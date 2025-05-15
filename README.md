@@ -195,12 +195,14 @@ Once deployed, you can access the services at their local dns name
 
 ### Running tests
 
-To run tests on single node:
-
 ```bash
 # Clean up existing overlay
 kubectl delete -k deploy/overlays/local
+```
 
+To run tests on single node:
+
+```bash
 # Run the test job. Check the logs of test-single-node pod to see the result
 kubectl apply -k deploy/overlays/test-single-node
 
@@ -210,7 +212,13 @@ kubectl delete -k deploy/overlays/test-single-node
 
 To run tests on federation:
 
-#TODO
+```bash
+# Run the test job. Check the logs of test-federation pod to see the result
+kubectl apply -k deploy/overlays/test-federation
+
+# Manually clean up the containers
+kubectl delete -k deploy/overlays/test-federation
+```
 
 ### Viewing Logs
 

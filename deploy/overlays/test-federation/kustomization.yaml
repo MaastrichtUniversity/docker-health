@@ -3,14 +3,7 @@ kind: Kustomization
 namespace: dh-health
 
 resources:
-- namespace.yaml
-- ../../jobs/test-federation
-- ../../base/common
-- ../../base/federation-api
-- ../../base/transform-rest
-- ../../base/mumc-node # need mumc-etl-config
-- ../../base/zio-node
-- ../../base/envida-node
+- ../../tests/test-federation
 
 patches:
 - target:
@@ -26,45 +19,33 @@ patches:
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Never
 
-# Individual ingress host patches
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: federation-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: federation.local.dh.unimaas.nl
-
-
 secretGenerator:
 # Envida-node
   - name: envida-ehrbase-creds
     namespace: dh-health
     literals:
-    - username=user3
-    - password=foobar3
+      - username=user3
+      - password=foobar3
   - name: envida-ehrbase-admin-creds
     namespace: dh-health
     literals:
-    - username=admin3
-    - password=admin3
+      - username=admin3
+      - password=admin3
   - name: envida-ehrbase-db-admin-creds
     namespace: dh-health
     literals:
-    - username=ehrbase3
-    - password=ehrbase3
+      - username=ehrbase3
+      - password=ehrbase3
   - name: envida-ehrbase-db-creds
     namespace: dh-health
     literals:
-    - username=ehrbase_restricted3
-    - password=ehrbase_restricted3
-  - name: envida-portal-creds
+      - username=ehrbase_restricted3
+      - password=ehrbase_restricted3
+  - name: envida-ehrdb-creds
     namespace: dh-health
     literals:
-    - username=demo@envida.nl
-    - password=foobar
+      - username=postgress
+      - password=postgress
   - name: envida-federation-key
     namespace: dh-health
     literals:
@@ -94,11 +75,11 @@ secretGenerator:
     literals:
       - username=ehrbase_restricted1
       - password=ehrbase_restricted1
-  - name: mumc-portal-creds
+  - name: mumc-ehrdb-creds
     namespace: dh-health
     literals:
-      - username=demo@mumc.nl
-      - password=foobar
+      - username=postgress
+      - password=postgress
   - name: mumc-federation-key
     namespace: dh-health
     literals:
@@ -128,11 +109,11 @@ secretGenerator:
     literals:
       - username=ehrbase_restricted2
       - password=ehrbase_restricted2
-  - name: zio-portal-creds
+  - name: zio-ehrdb-creds
     namespace: dh-health
     literals:
-      - username=demo@zio.nl
-      - password=foobar
+      - username=postgress
+      - password=postgress
   - name: zio-federation-key
     namespace: dh-health
     literals:

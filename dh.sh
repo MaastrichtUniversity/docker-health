@@ -291,18 +291,29 @@ print_usage() {
     echo
     echo "Commands:"
     echo "  setup                  Initialize Minikube Kubernetes environment with docker engine"
+    echo "  start                  Start an already initialized Minikube Kubernetes environment with docker engine"
     echo "  build                  Build service images"
     echo "  pull                   Pull external images"
     echo "  externals <subcommand> Manage external repositories"
     echo "  apply                  Apply Kubernetes manifests (default overlay: local)"
+    echo "  delete                 Delete Kubernetes manifests (default overlay: local)"
     echo "  status                 Show status of all pods"
-    echo "  hosts                  Update /etc/hosts with Minikube IP"
+    echo "  rollout                Manage the rollout to restart one or many resources (default all)"
+    echo "  headlamp               Enable the addons headlamp, start the service and create a temporary token"
     echo
     echo "Examples:"
     echo "  $0 setup               Setup Kubernetes environment"
+    echo "  $0 start               Start Kubernetes environment"
     echo "  $0 build all           Build all Docker images"
     echo "  $0 backend mumc        Build EHRBase image for MUMC node"
     echo "  $0 apply               Apply Kubernetes manifests with local overlay"
+    echo "  $0 apply tst           Apply Kubernetes manifests with tst overlay"
+    echo "  $0 delete              Delete Kubernetes manifests with local overlay"
+    echo "  $0 delete tst          Delete Kubernetes manifests with tst overlay"
+    echo "  $0 status              Print pods status"
+    echo "  $0 status -w           Print and follow pods status"
+    echo "  $0 rollout             Rollout a restart of all the deployments"
+    echo "  $0 rollout jupyter-zib Rollout a restart of the jupyter-zib deployment"
 }
 
 # Main command handler
@@ -329,13 +340,33 @@ main() {
             build_images "$@"
             ;;
             
+
+        start)
+            check_minikube
+            ;;
+
+        rollout)
+            kubectl rollout restart deployment "$@" -n dh-health
+            ;;
+
         apply)
             local overlay=${1:-local}
             apply_manifests $overlay
             ;;
-            
+
+        delete)
+            local overlay=${1:-local}
+            kubectl delete -k "deploy/overlays/${overlay}"
+            ;;
+
+        headlamp)
+            minikube addons enable headlamp
+            minikube service headlamp -n headlamp
+            kubectl create token headlamp --duration 24h -n headlamp
+            ;;
+
         status)
-            kubectl get pods -n $K8S_NAMESPACE
+            kubectl get pods -n $K8S_NAMESPACE "$@"
             ;;
             
         *)
