@@ -29,8 +29,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: transform-creds
-                key:
-                  password
+                key: password
         envFrom:
         - configMapRef:
             name: timezone-config

@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
 - job.yaml
-- job-reader.yaml
+- role.yaml
 - ../../base/common
 - ../../base/federation-rest
 - ../../base/transform-rest
@@ -21,6 +21,7 @@ resources:
 - ../../base/envida-node/etl-zib
 
 patches:
+# imagePullPolicy patches
 - target:
     kind: Deployment
   patch: |-
