@@ -5,4 +5,4 @@ metadata:
   namespace: dh-health
 data:
   SERVER_NODENAME: zio.server.dh.unimaas.nl
-  DB_URL: jdbc:postgresql://zio-ehrdb:5432/ehrbase
+  DB_URL: jdbc:postgresql://zio-ehrdb.dh-health:5432/ehrbase
