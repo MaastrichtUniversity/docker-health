@@ -15,7 +15,8 @@ spec:
           - sh
           - -c
           - |
-            for job in envida-etl-zib mumc-etl-zib zio-etl-zib; do
+            JOBS=$(kubectl get jobs -n dh-health -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n' | grep 'etl-zib$')
+            for job in $JOBS; do
               echo "Waiting for job $job to complete..."
               while true; do
                 status=$(kubectl get job $job -n dh-health -o jsonpath='{.status.succeeded}')
