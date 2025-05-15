@@ -4,6 +4,7 @@ metadata:
   name: test-single-node
   namespace: dh-health
 spec:
+  backoffLimit: 0
   template:
     spec:
       restartPolicy: Never
