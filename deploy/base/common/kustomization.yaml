@@ -13,8 +13,4 @@ generatorOptions:
 resources:
 - namespace.yaml
 - volumes.yaml
-- zib-templates-config.yaml
-- openehrtool-config.yaml
-- timezone-config.yaml
-- portal-common-config.yaml
-- ehrbase-config.yaml
+- config
