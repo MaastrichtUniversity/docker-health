@@ -306,7 +306,7 @@ print_usage() {
     echo "Examples:"
     echo "  $0 setup               Setup Kubernetes environment"
     echo "  $0 start               Start Kubernetes environment"
-    echo "  $0 build all           Build all Docker images"
+    echo "  $0 build               Build all Docker images"
     echo "  $0 apply               Apply Kubernetes manifests with local overlay"
     echo "  $0 apply tst           Apply Kubernetes manifests with tst overlay"
     echo "  $0 delete              Delete Kubernetes manifests with local overlay"
