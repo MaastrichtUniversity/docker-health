@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vitala-etl-zib-rest
+  namespace: dh-health
+  labels:
+    app: vitala-etl-zib-rest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vitala-etl-zib-rest
+  template:
+    metadata:
+      labels:
+        app: vitala-etl-zib-rest
+    spec:
+      containers:
+      - name: vitala-etl-zib-rest
+        image: docker-health/etl-zib-rest:latest
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: transform-server-config
+        - configMapRef:
+            name: zib-templates-config
+        - configMapRef:
+            name: vitala-etl-config
+        env:
+        - name: EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: vitala-ehrbase-creds
+              key: username
+        - name: EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: vitala-ehrbase-creds
+              key: password
+        - name: TRANSFORM_SPRING_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: username
+        - name: TRANSFORM_SPRING_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: password
+        volumeMounts:
+        - name: outputs
+          mountPath: /code/outputs
+          subPath: vitala/rest
+        - name: etl-logs
+          mountPath: /code/logs/vitala
+          subPath: vitala/rest
+      volumes:
+      - name: outputs
+        persistentVolumeClaim:
+          claimName: output-pvc
+      - name: etl-logs
+        persistentVolumeClaim:
+          claimName: log-pvc
