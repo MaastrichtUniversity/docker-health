@@ -16,7 +16,7 @@ Each node in the federated network represents a Dutch health organization. The c
 - **ENVIDA**: Envida healthcare organization
 - (**TEST**: Separate node used for testing)
 
-The implementation relies on the following services:
+The implementation relies on the following repositories:
 
 - [dh-hdp-zib-templates](https://github.com/um-datahub/dh-hdp-zib-templates/tree/2024.1): OpenEHR templates matching the
   ZIBs
@@ -65,11 +65,12 @@ The implementation relies on the following services:
 >
 > If encryption needs to be restored, uncomment the configurations and see `2025.1-ssl` branch of `docker-common`.
 
-## Quick start installation with Minikube
+## Quick start installation of the HDP local env
 
-The services are deployed to a `local` Minikube environment using Kubernetes manifests.
+Deployment of the services to a Minikube environment using Kubernetes manifests.
 
-Check out `deploy/README.md` for more information.
+Check out [deploy/README.md](https://github.com/MaastrichtUniversity/docker-health/tree/2024.1/deploy#kubernetes-deployment)
+for more information on the Kubernetes architecture and deployed services.
 
 1. Setup the Kubernetes cluster and folders
 
@@ -77,8 +78,8 @@ Check out `deploy/README.md` for more information.
 ./dh.sh setup
 ```
 
-This will start minikube with all needed addons, pull down the external repos, add log folders to the minikube machine
-and set hostnames in /etc/hosts with the minikube ip.
+This will start Minikube with all needed addons, pull down the external repos, add log folders to the Minikube machine
+and set hostnames in /etc/hosts with the Minikube ip.
 
 2. Pull default docker images from Dockerhub
 
@@ -92,13 +93,13 @@ and set hostnames in /etc/hosts with the minikube ip.
 ./dh.sh build
 ```
 
-3a. The script supports build with custom tag, but not needed for local development, see next example
+Note: Build with a custom tag is supported (not needed for local development).
 
 ```bash
 ./dh.sh build transform-rest 2.0.0
 ```
 
-4. Apply Kubernetes manifests with `local` overlay
+4. Apply Kubernetes manifests on the `local` overlay
 
 ```bash
 ./dh.sh apply
@@ -110,13 +111,108 @@ and set hostnames in /etc/hosts with the minikube ip.
 ./dh.sh status
 ```
 
-6. For a UI overview of the Minikube kubernetes stack and pods with logs checkout Headlamp or Freelens
+For a UI overview of the Minikube kubernetes stack and pods with logs checkout one of the following dashboard:
 
 - Headlamp: https://headlamp.dev/
 
 - Freelens: https://github.com/freelensapp/freelens
 
-Or you can enable the default dashboard with `minikube dashboard`
+- Enable the default dashboard with `minikube dashboard`
+
+## Development Workflow
+
+### dh.sh functionalities
+
+Checkout existing functionality in the dh.sh. For examples:
+
+```bash
+./dh.sh setup               Setup Kubernetes environment
+./dh.sh start               Start Kubernetes environment
+./dh.sh build               Build all Docker images
+./dh.sh apply               Apply Kubernetes manifests with local overlay
+./dh.sh apply tst           Apply Kubernetes manifests with tst overlay
+./dh.sh delete              Delete Kubernetes manifests with local overlay
+./dh.sh delete tst          Delete Kubernetes manifests with tst overlay
+./dh.sh status              Print the pods status
+./dh.sh status -w           Print and follow the pods status
+./dh.sh rollout             Rollout a restart of all the deployments
+./dh.sh rollout jupyter-zib Rollout a restart of the jupyter-zib deployment
+./dh.sh up test-node        Apply Kubernetes manifests with local overlay & the label test-node
+./dh.sh up others           Apply Kubernetes manifests with local overlay & without the labels test-node
+./dh.sh down test-node      Delete Kubernetes manifests with local overlay & the label test-node
+./dh.sh down others         Delete Kubernetes manifests with local overlay & without the labels test-node
+```
+
+### Rebuilding and Updating Services
+
+After making code changes:
+
+```bash
+# Ensure you're using Minikube's Docker daemon
+eval $(minikube docker-env)
+
+# Rebuild specific service or all services
+docker-compose build [service_name]
+
+# Restart the deployment to pick up new image
+./dh.sh rollout [service_name]
+```
+
+### Accessing Services
+
+Once deployed, you can access the services at their local dns name.
+
+### Running tests
+
+Pre-requirement: Clean up existing overlays.
+
+To run tests on single node:
+
+```bash
+# 1. Run the test job
+./dh.sh apply test-single-node
+
+# 2. Check the logs of test-single-node pod to see the result
+
+# 3. Manually clean up the containers
+./dh.sh delete test-single-node
+```
+
+To run tests on federation:
+
+```bash
+# 1. Run the test job
+./dh.sh apply test-federation
+
+# 2. Check the logs of test-federation pod to see the result
+
+# 3. Manually clean up the containers
+./dh.sh delete test-federation
+```
+
+### Viewing Logs
+
+To view logs for a specific deployment, checkout a Kubernetes dashboard or run the following command:
+
+```bash
+kubectl logs -l app=transform-rest -n dh-health
+```
+
+#### Log files
+
+Some log files are still saved in a volumeclaim inside the kubernetes cluster.
+You can access them from the terminal:
+
+```bash
+minikube ssh
+cd /usr/share/logs
+```
+
+### Stop minikube
+
+```bash
+minikube stop
+```
 
 ## Manual steps
 
@@ -172,218 +268,4 @@ kubectl create namespace dh-health
 
 ```bash
 kubectl apply -k deploy/overlays/local
-```
-
-**Note: Configuration Details**
-
-- This setup uses the Minikube Docker daemon to avoid pushing images to a registry
-- Environment variables are configured via ConfigMap generators
-- The `local` overlay applies the following customizations:
-    - Sets empty registry host (using images built directly in Minikube)
-    - Sets `imagePullPolicy: Never` to ensure Kubernetes uses locally built images
-
-## Development Workflow
-
-### Rebuilding and Updating Services
-
-After making code changes:
-
-```bash
-# Ensure you're using Minikube's Docker daemon
-eval $(minikube docker-env)
-
-# Rebuild specific service or all services
-docker-compose build [service_name]
-
-# Restart the deployment to pick up new image
-kubectl rollout restart deployment [service_name] -n dh-health
-```
-
-### Accessing Services
-
-Once deployed, you can access the services at their local dns name
-
-### Running tests
-
-```bash
-# Clean up existing overlay
-kubectl delete -k deploy/overlays/local
-```
-
-To run tests on single node:
-
-```bash
-# Run the test job. Check the logs of test-single-node pod to see the result
-kubectl apply -k deploy/overlays/test-single-node
-
-# Manually clean up the containers
-kubectl delete -k deploy/overlays/test-single-node
-```
-
-To run tests on federation:
-
-```bash
-# Run the test job. Check the logs of test-federation pod to see the result
-kubectl apply -k deploy/overlays/test-federation
-
-# Manually clean up the containers
-kubectl delete -k deploy/overlays/test-federation
-```
-
-### Viewing Logs
-
-```bash
-# View logs for a specific deployment
-kubectl logs -l app=transform-rest -n dh-health
-```
-
-#### Log files
-
-Some log files are still saved in a volumeclaim inside the kubernetes cluster.
-You can access them from the terminal:
-
-```bash
-minikube ssh
-cd /usr/share/logs
-```
-
-### Troubleshooting
-
-#### Images Not Found
-
-If you see `ImagePullBackOff` errors, ensure you've built the images with Minikube's Docker daemon:
-
-```bash
-eval $(minikube docker-env)
-docker-compose build
-kubectl rollout restart deployment -n dh-health
-```
-
-#### Storage Issues
-
-For persistent storage issues:
-
-```bash
-# Ensure storage provisioner is enabled
-minikube addons enable storage-provisioner
-
-# Check PVC status
-kubectl get pvc -n dh-health
-```
-
-#### Ingress Not Working
-
-Check if the ingress controller is properly installed:
-
-```bash
-kubectl get pods -n ingress-nginx
-```
-
-#### Troubleshooting MacOS specifically
-
-Kubernetes on MacOS is less straight forward unfortunately. While trying to run Kubernetes, you may run into the
-following issues:
-
-1. Errors while trying to run `minikube start`. This seems to be due to Minikube defaulting to the `None` driver on
-   MacOS, which is not supported on Darwin(OS)/arm64. This can be fixed by specifying the driver for Minikube to use:
-
-```bash
-# minikube needs to be running to check its profiles
-minikube start
-# check which driver you should use, e.g. docker
-minikube profile list
-minikube delete; minikube start --driver=docker
-```
-
-2. The `sed` command, used in checking for- and deleting duplicates related to specific virtual hosts in `/etc/hosts`,
-   may not initially be recognised on MacOS. Install it manually through Homebrew
-   via [gnu-sed](https://formulae.brew.sh/formula/gnu-sed). Be sure to add a "gnubin" directory to your PATH from your
-   bashrc/zshrc (on newer macs) to allow for use of the 'sed' command instead of their default 'gsed':
-
-```
-# allows for use of 'sed' instead of 'gsed'; HOMEBREW_PREFIX is the location of your homebrew (`which brew`)
-PATH="$HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin:$PATH"
-```
-
-Restart the terminal for the change to take effect:
-
-```bash
-source ~/.zshrc
-```
-
-3. Minikube seemingly being starved of resources. This problem in particular could present itself when trying to start
-   the `ehrdb` and `ehrbase` pods, where the pods continuously timeout and restart. Using the following does not work on
-   MacOS:
-
-```bash
-minikube start --cpus 4 --memory 8192 --disk-size=30g --driver=docker
-```
-
-Instead, specify the allocated resources through the minikube config file with the number of cpus and amount of memory
-you require. Good practise is to leave some breathing room for your OS, so do not max the amount of cpus and memory
-based on your specific system specs:
-
-```bash
-minikube config set cpus 4 # specify number of cpus you require
-minikube config set memory 8192 # specify amount of memory you require
-```
-
-These changes take effect after restarting minikube and should persist across sessions.
-
-4. By default, the Minikube ip (through `minikube ip`) will be used and added to the virtual hosts in `/etc/hosts`.
-   However, using the Minikube ip does not work for this purpose on MacOS. Instead, use `127.0.0.1` and add these to
-   `/etc/hosts` manually:
-
-```
-# these can replace the minikube ips
-127.0.0.1 ehrbase.envida.local.dh.unimaas.nl
-127.0.0.1 ehrbase.mumc.local.dh.unimaas.nl
-127.0.0.1 ehrbase.test.local.dh.unimaas.nl
-127.0.0.1 ehrbase.zio.local.dh.unimaas.nl
-127.0.0.1 federation.local.dh.unimaas.nl
-127.0.0.1 jupyter.local.dh.unimaas.nl
-127.0.0.1 openehrtool.envida.local.dh.unimaas.nl
-127.0.0.1 openehrtool.mumc.local.dh.unimaas.nl
-127.0.0.1 openehrtool.test.local.dh.unimaas.nl
-127.0.0.1 openehrtool.zio.local.dh.unimaas.nl
-127.0.0.1 portal.envida.local.dh.unimaas.nl
-127.0.0.1 portal.mumc.local.dh.unimaas.nl
-127.0.0.1 portal.zio.local.dh.unimaas.nl
-127.0.0.1 transform.local.dh.unimaas.nl
-```
-
-5. There is an issue regarding the ingress and ingress-dns addons on MacOS. In order to work around this, use
-   `minikube tunnel`. This tunnel creates a route to services deployed with the LoadBalancer type and sets their Ingress
-   to their ClusterIPs. Use a different terminal for this because it has to stay open:
-
-```bash
-# in a different terminal; sudo is required
-sudo minikube tunnel
-```
-
-After all that, the following seems to work:
-
-```bash
-minikube start --driver=docker
-minikube addons enable ingress
-./dh.sh setup
-./dh.sh pull
-./dh.sh build
-# in a different terminal; sudo is required
-sudo minikube tunnel
-./dh.sh apply
-```
-
-## Cleaning Up
-
-To remove all resources created by the `local` overlay:
-
-```bash
-kubectl delete -k deploy/overlays/local
-```
-
-To stop Minikube:
-
-```bash
-minikube stop
 ```

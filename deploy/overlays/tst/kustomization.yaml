@@ -6,27 +6,27 @@ resources:
 - ../../base/federation-rest
 - ../../base/transform-rest
 - ../../base/jupyter-zib
-
+# Envida-node
+- ../../base/openehr-nodes/envida/ehrbase
+- ../../base/openehr-nodes/envida/ehrdb
+- ../../base/openehr-nodes/envida/etl-config
+- ../../base/openehr-nodes/envida/etl-zib-pipeline
+- ../../base/openehr-nodes/envida/etl-zib-rest
+- ../../base/openehr-nodes/envida/portal
+# MUMC-node
 - ../../base/openehr-nodes/mumc/ehrbase
 - ../../base/openehr-nodes/mumc/ehrdb
 - ../../base/openehr-nodes/mumc/etl-config
 - ../../base/openehr-nodes/mumc/etl-zib-pipeline
 - ../../base/openehr-nodes/mumc/etl-zib-rest
 - ../../base/openehr-nodes/mumc/portal
-
+# ZIO-node
 - ../../base/openehr-nodes/zio/ehrbase
 - ../../base/openehr-nodes/zio/ehrdb
 - ../../base/openehr-nodes/zio/etl-config
 - ../../base/openehr-nodes/zio/etl-zib-pipeline
 - ../../base/openehr-nodes/zio/etl-zib-rest
 - ../../base/openehr-nodes/zio/portal
-
-- ../../base/openehr-nodes/envida/ehrbase
-- ../../base/openehr-nodes/envida/ehrdb
-- ../../base/openehr-nodes/envida/etl-config
-- ../../base/openehr-nodes/envida/etl-zib-pipeline
-- ../../base/openehr-nodes/envida/etl-zib-rest  
-- ../../base/openehr-nodes/envida/portal
 
 patches:
 # imagePullPolicy patches
@@ -47,6 +47,7 @@ patches:
 - path: ehrdb-deployment-patch.yaml
 
 # Individual ingress host patches
+## Transform
 - target:
     group: networking.k8s.io
     version: v1
@@ -56,7 +57,7 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: transform.tst.dh.unimaas.nl
-
+## Federation
 - target:
     group: networking.k8s.io
     version: v1
@@ -66,7 +67,7 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: federation.tst.dh.unimaas.nl
-
+## Jupyter
 - target:
     group: networking.k8s.io
     version: v1
@@ -76,27 +77,7 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: jupyter.tst.dh.unimaas.nl
-
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: mumc-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.mumc.tst.dh.unimaas.nl
-
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: zio-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.zio.tst.dh.unimaas.nl
-
+## Envida-node
 - target:
     group: networking.k8s.io
     version: v1
@@ -106,27 +87,6 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: ehrbase.envida.tst.dh.unimaas.nl
-
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: mumc-etl-zib-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: etl.mumc.tst.dh.unimaas.nl
-
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: zio-etl-zib-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: etl.zio.tst.dh.unimaas.nl
-
 - target:
     group: networking.k8s.io
     version: v1
@@ -136,27 +96,6 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: etl.envida.tst.dh.unimaas.nl
-
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: mumc-portal-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: portal.mumc.tst.dh.unimaas.nl
-
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: zio-portal-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: portal.zio.tst.dh.unimaas.nl
-
 - target:
     group: networking.k8s.io
     version: v1
@@ -166,6 +105,62 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: portal.envida.tst.dh.unimaas.nl
+## MUMC-node
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: mumc-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.mumc.tst.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: mumc-etl-zib-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: etl.mumc.tst.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: mumc-portal-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: portal.mumc.tst.dh.unimaas.nl
+## ZIO-node
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.zio.tst.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-etl-zib-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: etl.zio.tst.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-portal-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: portal.zio.tst.dh.unimaas.nl
 
 secretGenerator:
 # Envida-node
