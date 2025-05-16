@@ -7,12 +7,6 @@ resources:
 - ../../base/transform-rest
 - ../../base/jupyter-zib
 
-# TODO
-# - ../../base/openehr-nodes/test/ehrbase
-# - ../../base/openehr-nodes/test/ehrdb
-# - ../../base/openehr-nodes/test/etl-config
-# - ../../base/openehr-nodes/test/etl-zib
-
 - ../../base/openehr-nodes/mumc/ehrbase
 - ../../base/openehr-nodes/mumc/ehrdb
 - ../../base/openehr-nodes/mumc/etl-config
@@ -82,16 +76,6 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: jupyter.tst.dh.unimaas.nl
-
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: test-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.test.tst.dh.unimaas.nl
 
 - target:
     group: networking.k8s.io
@@ -297,32 +281,6 @@ secretGenerator:
     literals:
       - key=btgkey2
   - name: zio-ehrbase-db-postgres-creds
-    namespace: dh-health
-    literals:
-      - username=postgres
-      - password=postgres
-# TEST-node
-  - name: test-ehrbase-creds
-    namespace: dh-health
-    literals:
-      - username=user0
-      - password=foobar0
-  - name: test-ehrbase-admin-creds
-    namespace: dh-health
-    literals:
-      - username=admin0
-      - password=admin0
-  - name: test-ehrbase-db-admin-creds
-    namespace: dh-health
-    literals:
-      - username=ehrbase0
-      - password=ehrbase0
-  - name: test-ehrbase-db-creds
-    namespace: dh-health
-    literals:
-      - username=ehrbase_restricted0
-      - password=ehrbase_restricted0
-  - name: test-ehrbase-db-postgres-creds
     namespace: dh-health
     literals:
       - username=postgres
