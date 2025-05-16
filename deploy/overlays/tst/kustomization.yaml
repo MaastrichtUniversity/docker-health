@@ -20,6 +20,13 @@ resources:
 - ../../base/openehr-nodes/mumc/etl-zib-pipeline
 - ../../base/openehr-nodes/mumc/etl-zib-rest
 - ../../base/openehr-nodes/mumc/portal
+# VITALA-node
+- ../../base/openehr-nodes/vitala/ehrbase
+- ../../base/openehr-nodes/vitala/ehrdb
+- ../../base/openehr-nodes/vitala/etl-config
+- ../../base/openehr-nodes/vitala/etl-zib-pipeline
+- ../../base/openehr-nodes/vitala/etl-zib-rest
+- ../../base/openehr-nodes/vitala/portal
 # ZIO-node
 - ../../base/openehr-nodes/zio/ehrbase
 - ../../base/openehr-nodes/zio/ehrdb
