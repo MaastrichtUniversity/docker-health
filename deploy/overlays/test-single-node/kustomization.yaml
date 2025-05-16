@@ -5,6 +5,7 @@ resources:
 - job.yaml
 - ../../base/common
 - ../../base/transform-rest
+## TEST-node
 - ../../base/openehr-nodes/test/ehrbase
 - ../../base/openehr-nodes/test/ehrdb
 - ../../base/openehr-nodes/test/etl-config
@@ -25,6 +26,7 @@ patches:
       value: Never
 
 # Individual ingress host patches
+## Transform
 - target:
     group: networking.k8s.io
     version: v1
@@ -34,7 +36,7 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: transform.local.dh.unimaas.nl
-
+## TEST-node
 - target:
     group: networking.k8s.io
     version: v1
