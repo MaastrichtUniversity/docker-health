@@ -333,7 +333,6 @@ main() {
         setup)
             check_minikube
             clone_externals
-            checkout_externals $1
             setup_hosts
             setup_mounts
             ;;
