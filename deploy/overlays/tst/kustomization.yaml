@@ -291,6 +291,11 @@ secretGenerator:
     literals:
       - username=user
       - password=foobar
+# jupyter
+  - name: jupyter-zib-creds
+    namespace: dh-health
+    literals:
+      - SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
 
 configMapGenerator:
 - name: portal-common-config

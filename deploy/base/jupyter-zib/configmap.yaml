@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: jupyter-zib-config
-  namespace: dh-health
-data:
-  SERVER_APP_TOKEN: "aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7"

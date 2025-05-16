@@ -26,8 +26,8 @@ spec:
         env:
           - name: APP_TOKEN
             valueFrom:
-              configMapKeyRef:
-                name: jupyter-zib-config
+              secretKeyRef:
+                name: jupyter-zib-creds
                 key: SERVER_APP_TOKEN
           - name: TRANSFORM_SPRING_USERNAME
             valueFrom:
@@ -47,8 +47,6 @@ spec:
               name: transform-server-config
           - configMapRef:
               name: zib-templates-config
-          - configMapRef:
-              name: jupyter-zib-config
         volumeMounts:
           - name: demo-data
             mountPath: /home/jovyan/data
