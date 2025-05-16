@@ -1,16 +1,16 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: envida-etl-zib
+  name: envida-etl-zib-pipeline
   namespace: dh-health
   labels:
-    app: envida-etl-zib
+    app: envida-etl-zib-pipeline
 spec:
   backoffLimit: 0
   template:
     metadata:
       labels:
-        app: envida-etl-zib
+        app: envida-etl-zib-pipeline
     spec:
       restartPolicy: Never
       initContainers:
@@ -30,8 +30,8 @@ spec:
             done
             exit 1
       containers:
-      - name: envida-etl-zib
-        image: docker-health/etl-zib:latest
+      - name: envida-etl-zib-pipeline
+        image: docker-health/etl-zib-pipeline:latest
         envFrom:
         - configMapRef:
             name: timezone-config
@@ -70,7 +70,7 @@ spec:
           mountPath: /code/data/envida-demo-data
         - name: etl-logs
           mountPath: /code/logs/envida
-          subPath: envida/etl
+          subPath: envida/pipeline
       volumes:
       - name: outputs
         persistentVolumeClaim:

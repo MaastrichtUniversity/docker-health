@@ -14,6 +14,6 @@ resources:
 - ehrbase
 - ehrdb
 - etl-config
-- etl-zib
+- etl-zib-pipeline
 - openehrtool
 

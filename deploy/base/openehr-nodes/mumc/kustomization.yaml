@@ -8,7 +8,7 @@ resources:
 - etl-config
 - ehrbase
 - ehrdb
-- etl-zib
+- etl-zib-pipeline
 - etl-zib-rest
 - openehrtool
 - portal

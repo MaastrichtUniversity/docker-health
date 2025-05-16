@@ -17,7 +17,7 @@ spec:
           - -c
           - |
             set -e
-            JOBS=$(kubectl get jobs -n dh-health -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n' | grep 'etl-zib$')
+            JOBS=$(kubectl get jobs -n dh-health -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n' | grep 'etl-zib-pipeline$')
             for job in $JOBS; do
               echo "Waiting for job $job to complete..."
               while true; do

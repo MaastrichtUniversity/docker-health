@@ -54,7 +54,7 @@ spec:
           subPath: zio/rest
         - name: etl-logs
           mountPath: /code/logs/zio
-          subPath: zio/etl
+          subPath: zio/rest
       volumes:
       - name: outputs
         persistentVolumeClaim:

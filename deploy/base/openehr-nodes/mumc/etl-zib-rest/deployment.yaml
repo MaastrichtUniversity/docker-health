@@ -54,7 +54,7 @@ spec:
           subPath: mumc/rest
         - name: etl-logs
           mountPath: /code/logs/mumc
-          subPath: mumc/etl
+          subPath: mumc/rest
       volumes:
       - name: outputs
         persistentVolumeClaim:
