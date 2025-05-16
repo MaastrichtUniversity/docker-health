@@ -124,6 +124,43 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.mumc.local.dh.unimaas.nl
+## VITALA-node
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: vitala-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.vitala.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: vitala-etl-zib-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: etl.vitala.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: vitala-portal-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: portal.vitala.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: vitala-openehrtool-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: openehrtool.vitala.local.dh.unimaas.nl
 ## ZIO-node
 - target:
     group: networking.k8s.io
