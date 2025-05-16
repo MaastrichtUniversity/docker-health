@@ -37,6 +37,11 @@ spec:
                 configMapKeyRef:
                   name: envida-etl-config
                   key: NODENAME
+            - name: VITALA__NODENAME
+              valueFrom:
+                configMapKeyRef:
+                  name: vitala-etl-config
+                  key: NODENAME
             # EHRBASE_BASE_URL
             - name: MUMC__EHRBASE_BASE_URL
               valueFrom:
@@ -52,6 +57,11 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: envida-etl-config
+                  key: EHRBASE_BASE_URL
+            - name: VITALA__EHRBASE_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: vitala-etl-config
                   key: EHRBASE_BASE_URL
             # Credentials for MUMC
             - name: MUMC__FEDERATION_KEY
@@ -115,6 +125,27 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: envida-ehrbase-creds
+                  key: password
+            # Credentials for VITALA
+            - name: VITALA__FEDERATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: vitala-federation-key
+                  key: key
+            - name: VITALA__FEDERATION_BTG_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: vitala-federation-break-the-glass-key
+                  key: key
+            - name: VITALA__EHRBASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: vitala-ehrbase-creds
+                  key: username
+            - name: VITALA__EHRBASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: vitala-ehrbase-creds
                   key: password
           envFrom:
             - configMapRef:
