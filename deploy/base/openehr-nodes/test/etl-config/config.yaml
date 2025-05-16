@@ -1,4 +1,4 @@
-# Separeted from etl-zib on test-node folder, because we want to include this config in test-single-node overlay,
+# Separeted from etl-zib on test folder, because we want to include this config in test-single-node overlay,
 # but exclude the test-etl-zib service
 apiVersion: v1
 kind: ConfigMap

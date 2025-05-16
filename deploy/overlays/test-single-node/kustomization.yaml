@@ -5,9 +5,9 @@ resources:
 - job.yaml
 - ../../base/common
 - ../../base/transform-rest
-- ../../base/test-node/ehrbase
-- ../../base/test-node/ehrdb
-- ../../base/test-node/etl-config
+- ../../base/openehr-nodes/test/ehrbase
+- ../../base/openehr-nodes/test/ehrdb
+- ../../base/openehr-nodes/test/etl-config
 
 patches:
 # imagePullPolicy patches

@@ -7,18 +7,18 @@ resources:
 - ../../base/common
 - ../../base/federation-rest
 - ../../base/transform-rest
-- ../../base/mumc-node/ehrbase
-- ../../base/mumc-node/ehrdb
-- ../../base/mumc-node/etl-config
-- ../../base/mumc-node/etl-zib
-- ../../base/zio-node/ehrbase
-- ../../base/zio-node/ehrdb
-- ../../base/zio-node/etl-config
-- ../../base/zio-node/etl-zib
-- ../../base/envida-node/ehrbase
-- ../../base/envida-node/ehrdb
-- ../../base/envida-node/etl-config
-- ../../base/envida-node/etl-zib
+- ../../base/openehr-nodes/mumc/ehrbase
+- ../../base/openehr-nodes/mumc/ehrdb
+- ../../base/openehr-nodes/mumc/etl-config
+- ../../base/openehr-nodes/mumc/etl-zib
+- ../../base/openehr-nodes/zio/ehrbase
+- ../../base/openehr-nodes/zio/ehrdb
+- ../../base/openehr-nodes/zio/etl-config
+- ../../base/openehr-nodes/zio/etl-zib
+- ../../base/openehr-nodes/envida/ehrbase
+- ../../base/openehr-nodes/envida/ehrdb
+- ../../base/openehr-nodes/envida/etl-config
+- ../../base/openehr-nodes/envida/etl-zib
 
 patches:
 # imagePullPolicy patches
