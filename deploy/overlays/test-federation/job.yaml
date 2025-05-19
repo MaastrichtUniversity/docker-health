@@ -46,37 +46,68 @@ spec:
             name: federation-rest-config
         env:
         # NODENAME
+        - name: ENVIDA__NODENAME
+          valueFrom:
+            configMapKeyRef:
+              name: envida-etl-config
+              key: NODENAME
         - name: MUMC__NODENAME
           valueFrom:
             configMapKeyRef:
               name: mumc-etl-config
+              key: NODENAME
+        - name: VITALA__NODENAME
+          valueFrom:
+            configMapKeyRef:
+              name: vitala-etl-config
               key: NODENAME
         - name: ZIO__NODENAME
           valueFrom:
             configMapKeyRef:
               name: zio-etl-config
               key: NODENAME
-        - name: ENVIDA__NODENAME
+        # EHRBASE_BASE_URL
+        - name: ENVIDA__EHRBASE_BASE_URL
           valueFrom:
             configMapKeyRef:
               name: envida-etl-config
-              key: NODENAME
-        # EHRBASE_BASE_URL
+              key: EHRBASE_BASE_URL
         - name: MUMC__EHRBASE_BASE_URL
           valueFrom:
             configMapKeyRef:
               name: mumc-etl-config
+              key: EHRBASE_BASE_URL
+        - name: VITALA__EHRBASE_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: vitala-etl-config
               key: EHRBASE_BASE_URL
         - name: ZIO__EHRBASE_BASE_URL
           valueFrom:
             configMapKeyRef:
               name: zio-etl-config
               key: EHRBASE_BASE_URL
-        - name: ENVIDA__EHRBASE_BASE_URL
+        # Credentials for ENVIDA
+        - name: ENVIDA__FEDERATION_KEY
           valueFrom:
-            configMapKeyRef:
-              name: envida-etl-config
-              key: EHRBASE_BASE_URL
+            secretKeyRef:
+              name: envida-federation-key
+              key: key
+        - name: ENVIDA__FEDERATION_BTG_KEY
+          valueFrom:
+            secretKeyRef:
+              name: envida-federation-break-the-glass-key
+              key: key
+        - name: ENVIDA__EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: envida-ehrbase-creds
+              key: username
+        - name: ENVIDA__EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: envida-ehrbase-creds
+              key: password
         # Credentials for MUMC
         - name: MUMC__FEDERATION_KEY
           valueFrom:
@@ -98,6 +129,27 @@ spec:
             secretKeyRef:
               name: mumc-ehrbase-creds
               key: password
+        # Credentials for VITALA
+        - name: VITALA__FEDERATION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: vitala-federation-key
+              key: key
+        - name: VITALA__FEDERATION_BTG_KEY
+          valueFrom:
+            secretKeyRef:
+              name: vitala-federation-break-the-glass-key
+              key: key
+        - name: VITALA__EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: vitala-ehrbase-creds
+              key: username
+        - name: VITALA__EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: vitala-ehrbase-creds
+              key: password
         # Credentials for ZIO
         - name: ZIO__FEDERATION_KEY
           valueFrom:
@@ -118,27 +170,6 @@ spec:
           valueFrom:
             secretKeyRef:
               name: zio-ehrbase-creds
-              key: password
-        # Credentials for ENVIDA
-        - name: ENVIDA__FEDERATION_KEY
-          valueFrom:
-            secretKeyRef:
-              name: envida-federation-key
-              key: key
-        - name: ENVIDA__FEDERATION_BTG_KEY
-          valueFrom:
-            secretKeyRef:
-              name: envida-federation-break-the-glass-key
-              key: key
-        - name: ENVIDA__EHRBASE_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: envida-ehrbase-creds
-              key: username
-        - name: ENVIDA__EHRBASE_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: envida-ehrbase-creds
               key: password
         volumeMounts:
           - name: logs
