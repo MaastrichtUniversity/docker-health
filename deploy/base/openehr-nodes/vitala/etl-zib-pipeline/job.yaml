@@ -67,7 +67,7 @@ spec:
           mountPath: /code/outputs
           subPath: vitala/pipeline
         - name: data
-          mountPath: /code/data/zio-demo-data # TODO Switch to its own demo-data files after DHHDP-941
+          mountPath: /code/data/vitala-demo-data
         - name: etl-logs
           mountPath: /code/logs/vitala
           subPath: vitala/pipeline
@@ -77,7 +77,7 @@ spec:
             claimName: output-pvc
       - name: data
         hostPath:
-          path: /mnt/data/zio-demo-data # TODO Switch to its own demo-data files after DHHDP-941
+          path: /mnt/data/vitala-demo-data
           type: Directory
       - name: etl-logs
         persistentVolumeClaim:
