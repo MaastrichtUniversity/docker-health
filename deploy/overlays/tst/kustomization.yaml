@@ -36,7 +36,6 @@ patches:
 - target:
     kind: Deployment
   patch: |-
-    - op: add
     - op: replace
       path: /spec/template/spec/imagePullSecrets
       value:
