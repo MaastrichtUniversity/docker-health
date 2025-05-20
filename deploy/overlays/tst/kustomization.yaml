@@ -2,9 +2,13 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 images:
-- name: registry.prod.dh.unimaas.nl/docker-health/federation-api
+- name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
   newTag: kubernetes
-- name: registry.prod.dh.unimaas.nl/docker-health/etl-zib
+- name: registry.prod.dh.unimaas.nl/docker-health/federation-test
+  newTag: kubernetes
+- name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
+  newTag: kubernetes
+- name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
   newTag: kubernetes
 - name: registry.prod.dh.unimaas.nl/docker-health/portal
   newTag: kubernetes
