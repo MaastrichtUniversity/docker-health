@@ -100,15 +100,15 @@ in [dh-hdp-etl/README.md](https://github.com/MaastrichtUniversity/dh-hdp-etl/tre
 
 ### Adding a new node
 
-1. In `deploy/base/openehr-nodes`,
+1. In `base/openehr-nodes`,
     1. Add a complete new node folder
        (After copy/pasting, make sure the name of the new node is updated in every file)
-    2. Add the new resource folder name to `deploy/base/openehr-nodes/kustomization.yaml`
-2. In the `kustomization.yaml` file of `deploy/overlay/local`, `tst`, etc.,
+    2. Add the new resource folder name to `base/openehr-nodes/kustomization.yaml`
+2. In the `kustomization.yaml` file of `overlay/local`, `tst`, etc.,
     1. If required, add the new resources
     2. Add new ingress patches
     3. Add new secretGenerators
-3. Add new container environment variables to `deploy/base/federation-rest/deployment.yaml` and
+3. Add new container environment variables to `base/federation-rest/deployment.yaml` and
    `overlay/test-federation/job.yaml`
 4. Add the new local hosts to `localhost.sh`
 5. In `dh-hdp-etl-utils`
@@ -116,6 +116,7 @@ in [dh-hdp-etl/README.md](https://github.com/MaastrichtUniversity/dh-hdp-etl/tre
     2. Update the new version number in `pyproject.toml` and release a new tag
     3. Update the package version in the `requirements.txt` file in both `dh-hdp-etl` and `dh-hdp-federation-api`
 6. Add a new demo-data folder in `data`
+   1. Remember to update the new configuration in `base/openehr-nodes/{nodename}/etl-config/config.yaml`
 7. In `dh-hdp-federation-api`
     1. Add a new `list` item into `SuccessQueryModel` in `src/response_models.py`
     2. Add a new `NodeCredentialsSettings` item into `CredentialsSettings` in `src/settings.py`
