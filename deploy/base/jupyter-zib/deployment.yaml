@@ -19,7 +19,7 @@ spec:
         runAsUser: 0 # Run as Root to avoid permission issue with volume mount
       containers:
       - name: jupyter-zib
-        image: docker-health/jupyter-zib:latest
+        image: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib:latest
         command: ["start-notebook.sh", "--ServerApp.token=$(APP_TOKEN)"]
         ports:
           - containerPort: 8888

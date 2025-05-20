@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: envida-portal
-        image: docker-health/portal:latest
+        image: registry.prod.dh.unimaas.nl/docker-health/portal:latest
         ports:
         - containerPort: 3000
         env:

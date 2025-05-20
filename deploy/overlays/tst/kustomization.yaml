@@ -1,47 +1,46 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+images:
+- name: registry.prod.dh.unimaas.nl/docker-health/federation-api
+  newTag: kubernetes
+- name: registry.prod.dh.unimaas.nl/docker-health/etl-zib
+  newTag: kubernetes
+- name: registry.prod.dh.unimaas.nl/docker-health/portal
+  newTag: kubernetes
+- name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
+  newTag: kubernetes
+- name: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib
+  newTag: kubernetes
+
 resources:
-- ../../base/common
-- ../../base/federation-rest
-- ../../base/transform-rest
-- ../../base/jupyter-zib
-# Envida-node
-- ../../base/openehr-nodes/envida/ehrbase
-- ../../base/openehr-nodes/envida/ehrdb
-- ../../base/openehr-nodes/envida/etl-config
-- ../../base/openehr-nodes/envida/etl-zib-pipeline
-- ../../base/openehr-nodes/envida/etl-zib-rest
-- ../../base/openehr-nodes/envida/portal
-# MUMC-node
-- ../../base/openehr-nodes/mumc/ehrbase
-- ../../base/openehr-nodes/mumc/ehrdb
-- ../../base/openehr-nodes/mumc/etl-config
-- ../../base/openehr-nodes/mumc/etl-zib-pipeline
-- ../../base/openehr-nodes/mumc/etl-zib-rest
-- ../../base/openehr-nodes/mumc/portal
-# ZIO-node
-- ../../base/openehr-nodes/zio/ehrbase
-- ../../base/openehr-nodes/zio/ehrdb
-- ../../base/openehr-nodes/zio/etl-config
-- ../../base/openehr-nodes/zio/etl-zib-pipeline
-- ../../base/openehr-nodes/zio/etl-zib-rest
-- ../../base/openehr-nodes/zio/portal
+- ../../base
+- regcred.yaml
 
 patches:
-# imagePullPolicy patches
+# Storage class patches
+- target:
+    kind: PersistentVolume
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-storage
+- target:
+    kind: PersistentVolumeClaim
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-storage
+
+# Image pull secret
 - target:
     kind: Deployment
   patch: |-
+    - op: add
     - op: replace
-      path: /spec/template/spec/containers/0/imagePullPolicy
-      value: Never
-- target:
-    kind: Job
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/containers/0/imagePullPolicy
-      value: Never
+      path: /spec/template/spec/imagePullSecrets
+      value:
+      - name: regcred
 
 # Updated deployment patches
 - path: ehrdb-deployment-patch.yaml
