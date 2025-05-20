@@ -10,6 +10,8 @@ images:
   newTag: kubernetes
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
   newTag: kubernetes
+- name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
+  newTag: kubernetes
 - name: registry.prod.dh.unimaas.nl/docker-health/portal
   newTag: kubernetes
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
@@ -39,6 +41,13 @@ patches:
 # Image pull secret
 - target:
     kind: Deployment
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/imagePullSecrets
+      value:
+      - name: regcred
+- target:
+    kind: Job
   patch: |-
     - op: replace
       path: /spec/template/spec/imagePullSecrets
@@ -282,9 +291,53 @@ secretGenerator:
     literals:
       - username=postgres
       - password=postgres
+# TEST-node
+  - name: test-ehrbase-creds
+    namespace: dh-health
+    options:
+      labels:
+        ehrnode: test-node
+    literals:
+      - username=user0
+      - password=foobar0
+  - name: test-ehrbase-admin-creds
+    namespace: dh-health
+    options:
+      labels:
+        ehrnode: test-node
+    literals:
+      - username=admin0
+      - password=admin0
+  - name: test-ehrbase-db-admin-creds
+    namespace: dh-health
+    options:
+      labels:
+        ehrnode: test-node
+    literals:
+      - username=ehrbase0
+      - password=ehrbase0
+  - name: test-ehrbase-db-creds
+    namespace: dh-health
+    options:
+      labels:
+        ehrnode: test-node
+    literals:
+      - username=ehrbase_restricted0
+      - password=ehrbase_restricted0
+  - name: test-ehrbase-db-postgres-creds
+    namespace: dh-health
+    options:
+      labels:
+        ehrnode: test-node
+    literals:
+      - username=postgres
+      - password=postgres
 # transform
   - name: transform-creds
     namespace: dh-health
+    options:
+      labels:
+        ehrnode: all
     literals:
       - username=user
       - password=foobar
