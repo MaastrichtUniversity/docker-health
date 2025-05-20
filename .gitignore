@@ -46,3 +46,7 @@ notebooks/.ipynb_checkpoints
 
 # Symbolic link from dh.sh to rit.sh (old name)
 rit.sh
+# Github
+.github/
+# VS Code
+.vscode/
