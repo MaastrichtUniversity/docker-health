@@ -23,46 +23,79 @@ pipeline {
     environment {
         KUBECONFIG_CREDENTIALS = credentials('tst-kubeconfig')
         DOCKER_REGISTRY_CREDENTIALS = credentials('registry-credentials')
+        GIT_TOKEN = credentials('datahub-git-token')
+    }
+
+    parameters {
+        string(name: 'TARGET_BRANCH', defaultValue: 'develop', description: 'Target branch to deploy')
+        string(name: 'FALLBACK_BRANCH', defaultValue: 'main', description: 'Fallback branch if target fails')
     }
 
     stages {
-        stage('Checkout') {
+        stage('Setup Git') {
             steps {
-                checkout scm
+                script {
+                    // Clean workspace
+                    cleanWs()
+                    
+                    // Configure Git credentials
+                    sh '''
+                        git config --global credential.helper store
+                        echo "https://datahub-deployment:${GIT_TOKEN}@github.com" > ~/.git-credentials
+                        chmod 600 ~/.git-credentials
+                    '''
+                    
+                    // Checkout with fallback logic
+                    try {
+                        checkout([$class: 'GitSCM',
+                            branches: [[name: "*/${params.TARGET_BRANCH}"]],
+                            userRemoteConfigs: [[
+                                url: 'https://github.com/MaastrichtUniversity/docker-health.git',
+                                credentialsId: 'datahub-git-token'
+                            ]]
+                        ])
+                    } catch (Exception e) {
+                        echo "Checking out target branch failed, using fallback instead"
+                        checkout([$class: 'GitSCM',
+                            branches: [[name: "*/${params.FALLBACK_BRANCH}"]],
+                            userRemoteConfigs: [[
+                                url: 'https://github.com/MaastrichtUniversity/docker-health.git',
+                                credentialsId: 'datahub-git-token'
+                            ]]
+                        ])
+                    }
+                }
             }
         }
 
-        stage('Setup kubectl') {
+        stage('Deploy to Test') {
             steps {
                 container('kubectl') {
-                    // Write kubeconfig from Jenkins credentials
                     sh '''
                         mkdir -p ~/.kube
                         echo "$KUBECONFIG_CREDENTIALS" > ~/.kube/config
                         chmod 600 ~/.kube/config
                     '''
                 }
-            }
-        }
-
-        stage('Deploy to TST') {
-            steps {
+                
                 container('kustomize') {
-                    // Create regcred secret for private registry
-                    sh '''
-                        kubectl create secret docker-registry regcred \
-                            --docker-server=registry.prod.dh.unimaas.nl \
-                            --docker-username=$DOCKER_REGISTRY_CREDENTIALS_USR \
-                            --docker-password=$DOCKER_REGISTRY_CREDENTIALS_PSW \
-                            --namespace=dh-health \
-                            --dry-run=client -o yaml | kubectl apply -f -
-                    '''
-                    
-                    // Apply kustomize overlay
-                    sh '''
-                        cd deploy/overlays/tst
-                        kustomize build . | kubectl apply -f -
-                    '''
+                    script {
+                        // Create registry secret
+                        sh '''
+                            kubectl create secret docker-registry regcred \
+                                --docker-server=registry.prod.dh.unimaas.nl \
+                                --docker-username=$DOCKER_REGISTRY_CREDENTIALS_USR \
+                                --docker-password=$DOCKER_REGISTRY_CREDENTIALS_PSW \
+                                --namespace=dh-health \
+                                --dry-run=client -o yaml | kubectl apply -f -
+                        '''
+                        
+                        // Deploy using test overlay
+                        sh '''
+                            cd deploy/overlays/tst
+                            kustomize build . | kubectl apply -f -
+                        '''
+                    }
                 }
             }
         }
@@ -90,6 +123,9 @@ pipeline {
                     kubectl describe deployment -n dh-health
                 '''
             }
+        }
+        always {
+            sh 'rm -f ~/.git-credentials'
         }
     }
 }
