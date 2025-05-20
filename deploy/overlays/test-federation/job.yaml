@@ -45,49 +45,12 @@ spec:
         - configMapRef:
             name: federation-rest-config
         env:
-        # NODENAME
+        # ENVIDA-node
         - name: ENVIDA__NODENAME
           valueFrom:
             configMapKeyRef:
               name: envida-etl-config
               key: NODENAME
-        - name: MUMC__NODENAME
-          valueFrom:
-            configMapKeyRef:
-              name: mumc-etl-config
-              key: NODENAME
-        - name: VITALA__NODENAME
-          valueFrom:
-            configMapKeyRef:
-              name: vitala-etl-config
-              key: NODENAME
-        - name: ZIO__NODENAME
-          valueFrom:
-            configMapKeyRef:
-              name: zio-etl-config
-              key: NODENAME
-        # EHRBASE_BASE_URL
-        - name: ENVIDA__EHRBASE_BASE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: envida-etl-config
-              key: EHRBASE_BASE_URL
-        - name: MUMC__EHRBASE_BASE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: mumc-etl-config
-              key: EHRBASE_BASE_URL
-        - name: VITALA__EHRBASE_BASE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: vitala-etl-config
-              key: EHRBASE_BASE_URL
-        - name: ZIO__EHRBASE_BASE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: zio-etl-config
-              key: EHRBASE_BASE_URL
-        # Credentials for ENVIDA
         - name: ENVIDA__FEDERATION_KEY
           valueFrom:
             secretKeyRef:
@@ -108,7 +71,17 @@ spec:
             secretKeyRef:
               name: envida-ehrbase-creds
               key: password
-        # Credentials for MUMC
+        - name: ENVIDA__EHRBASE_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: envida-etl-config
+              key: EHRBASE_BASE_URL
+        # MUMC-node
+        - name: MUMC__NODENAME
+          valueFrom:
+            configMapKeyRef:
+              name: mumc-etl-config
+              key: NODENAME
         - name: MUMC__FEDERATION_KEY
           valueFrom:
             secretKeyRef:
@@ -129,7 +102,17 @@ spec:
             secretKeyRef:
               name: mumc-ehrbase-creds
               key: password
-        # Credentials for VITALA
+        - name: MUMC__EHRBASE_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: mumc-etl-config
+              key: EHRBASE_BASE_URL
+        # VITALA-node
+        - name: VITALA__NODENAME
+          valueFrom:
+            configMapKeyRef:
+              name: vitala-etl-config
+              key: NODENAME
         - name: VITALA__FEDERATION_KEY
           valueFrom:
             secretKeyRef:
@@ -150,7 +133,17 @@ spec:
             secretKeyRef:
               name: vitala-ehrbase-creds
               key: password
-        # Credentials for ZIO
+        - name: VITALA__EHRBASE_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: vitala-etl-config
+              key: EHRBASE_BASE_URL
+        # ZIO-node
+        - name: ZIO__NODENAME
+          valueFrom:
+            configMapKeyRef:
+              name: zio-etl-config
+              key: NODENAME
         - name: ZIO__FEDERATION_KEY
           valueFrom:
             secretKeyRef:
@@ -171,6 +164,12 @@ spec:
             secretKeyRef:
               name: zio-ehrbase-creds
               key: password
+        - name: ZIO__EHRBASE_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: zio-etl-config
+              key: EHRBASE_BASE_URL
+
         volumeMounts:
           - name: logs
             mountPath: /code/logs/federation-rest
