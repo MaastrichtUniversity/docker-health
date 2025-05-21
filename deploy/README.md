@@ -122,4 +122,4 @@ in [dh-hdp-etl/README.md](https://github.com/MaastrichtUniversity/dh-hdp-etl/tre
     2. Add a new `NodeCredentialsSettings` item into `CredentialsSettings` in `src/settings.py`
     3. In `test_federation_rest.py`
         1. Add new variable lists containing the expected results from the newly created demo-data
-        2. Add new `TestClient` and `TestBtgClient` test classes,
+        2. Add new `TestClient` and `TestBtgClient` test classes, and update existing `TestClient` to include the new node.
