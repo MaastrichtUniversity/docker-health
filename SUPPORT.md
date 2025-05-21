@@ -91,17 +91,25 @@ These changes take effect after restarting minikube and should persist across se
 127.0.0.1 ehrbase.mumc.local.dh.unimaas.nl
 127.0.0.1 ehrbase.test.local.dh.unimaas.nl
 127.0.0.1 ehrbase.zio.local.dh.unimaas.nl
+127.0.0.1 ehrbase.vitala.local.dh.unimaas.nl
+127.0.0.1 etl.envida.local.dh.unimaas.nl
+127.0.0.1 etl.mumc.local.dh.unimaas.nl
+127.0.0.1 etl.zio.local.dh.unimaas.nl
+127.0.0.1 etl.vitala.local.dh.unimaas.nl
 127.0.0.1 federation.local.dh.unimaas.nl
 127.0.0.1 jupyter.local.dh.unimaas.nl
 127.0.0.1 openehrtool.envida.local.dh.unimaas.nl
 127.0.0.1 openehrtool.mumc.local.dh.unimaas.nl
 127.0.0.1 openehrtool.test.local.dh.unimaas.nl
 127.0.0.1 openehrtool.zio.local.dh.unimaas.nl
+127.0.0.1 openehrtool.vitala.local.dh.unimaas.nl
 127.0.0.1 portal.envida.local.dh.unimaas.nl
 127.0.0.1 portal.mumc.local.dh.unimaas.nl
 127.0.0.1 portal.zio.local.dh.unimaas.nl
+127.0.0.1 portal.vitala.local.dh.unimaas.nl
 127.0.0.1 transform.local.dh.unimaas.nl
 ```
+
 
 5. There is an issue regarding the ingress and ingress-dns addons on MacOS. In order to work around this, use
    `minikube tunnel`. This tunnel creates a route to services deployed with the LoadBalancer type and sets their Ingress
