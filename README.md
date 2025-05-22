@@ -172,7 +172,11 @@ To run tests on single node:
 # 1. Run the test job
 ./dh.sh apply test-single-node
 
-# 2. Check the logs of test-single-node pod to see the result
+# 2 Check the results when the job has finished 
+kubectl get jobs/test-single-node -n dh-health -o jsonpath='{.status.conditions[1].type}'
+
+# 2. Check the logs of test-single-node pod 
+kubectl logs -n dh-health jobs/test-single-node
 
 # 3. Manually clean up the containers
 ./dh.sh delete test-single-node
@@ -184,7 +188,11 @@ To run tests on federation:
 # 1. Run the test job
 ./dh.sh apply test-federation
 
-# 2. Check the logs of test-federation pod to see the result
+# 2 Check the results when the job has finished 
+kubectl get jobs/test-federation -n dh-health -o jsonpath='{.status.conditions[1].type}'
+
+# 3. Check the logs of test-federation pod
+kubectl logs -n dh-health jobs/test-federation
 
 # 3. Manually clean up the containers
 ./dh.sh delete test-federation
