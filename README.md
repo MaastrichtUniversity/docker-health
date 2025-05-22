@@ -177,6 +177,7 @@ kubectl get jobs/test-single-node -n dh-health -o jsonpath='{.status.conditions[
 
 # 2. Check the logs of test-single-node pod 
 kubectl logs -n dh-health jobs/test-single-node
+kubectl logs -n dh-health -f jobs/test-single-node  (Autorefresh)
 
 # 3. Manually clean up the containers
 ./dh.sh delete test-single-node
@@ -193,6 +194,7 @@ kubectl get jobs/test-federation -n dh-health -o jsonpath='{.status.conditions[1
 
 # 3. Check the logs of test-federation pod
 kubectl logs -n dh-health jobs/test-federation
+kubectl logs -n dh-health -f jobs/test-federation (Autorefresh)
 
 # 3. Manually clean up the containers
 ./dh.sh delete test-federation
