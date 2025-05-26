@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+labels:
+  - pairs:
+      ehrnode: all
+    includeSelectors: false
+    includeTemplates: false
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+- deployment.yaml
+- service.yaml
+- ingress.yaml
+- configmap.yaml

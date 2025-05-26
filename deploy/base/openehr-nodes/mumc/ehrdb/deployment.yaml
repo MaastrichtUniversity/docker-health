@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mumc-ehrdb
+  namespace: dh-health
+  labels:
+    app: mumc-ehrdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mumc-ehrdb
+  template:
+    metadata:
+      labels:
+        app: mumc-ehrdb
+    spec:
+      initContainers:
+      - name: init-log-dir
+        image: busybox:1.28
+        command: ["/bin/sh", "-c"]
+        args:
+          - mkdir -p /var/log/postgresql && chown 70:70 /var/log/postgresql
+        volumeMounts:
+          - name: postgres-logs
+            mountPath: /var/log/postgresql
+            subPath: mumc/ehrdb
+      containers:
+      - name: mumc-ehrdb
+        image: ehrbase/ehrbase-v2-postgres:16.2
+        ports:
+        - containerPort: 5432
+        env:
+        - name: EHRBASE_USER_ADMIN
+          valueFrom:
+            secretKeyRef:
+              name: mumc-ehrbase-db-admin-creds
+              key: username
+        - name: EHRBASE_PASSWORD_ADMIN
+          valueFrom:
+            secretKeyRef:
+              name: mumc-ehrbase-db-admin-creds
+              key: password
+        - name: EHRBASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: mumc-ehrbase-db-creds
+              key: username
+        - name: EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mumc-ehrbase-db-creds
+              key: password
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: mumc-ehrbase-db-postgres-creds
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mumc-ehrbase-db-postgres-creds
+              key: password
+        args:
+        - postgres
+        - -c
+        - logging_collector=on
+        - -c
+        - log_directory=/var/log/postgresql
+        - -c
+        - log_filename=postgresql.log
+        - -c
+        - log_statement=none
+        - -c
+        - log_file_mode=0644
+        - -c
+        - log_rotation_age=0
+        - -c
+        - log_rotation_size=0
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - $POSTGRES_USER
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        volumeMounts:
+        - name: postgres-logs
+          mountPath: /var/log/postgresql
+          subPath: mumc/ehrdb
+      volumes:
+      - name: postgres-logs
+        persistentVolumeClaim:
+          claimName: log-pvc

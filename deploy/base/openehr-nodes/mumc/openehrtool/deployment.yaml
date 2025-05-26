@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mumc-openehrtool
+  namespace: dh-health
+  labels:
+    app: mumc-openehrtool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mumc-openehrtool
+  template:
+    metadata:
+      labels:
+        app: mumc-openehrtool
+    spec:
+      containers:
+      - name: mumc-openehrtool
+        image: surfercrs4/openehrtool:latest
+        ports:
+        - containerPort: 9000
+        env:
+          - name: EHRBASEUSERS_adusername
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-admin-creds
+                key: username
+          - name: EHRBASEUSERS_adpassword
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-admin-creds
+                key: password
+          - name: EHRBASEUSERS_username
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-creds
+                key: username
+          - name: EHRBASEUSERS_password
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-creds
+                key: password
+        envFrom:
+        - configMapRef:
+            name: openehrtool-config
+        - configMapRef:
+            name: mumc-openehrtool-config

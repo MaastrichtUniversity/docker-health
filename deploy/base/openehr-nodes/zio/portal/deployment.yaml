@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zio-portal
+  namespace: dh-health
+  labels:
+    app: zio-portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zio-portal
+  template:
+    metadata:
+      labels:
+        app: zio-portal
+    spec:
+      containers:
+      - name: zio-portal
+        image: docker-health/portal:latest
+        ports:
+        - containerPort: 3000
+        env:
+          - name: AUTH_USER
+            valueFrom:
+              secretKeyRef:
+                name: zio-portal-creds
+                key: username
+          - name: AUTH_PASS
+            valueFrom:
+              secretKeyRef:
+                name: zio-portal-creds
+                key: password
+          - name: NEXT_PUBLIC_FEDERATION_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: zio-federation-key
+                key: key
+          - name: NEXT_PUBLIC_FEDERATION_BTG_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: zio-federation-break-the-glass-key
+                key: key
+        envFrom:
+        - configMapRef:
+            name: zio-portal-config
+        - configMapRef:
+            name: portal-common-config

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zio-openehrtool
+  namespace: dh-health
+spec:
+  selector:
+    app: zio-openehrtool
+  ports:
+  - port: 9000
+    targetPort: 9000
+    name: http
+  type: ClusterIP

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mumc-portal-config
+  namespace: dh-health
+data:
+  NEXT_PUBLIC_NODE_NAME: mumc
+  ETL_SERVER_URL: http://mumc-etl-zib-rest.dh-health:8040

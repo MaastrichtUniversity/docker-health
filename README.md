@@ -1,225 +1,281 @@
 # Health Data Platform
 
-Setting-up a core clinical data repository to store data from different formats using [openEHR specifications](https://specifications.openehr.org/) and the [EHRbase API](https://ehrbase.org/about-ehrbase/).
-EHRbase provides a standard-based backend for interoperable clinical applications, implementing the latest version of the openEHR Reference Model and the Archetype Definition Language (AQL).
+## Project Overview
 
-This service is based on repositories:
+This project builds a federated network of Clinical Data Repositories (CDRs) using
+the [EHRbase](https://ehrbase.org/about-ehrbase/), an open-source electronic health record (EHR) backend.
+It follows the [openEHR standard](https://specifications.openehr.org/) to support interoperable sharing and querying of
+clinical data across multiple systems.
+Templates are based on the Dutch Healthcare Information Building Blocks ([ZIBs](https://zibs.nl/wiki/HCIM_Mainpage)),
+ensuring consistent and structured health information.
 
-- [dh-hdp-zib-templates](https://github.com/um-datahub/dh-hdp-zib-templates/tree/2024.1): Custom-made openEHR templates matching the Dutch ZIBs
-- [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2024.1): ETL Python script
-- [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest/tree/2024.1): Java REST API for data class transformation into openEHR compositions
-- [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api/tree/2024.1): Federation service
+Each node in the federated network represents a Dutch health organization. The currently supported nodes are:
+
+- **MUMC**: Maastricht University Medical Center (hospital)
+- **ZIO**: Zorg in Ontwikkeling (general practitioners)
+- **ENVIDA**: Envida healthcare organization
+- (**TEST**: Separate node used for testing)
+
+The implementation relies on the following repositories:
+
+- [dh-hdp-zib-templates](https://github.com/um-datahub/dh-hdp-zib-templates/tree/2024.1): OpenEHR templates matching the
+  ZIBs
+- [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2024.1): ETL workflow for loading data into a CDR
+- [dh-hdp-etl-utils](https://github.com/MaastrichtUniversity/dh-hdp-etl-utils): A package to share ETL utils classes and
+  functions between different code bases
+- [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest/tree/2024.1): REST api for data
+  class transformation into openEHR compositions
+- [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api/tree/2024.1): REST api service
+  for querying across a federation of CDRs
 - [dh-hdp-portal](https://github.com/MaastrichtUniversity/dh-hdp-portal/tree/2024.1): Node User Interface service
-- [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2024.1): Jupyter notebooks for an initial data exploration
-- [dh-hdp-etl-utils](https://github.com/MaastrichtUniversity/dh-hdp-etl-utils): A package to share dh-hdp-etl utils classes and functions between different code bases
+- [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2024.1): Jupyter notebooks for data
+  exploration
 
-## Requirements
+## Pre-requisites
 
-### Encryption between filebeat and elk [UNUSED ATM!]
+### Install the following tools on your local machine
 
-CA certificates need to be manually stored in folder `filebeat/certs`.
-The present files are used for development-purposes.
-Right now, we're not using encryption, but we've kept these configurations in case we decide to enable them in the future, hence the commented configurations, for example:
+- docker
+- kubectl
+- minikube
 
-In `docker-compose.yml` :
+> ### Encryption between filebeat and elk [UNUSED ATM!]
+>
+> CA certificates need to be manually stored in folder `filebeat/certs`.
+> The present files are used for development-purposes.
+>
+> Right now, we're not using encryption, but we've kept these configurations in case we decide to enable them in the
+> future, hence the commented configurations, for example:
+>
+> In `docker-compose.yml` :
+>
+> ```
+> #   - ./filebeat/certs:/etc/certs:ro
+> ```
+>
+> In `filebeat/filebeat.yml` :
+>
+> ```
+> #  ssl.certificate_authorities: ["/etc/certs/ca.crt"]
+> #  ssl.certificate: "/etc/certs/filebeat.dh.local.crt"
+> #  ssl.key: "/etc/certs/filebeat.dh.local.key"
+> ```
+>
+> and others.
+>
+> If encryption needs to be restored, uncomment the configurations and see `2025.1-ssl` branch of `docker-common`.
 
-```
-#   - ./filebeat/certs:/etc/certs:ro
-```
+## Quick start installation of the HDP local env
 
-In `filebeat/filebeat.yml` :
+Deployment of the services to a Minikube environment using Kubernetes manifests.
 
-```
-#  ssl.certificate_authorities: ["/etc/certs/ca.crt"]
-#  ssl.certificate: "/etc/certs/filebeat.dh.local.crt"
-#  ssl.key: "/etc/certs/filebeat.dh.local.key"
-```
+Check out [deploy/README.md](https://github.com/MaastrichtUniversity/docker-health/tree/2024.1/deploy#kubernetes-deployment)
+for more information on the Kubernetes architecture and deployed services.
 
-and others.
+1. Setup the Kubernetes cluster and folders
 
-If encryption needs to be restored, uncomment the configurations and see `2025.1-ssl` branch of `docker-common`.
-
-### Add these virtual host entries in your /etc/hosts file
-
-```
-127.0.0.1 transform.local.dh.unimaas.nl
-127.0.0.1 jupyter.local.dh.unimaas.nl
-127.0.0.1 federation.local.dh.unimaas.nl
-
-127.0.0.1 ehrbase.test.local.dh.unimaas.nl
-127.0.0.1 openehrtool.test.local.dh.unimaas.nl
-
-127.0.0.1 ehrbase.mumc.local.dh.unimaas.nl
-127.0.0.1 openehrtool.mumc.local.dh.unimaas.nl
-127.0.0.1 portal.mumc.local.dh.unimaas.nl
-127.0.0.1 etl.mumc.local.dh.unimaas.nl
-
-127.0.0.1 ehrbase.zio.local.dh.unimaas.nl
-127.0.0.1 openehrtool.zio.local.dh.unimaas.nl
-127.0.0.1 portal.zio.local.dh.unimaas.nl
-127.0.0.1 etl.zio.local.dh.unimaas.nl
-
-127.0.0.1 ehrbase.envida.local.dh.unimaas.nl
-127.0.0.1 openehrtool.envida.local.dh.unimaas.nl
-127.0.0.1 portal.envida.local.dh.unimaas.nl
-127.0.0.1 etl.envida.local.dh.unimaas.nl
-```
-
-### Template variables
-
-For each new template, add its `template_id` and semantic version (`sem_ver`) as variables into
-`env_files/zib-templates.env`).
-
-Variables `api_route` and `filename` can be auto-generated by running the bash script `./env_files/append_template_variables.sh`
-(after adding a new `create_dynamic_template_variables ${template_id}` line).
-
-## Run the stack
-
-### Clone the external repositories
-
-```
-./dh.sh externals clone
-./dh.sh externals checkout 2024.1
-```
-
-### Run the setup requirements
-
-```
+```bash
 ./dh.sh setup
 ```
 
-### Start the EHRbase backend
+This will start Minikube with all needed addons, pull down the external repos, add log folders to the Minikube machine
+and set hostnames in /etc/hosts with the Minikube ip.
 
-Start the default test backend:
+2. Pull default docker images from Dockerhub
 
-```
-./dh.sh backend
-```
-
-Open your browser and try [http://test.ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html](http://test.ehrbase.local.dh.unimaas.nl/ehrbase/swagger-ui/index.html) with the following credentials:
-
-```
-SECURITY_AUTHUSER=user0
-SECURITY_AUTHPASSWORD=foobar0
+```bash
+./dh.sh pull
 ```
 
-Credentials can be updated in `.env`.
+3. Build the docker images from externals
 
-For a specific node, e.g mumc:
-
-```
-./dh.sh backend mumc
+```bash
+./dh.sh build
 ```
 
-### Run the ETL
+Note: Build with a custom tag is supported (not needed for local development).
 
-Extract data from csv files, transform the data into valid openEHR compositions by using a REST API and load the compositions into EHRbase.
-
-Start the default test node:
-
-```
-./dh.sh etl
+```bash
+./dh.sh build transform-rest 2.0.0
 ```
 
-For a specific node, e.g mumc:
+4. Apply Kubernetes manifests on the `local` overlay
 
-```
-./dh.sh etl mumc
-```
-
-Recreate the ETL stack:
-
-```
-./dh.sh up -d --force-recreate test-ehrdb test-ehrbase test-etl-zib
+```bash
+./dh.sh apply
 ```
 
-### Run the tests
+5. Show status of all pods
 
-Start the dev environment for a single node and execute all the tests
-
-```
-./dh.sh test single-node
+```bash
+./dh.sh status
 ```
 
-- Execute all the tests
+For a UI overview of the Minikube kubernetes stack and pods with logs checkout one of the following dashboard:
 
-```
-./dh.sh run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5
-```
+- Headlamp: https://headlamp.dev/
 
-- Execute a specific class test
+- Freelens: https://github.com/freelensapp/freelens
 
-```
-./dh.sh run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5 tests/test_burgerlijke_staat.py::TestBurgerlijkeStaat2017
-```
+- Enable the default dashboard with `minikube dashboard`
 
-- Execute a single test
+## Development Workflow
 
-```
-./dh.sh run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5 tests/test_all_zib_pipelines.py::TestAllZibPipelines::test_number_of_templates
-```
+### dh.sh functionalities
 
-### Kill the whole stack
+Checkout existing functionality in the dh.sh. For examples:
 
-```
-./dh.sh down
-```
-
-### Start openehr-Tools [for DEV environment only]
-
-Tool for interacting with the EHRbase server with a basic dashboard integrated.
-
-```
-./dh.sh openehrtool
-```
-
-Open your browser and try [http://test.openehrtool.local.dh.unimaas.nl](http://test.openehrtool.local.dh.unimaas.nl)
-
-For a specific node, e.g mumc:
-
-```
-./dh.sh openehrtool mumc
+```bash
+./dh.sh setup               Setup Kubernetes environment
+./dh.sh start               Start Kubernetes environment
+./dh.sh build               Build all Docker images
+./dh.sh apply               Apply Kubernetes manifests with local overlay
+./dh.sh apply tst           Apply Kubernetes manifests with tst overlay
+./dh.sh delete              Delete Kubernetes manifests with local overlay
+./dh.sh delete tst          Delete Kubernetes manifests with tst overlay
+./dh.sh status              Print the pods status
+./dh.sh status -w           Print and follow the pods status
+./dh.sh rollout             Rollout a restart of all the deployments
+./dh.sh rollout jupyter-zib Rollout a restart of the jupyter-zib deployment
+./dh.sh up test-node        Apply Kubernetes manifests with local overlay & the label test-node
+./dh.sh up others           Apply Kubernetes manifests with local overlay & without the labels test-node
+./dh.sh down test-node      Delete Kubernetes manifests with local overlay & the label test-node
+./dh.sh down others         Delete Kubernetes manifests with local overlay & without the labels test-node
 ```
 
-### Start the Jupyter notebook for data exploration and live demo
+### Rebuilding and Updating Services
 
-```
-./dh.sh jupyter
-```
+After making code changes:
 
-Open your browser and try [http://jupyter.local.dh.unimaas.nl](http://jupyter.local.dh.unimaas.nl) using the following token:
+```bash
+# Ensure you're using Minikube's Docker daemon
+eval $(minikube docker-env)
 
-```
-SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
-```
+# Rebuild specific service or all services
+docker-compose build [service_name]
 
-### POC Federated EHRBase nodes
-
-#### Run the federation
-
-Up each node, load data and start the federation API:
-
-```
-./dh.sh federation
+# Restart the deployment to pick up new image
+./dh.sh rollout [service_name]
 ```
 
-To run the federation service API integration test:
+### Accessing Services
 
+Once deployed, you can access the services at their local dns name.
+
+### Running tests
+
+Pre-requirement: Clean up existing overlays.
+
+To run tests on single node:
+
+```bash
+# 1. Run the test job
+./dh.sh apply test-single-node
+
+# 2 Check the results when the job has finished 
+kubectl get jobs/test-single-node -n dh-health -o jsonpath='{.status.conditions[1].type}'
+
+# 2. Check the logs of test-single-node pod 
+kubectl logs -n dh-health jobs/test-single-node
+kubectl logs -n dh-health -f jobs/test-single-node  (Autorefresh)
+
+# 3. Manually clean up the containers
+./dh.sh delete test-single-node
 ```
-./dh.sh test federation
+
+To run tests on federation:
+
+```bash
+# 1. Run the test job
+./dh.sh apply test-federation
+
+# 2 Check the results when the job has finished 
+kubectl get jobs/test-federation -n dh-health -o jsonpath='{.status.conditions[1].type}'
+
+# 3. Check the logs of test-federation pod
+kubectl logs -n dh-health jobs/test-federation
+kubectl logs -n dh-health -f jobs/test-federation (Autorefresh)
+
+# 3. Manually clean up the containers
+./dh.sh delete test-federation
 ```
 
-To run the node UI on all nodes:
+### Viewing Logs
 
+To view logs for a specific deployment, checkout a Kubernetes dashboard or run the following command:
+
+```bash
+kubectl logs -l app=transform-rest -n dh-health
 ```
-./dh.sh portal
+
+#### Log files
+
+Some log files are still saved in a volumeclaim inside the kubernetes cluster.
+You can access them from the terminal:
+
+```bash
+minikube ssh
+cd /usr/share/logs
 ```
 
-User Interfaces available at [portal.mumc.local.dh.unimaas.nl](http://portal.mumc.local.dh.unimaas.nl), [portal.zio.local.dh.unimaas.nl](http://portal.zio.local.dh.unimaas.nl) & [portal.envida.local.dh.unimaas.nl](http://portal.envida.local.dh.unimaas.nl)
+### Stop minikube
 
-(Optional)
-To run openEHR tool on each node:
-
+```bash
+minikube stop
 ```
-./dh.sh openehrtool mumc; ./dh.sh openehrtool zio; ./dh.sh openehrtool envida
+
+## Manual steps
+
+Follow these manual steps to deploy the stack in your local Minikube manually:
+
+1. Start Minikube
+
+```bash
+minikube start --cpus 4 --memory 8192 --disk-size=30g --driver=docker
+```
+
+2. Enable the Ingress Controller
+
+```bash
+minikube addons enable ingress
+```
+
+3. Set up Local DNS Entries
+
+Add the local hostname entries to your `/etc/hosts` file:
+
+```bash
+./localhost.sh
+```
+
+4. Point to Minikube's Docker Daemon && set docker build vars
+
+```bash
+eval $(minikube -p minukube docker-env)
+export ENV_TAG=latest
+export MAVEN_VERSION=3.9.5
+```
+
+4a. Pull external images into Minikube's Docker daemon
+
+Some components use external images from Docker Hub. Pull them into Minikube's Docker daemon:
+
+```bash
+./pull-external-images.sh
+```
+
+5. Build Docker Images
+
+```bash
+docker buildx bake
+```
+
+6. Deploy to Minikube
+
+```bash
+kubectl create namespace dh-health
+```
+
+```bash
+kubectl apply -k deploy/overlays/local
 ```

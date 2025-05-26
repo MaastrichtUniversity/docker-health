@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: transform-server-config
+  namespace: dh-health
+data:
+  TRANSFORM_SPRING_BASE_URL: http://transform-rest.dh-health:8080
+  LOGSTASH_TAGS: TRANSFORM_REST

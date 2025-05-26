@@ -1,0 +1,204 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- job.yaml
+- role.yaml
+- ../../base/common
+- ../../base/federation-rest
+- ../../base/transform-rest
+# Envida-node
+- ../../base/openehr-nodes/envida/ehrbase
+- ../../base/openehr-nodes/envida/ehrdb
+- ../../base/openehr-nodes/envida/etl-config
+- ../../base/openehr-nodes/envida/etl-zib-pipeline
+# MUMC-node
+- ../../base/openehr-nodes/mumc/ehrbase
+- ../../base/openehr-nodes/mumc/ehrdb
+- ../../base/openehr-nodes/mumc/etl-config
+- ../../base/openehr-nodes/mumc/etl-zib-pipeline
+# ZIO-node
+- ../../base/openehr-nodes/zio/ehrbase
+- ../../base/openehr-nodes/zio/ehrdb
+- ../../base/openehr-nodes/zio/etl-config
+- ../../base/openehr-nodes/zio/etl-zib-pipeline
+
+patches:
+# imagePullPolicy patches
+- target:
+    kind: Deployment
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Never
+- target:
+    kind: Job
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Never
+
+# Individual ingress host patches
+## Transform
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: transform-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: transform.local.dh.unimaas.nl
+## Federation
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: federation-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: federation.local.dh.unimaas.nl
+## Envida-node
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: envida-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.envida.local.dh.unimaas.nl
+## MUMC-node
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: mumc-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.mumc.local.dh.unimaas.nl
+## ZIO-node
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.zio.local.dh.unimaas.nl
+
+secretGenerator:
+# Envida-node
+  - name: envida-ehrbase-creds
+    namespace: dh-health
+    literals:
+      - username=user3
+      - password=foobar3
+  - name: envida-ehrbase-admin-creds
+    namespace: dh-health
+    literals:
+      - username=admin3
+      - password=admin3
+  - name: envida-ehrbase-db-admin-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase3
+      - password=ehrbase3
+  - name: envida-ehrbase-db-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase_restricted3
+      - password=ehrbase_restricted3
+  - name: envida-ehrbase-db-postgres-creds
+    namespace: dh-health
+    literals:
+      - username=postgres
+      - password=postgres
+  - name: envida-federation-key
+    namespace: dh-health
+    literals:
+      - key=key3
+  - name: envida-federation-break-the-glass-key
+    namespace: dh-health
+    literals:
+      - key=btgkey3
+# MUMC-node
+  - name: mumc-ehrbase-creds
+    namespace: dh-health
+    literals:
+      - username=user1
+      - password=foobar1
+  - name: mumc-ehrbase-admin-creds
+    namespace: dh-health
+    literals:
+      - username=admin1
+      - password=admin1
+  - name: mumc-ehrbase-db-admin-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase1
+      - password=ehrbase1
+  - name: mumc-ehrbase-db-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase_restricted1
+      - password=ehrbase_restricted1
+  - name: mumc-ehrbase-db-postgres-creds
+    namespace: dh-health
+    literals:
+      - username=postgres
+      - password=postgres
+  - name: mumc-federation-key
+    namespace: dh-health
+    literals:
+      - key=key1
+  - name: mumc-federation-break-the-glass-key
+    namespace: dh-health
+    literals:
+      - key=btgkey1
+# ZIO-node
+  - name: zio-ehrbase-creds
+    namespace: dh-health
+    literals:
+      - username=user2
+      - password=foobar2
+  - name: zio-ehrbase-admin-creds
+    namespace: dh-health
+    literals:
+      - username=admin2
+      - password=admin2
+  - name: zio-ehrbase-db-admin-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase2
+      - password=ehrbase2
+  - name: zio-ehrbase-db-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase_restricted2
+      - password=ehrbase_restricted2
+  - name: zio-ehrbase-db-postgres-creds
+    namespace: dh-health
+    literals:
+      - username=postgres
+      - password=postgres
+  - name: zio-federation-key
+    namespace: dh-health
+    literals:
+      - key=key2
+  - name: zio-federation-break-the-glass-key
+    namespace: dh-health
+    literals:
+      - key=btgkey2
+# transform
+  - name: transform-creds
+    namespace: dh-health
+    options:
+      labels:
+        ehrnode: all
+    literals:
+      - username=user
+      - password=foobar

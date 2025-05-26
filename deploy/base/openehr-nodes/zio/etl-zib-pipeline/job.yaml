@@ -1,0 +1,84 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: zio-etl-zib-pipeline
+  namespace: dh-health
+  labels:
+    app: zio-etl-zib-pipeline
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        app: zio-etl-zib-pipeline
+    spec:
+      restartPolicy: Never
+      initContainers:
+      - name: wait-zio-ehrbase-healthy
+        image: busybox:1.28
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+          - |
+            for i in 1 2 3 4 5 6 7 8 9; do
+              echo "waiting"
+              sleep 10
+              if wget -T5 -qO- -Y off zio-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then
+                exit 0
+              fi
+            done
+            exit 1
+      containers:
+      - name: zio-etl-zib-pipeline
+        image: docker-health/etl-zib-pipeline:latest
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: transform-server-config
+        - configMapRef:
+            name: zib-templates-config
+        - configMapRef:
+            name: zio-etl-config
+        env:
+        - name: EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-creds
+              key: username
+        - name: EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-creds
+              key: password
+        - name: TRANSFORM_SPRING_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: username
+        - name: TRANSFORM_SPRING_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: password
+        volumeMounts:
+        - name: outputs
+          mountPath: /code/outputs
+          subPath: zio/pipeline
+        - name: data
+          mountPath: /code/data/zio-demo-data
+        - name: etl-logs
+          mountPath: /code/logs/zio
+          subPath: zio/pipeline
+      volumes:
+      - name: outputs
+        persistentVolumeClaim:
+            claimName: output-pvc
+      - name: data
+        hostPath:
+          path: /mnt/data/zio-demo-data
+          type: Directory
+      - name: etl-logs
+        persistentVolumeClaim:
+          claimName: log-pvc

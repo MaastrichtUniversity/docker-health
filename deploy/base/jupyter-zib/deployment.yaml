@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyter-zib
+  namespace: dh-health
+  labels:
+    app: jupyter-zib
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jupyter-zib
+  template:
+    metadata:
+      labels:
+        app: jupyter-zib
+    spec:
+      securityContext:
+        runAsUser: 0 # Run as Root to avoid permission issue with volume mount
+      containers:
+      - name: jupyter-zib
+        image: docker-health/jupyter-zib:latest
+        command: ["start-notebook.sh", "--ServerApp.token=$(APP_TOKEN)"]
+        ports:
+          - containerPort: 8888
+        env:
+          - name: CHOWN_HOME # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/troubleshooting.html#permission-denied-when-mounting-volumes
+            value: 'yes'
+          - name: CHOWN_HOME_OPTS # Ensure all the subfolders below "/home/jovyan" are owned by the user "jovyan", including the volume folder "/home/jovyan/work"
+            value: '-R'
+          - name: APP_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: jupyter-zib-creds
+                key: SERVER_APP_TOKEN
+          - name: TRANSFORM_SPRING_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: transform-creds
+                key: username
+          - name: TRANSFORM_SPRING_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: transform-creds
+                key:
+                  password
+        envFrom:
+          - configMapRef:
+              name: timezone-config
+          - configMapRef:
+              name: transform-server-config
+          - configMapRef:
+              name: zib-templates-config
+        volumeMounts:
+          - name: demo-data
+            mountPath: /home/jovyan/data
+          - name: notebooks
+            mountPath: /home/jovyan/work
+      volumes:
+        - name: demo-data
+          hostPath:
+            path: /mnt/data
+            type: Directory
+        - name: notebooks
+          persistentVolumeClaim:
+              claimName: notebooks-pvc
+            

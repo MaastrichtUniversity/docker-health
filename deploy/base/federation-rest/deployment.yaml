@@ -1,0 +1,131 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: federation-rest
+  namespace: dh-health
+  labels:
+    app: federation-rest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: federation-rest
+  template:
+    metadata:
+      labels:
+        app: federation-rest
+    spec:
+      containers:
+        - name: federation-rest
+          image: docker-health/federation-rest:latest
+          ports:
+            - containerPort: 8000
+          env:
+            # NODENAME
+            - name: MUMC__NODENAME
+              valueFrom:
+                configMapKeyRef:
+                  name: mumc-etl-config
+                  key: NODENAME
+            - name: ZIO__NODENAME
+              valueFrom:
+                configMapKeyRef:
+                  name: zio-etl-config
+                  key: NODENAME
+            - name: ENVIDA__NODENAME
+              valueFrom:
+                configMapKeyRef:
+                  name: envida-etl-config
+                  key: NODENAME
+            # EHRBASE_BASE_URL
+            - name: MUMC__EHRBASE_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mumc-etl-config
+                  key: EHRBASE_BASE_URL
+            - name: ZIO__EHRBASE_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: zio-etl-config
+                  key: EHRBASE_BASE_URL
+            - name: ENVIDA__EHRBASE_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: envida-etl-config
+                  key: EHRBASE_BASE_URL
+            # Credentials for MUMC
+            - name: MUMC__FEDERATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mumc-federation-key
+                  key: key
+            - name: MUMC__FEDERATION_BTG_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mumc-federation-break-the-glass-key
+                  key: key
+            - name: MUMC__EHRBASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mumc-ehrbase-creds
+                  key: username
+            - name: MUMC__EHRBASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mumc-ehrbase-creds
+                  key: password
+            # Credentials for ZIO
+            - name: ZIO__FEDERATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: zio-federation-key
+                  key: key
+            - name: ZIO__FEDERATION_BTG_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: zio-federation-break-the-glass-key
+                  key: key
+            - name: ZIO__EHRBASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: zio-ehrbase-creds
+                  key: username
+            - name: ZIO__EHRBASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: zio-ehrbase-creds
+                  key: password
+            # Credentials for ENVIDA
+            - name: ENVIDA__FEDERATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: envida-federation-key
+                  key: key
+            - name: ENVIDA__FEDERATION_BTG_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: envida-federation-break-the-glass-key
+                  key: key
+            - name: ENVIDA__EHRBASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: envida-ehrbase-creds
+                  key: username
+            - name: ENVIDA__EHRBASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: envida-ehrbase-creds
+                  key: password
+          envFrom:
+            - configMapRef:
+                name: timezone-config
+            - configMapRef:
+                name: federation-rest-config
+          volumeMounts:
+            - name: logs
+              mountPath: /code/logs/federation-rest
+              subPath: federation
+      volumes:
+        - name: logs
+          persistentVolumeClaim:
+            claimName: log-pvc

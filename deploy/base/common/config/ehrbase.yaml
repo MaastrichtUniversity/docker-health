@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ehrbase-config
+  namespace: dh-health
+data:
+  SECURITY_AUTHTYPE: BASIC
+  # MANAGEMENT_ENDPOINT 'health' needs to be enabled for livenessProbe and readinessProbe of the ehrbase pods 
+  MANAGEMENT_ENDPOINTS_WEB_EXPOSURE: health
+  MANAGEMENT_ENDPOINTS_WEB_BASEPATH: /management
+  MANAGEMENT_ENDPOINT_HEALTH_ENABLED: "true"
+  MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: "true"
+  MANAGEMENT_ENDPOINTS_WEB_ACCESS: PUBLIC
+

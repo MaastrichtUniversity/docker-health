@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transform-rest
+  namespace: dh-health
+  labels:
+    app: transform-rest
+spec:
+  selector:
+    matchLabels:
+      app: transform-rest
+  template:
+    metadata:
+      labels:
+        app: transform-rest
+    spec:
+      containers:
+      - name: transform-rest
+        image: docker-health/transform-rest:latest
+        ports:
+        - containerPort: 8080
+        env:
+          - name: TRANSFORM_SPRING_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: transform-creds
+                key: username
+          - name: TRANSFORM_SPRING_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: transform-creds
+                key: password
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: transform-server-config
+        - configMapRef:
+            name: zib-templates-config

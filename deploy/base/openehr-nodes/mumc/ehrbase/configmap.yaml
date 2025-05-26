@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mumc-ehrbase-config
+  namespace: dh-health
+data:
+  SERVER_NODENAME: mumc.server.dh.unimaas.nl
+  DB_URL: jdbc:postgresql://mumc-ehrdb.dh-health:5432/ehrbase

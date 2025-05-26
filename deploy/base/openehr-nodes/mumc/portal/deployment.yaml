@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mumc-portal
+  namespace: dh-health
+  labels:
+    app: mumc-portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mumc-portal
+  template:
+    metadata:
+      labels:
+        app: mumc-portal
+    spec:
+      containers:
+      - name: mumc-portal
+        image: docker-health/portal:latest
+        ports:
+        - containerPort: 3000
+        env:
+          - name: AUTH_USER
+            valueFrom:
+              secretKeyRef:
+                name: mumc-portal-creds
+                key: username
+          - name: AUTH_PASS
+            valueFrom:
+              secretKeyRef:
+                name: mumc-portal-creds
+                key: password
+          - name: NEXT_PUBLIC_FEDERATION_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: mumc-federation-key
+                key: key
+          - name: NEXT_PUBLIC_FEDERATION_BTG_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: mumc-federation-break-the-glass-key
+                key: key
+        envFrom:
+        - configMapRef:
+            name: mumc-portal-config
+        - configMapRef:
+            name: portal-common-config
+          

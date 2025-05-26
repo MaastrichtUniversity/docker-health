@@ -1,0 +1,150 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: test-federation
+  namespace: dh-health
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+      - name: wait-etl-jobs
+        image: bitnami/kubectl:1.27.13 # TODO: Try not to use a third-party docker image
+        imagePullPolicy: Never
+        command:
+          - sh
+          - -c
+          - |
+            set -e
+            JOBS=$(kubectl get jobs -n dh-health -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n' | grep 'etl-zib-pipeline$')
+            for job in $JOBS; do
+              echo "Waiting for job $job to complete..."
+              while true; do
+                succeeded=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.succeeded}')                
+                if [ "$succeeded" = "1" ]; then
+                  echo "$job is complete"
+                  break
+                fi
+
+                failed=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.failed}')
+                if [ "$failed" != "" ] && [ "$failed" -ge 1 ]; then
+                  echo "❌ $job has failed. Exiting."
+                  exit 1
+                fi
+                echo "$job not completed yet, sleeping 10s..."
+                sleep 10
+              done
+            done
+      containers:
+      - name: test-federation-runner
+        image: docker-health/federation-test:latest
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: federation-rest-config
+        env:
+        # NODENAME
+        - name: MUMC__NODENAME
+          valueFrom:
+            configMapKeyRef:
+              name: mumc-etl-config
+              key: NODENAME
+        - name: ZIO__NODENAME
+          valueFrom:
+            configMapKeyRef:
+              name: zio-etl-config
+              key: NODENAME
+        - name: ENVIDA__NODENAME
+          valueFrom:
+            configMapKeyRef:
+              name: envida-etl-config
+              key: NODENAME
+        # EHRBASE_BASE_URL
+        - name: MUMC__EHRBASE_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: mumc-etl-config
+              key: EHRBASE_BASE_URL
+        - name: ZIO__EHRBASE_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: zio-etl-config
+              key: EHRBASE_BASE_URL
+        - name: ENVIDA__EHRBASE_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: envida-etl-config
+              key: EHRBASE_BASE_URL
+        # Credentials for MUMC
+        - name: MUMC__FEDERATION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: mumc-federation-key
+              key: key
+        - name: MUMC__FEDERATION_BTG_KEY
+          valueFrom:
+            secretKeyRef:
+              name: mumc-federation-break-the-glass-key
+              key: key
+        - name: MUMC__EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mumc-ehrbase-creds
+              key: username
+        - name: MUMC__EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mumc-ehrbase-creds
+              key: password
+        # Credentials for ZIO
+        - name: ZIO__FEDERATION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: zio-federation-key
+              key: key
+        - name: ZIO__FEDERATION_BTG_KEY
+          valueFrom:
+            secretKeyRef:
+              name: zio-federation-break-the-glass-key
+              key: key
+        - name: ZIO__EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-creds
+              key: username
+        - name: ZIO__EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: zio-ehrbase-creds
+              key: password
+        # Credentials for ENVIDA
+        - name: ENVIDA__FEDERATION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: envida-federation-key
+              key: key
+        - name: ENVIDA__FEDERATION_BTG_KEY
+          valueFrom:
+            secretKeyRef:
+              name: envida-federation-break-the-glass-key
+              key: key
+        - name: ENVIDA__EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: envida-ehrbase-creds
+              key: username
+        - name: ENVIDA__EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: envida-ehrbase-creds
+              key: password
+        volumeMounts:
+          - name: logs
+            mountPath: /code/logs/federation-rest
+            subPath: test-federation
+      volumes:
+        - name: logs
+          persistentVolumeClaim:
+            claimName: log-pvc

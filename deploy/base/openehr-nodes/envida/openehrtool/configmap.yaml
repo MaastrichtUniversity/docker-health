@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: envida-openehrtool-config
+  namespace: dh-health
+data:
+  EHRBASESERVER_hostname: envida-ehrbase.dh-health
+  EHRBASESERVER_nodename: envida.server.dh.unimaas.nl

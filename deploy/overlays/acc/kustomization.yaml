@@ -1,0 +1,97 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../../base
+
+patches:
+# imagePullPolicy patches
+- target:
+    kind: Deployment
+  patch: |-
+    - op: add
+      path: /spec/template/spec/imagePullSecrets
+      value:
+      - name: regcred
+
+# Individual ingress host patches
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-openehrtool-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: openehrtool.zio.acc.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-portal-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: portal.zio.acc.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: envida-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.envida.acc.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: envida-openehrtool-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: openehrtool.envida.acc.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: envida-portal-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: portal.envida.acc.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: test-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.acc.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: test-openehrtool-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: openehrtool.acc.dh.unimaas.nl
+
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: grafana
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: grafana.acc.dh.unimaas.nl
+
