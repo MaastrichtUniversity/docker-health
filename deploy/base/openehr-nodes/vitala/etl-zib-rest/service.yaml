@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vitala-etl-zib-rest
+  namespace: dh-health
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8040
+      targetPort: 8040
+      protocol: TCP
+  selector:
+    app: vitala-etl-zib-rest

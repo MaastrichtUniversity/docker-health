@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vitala-ehrbase
+  namespace: dh-health
+  labels:
+    app: vitala-ehrbase
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vitala-ehrbase
+  template:
+    metadata:
+      labels:
+        app: vitala-ehrbase
+    spec:
+      containers:
+      - name: vitala-ehrbase
+        image: ehrbase/ehrbase:2.6.0
+        ports:
+        - containerPort: 8080
+        command:
+          - "java"
+        args:
+          - "-jar"
+          - "-Dspring.profiles.active=docker"
+          - "-Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log"
+          - "ehrbase.jar"
+        env:
+          - name: SECURITY_AUTHUSER
+            valueFrom:
+              secretKeyRef:
+                name: vitala-ehrbase-creds
+                key: username
+          - name: SECURITY_AUTHPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: vitala-ehrbase-creds
+                key: password
+          - name: SECURITY_AUTHADMINUSER
+            valueFrom:
+              secretKeyRef:
+                name: vitala-ehrbase-admin-creds
+                key: username
+          - name: SECURITY_AUTHADMINPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: vitala-ehrbase-admin-creds
+                key: password
+          - name: DB_USER_ADMIN
+            valueFrom:
+              secretKeyRef:
+                name: vitala-ehrbase-db-admin-creds
+                key: username
+          - name: DB_PASS_ADMIN
+            valueFrom:
+              secretKeyRef:
+                name: vitala-ehrbase-db-admin-creds
+                key: password
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: vitala-ehrbase-db-creds
+                key: username
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: vitala-ehrbase-db-creds
+                key: password
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: vitala-ehrbase-config
+        - configMapRef:
+            name: ehrbase-config
+        livenessProbe:
+          httpGet:
+            path: /ehrbase/management/health
+            port: 8080
+          initialDelaySeconds: 90
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          httpGet:
+            path: /ehrbase/management/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10

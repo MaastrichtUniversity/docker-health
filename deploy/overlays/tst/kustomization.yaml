@@ -20,6 +20,13 @@ resources:
 - ../../base/openehr-nodes/mumc/etl-zib-pipeline
 - ../../base/openehr-nodes/mumc/etl-zib-rest
 - ../../base/openehr-nodes/mumc/portal
+# VITALA-node
+- ../../base/openehr-nodes/vitala/ehrbase
+- ../../base/openehr-nodes/vitala/ehrdb
+- ../../base/openehr-nodes/vitala/etl-config
+- ../../base/openehr-nodes/vitala/etl-zib-pipeline
+- ../../base/openehr-nodes/vitala/etl-zib-rest
+- ../../base/openehr-nodes/vitala/portal
 # ZIO-node
 - ../../base/openehr-nodes/zio/ehrbase
 - ../../base/openehr-nodes/zio/ehrdb
@@ -133,6 +140,34 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: portal.mumc.tst.dh.unimaas.nl
+## VITALA-node
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: vitala-ehrbase-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: ehrbase.vitala.tst.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: vitala-etl-zib-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: etl.vitala.tst.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: vitala-portal-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: portal.vitala.tst.dh.unimaas.nl
 ## ZIO-node
 - target:
     group: networking.k8s.io
@@ -237,6 +272,45 @@ secretGenerator:
     literals:
       - key=btgkey1
   - name: mumc-ehrbase-db-postgres-creds
+    namespace: dh-health
+    literals:
+      - username=postgres
+      - password=postgres
+# VITALA-node
+  - name: vitala-ehrbase-creds
+    namespace: dh-health
+    literals:
+      - username=user4
+      - password=foobar4
+  - name: vitala-ehrbase-admin-creds
+    namespace: dh-health
+    literals:
+      - username=admin4
+      - password=admin4
+  - name: vitala-ehrbase-db-admin-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase4
+      - password=ehrbase4
+  - name: vitala-ehrbase-db-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase_restricted4
+      - password=ehrbase_restricted4
+  - name: vitala-portal-creds
+    namespace: dh-health
+    literals:
+      - username=demo@vitala.nl
+      - password=foobar
+  - name: vitala-federation-key
+    namespace: dh-health
+    literals:
+      - key=key4
+  - name: vitala-federation-break-the-glass-key
+    namespace: dh-health
+    literals:
+      - key=btgkey4
+  - name: vitala-ehrbase-db-postgres-creds
     namespace: dh-health
     literals:
       - username=postgres
