@@ -45,14 +45,14 @@ patches:
     - op: replace
       path: /spec/template/spec/imagePullSecrets
       value:
-      - name: regcred
+      - name: registry-credentials
 - target:
     kind: Job
   patch: |-
     - op: replace
       path: /spec/template/spec/imagePullSecrets
       value:
-      - name: regcred
+      - name: registry-credentials
 
 # Updated deployment patches
 - path: ehrdb-deployment-patch.yaml
