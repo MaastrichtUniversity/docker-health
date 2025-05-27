@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-ehrdb
+  name: vitala-ehrdb
   namespace: dh-health
   labels:
-    app: test-ehrdb
+    app: vitala-ehrdb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: test-ehrdb
+      app: vitala-ehrdb
   template:
     metadata:
       labels:
-        app: test-ehrdb
+        app: vitala-ehrdb
     spec:
       initContainers:
       - name: init-log-dir
@@ -24,42 +24,42 @@ spec:
         volumeMounts:
           - name: postgres-logs
             mountPath: /var/log/postgresql
-            subPath: test/ehrdb
+            subPath: vitala/ehrdb
       containers:
-      - name: test-ehrdb
+      - name: vitala-ehrdb
         image: ehrbase/ehrbase-v2-postgres:16.2
         ports:
         - containerPort: 5432
         env:
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: test-ehrbase-db-postgres-creds
-              key: username
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: test-ehrbase-db-postgres-creds
-              key: password
         - name: EHRBASE_USER_ADMIN
           valueFrom:
             secretKeyRef:
-              name: test-ehrbase-db-admin-creds
+              name: vitala-ehrbase-db-admin-creds
               key: username
         - name: EHRBASE_PASSWORD_ADMIN
           valueFrom:
             secretKeyRef:
-              name: test-ehrbase-db-admin-creds
+              name: vitala-ehrbase-db-admin-creds
               key: password
         - name: EHRBASE_USER
           valueFrom:
             secretKeyRef:
-              name: test-ehrbase-db-creds
+              name: vitala-ehrbase-db-creds
               key: username
         - name: EHRBASE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: test-ehrbase-db-creds
+              name: vitala-ehrbase-db-creds
+              key: password
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: vitala-ehrbase-db-postgres-creds
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: vitala-ehrbase-db-postgres-creds
               key: password
         args:
         - postgres
@@ -91,7 +91,7 @@ spec:
         volumeMounts:
         - name: postgres-logs
           mountPath: /var/log/postgresql
-          subPath: test/ehrdb
+          subPath: vitala/ehrdb
       volumes:
       - name: postgres-logs
         persistentVolumeClaim:

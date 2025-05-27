@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vitala-portal-config
+  namespace: dh-health
+data:
+  NEXT_PUBLIC_NODE_NAME: vitala
+  ETL_SERVER_URL: http://vitala-etl-zib-rest.dh-health:8040

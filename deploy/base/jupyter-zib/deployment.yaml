@@ -24,6 +24,10 @@ spec:
         ports:
           - containerPort: 8888
         env:
+          - name: CHOWN_HOME # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/troubleshooting.html#permission-denied-when-mounting-volumes
+            value: 'yes'
+          - name: CHOWN_HOME_OPTS # Ensure all the subfolders below "/home/jovyan" are owned by the user "jovyan", including the volume folder "/home/jovyan/work"
+            value: '-R'
           - name: APP_TOKEN
             valueFrom:
               secretKeyRef:

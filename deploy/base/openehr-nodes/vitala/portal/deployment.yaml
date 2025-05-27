@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vitala-portal
+  namespace: dh-health
+  labels:
+    app: vitala-portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vitala-portal
+  template:
+    metadata:
+      labels:
+        app: vitala-portal
+    spec:
+      containers:
+      - name: vitala-portal
+        image: docker-health/portal:latest
+        ports:
+        - containerPort: 3000
+        env:
+          - name: AUTH_USER
+            valueFrom:
+              secretKeyRef:
+                name: vitala-portal-creds
+                key: username
+          - name: AUTH_PASS
+            valueFrom:
+              secretKeyRef:
+                name: vitala-portal-creds
+                key: password
+          - name: NEXT_PUBLIC_FEDERATION_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: vitala-federation-key
+                key: key
+          - name: NEXT_PUBLIC_FEDERATION_BTG_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: vitala-federation-break-the-glass-key
+                key: key
+        envFrom:
+        - configMapRef:
+            name: vitala-portal-config
+        - configMapRef:
+            name: portal-common-config

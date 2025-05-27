@@ -11,9 +11,10 @@ ensuring consistent and structured health information.
 
 Each node in the federated network represents a Dutch health organization. The currently supported nodes are:
 
-- **MUMC**: Maastricht University Medical Center (hospital)
-- **ZIO**: Zorg in Ontwikkeling (general practitioners)
 - **ENVIDA**: Envida healthcare organization
+- **MUMC+**: Maastricht University Medical Center (hospital)
+- **VITALA+**: Geriatric rehabilitation center in Maastricht
+- **ZIO**: Zorg in Ontwikkeling (general practitioners)
 - (**TEST**: Separate node used for testing)
 
 The implementation relies on the following repositories:
@@ -172,7 +173,12 @@ To run tests on single node:
 # 1. Run the test job
 ./dh.sh apply test-single-node
 
-# 2. Check the logs of test-single-node pod to see the result
+# 2 Check the results when the job has finished 
+kubectl get jobs/test-single-node -n dh-health -o jsonpath='{.status.conditions[1].type}'
+
+# 2. Check the logs of test-single-node pod 
+kubectl logs -n dh-health jobs/test-single-node
+kubectl logs -n dh-health -f jobs/test-single-node  (Autorefresh)
 
 # 3. Manually clean up the containers
 ./dh.sh delete test-single-node
@@ -184,7 +190,12 @@ To run tests on federation:
 # 1. Run the test job
 ./dh.sh apply test-federation
 
-# 2. Check the logs of test-federation pod to see the result
+# 2 Check the results when the job has finished 
+kubectl get jobs/test-federation -n dh-health -o jsonpath='{.status.conditions[1].type}'
+
+# 3. Check the logs of test-federation pod
+kubectl logs -n dh-health jobs/test-federation
+kubectl logs -n dh-health -f jobs/test-federation (Autorefresh)
 
 # 3. Manually clean up the containers
 ./dh.sh delete test-federation
