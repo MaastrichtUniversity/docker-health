@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: federation-rest
-          image: docker-health/federation-rest:latest
+          image: registry.prod.dh.unimaas.nl/docker-health/federation-rest:latest
           ports:
             - containerPort: 8000
           env:

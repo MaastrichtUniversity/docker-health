@@ -31,7 +31,7 @@ spec:
             exit 1
       containers:
       - name: mumc-etl-zib-pipeline
-        image: docker-health/etl-zib-pipeline:latest
+        image: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline:latest
         envFrom:
         - configMapRef:
             name: timezone-config

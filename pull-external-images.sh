@@ -31,16 +31,4 @@ docker pull busybox:1.28
 echo "Pulling kubectl:1.27.13..."
 docker pull bitnami/kubectl:1.27.13
 
-# Grafana
-echo "Pulling Grafana.."
-docker pull grafana/grafana:10.2.3
-
-# Loki
-echo "Pulling Loki.."
-docker pull grafana/loki:2.9.2
-
-# Loki
-echo "Pulling Node-Exporter.."
-docker pull prom/node-exporter:v1.9.1
-
 echo "All external images have been pulled into Minikube's Docker daemon."

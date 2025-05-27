@@ -4,6 +4,9 @@ metadata:
   name: envida-ehrdb
   namespace: dh-health
 spec:
+  selector:
+    matchLabels:
+      app: envida-ehrdb
   template:
     spec:
       containers:
@@ -23,6 +26,9 @@ metadata:
   name: mumc-ehrdb
   namespace: dh-health
 spec:
+  selector:
+    matchLabels:
+      app: mumc-ehrdb
   template:
     spec:
       containers:
@@ -42,6 +48,9 @@ metadata:
   name: zio-ehrdb
   namespace: dh-health
 spec:
+  selector:
+    matchLabels:
+      app: zio-ehrdb
   template:
     spec:
       containers:
