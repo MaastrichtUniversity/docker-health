@@ -11,9 +11,10 @@ ensuring consistent and structured health information.
 
 Each node in the federated network represents a Dutch health organization. The currently supported nodes are:
 
-- **MUMC**: Maastricht University Medical Center (hospital)
-- **ZIO**: Zorg in Ontwikkeling (general practitioners)
 - **ENVIDA**: Envida healthcare organization
+- **MUMC+**: Maastricht University Medical Center (hospital)
+- **VITALA+**: Geriatric rehabilitation center in Maastricht
+- **ZIO**: Zorg in Ontwikkeling (general practitioners)
 - (**TEST**: Separate node used for testing)
 
 The implementation relies on the following repositories:

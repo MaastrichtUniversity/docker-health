@@ -8,8 +8,8 @@ This repository includes Kubernetes manifests for deploying the federated networ
 deploy/
 ├── base                         # Contains base Kubernetes resources for all environments
 │   ├── common                   # Common resources shared across services
-│   ├──federation-rest           # federation-rest service
-│   ├──transform-rest            # transform-rest service
+│   ├── federation-rest          # federation-rest service
+│   ├── transform-rest           # transform-rest service
 │   ├── jupyter-zib              # jupyter-zib service
 │   ├── openehr-nodes            # All existing openEHR node services
 └── overlays                     # Environment-specific configurations
@@ -34,9 +34,10 @@ deploy/
 
 ### Currently supported nodes in the network
 
-- **mumc**
-- **zio**
 - **envida**
+- **mumc**
+- **vitala**
+- **zio**
 - (**test**: Used for running single-node tests)
 
 #### Each node includes the following components
