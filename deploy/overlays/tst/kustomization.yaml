@@ -4,21 +4,21 @@ namespace: dh-health
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
-  newTag: kubernetes
+  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-test
-  newTag: kubernetes
+  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
-  newTag: kubernetes
+  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
-  newTag: kubernetes
+  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
-  newTag: kubernetes
+  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/portal
-  newTag: kubernetes
+  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-  newTag: kubernetes
+  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib
-  newTag: kubernetes
+  newTag: '2024.1'
 
 resources:
 - ./tls-secrets-patch.yaml
