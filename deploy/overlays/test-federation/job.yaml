@@ -38,7 +38,7 @@ spec:
               done
       containers:
         - name: test-federation-runner
-          image: docker-health/federation-test:latest
+          image: registry.prod.dh.unimaas.nl/docker-health/federation-test:latest
           envFrom:
             - configMapRef:
                 name: timezone-config

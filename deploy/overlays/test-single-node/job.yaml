@@ -26,7 +26,7 @@ spec:
             exit 1
       containers:
       - name: test-single-node-runner
-        image: docker-health/etl-zib-test:latest
+        image: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test:latest
         envFrom:
         - configMapRef:
             name: timezone-config
