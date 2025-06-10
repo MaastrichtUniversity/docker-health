@@ -82,7 +82,7 @@ services:
         hdp_templates: ./externals/dh-hdp-zib-templates
     image: ${ENV_REGISTRY_HOST}/docker-health/etl-zib:${ENV_TAG}
     healthcheck:
-      test: "tail -n 20 /code/logs/envida/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
+      test: "cat /code/logs/envida/etl-zib.log | grep 'Print all EHR ids available on the server' || exit 1"
       interval: 5s
       timeout: 3s
       retries: 10
