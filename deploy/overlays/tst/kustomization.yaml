@@ -4,23 +4,25 @@ namespace: dh-health
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
-  newTag: kubernetes
+  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-test
-  newTag: kubernetes
+  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
-  newTag: kubernetes
+  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
-  newTag: kubernetes
+  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
-  newTag: kubernetes
+  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/portal
-  newTag: kubernetes
+  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-  newTag: kubernetes
+  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib
-  newTag: kubernetes
+  newTag: '2024.1'
 
 resources:
+- ./tls-secrets-patch.yaml
+- ./registry-secret.yaml
 - ../../base/common
 - ../../base/federation-rest
 - ../../base/transform-rest
@@ -85,9 +87,39 @@ patches:
       value:
       - name: registry-credentials
 
-# Updated deployment patches
-- path: ehrdb-deployment-patch.yaml
+# imagePullPolicy patches
+- target:
+    kind: Deployment
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Always
+- target:
+    kind: Job
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Always  
 
+# Proxy patches
+- target:
+    kind: Deployment
+  patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: http_proxy
+        value: "http://proxy.unimaas.nl:3128"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: https_proxy
+        value: "http://proxy.unimaas.nl:3128"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: no_proxy
+        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.96.0.0/12,10.244.0.0/16,10.96.0.10"
 # Individual ingress host patches
 ## Transform
 - target:
@@ -99,6 +131,12 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: transform.tst.dh.unimaas.nl
+    - op: add
+      path: /spec/tls
+      value:
+      - hosts:
+        - transform.tst.dh.unimaas.nl
+        secretName: transform-tls-secret
 ## Federation
 - target:
     group: networking.k8s.io
@@ -109,6 +147,12 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: federation.tst.dh.unimaas.nl
+    - op: add
+      path: /spec/tls
+      value:
+      - hosts:
+        - federation.tst.dh.unimaas.nl
+        secretName: federation-tls-secret
 ## Jupyter
 - target:
     group: networking.k8s.io
@@ -119,6 +163,12 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: jupyter.tst.dh.unimaas.nl
+    - op: add
+      path: /spec/tls
+      value:
+      - hosts:
+        - jupyter.tst.dh.unimaas.nl
+        secretName: jupyter-tls-secret
 ## Envida-node
 - target:
     group: networking.k8s.io
@@ -147,6 +197,12 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: portal.envida.tst.dh.unimaas.nl
+    - op: add
+      path: /spec/tls
+      value:
+      - hosts:
+        - portal.envida.tst.dh.unimaas.nl
+        secretName: portal-envida-tls-secret
 ## MUMC-node
 - target:
     group: networking.k8s.io
@@ -175,6 +231,12 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: portal.mumc.tst.dh.unimaas.nl
+    - op: add
+      path: /spec/tls
+      value:
+      - hosts:
+        - portal.mumc.tst.dh.unimaas.nl
+        secretName: portal-mumc-tls-secret
 ## VITALA-node
 - target:
     group: networking.k8s.io
@@ -231,6 +293,12 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: portal.zio.tst.dh.unimaas.nl
+    - op: add
+      path: /spec/tls
+      value:
+      - hosts:
+        - portal.zio.tst.dh.unimaas.nl
+        secretName: portal-zio-tls-secret
 
 secretGenerator:
 # Envida-node
@@ -450,4 +518,4 @@ configMapGenerator:
   namespace: dh-health
   behavior: merge
   literals:
-    - NEXT_PUBLIC_FEDERATION_BASE_URL=http://federation.tst.dh.unimaas.nl
+    - NEXT_PUBLIC_FEDERATION_BASE_URL=https://federation.tst.dh.unimaas.nl
