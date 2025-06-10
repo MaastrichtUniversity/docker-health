@@ -87,6 +87,39 @@ patches:
       value:
       - name: registry-credentials
 
+# imagePullPolicy patches
+- target:
+    kind: Deployment
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Always
+- target:
+    kind: Job
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Always  
+
+# Proxy patches
+- target:
+    kind: Deployment
+  patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: http_proxy
+        value: "http://proxy.unimaas.nl:3128"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: https_proxy
+        value: "http://proxy.unimaas.nl:3128"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: no_proxy
+        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.96.0.0/12,10.244.0.0/16,10.96.0.10"
 # Individual ingress host patches
 ## Transform
 - target:
@@ -485,4 +518,4 @@ configMapGenerator:
   namespace: dh-health
   behavior: merge
   literals:
-    - NEXT_PUBLIC_FEDERATION_BASE_URL=http://federation.tst.dh.unimaas.nl
+    - NEXT_PUBLIC_FEDERATION_BASE_URL=https://federation.tst.dh.unimaas.nl
