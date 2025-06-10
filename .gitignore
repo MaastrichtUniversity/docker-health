@@ -51,4 +51,4 @@ rit.sh
 # VS Code
 .vscode/
 # RegistrySecret
-./deploy/overlays/tst/registry-secret.yaml
+deploy/overlays/tst/registry-secret.yaml
