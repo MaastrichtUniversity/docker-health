@@ -50,3 +50,5 @@ rit.sh
 .github/
 # VS Code
 .vscode/
+# RegistrySecret
+./deploy/overlays/tst/registry-secret.yaml
