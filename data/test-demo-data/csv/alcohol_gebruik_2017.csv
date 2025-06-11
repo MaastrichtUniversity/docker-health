@@ -4,7 +4,7 @@ BSN,ALCOHOL_GEBRUIKSTATUS,START_DATE,STOP_DATE,HOEVEELHEID_VALUE,HOEVEELHEID_UNI
 001645201,Current drinker of alcohol (finding),2011-12-01,,1,maand,drinkt jaarlijks,2023-11-14T15:50:14.321
 083197102,,2012-01-01,2013-01-01,2,DAG,TEST: ALCOHOL_GEBRUIKSTATUS is missing,2005-01-19T09:43:13.174
 339055303,TEST,,,,,TEST: ALCOHOL_GEBRUIKSTATUS is wrong,2023-12-31T23:59:59.871
-389370204,Current non-drinker of alcohol (finding),2014,,,,TEST: START_DATE with year only,
+389370204,Current non-drinker of alcohol (finding),2014,,,,TEST: START_DATE with year only,2023-12-31T23:59:59.871
 683754105,Lifetime non-drinker (finding),,2014-01,,,TEST: STOP_DATE with year+month only,2024-10-10T10:10:10.410
 316268306,Current drinker of alcohol (finding),,,,per jaar,TEST: HOEVEELHEID_UNIT is missing,2007-12-04T12:09:45.581
 569973107,Current drinker of alcohol (finding),,,1,,TEST: HOEVEELHEID_VALUE is missing,996-05-21T17:04:55.941
