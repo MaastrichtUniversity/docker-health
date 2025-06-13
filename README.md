@@ -254,7 +254,7 @@ Add the local hostname entries to your `/etc/hosts` file:
 ```bash
 eval $(minikube -p minukube docker-env)
 export ENV_TAG=latest
-export MAVEN_VERSION=3.9.5
+export MAVEN_VERSION=3.9.10
 ```
 
 4a. Pull external images into Minikube's Docker daemon
