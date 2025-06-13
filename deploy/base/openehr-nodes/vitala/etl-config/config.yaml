@@ -8,6 +8,6 @@ data:
   DATASET: vitala-demo-data
   LOGGER_FILENAME: logs/vitala/etl-zib.log
   SUBJECT_IDS: '["339055303","316268306","356921487"]'
-  TEMPLATE_IDS: '["DataHub-Patient-2024", "DataHub-BurgerlijkeStaat-2017", "DataHub-Woonsituatie-2017", "DataHub-Contactpersoon-2017", "DataHub-VermogenTotZichWassen-2020", "DataHub-VermogenTotZichKleden-2020", "DataHub-VermogenTotUiterlijkeVerzorging-2020", "DataHub-VermogenTotZelfstandigMedicatiegebruik-2020", "DataHub-VermogenTotDrinken-2020", "DataHub-VermogenTotEten-2020", "DataHub-VermogenTotMondverzorging-2020", "DataHub-VermogenTotToiletgang-2020", "DataHub-InformedConsent"]'
+  TEMPLATE_IDS: '["DataHub-Patient-2024", "DataHub-BurgerlijkeStaat-2024", "DataHub-Woonsituatie-2017", "DataHub-Contactpersoon-2017", "DataHub-VermogenTotZichWassen-2020", "DataHub-VermogenTotZichKleden-2020", "DataHub-VermogenTotUiterlijkeVerzorging-2020", "DataHub-VermogenTotZelfstandigMedicatiegebruik-2020", "DataHub-VermogenTotDrinken-2020", "DataHub-VermogenTotEten-2020", "DataHub-VermogenTotMondverzorging-2020", "DataHub-VermogenTotToiletgang-2020", "DataHub-InformedConsent"]'
   WRITE_COMPOSITION: "true"
   EHRBASE_BASE_URL: http://vitala-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
