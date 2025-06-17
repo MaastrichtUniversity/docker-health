@@ -265,6 +265,12 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: portal.vitala.tst.dh.unimaas.nl
+    - op: add
+      path: /spec/tls
+      value:
+      - hosts:
+        - portal.vitala.tst.dh.unimaas.nl
+        secretName: portal-vitala-tls-secret
 ## ZIO-node
 - target:
     group: networking.k8s.io
