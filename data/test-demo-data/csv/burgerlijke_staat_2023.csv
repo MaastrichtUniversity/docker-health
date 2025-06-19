@@ -1,6 +1,6 @@
 BSN,BURGERLIJKE_STAAT,DATE_TIME,TEST_COMMENTS
 001645201,Weduwe/weduwnaar,2023-11-14T15:50:14.321,PASS-Test valid start_time
-001645201,Weduwe/weduwnaar,2024-11-14T15:50:14.321,PASS-Test valid start_time
+001645201,Geregistreerd partnerschap,2024-11-14T15:50:14.321,PASS-Test valid start_time
 001645201,Weduwe/weduwnaar,2023-11-14T15:50:14.321,FAIL-Test valid start_time
 083197102,Niet gehuwd,2023-12-31T23:59:59.871,PASS-Test data max
 339055303,Nooit gehuwd geweest/ geregistreerd partnerschap gehad,1983-03-16T15:34:59.427,PASS-Test data min
