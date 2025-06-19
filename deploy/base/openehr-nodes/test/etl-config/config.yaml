@@ -7,7 +7,8 @@ metadata:
   namespace: dh-health
 data:
   NODENAME: test
-  DATASET: test-demo-data
+  DATASET_FOLDER_NAME: test-demo-data
+  SOURCE_SYSTEM_ID: test
   LOGGER_FILENAME: logs/test/etl-zib.log
   SUBJECT_IDS: '["001645201","083197102","339055303","389370204","683754105","316268306","569973107","011168808","363037809","315071710","362880311","525736712", "646236313", "640681414", "840027515", "880143216", "893753117", "698550018", "647893319", "647893320"]'
   TEMPLATE_IDS: '["DataHub-Patient-2024", "DataHub-AlcoholGebruik-2017", "DataHub-AlcoholGebruik-2023", "DataHub-BurgerlijkeStaat-2017", "DataHub-BurgerlijkeStaat-2023", "DataHub-BurgerlijkeStaat-2024", "DataHub-Woonsituatie-2017", "DataHub-Woonsituatie-2024", "DataHub-Contactpersoon-2017", "DataHub-VermogenTotZichWassen-2020", "DataHub-VermogenTotZichKleden-2020", "DataHub-VermogenTotUiterlijkeVerzorging-2020", "DataHub-VermogenTotZelfstandigMedicatiegebruik-2020", "DataHub-VermogenTotDrinken-2020", "DataHub-VermogenTotEten-2020", "DataHub-VermogenTotMondverzorging-2020", "DataHub-VermogenTotToiletgang-2020", "DataHub-InformedConsent"]'
