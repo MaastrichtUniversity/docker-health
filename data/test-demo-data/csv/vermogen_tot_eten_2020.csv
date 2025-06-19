@@ -1,15 +1,15 @@
-BSN,ETEN,EET_BEPERKINGEN,DATE_TIME
-001645201,In staat tot onafhankelijk eten,,2021-02-19T15:50:14.321
-001645201,Niet in staat zelf te eten,Moeite met hanteren van eetgerei bij zelfstandig eten,2024-02-19T15:50:14.321
-001645201,In staat tot onafhankelijk eten,,2021-02-19T15:50:14.321
-083197102,Niet in staat zelf te eten,Moeite met in stukken snijden van voedsel,2007-07-19T15:50:14.321
-339055303,In staat tot onafhankelijk eten,,2019-08-19T15:50:14.321
-389370204,Hulp nodig bij eten,Moeite met in stukken snijden van voedsel,
-683754105,Niet in staat zelf te eten,Moeite met naar mond brengen van voedsel,2006-03-19T15:50:14.321
-316268306,WrongValue,Moeite met hanteren van eetgerei bij zelfstandig eten,2001-02-19T15:50:14.321
-569973107,Hulp nodig bij eten,WrongValue,2002-07-19T15:50:14.321
-011168808,,,2014-02-19T15:50:14.321
-363037809,In staat tot onafhankelijk eten,Moeite met hanteren van eetgerei bij zelfstandig eten,
-315071710,Niet in staat zelf te eten,,2013-01-19T15:50:14.321
-362880311,,Moeite met naar mond brengen van voedsel,2000-02-19T15:50:14.321
-525736712,Hulp nodig bij eten,Moeite met in stukken snijden van voedsel,2021-02-19T15:50:14.321
+BSN,ETEN,EET_BEPERKINGEN,DATE_TIME,TEST_COMMENTS
+001645201,In staat tot onafhankelijk eten,,2021-02-19T15:50:14.321,PASS-Test duplication check
+001645201,Niet in staat zelf te eten,Moeite met hanteren van eetgerei bij zelfstandig eten,2024-02-19T15:50:14.321,PASS-Test duplication check
+001645201,In staat tot onafhankelijk eten,,2021-02-19T15:50:14.321,FAIL-Test duplication check
+083197102,Niet in staat zelf te eten,Moeite met in stukken snijden van voedsel,2005-01-19T09:43:13.174,PASS-Test data max
+339055303,In staat tot onafhankelijk eten,,2008-07-13T05:38:29.395,PASS-Test data min
+389370204,,,,FAIL-Test data none
+683754105,,,2023-12-31T23:59:59.871,FAIL-Test data empty
+316268306,Niet in staat zelf te eten,Moeite met hanteren van eetgerei bij zelfstandig eten,2016-10-02T06:30:00.046,PASS
+569973107,Hulp nodig bij eten,,2013-01-01T06:22:23.871,PASS
+011168808,In staat tot onafhankelijk eten,Moeite met hanteren van eetgerei bij zelfstandig eten,,FAIL-DATE_TIME is empty
+363037809,Niet in staat zelf te eten,Moeite met naar mond brengen van voedsel,1996-05-04T42:04:55.941,FAIL-DATE_TIME has a wrong datetime format (wrong hour value)
+315071710,WrongValue,Moeite met hanteren van eetgerei bij zelfstandig eten,2013-01-19T01:44:14.715,FAIL-ETEN is wrong
+362880311,,Moeite met naar mond brengen van voedsel,2005-09-28T22:40:32.518,FAIL-ETEN is missing
+525736712,Hulp nodig bij eten,WrongValue,2024-10-10T10:10:10.410,FAIL-EET_BEPERKINGEN is wrong
