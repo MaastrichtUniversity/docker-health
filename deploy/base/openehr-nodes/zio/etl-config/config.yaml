@@ -5,7 +5,7 @@ metadata:
   namespace: dh-health
 data:
   NODENAME: zio
-  DATASET: zio-demo-data
+  DATASET_FOLDER_NAME: zio-demo-data
   SOURCE_SYSTEM_ID: Tetra
   LOGGER_FILENAME: logs/zio/etl-zib.log
   SUBJECT_IDS: '["339055303","389370204","683754105"]'

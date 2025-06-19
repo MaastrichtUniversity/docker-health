@@ -7,7 +7,7 @@ metadata:
   namespace: dh-health
 data:
   NODENAME: test
-  DATASET: test-demo-data
+  DATASET_FOLDER_NAME: test-demo-data
   SOURCE_SYSTEM_ID: test
   LOGGER_FILENAME: logs/test/etl-zib.log
   SUBJECT_IDS: '["001645201","083197102","339055303","389370204","683754105","316268306","569973107","011168808","363037809","315071710","362880311","525736712"]'

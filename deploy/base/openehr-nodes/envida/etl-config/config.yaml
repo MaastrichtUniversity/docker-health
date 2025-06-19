@@ -5,7 +5,7 @@ metadata:
   namespace: dh-health
 data:
   NODENAME: envida
-  DATASET: envida-demo-data
+  DATASET_FOLDER_NAME: envida-demo-data
   SOURCE_SYSTEM_ID: "Nedap Ons"
   LOGGER_FILENAME: logs/envida/etl-zib.log
   SUBJECT_IDS: '["001645201","339055303","316268306"]'

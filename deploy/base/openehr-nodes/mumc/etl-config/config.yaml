@@ -5,7 +5,7 @@ metadata:
   namespace: dh-health
 data:
   NODENAME: mumc
-  DATASET: mumc-demo-data
+  DATASET_FOLDER_NAME: mumc-demo-data
   SOURCE_SYSTEM_ID: SAP
   LOGGER_FILENAME: logs/mumc/etl-zib.log
   SUBJECT_IDS: '["001645201","083197102","339055303"]'

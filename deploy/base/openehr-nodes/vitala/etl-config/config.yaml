@@ -5,7 +5,7 @@ metadata:
   namespace: dh-health
 data:
   NODENAME: vitala
-  DATASET: vitala-demo-data
+  DATASET_FOLDER_NAME: vitala-demo-data
   SOURCE_SYSTEM_ID: "Nedap Ons"
   LOGGER_FILENAME: logs/vitala/etl-zib.log
   SUBJECT_IDS: '["339055303","316268306","356921487"]'
