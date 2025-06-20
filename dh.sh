@@ -144,10 +144,10 @@ build_images() {
     
     if [[ -z "$service_name" ]]; then
         echo -e "${YELLOW}Building all services using docker-bake...${NC}"
-        docker --debug buildx bake
+        docker buildx bake
     else
         echo -e "${YELLOW}Building service: $service_name using docker-bake...${NC}"
-        docker --debug buildx bake --set=\*.tags=registry.prod.dh.unimaas.nl/docker-health/$service_name:$image_tag
+        docker buildx bake --set=\*.tags=registry.prod.dh.unimaas.nl/docker-health/$service_name:$image_tag
     fi
     
     if [[ $? -eq 0 ]]; then
@@ -358,8 +358,8 @@ main() {
     case $command in
         setup)
             check_minikube
-#            clone_externals
-#            setup_hosts
+            clone_externals
+            setup_hosts
             setup_mounts
             ;;
 
