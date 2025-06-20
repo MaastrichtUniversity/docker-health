@@ -9,7 +9,7 @@ BSN,UITERLIJKE_VERZORGING,DATE_TIME,TEST_COMMENTS
 316268306,Heeft hulp nodig bij uiterlijke verzorging,2023-12-31T23:59:59.871,PASS
 569973107,Niet in staat tot uiterlijke verzorging,1996-05-21T17:04:55.941,PASS
 011168808,In staat tot onafhankelijke uiterlijke verzorging,,FAIL-DATE_TIME is empty
-363037809,Heeft hulp nodig bij uiterlijke verzorging,1989-01-01T00:00:72.253,FAIL-DATE_TIME has a wrong datetime format (wrong minute value)
+363037809,Heeft hulp nodig bij uiterlijke verzorging,1989-01-01T00:00:72.253,FAIL-DATE_TIME has a wrong datetime format (wrong second value)
 315071710,WRONG VALUE,2008-07-13T05:38:29.395,FAIL-UITERLIJKE_VERZORGING is wrong
 362880311,-1,2005-09-28T22:40:32.518,FAIL-UITERLIJKE_VERZORGING is wrong
 525736712,wrong@value.nl,2022-04-01T18:06:22.000,FAIL-UITERLIJKE_VERZORGING is wrong
