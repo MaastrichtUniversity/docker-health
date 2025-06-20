@@ -1,6 +1,6 @@
 BSN,ALCOHOL_GEBRUIKSTATUS,START_DATE,STOP_DATE,HOEVEELHEID_VALUE,HOEVEELHEID_UNIT,TOELICHTING,DATE_TIME,TEST_COMMENTS
 001645201,Drinkt alcohol,2011-12-01,,1,maand,drinkt jaarlijks,2023-11-14T15:50:14.321,PASS-Test valid start_time
-001645201,Drinkt alcohol,2011-12-01,,1,maand,drinkt jaarlijks,2024-11-14T15:50:14.321,PASS-Test valid start_time
+001645201,Anders,2011-12-01,,1,maand,drinkt jaarlijks,2024-11-14T15:50:14.321,PASS-Test valid start_time
 001645201,Drinkt alcohol,2011-12-01,,1,maand,drinkt jaarlijks,2023-11-14T15:50:14.321,FAIL-Test valid start_time
 083197102,Drinkt alcohol,2011-12-01,2025-01,1,maand,drinkt jaarlijks,2024-11-14T15:50:14.321,PASS-Test data max
 339055303,Dronk vroeger alcohol,,,,,,2023-12-31T23:59:59.871,PASS-Test data min
