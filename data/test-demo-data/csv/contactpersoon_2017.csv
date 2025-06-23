@@ -9,12 +9,12 @@ BSN,Rol,Relatie,Voornamen,Initialen,Roepnaam,Naamgebruik,Voorvoegsels,Achternaam
 316268306,Mentor,,Qui-Gon,,,,,Jinn,,,80BBY,Mobile Phone,Work Place,q.jinn@jedi.sw,Work Place,Palace Court,,,,,Federal District,Coruscant,Imperial City,,,Primary Home,2005-09-28T22:40:32.518,PASS
 569973107,Contactpersoon,Cousin,,,,Geslachtsnaam partner gevolgd door eigen geslachtsnaam,,,,,,,,,,,,,,,,,,,,,2016-10-02T06:30:00.046,PASS
 011168808,Bewindvoerder,,Sheev,,Darth Sidious,,,Palpatine,,,Order66,Fax,Primary Home,the.emperor@sith.sw,,,,,,,Senate District,Coruscant,Imperial City,,,Work Place,,FAIL-DATE_TIME is empty
-363037809,Voogd,Brother,Obi-Wan,,Ben,,,Kenobi,,,,,,,,,,,,,,,,,,,007-12-04T12:09:45.581,FAIL-DATE_TIME has a wrong datetime format
-315071710,TEST: incorrect Rol,,,,,,,,,,,,,,,,,,,,,,,,,,2008-07-13T05:38:29.395,FAIL-Rol is wrong is wrong
-362880311,,TEST: incorrect Relatie,,,,,,,,,,,,,,,,,,,,,,,,,2005-09-28T22:40:32.518,FAIL-Relatie is wrong is wrong
+363037809,Voogd,Brother,Obi-Wan,,Ben,,,Kenobi,,,,,,,,,,,,,,,,,,,007-12-04T12:09:45.581,FAIL-DATE_TIME has a wrong datetime format (wrong year value)
+315071710,TEST: incorrect Rol,,,,,,,,,,,,,,,,,,,,,,,,,,2008-07-13T05:38:29.395,FAIL-Rol is wrong
+362880311,,TEST: incorrect Relatie,,,,,,,,,,,,,,,,,,,,,,,,,2005-09-28T22:40:32.518,FAIL-Relatie is wrong
 525736712,,,,,,TEST: incorrect Naamgebruik,,,,,,,,,,,,,,,,,,,,,2022-04-01T18:06:22.000,FAIL-Naamgebruik is wrong
 646236313,,,,,,,,,,,,TEST: incorrect TelecomType,,,,,,,,,,,,,,,,FAIL-TelecomType is wrong
-640681414,,,,,,,,,,,,,TEST: incorrect NummerSoort,,,,,,,,,,,,,,,FAIL-NummerSoort is incorrect
+640681414,,,,,,,,,,,,,TEST: incorrect NummerSoort,,,,,,,,,,,,,,,FAIL-NummerSoort is wrong
 840027515,,,,,,,,,,,,,,,TEST: incorrect EmailSoort,,,,,,,,,,,,,FAIL-EmailSoort is wrong
 880143216,,,,,,,,,,,,,,,,,,,,TEST: incorrect AanduidingBijNummer ,,,,,,,,FAIL-AanduidingBijNummer is wrong
 893753117,,,,,,,,,,,,,,,,,,,,,,,,TEST: incorrect Land,,,,FAIL-Land is wrong
