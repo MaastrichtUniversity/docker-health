@@ -1,0 +1,93 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: test-single-node
+  namespace: dh-health-test
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+      - name: wait-test-ehrbase-healthy
+        image: busybox:1.28
+        imagePullPolicy: Never
+        command:
+          - sh
+          - -c
+          - |
+            for i in 1 2 3 4 5 6 7 8 9; do
+              echo "waiting"
+              sleep 10
+              if wget -T5 -qO- -Y off test-ehrbase.dh-health-test:8080/ehrbase/management/health | grep UP; then
+                exit 0
+              fi
+            done
+            exit 1
+      containers:
+      - name: test-single-node-runner
+        image: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test:latest
+        # Uncomment the following lines to overwrite the Test Docker image command, and execute the test with different
+        # options of your choice and/or execute only one test file.
+#        command: ["pytest"]
+#        args:
+#          - -s
+#          - -o
+#          - log_cli=true
+#          - --log-cli-level=INFO
+#          - --verbose
+#          - /code/tests/test_vermogen_tot_zich_kleden.py
+        envFrom:
+        - configMapRef:
+            name: timezone-config
+        - configMapRef:
+            name: transform-server-config
+        - configMapRef:
+            name: zib-templates-config
+        - configMapRef:
+            name: test-etl-config
+        env:
+        - name: EHRBASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: test-ehrbase-creds
+              key: username
+        - name: EHRBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: test-ehrbase-creds
+              key: password
+        - name: EHRBASE_ADMIN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: test-ehrbase-admin-creds
+              key: username
+        - name: EHRBASE_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: test-ehrbase-admin-creds
+              key: password
+        - name: TRANSFORM_SPRING_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: username
+        - name: TRANSFORM_SPRING_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: transform-creds
+              key: password
+        volumeMounts:
+        - name: data
+          mountPath: /code/data/test-demo-data
+        - name: etl-logs
+          mountPath: /code/logs/test
+          subPath: test/etl
+      volumes:
+      - name: data
+        hostPath:
+          path: /mnt/data/test-demo-data
+          type: Directory
+      - name: etl-logs
+        persistentVolumeClaim:
+          claimName: log-pvc

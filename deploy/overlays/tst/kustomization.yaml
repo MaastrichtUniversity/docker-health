@@ -120,6 +120,7 @@ patches:
       value:
         name: no_proxy
         value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.96.0.0/12,10.244.0.0/16,10.96.0.10"
+
 # Individual ingress host patches
 ## Transform
 - target:
