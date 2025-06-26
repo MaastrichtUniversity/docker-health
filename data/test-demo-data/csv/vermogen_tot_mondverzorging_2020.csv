@@ -1,15 +1,15 @@
-BSN,VERZORGEN_TANDEN,PRODUCT_TYPE,DATE_TIME
-001645201,Onafhankelijk in staat tot mondverzorging,Tandprothese,2002-01-19T09:43:13.174
-001645201,Niet in staat tot mondverzorging,Orthodontische 'bracket',2012-01-19T09:43:13.174
-001645201,Onafhankelijk in staat tot mondverzorging,Tandprothese,2002-01-19T09:43:13.174
-083197102,Niet in staat tot mondverzorging,,2020-09-19T09:43:13.174
-339055303,Onafhankelijk in staat tot mondverzorging,Tandprothese,2025-02-10T11:15:00
-389370204,,,2012-11-19T09:43:13.174
-683754105,Niet in staat tot mondverzorging,WrongValue,2016-03-19T09:43:13.174
-316268306,WrongValue,Tandprothese,2003-03-03T09:43:13.174
-569973107,,Orthodontische 'bracket',1980-03-19T09:43:13.174
-011168808,Onafhankelijk in staat tot mondverzorging,,
-363037809,,Orthodontische 'bracket',1979-10-19T09:43:13.174
-315071710,Niet in staat tot mondverzorging,Tandprothese,
-362880311,Onafhankelijk in staat tot mondverzorging,Tandprothese,
-525736712,,Orthodontische 'bracket',1987-02-19T09:43:13.174
+BSN,VERZORGEN_TANDEN,PRODUCT_TYPE,DATE_TIME,TEST_COMMENTS
+001645201,Onafhankelijk in staat tot mondverzorging,Tandprothese,2002-01-19T09:43:13.174,PASS-Test duplication check
+001645201,Niet in staat tot mondverzorging,Orthodontische 'bracket',2012-01-19T09:43:13.174,PASS-Test duplication check
+001645201,Onafhankelijk in staat tot mondverzorging,Tandprothese,2002-01-19T09:43:13.174,FAIL-Test duplication check
+083197102,Niet in staat tot mondverzorging,Orthodontische 'bracket',2020-09-19T09:43:13.174,PASS-Test data max
+339055303,Onafhankelijk in staat tot mondverzorging,,2025-02-10T11:15:00,PASS-Test data min
+389370204,,,,FAIL-Test data none
+683754105,,,2016-03-19T09:43:13.174,FAIL-Test data empty
+316268306,Heeft hulp nodig bij mondverzorging,Tandprothese,2003-03-03T09:43:13.174,PASS
+569973107,Onafhankelijk in staat tot mondverzorging,Orthodontische 'bracket',1980-03-19T09:43:13.174,PASS
+011168808,Niet in staat tot mondverzorging,,,FAIL-DATE_TIME is empty
+363037809,Heeft hulp nodig bij mondverzorging,Orthodontische 'bracket',YYYY-10-19T09:43:13.174,FAIL-DATE_TIME has a wrong datetime format (wrong year value)
+315071710,WrongValue,,2012-11-19T09:43:13.174,FAIL-VERZORGEN_TANDEN is wrong
+362880311,,Tandprothese,1991-08-19T06:30:00.046,FAIL-VERZORGEN_TANDEN is missing
+525736712,Heeft hulp nodig bij mondverzorging,WrongValue,1987-02-19T09:43:13.174,FAIL-PRODUCT_TYPE is wrong

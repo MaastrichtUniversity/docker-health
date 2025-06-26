@@ -1,15 +1,23 @@
-BSN,ALCOHOL_GEBRUIKSTATUS,START_DATE,STOP_DATE,HOEVEELHEID_VALUE,HOEVEELHEID_UNIT,TOELICHTING,DATE_TIME,
-001645201,Current drinker of alcohol (finding),2011-12-01,,1,maand,drinkt jaarlijks,2023-11-14T15:50:14.321
-001645201,Current drinker of alcohol (finding),2011-12-01,,1,maand,drinkt jaarlijks,2024-11-14T15:50:14.321
-001645201,Current drinker of alcohol (finding),2011-12-01,,1,maand,drinkt jaarlijks,2023-11-14T15:50:14.321
-083197102,,2012-01-01,2013-01-01,2,DAG,TEST: ALCOHOL_GEBRUIKSTATUS is missing,2005-01-19T09:43:13.174
-339055303,TEST,,,,,TEST: ALCOHOL_GEBRUIKSTATUS is wrong,2023-12-31T23:59:59.871
-389370204,Current non-drinker of alcohol (finding),2014,,,,TEST: START_DATE with year only,2023-12-31T23:59:59.871
-683754105,Lifetime non-drinker (finding),,2014-01,,,TEST: STOP_DATE with year+month only,2024-10-10T10:10:10.410
-316268306,Current drinker of alcohol (finding),,,,per jaar,TEST: HOEVEELHEID_UNIT is missing,2007-12-04T12:09:45.581
-569973107,Current drinker of alcohol (finding),,,1,,TEST: HOEVEELHEID_VALUE is missing,996-05-21T17:04:55.941
-011168808,Current drinker of alcohol (finding),,,0,dag,TEST: HOEVEELHEID_VALUE == 0,2016-10-02T06:30:00.046
-363037809,Other,,,-10000,1/mo,TEST: HOEVEELHEID_VALUE < 0,1989-01-01T00:00:00.253
-315071710,Current drinker of alcohol (finding),2014-01-01,,25,Jaar,TEST: HOEVEELHEID_UNIT - convert jaar to maand,2008-07-13T05:38:29.395
-362880311,Ex-drinker (finding),2014-01-01,2015-01-01,25,AAAA,TEST: HOEVEELHEID_UNIT is wrong,2005-09-28T22:40:32.518
-525736712,Ex-drinker (finding),TEST,,,,TEST: START_DATE format is wrong,2022-04-01T18:06:22.000
+BSN,ALCOHOL_GEBRUIKSTATUS,START_DATE,STOP_DATE,HOEVEELHEID_VALUE,HOEVEELHEID_UNIT,TOELICHTING,DATE_TIME,TEST_COMMENTS
+001645201,Current drinker of alcohol (finding),2011-12-01,,1,maand,drinkt jaarlijks,2023-11-14T15:50:14.321,PASS-Test valid start_time
+001645201,Other,2011-12-01,,1,maand,drinkt jaarlijks,2024-11-14T15:50:14.321,PASS-Test valid start_time
+001645201,Current drinker of alcohol (finding),2011-12-01,,1,maand,drinkt jaarlijks,2023-11-14T15:50:14.321,FAIL-Test valid start_time
+083197102,Current drinker of alcohol (finding),2011-12-01,2025-01,1,maand,drinkt jaarlijks,2024-11-14T15:50:14.321,PASS-Test data max
+339055303,Ex-drinker (finding),,,,,,2023-12-31T23:59:59.871,PASS-Test data min
+389370204,,,,,,,,FAIL-Test data none
+683754105,,,,,,,2025-01-02T15:00:00.000,FAIL-Test data empty
+316268306,Current drinker of alcohol (finding),2000-10-31,,5,1/d,the patient has depression,2025-06-03T10:00:00.000,PASS
+569973107,Current non-drinker of alcohol (finding),2000-10-31,,2,1/w,drinks during social events,2025-06-03T10:00:00.000,PASS
+011168808,Ex-drinker (finding),2000-01-01,,,,,,FAIL-DATE_TIME is empty
+363037809,Ex-drinker (finding),2000-01-01,,,,,WrongValue,FAIL-DATE_TIME has a wrong datetime format
+315071710,,2024-01-31,2025-01-31,,,,2024-12-01T10:30:00.000,FAIL-ALCOHOL_GEBRUIKSTATUS is missing
+362880311,WrongValue,2024-01-31,2025-01-31,,,,2024-12-01T10:30:00.000,FAIL-ALCOHOL_GEBRUIKSTATUS is wrong
+525736712,Current drinker of alcohol (finding),WrongValue,,,,,2010-01-01T00:00:00.000,PASS-START_DATE has a wrong datetime year format
+646236313,Current drinker of alcohol (finding),2011,,,,,2010-01-01T00:00:00.000,PASS-START_DATE with year only
+640681414,Other,,2011-12,,,,2010-01-01T00:00:00.000,PASS-STOP_DATE with year+month only
+840027515,Other,,,0,dag,,2016-10-02T06:30:00.046,PASS-HOEVEELHEID_VALUE == 0
+880143216,Other,,,-10000,1/mo,,1989-01-01T00:00:00.253,PASS-HOEVEELHEID_VALUE < 0
+893753117,Other,,,,dag,,2010-01-01T00:00:00.000,PASS-Missing HOEVEELHEID_VALUE
+698550018,Other,,,4,,,2010-01-01T00:00:00.000,PASS-Missing HOEVEELHEID_UNIT
+647893319,Other,,,10,jaar,,2010-01-01T00:00:00.000,PASS-convert HOEVEELHEID_UNIT jaar to maand
+647893320,Other,,,1,WrongValue,,2010-01-01T00:00:00.000,PASS-HOEVEELHEID_UNIT is wrong
