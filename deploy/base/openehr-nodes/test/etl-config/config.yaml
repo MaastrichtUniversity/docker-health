@@ -10,7 +10,6 @@ data:
   DATASET: test-demo-data
   LOGGER_FILENAME: logs/test/etl-zib.log
   SUBJECT_IDS: '["001645201","083197102","339055303","389370204","683754105","316268306","569973107","011168808","363037809","315071710","362880311","525736712"]'
-  TEMPLATE_IDS: '["DataHub-Patient-2024", "DataHub-AlcoholGebruik-2017", "DataHub-AlcoholGebruik-2023", "DataHub-BurgerlijkeStaat-2017", "DataHub-BurgerlijkeStaat-2023", "DataHub-Woonsituatie-2017", "DataHub-Contactpersoon-2017", "DataHub-VermogenTotZichWassen-2020", "DataHub-VermogenTotZichKleden-2020", "DataHub-VermogenTotUiterlijkeVerzorging-2020", "DataHub-VermogenTotZelfstandigMedicatiegebruik-2020", "DataHub-VermogenTotDrinken-2020", "DataHub-VermogenTotEten-2020", "DataHub-VermogenTotMondverzorging-2020", "DataHub-VermogenTotToiletgang-2020", "DataHub-InformedConsent"]'
+  TEMPLATE_IDS: '["DataHub-Patient-2024", "DataHub-AlcoholGebruik-2017", "DataHub-AlcoholGebruik-2023", "DataHub-BurgerlijkeStaat-2017", "DataHub-BurgerlijkeStaat-2023", "DataHub-BurgerlijkeStaat-2024", "DataHub-Woonsituatie-2017", "DataHub-Woonsituatie-2024", "DataHub-Contactpersoon-2017", "DataHub-VermogenTotZichWassen-2020", "DataHub-VermogenTotZichKleden-2020", "DataHub-VermogenTotUiterlijkeVerzorging-2020", "DataHub-VermogenTotZelfstandigMedicatiegebruik-2020", "DataHub-VermogenTotDrinken-2020", "DataHub-VermogenTotEten-2020", "DataHub-VermogenTotMondverzorging-2020", "DataHub-VermogenTotToiletgang-2020", "DataHub-InformedConsent"]'
   WRITE_COMPOSITION: "False"
   EHRBASE_BASE_URL: http://test-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
-

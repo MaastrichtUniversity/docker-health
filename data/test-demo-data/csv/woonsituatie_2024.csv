@@ -1,0 +1,15 @@
+BSN,DATUM,WONING_TYPE,WONING_AANPASSING,WOON_OMSTANDIGHEID,TOELICHTING,DATE_TIME
+001645201,2023-10-01,Bovenwoning,Badstoel en/of douchestoel,Huis bevat trap,moved recently,2023-11-14T15:50:14.321
+001645201,2024-10-01,Bovenwoning,Badstoel en/of douchestoel,Huis bevat trap,moved recently,2024-11-14T15:50:14.321
+001645201,2024-10-01,Bovenwoning,Badstoel en/of douchestoel,Huis bevat trap,moved recently,2023-11-14T15:50:14.321
+083197102,2005-01-18,bobob,Traplift,Woont in appartement met lift,TEST: incorrect WONING_TYPE,2005-01-19T09:43:13.174
+339055303,,,Traplift,Toegang tot woning via trap,unsure,2023-12-31T23:59:59.871
+389370204,2000-12-10,Appartement of flatwoning,Aangepast toilet,Ingang van woning geblokkeerd,wants to move,
+683754105,2020-10-10,Justitiële Inrichting,Aangepast toilet,Huis bevat structurele belemmering voor verplaatsing,moved recently,2024-10-10T10:10:10.410
+316268306,,,,,,
+569973107,1996-06-21,Woonwagen,Aangepast bed,Rommelige leefruimte,with family,996-05-21T17:04:55.941
+011168808,2016-10-01,Instelling WLZ,Woningaanpassing,Vieze leefomstandigheden,,2016-10-02T06:30:00.046
+363037809,1988-12-28,Dakloos,,,previously had a house,1989-01-01T00:00:00.253
+315071710,2008-06-13,Anders,Aangepast bed,WrongValue,TEST: incorrect WOON_OMSTANDIGHEID,2008-07-13T05:38:29.395
+362880311,,Woonboot,,,,2005-09-28T22:40:32.518
+525736712,2022-03-01,Eengezinswoning,WrongValue,Badstoel en/of douchestoel,TEST: incorrect WONING_AANPASSING,2022-04-01T18:06:22.000
