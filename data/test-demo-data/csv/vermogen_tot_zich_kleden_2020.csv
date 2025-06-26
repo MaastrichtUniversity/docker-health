@@ -1,15 +1,15 @@
-BSN,ZICH_KLEDEN,TE_KLEDEN_LICHAAMSDEEL,DATE_TIME
-001645201,In staat tot onafhankelijk aankleden,Gehele lichaam in totaliteit,2023-11-14T15:50:14.321
-001645201,Hulp nodig bij aankleden,Gehele onderlichaam,2024-11-14T15:50:14.321
-001645201,In staat tot onafhankelijk aankleden,Gehele lichaam in totaliteit,2023-11-14T15:50:14.321
-083197102,Hulp nodig bij aankleden,,2005-01-19T09:43:13.174
-339055303,,Gehele bovenlichaam,2023-12-31T23:59:59.871
-389370204,Niet in staat zich aan te kleden,Gehele onderlichaam,
-683754105,In staat tot onafhankelijk aankleden,,2024-10-10T10:10:10.410
-316268306,WRONG VALUE,Gehele bovenlichaam,2024-10-10T10:10:10.410
-569973107,Niet in staat zich aan te kleden,Gehele onderlichaam,1996-05-21T17:04:55.941
-011168808,,Gehele lichaam in totaliteit,2016-10-02T06:30:00.046
-363037809,In staat tot onafhankelijk aankleden,,1989-01-01T00:00:00.253
-315071710,Niet in staat zich aan te kleden,Gehele onderlichaam,2008-07-13T05:38:29.395
-362880311,Hulp nodig bij aankleden,Gehele lichaam in totaliteit,2005-09-28T22:40:32.518
-525736712,,2022-04-01T18:06:22.000
+BSN,ZICH_KLEDEN,TE_KLEDEN_LICHAAMSDEEL,DATE_TIME,TEST_COMMENTS
+001645201,In staat tot onafhankelijk aankleden,Gehele lichaam in totaliteit,2023-11-14T15:50:14.321,PASS-Test duplication check
+001645201,Hulp nodig bij aankleden,Gehele onderlichaam,2024-11-14T15:50:14.321,PASS-Test duplication check
+001645201,In staat tot onafhankelijk aankleden,Gehele lichaam in totaliteit,2023-11-14T15:50:14.321,FAIL-Test duplication check
+083197102,Hulp nodig bij aankleden,Gehele bovenlichaam,2005-01-19T09:43:13.174,PASS-Test data max
+339055303,In staat tot onafhankelijk aankleden,,2023-12-31T23:59:59.871,PASS-Test data min
+389370204,,,,FAIL-Test data none
+683754105,,,2024-10-10T10:10:10.410,FAIL-Test data empty
+316268306,Hulp nodig bij aankleden,Gehele onderlichaam,2024-10-10T10:10:10.410,PASS
+569973107,In staat tot onafhankelijk aankleden,,1996-05-21T17:04:55.941,PASS
+011168808,Niet in staat zich aan te kleden,Gehele lichaam in totaliteit,,FAIL-DATE_TIME is empty
+363037809,Hulp nodig bij aankleden,,1989-01-01T00:MM:00.253,FAIL-DATE_TIME has a wrong datetime format (wrong minute value)
+315071710,WRONG VALUE,Gehele onderlichaam,2008-07-13T05:38:29.395,FAIL-ZICH_KLEDEN is wrong
+362880311,,Gehele lichaam in totaliteit,2005-09-28T22:40:32.518,FAIL-ZICH_KLEDEN is missing
+525736712,Niet in staat zich aan te kleden,WRONG VALUE,2022-04-01T18:06:22.000,FAIL-TE_KLEDEN_LICHAAMSDEEL is wrong

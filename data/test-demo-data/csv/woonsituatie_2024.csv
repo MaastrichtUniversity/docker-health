@@ -1,0 +1,15 @@
+BSN,DATUM,WONING_TYPE,WONING_AANPASSING,WOON_OMSTANDIGHEID,TOELICHTING,DATE_TIME,TEST_COMMENTS
+001645201,2023-10-01,Bovenwoning,Badstoel en/of douchestoel,Huis bevat trap,moved recently,2023-11-14T15:50:14.321,PASS-Test valid start_time
+001645201,2024-10-01,Aanleunwoning,Badstoel en/of douchestoel,Huis bevat trap,moved recently again,2024-11-14T15:50:14.321,PASS-Test valid start_time
+001645201,2024-10-01,Bovenwoning,Badstoel en/of douchestoel,Huis bevat trap,moved recently,2023-11-14T15:50:14.321,FAIL-Test valid start_time
+083197102,2005-01-18,Instelling WLZ,Traplift,Woont in appartement met lift,has a dog,2005-01-19T09:43:13.174,PASS-Test data max
+339055303,,Justitiële Inrichting,,,,2023-12-31T23:59:59.871,PASS-Test data min (No mandatory variables)
+389370204,,,,,,,FAIL-Test data none
+683754105,,,,,,2024-10-10T10:10:10.410,PASS-Test data empty #TODO Change to FAIL after NoneCheckModel update
+316268306,2013-12,Instelling ZVW,Wandbeugel,Vieze leefomstandigheden,,2016-10-02T06:30:00.046,PASS-DATUM has a partial date
+569973107,2012,Anders,,,unsure,2024-10-10T10:10:10.410,PASS-DATUM has a partial date
+011168808,2000-12-10,Appartement of flatwoning,Woningaanpassing,Ingang van woning geblokkeerd,wants to move,,FAIL-DATE_TIME is empty
+363037809,1996-06-21,Woonwagen,Aangepast bed,Rommelige leefruimte,with family,1996-05-42T17:04:55.941,FAIL-DATE_TIME has a wrong datetime format (wrong day value)
+315071710,2005-01-18,WrongValue,Aangepast toilet,Woont in appartement met lift,TEST: incorrect WONING_TYPE,2008-07-13T05:38:29.395,FAIL-WONING_TYPE is wrong
+362880311,2008-06-13,Instelling WMO,Wandbeugel,WrongValue,TEST: incorrect WOON_OMSTANDIGHEID,2005-09-28T22:40:32.518,FAIL-WOON_OMSTANDIGHEID is wrong
+525736712,2022-03-01,Eengezinswoning,WrongValue,Badstoel en/of douchestoel,TEST: incorrect WONING_AANPASSING,2022-04-01T18:06:22.000,FAIL-WONING_AANPASSING is wrong

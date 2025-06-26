@@ -5,9 +5,10 @@ metadata:
   namespace: dh-health
 data:
   NODENAME: zio
-  DATASET: zio-demo-data
+  DATASET_FOLDER_NAME: zio-demo-data
+  SOURCE_SYSTEM_ID: Tetra
   LOGGER_FILENAME: logs/zio/etl-zib.log
   SUBJECT_IDS: '["339055303","389370204","683754105"]'
-  TEMPLATE_IDS: '["DataHub-Patient-2024", "DataHub-BurgerlijkeStaat-2017", "DataHub-Woonsituatie-2017", "DataHub-Contactpersoon-2017", "DataHub-VermogenTotZichWassen-2020", "DataHub-VermogenTotZichKleden-2020", "DataHub-VermogenTotUiterlijkeVerzorging-2020", "DataHub-VermogenTotZelfstandigMedicatiegebruik-2020", "DataHub-VermogenTotDrinken-2020", "DataHub-VermogenTotEten-2020", "DataHub-VermogenTotMondverzorging-2020", "DataHub-VermogenTotToiletgang-2020", "DataHub-InformedConsent"]'
+  TEMPLATE_IDS: '["DataHub-Patient-2024", "DataHub-BurgerlijkeStaat-2024", "DataHub-Woonsituatie-2024", "DataHub-Contactpersoon-2017", "DataHub-VermogenTotZichWassen-2020", "DataHub-VermogenTotZichKleden-2020", "DataHub-VermogenTotUiterlijkeVerzorging-2020", "DataHub-VermogenTotZelfstandigMedicatiegebruik-2020", "DataHub-VermogenTotDrinken-2020", "DataHub-VermogenTotEten-2020", "DataHub-VermogenTotMondverzorging-2020", "DataHub-VermogenTotToiletgang-2020", "DataHub-InformedConsent"]'
   WRITE_COMPOSITION: "true"
   EHRBASE_BASE_URL: http://zio-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
