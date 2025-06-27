@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: test-single-node
-  namespace: dh-health-test
+  namespace: dh-health
 spec:
   backoffLimit: 0
   template:
@@ -19,7 +19,7 @@ spec:
             for i in 1 2 3 4 5 6 7 8 9; do
               echo "waiting"
               sleep 10
-              if wget -T5 -qO- -Y off test-ehrbase.dh-health-test:8080/ehrbase/management/health | grep UP; then
+              if wget -T5 -qO- -Y off test-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then
                 exit 0
               fi
             done
