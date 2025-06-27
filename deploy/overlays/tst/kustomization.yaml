@@ -9,8 +9,6 @@ images:
   newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
   newTag: '2024.1'
-- name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
-  newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
   newTag: '2024.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/portal
@@ -22,7 +20,7 @@ images:
 
 resources:
 - ./tls-secrets-patch.yaml
-- ./registry-secret.yaml
+#- ./registry-secret.yaml
 - ../../base/common
 - ../../base/federation-rest
 - ../../base/transform-rest
