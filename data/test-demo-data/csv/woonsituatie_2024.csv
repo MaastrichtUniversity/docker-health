@@ -5,7 +5,7 @@ BSN,DATUM,WONING_TYPE,WONING_AANPASSING,WOON_OMSTANDIGHEID,TOELICHTING,DATE_TIME
 083197102,2005-01-18,Instelling WLZ,Traplift,Woont in appartement met lift,has a dog,2005-01-19T09:43:13.174,PASS-Test data max
 339055303,,Justitiële Inrichting,,,,2023-12-31T23:59:59.871,PASS-Test data min (No mandatory variables)
 389370204,,,,,,,FAIL-Test data none
-683754105,,,,,,2024-10-10T10:10:10.410,PASS-Test data empty #TODO Change to FAIL after NoneCheckModel update
+683754105,,,,,,2024-10-10T10:10:10.410,FAIL-Test data empty
 316268306,2013-12,Instelling ZVW,Wandbeugel,Vieze leefomstandigheden,,2016-10-02T06:30:00.046,PASS-DATUM has a partial date
 569973107,2012,Anders,,,unsure,2024-10-10T10:10:10.410,PASS-DATUM has a partial date
 011168808,2000-12-10,Appartement of flatwoning,Woningaanpassing,Ingang van woning geblokkeerd,wants to move,,FAIL-DATE_TIME is empty

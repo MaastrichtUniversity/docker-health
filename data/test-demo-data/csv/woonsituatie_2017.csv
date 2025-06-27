@@ -5,7 +5,7 @@ BSN,WONING_TYPE,TOELICHTING,DATE_TIME,TEST_COMMENTS
 083197102,Eengezinswoning,has a dog,2022-04-01T18:06:22.000,PASS-Test data max
 339055303,Instelling AWBZ,,2016-10-02T06:30:00.046,PASS-Test data min (No mandatory variables)
 389370204,,,,FAIL-Test data none
-683754105,,,2024-10-10T10:10:10.410,PASS-Test data empty #TODO Change to FAIL after NoneCheckModel update
+683754105,,,2024-10-10T10:10:10.410,FAIL-Test data empty
 316268306,Woonboot,boat,2005-09-28T22:40:32.518,PASS
 569973107,Woonwagen,with family,2016-10-02T06:30:00.046,PASS
 011168808,Instelling AWBZ,,,FAIL-DATE_TIME is empty
