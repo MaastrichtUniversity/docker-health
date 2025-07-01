@@ -5,7 +5,7 @@ BSN,Rol,Relatie,Toelichting,Voornamen,Initialen,Roepnaam,Naamgebruik,Voorvoegsel
 083197102,Cliëntondersteuner,Other,Relation to the patient is unknown,Anakin,A.,Chosen One,Eigen geslachtsnaam,van,Skywalker,Na,Berrie,Prof.,r2-d2,Pager,Temporary Address,Available after 17:00,darth.papa@jedi.sw,Work Place,Galactic Street,4,A,B,Tegenover,1977 SW,Tatooine,Outer Rim,Verenigde Staten,Data Max,Temporary Address,2005-01-19T09:43:13.174,PASS-Test data max
 339055303,Leefeenheid,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2023-12-31T23:59:59.871,PASS-Test data min (no direct mandatory variables)
 389370204,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FAIL-Test data none
-683754105,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2024-10-10T10:10:10.410,PASS-Test data empty #TODO Change to FAIL after NoneCheckModel update
+683754105,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2024-10-10T10:10:10.410,FAIL-Test data empty
 316268306,Mentor,,Mentor is not a family member,Qui-Gon,,,,,Jinn,,,,80BBY,Mobile Contact ,Work Place,,q.jinn@jedi.sw,Work Place,Palace Court,,,,,Federal District,Coruscant,Imperial City,,,Primary Home,2005-09-28T22:40:32.518,PASS
 569973107,Contactpersoon,Cousin,,,,,Geslachtsnaam partner gevolgd door eigen geslachtsnaam,,,,,,,,,,,,,,,,,,,,,,,2016-10-02T06:30:00.046,PASS
 011168808,Bewindvoerder,,,Sheev,,Darth Sidious,,,Palpatine,,,,Order66,Fax,Primary Home,,the.emperor@sith.sw,,,,,,,Senate District,Coruscant,Imperial City,,,Work Place,,FAIL-DATE_TIME is empty
