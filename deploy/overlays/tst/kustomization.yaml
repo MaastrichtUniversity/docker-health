@@ -22,7 +22,7 @@ images:
 
 resources:
 - ./tls-secrets-patch.yaml
-- ./registry-secret.yaml
+#- ./registry-secret.yaml
 - ../../base/common
 - ../../base/federation-rest
 - ../../base/transform-rest
