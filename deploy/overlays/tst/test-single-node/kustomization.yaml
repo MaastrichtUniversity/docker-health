@@ -1,0 +1,109 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+images:
+  - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
+    newTag: '2024.1'
+  - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
+    newTag: '2024.1'
+
+resources:
+- job.yaml
+- ../../../base/common
+- ../../../base/transform-rest
+## TEST-node
+- ../../../base/openehr-nodes/test/ehrbase
+- ../../../base/openehr-nodes/test/ehrdb
+- ../../../base/openehr-nodes/test/etl-config
+
+patches:
+# Storage class patches
+- target:
+    kind: PersistentVolume
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-storage
+- target:
+    kind: PersistentVolumeClaim
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-storage
+      
+# imagePullPolicy patches
+- target:
+    kind: Deployment
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Always
+- target:
+    kind: Job
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Always
+
+# Image pull secret
+- target:
+    kind: Deployment
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/imagePullSecrets
+      value:
+      - name: registry-credentials
+- target:
+    kind: Job
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/imagePullSecrets
+      value:
+      - name: registry-credentials
+
+secretGenerator:
+# TEST-node
+  - name: test-ehrbase-creds
+    namespace: dh-health
+    literals:
+      - username=user0
+      - password=foobar0
+  - name: test-ehrbase-admin-creds
+    namespace: dh-health
+    literals:
+      - username=admin0
+      - password=admin0
+  - name: test-ehrbase-db-admin-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase0
+      - password=ehrbase0
+  - name: test-ehrbase-db-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase_restricted0
+      - password=ehrbase_restricted0
+  - name: test-ehrbase-db-postgres-creds
+    namespace: dh-health
+    literals:
+      - username=postgres
+      - password=postgres
+# transform
+  - name: transform-creds
+    namespace: dh-health
+    literals:
+      - username=user
+      - password=foobar
+      
+# Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
+configMapGenerator:
+- name: test-ehrbase-config
+  namespace: dh-health
+  behavior: merge
+  literals:
+    - ADMIN_API_ACTIVE=true
+- name: test-etl-config
+  namespace: dh-health
+  behavior: merge
+  literals:
+    - EHRBASE_ADMIN_BASE_URL=http://test-ehrbase.dh-health:8080/ehrbase/rest/admin
