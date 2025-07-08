@@ -6,8 +6,8 @@ BSN,Rol,Relatie,Toelichting,Voornamen,Initialen,Roepnaam,Naamgebruik,Voorvoegsel
 339055303,Bewindvoerder,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2023-12-31T23:59:59.871,PASS-Test data min (no direct mandatory variables)
 389370204,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FAIL-Test data none
 683754105,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2024-10-10T10:10:10.410,FAIL-Test data empty
-316268306,Mentor,,Mentor is not a family member,Qui-Gon,,,,,Jinn,,,,80BBY,Mobile Contact,Work Place,,q.jinn@jedi.sw,Work Place,Palace Court,,,,,Federal District,Coruscant,Imperial City,,,Primary Home,2005-09-28T22:40:32.518,PASS
-569973107,Tweede contactpersoon,Neef of nicht,,,,,Geslachtsnaam partner gevolgd door eigen geslachtsnaam,,,,,,,,,,,,,,,,,,,,,,,2016-10-02T06:30:00.046,PASS
+316268306,Mentor,,Mentor is not a family member,Qui-Gon,,,,,Jinn,,,,,Mobile Contact,Work Place,,q.jinn@jedi.sw,Work Place,Palace Court,,,,,Federal District,Coruscant,Imperial City,,,Primary Home,2005-09-28T22:40:32.518,PASS-Test Warning on telefoonnummer missing while other variable(s) are/is present
+569973107,Tweede contactpersoon,Neef of nicht,,,,,Geslachtsnaam partner gevolgd door eigen geslachtsnaam,,,,,,,,,,,Primary Home,,,,,,,,,,,,2016-10-02T06:30:00.046,PASS-Test Warning on emailAdres missing while other variable(s) are/is present
 011168808,Bewindvoerder,,,Sheev,,Darth Sidious,,,Palpatine,,,,Order66,Fax,Primary Home,,the.emperor@sith.sw,,,,,,,Senate District,Coruscant,Imperial City,,,Work Place,,FAIL-DATE_TIME is empty
 363037809,Voogd,Broer,,Obi-Wan,,Ben,,,Kenobi,,,,,,,,,,,,,,,,,,,,,007-12-04T12:09:45.581,FAIL-DATE_TIME has a wrong datetime format (wrong year value)
 315071710,WrongValue,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T10:00:00.000,PASS-Rol is wrong
