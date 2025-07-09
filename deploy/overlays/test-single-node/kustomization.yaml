@@ -5,6 +5,7 @@ resources:
 - job.yaml
 - ../../base/common
 - ../../base/transform-rest
+- ../../base/terminology-server-proxy
 ## TEST-node
 - ../../base/openehr-nodes/test/ehrbase
 - ../../base/openehr-nodes/test/ehrdb
@@ -80,7 +81,13 @@ secretGenerator:
     literals:
       - username=user
       - password=foobar
-      
+# terminology-server-proxy-creds
+  - name: terminology-server-proxy-creds
+    namespace: dh-health
+    literals:
+      - username=INSERT_YOUR_REAL_USERNAME
+      - password=INSERT_YOUR_REAL_PASSWORD
+
 # Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
 configMapGenerator:
 - name: test-ehrbase-config

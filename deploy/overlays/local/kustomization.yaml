@@ -430,6 +430,12 @@ secretGenerator:
     namespace: dh-health
     literals:
       - SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
+# terminology-server-proxy-creds
+  - name: terminology-server-proxy-creds
+    namespace: dh-health
+    literals:
+      - username=INSERT_YOUR_REAL_USERNAME
+      - password=INSERT_YOUR_REAL_PASSWORD
 
 configMapGenerator:
 - name: portal-common-config

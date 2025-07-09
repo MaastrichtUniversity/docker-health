@@ -7,6 +7,7 @@ resources:
 - ../../base/common
 - ../../base/federation-rest
 - ../../base/transform-rest
+- ../../base/terminology-server-proxy
 # Envida-node
 - ../../base/openehr-nodes/envida/ehrbase
 - ../../base/openehr-nodes/envida/ehrdb
@@ -251,3 +252,9 @@ secretGenerator:
     literals:
       - username=user
       - password=foobar
+# terminology-server-proxy-creds
+  - name: terminology-server-proxy-creds
+    namespace: dh-health
+    literals:
+      - username=INSERT_YOUR_REAL_USERNAME
+      - password=INSERT_YOUR_REAL_PASSWORD
