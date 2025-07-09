@@ -1,0 +1,21 @@
+BSN,Rol,Relatie,Toelichting,Voornamen,Initialen,Roepnaam,Naamgebruik,Voorvoegsels,Achternaam,VoorvoegselsPartner,AchternaamPartner,Titels,Telefoonnummer,TelecomType,NummerSoort,Toelichting_2,EmailAdres,EmailSoort,Straat,Huisnummer,Huisnummerletter,Huisnummertoevoeging,AanduidingBijNummer,Postcode,Woonplaats,Gemeente,Land,AdditioneleInformatie,AdresSoort,DATE_TIME,TEST_COMMENTS
+001645201,Eerste contactpersoon,Dochter,,Johanna Petronella Maria,J.P.M.,Jo,Eigen geslachtsnaam,van,Putten,van der,Giessen,,+31611234567,Mobile Contact,Work Place,,giesput@myweb.nl,Primary Home,1e Jacob van Campenstr,15,BV,TG,Bij,1012 NX,Hoogmade,Kaag en Braassem,Nederland,Test valid start_time,Visit Address,2023-11-14T15:50:14.321,PASS-Test valid start_time
+001645201,Eerste contactpersoon,Dochter,,Johanna Petronella Maria,J.P.M.,Jo,Eigen geslachtsnaam,van,Putten,van der,Giessen,,+31611234567,Mobile Contact,Work Place,,giesput@myweb.nl,Primary Home,1e Jacob van Campenstr,15,BV,TG,Bij,1012 NX,Hoogmade,Kaag en Braassem,Nederland,Test valid start_time,Visit Address,2024-11-14T15:50:14.321,PASS-Test valid start_time
+001645201,Eerste contactpersoon,Dochter,,Johanna Petronella Maria,J.P.M.,Jo,Eigen geslachtsnaam,van,Putten,van der,Giessen,,+31611234567,Mobile Contact,Work Place,,giesput@myweb.nl,Primary Home,1e Jacob van Campenstr,15,BV,TG,Bij,1012 NX,Hoogmade,Kaag en Braassem,Nederland,Test valid start_time,Visit Address,2023-11-14T15:50:14.321,FAIL-Test valid start_time
+083197102,Curator,Anders,Relation to the patient is unknown,Anakin,A.,Chosen One,Eigen geslachtsnaam,van,Skywalker,Na,Berrie,Prof.,r2-d2,Pager,Temporary Address,Available after 17:00,darth.papa@jedi.sw,Work Place,Galactic Street,4,A,B,Tegenover,1977 SW,Tatooine,Outer Rim,Verenigde Staten,Data Max,Temporary Address,2005-01-19T09:43:13.174,PASS-Test data max
+339055303,Bewindvoerder,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2023-12-31T23:59:59.871,PASS-Test data min (no direct mandatory variables)
+389370204,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FAIL-Test data none
+683754105,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2024-10-10T10:10:10.410,FAIL-Test data empty
+316268306,Mentor,,Mentor is not a family member,Qui-Gon,,,,,Jinn,,,,,Mobile Contact,Work Place,,q.jinn@jedi.sw,Work Place,Palace Court,,,,,Federal District,Coruscant,Imperial City,,,Primary Home,2005-09-28T22:40:32.518,PASS-Test Warning on telefoonnummer missing while other variable(s) are/is present
+569973107,Tweede contactpersoon,Neef of nicht,,,,,Geslachtsnaam partner gevolgd door eigen geslachtsnaam,,,,,,,,,,,Primary Home,,,,,,,,,,,,2016-10-02T06:30:00.046,PASS-Test Warning on emailAdres missing while other variable(s) are/is present
+011168808,Bewindvoerder,,,Sheev,,Darth Sidious,,,Palpatine,,,,Order66,Fax,Primary Home,,the.emperor@sith.sw,,,,,,,Senate District,Coruscant,Imperial City,,,Work Place,,FAIL-DATE_TIME is empty
+363037809,Voogd,Broer,,Obi-Wan,,Ben,,,Kenobi,,,,,,,,,,,,,,,,,,,,,007-12-04T12:09:45.581,FAIL-DATE_TIME has a wrong datetime format (wrong year value)
+315071710,WrongValue,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T10:00:00.000,PASS-Rol is wrong
+362880311,,WrongValue,,,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T10:00:00.000,PASS-Relatie is wrong
+525736712,,,,,,,WrongValue,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T10:00:00.000,PASS-Naamgebruik is wrong
+646236313,,,,,,,,,,,,,0123456789,WrongValue,,,,,,,,,,,,,,,,2025-01-01T10:00:00.000,PASS-TelecomType is wrong (Telefoonnummer is mandatory within Contactgegevens/Telefoonnummers)
+640681414,,,,,,,,,,,,,0123456789,,WrongValue,,,,,,,,,,,,,,,2025-01-01T10:00:00.000,PASS-NummerSoort is wrong (Telefoonnummer is mandatory within Contactgegevens/Telefoonnummers)
+840027515,,,,,,,,,,,,,,,,,123@live.nl,WrongValue,,,,,,,,,,,,2025-01-01T10:00:00.000,PASS-EmailSoort is wrong (EmailAdres is mandatory within Contactgegevens/EmailAdressen)
+880143216,,,,,,,,,,,,,,,,,,,,,,,WrongValue,,,,,,,2025-01-01T10:00:00.000,PASS-AanduidingBijNummer is wrong
+893753117,,,,,,,,,,,,,,,,,,,,,,,,,,,WrongValue,,,2025-01-01T10:00:00.000,PASS-Land is wrong
+698550018,,,,,,,,,,,,,,,,,,,,,,,,,,,,,WrongValue,2025-01-01T10:00:00.000,PASS-AdresSoort is wrong
