@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terminology-server-proxy
+  namespace: dh-health
+  labels:
+    app: terminology-server-proxy
+spec:
+  selector:
+    matchLabels:
+      app: terminology-server-proxy
+  template:
+    metadata:
+      labels:
+        app: terminology-server-proxy
+    spec:
+      containers:
+      - name: terminology-server-proxy
+        image: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy:latest
+        ports:
+        - containerPort: 8080
+        env:
+          - name: TERMINOLOGY_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: terminology-server-proxy-creds
+                key: username
+          - name: TERMINOLOGY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: terminology-server-proxy-creds
+                key: password
