@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
 - job.yaml
 - role.yaml
+- secrets.yaml
 - ../../base/common
 - ../../base/federation-rest
 - ../../base/transform-rest
@@ -252,9 +253,3 @@ secretGenerator:
     literals:
       - username=user
       - password=foobar
-# terminology-server-proxy-creds
-  - name: terminology-server-proxy-creds
-    namespace: dh-health
-    literals:
-      - username=INSERT_YOUR_REAL_USERNAME
-      - password=INSERT_YOUR_REAL_PASSWORD
