@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: vitala-openehrtool-config
-  namespace: dh-health
 data:
   EHRBASESERVER_hostname: vitala-ehrbase.dh-health
   EHRBASESERVER_nodename: vitala.server.dh.unimaas.nl

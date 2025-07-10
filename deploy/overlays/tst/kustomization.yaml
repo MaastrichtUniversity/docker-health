@@ -21,8 +21,9 @@ images:
   newTag: '2024.1'
 
 resources:
-- ./tls-secrets-patch.yaml
-#- ./registry-secret.yaml
+- namespace.yaml
+- tls-secrets-patch.yaml
+- registry-secret.yaml
 - ../../base/common
 - ../../base/federation-rest
 - ../../base/transform-rest
@@ -79,6 +80,17 @@ patches:
       path: /spec/template/spec/imagePullSecrets
       value:
       - name: registry-credentials
+    - op: add
+      path: /spec/template/spec/affinity
+      value:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: testtype
+                operator: In
+                values:
+                - cluster
 - target:
     kind: Job
   patch: |-
@@ -86,6 +98,17 @@ patches:
       path: /spec/template/spec/imagePullSecrets
       value:
       - name: registry-credentials
+    - op: add
+      path: /spec/template/spec/affinity
+      value:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: testtype
+                operator: In
+                values:
+                - cluster
 
 # imagePullPolicy patches
 - target:

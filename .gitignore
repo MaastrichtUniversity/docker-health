@@ -51,3 +51,4 @@ rit.sh
 # VS Code
 .vscode/
 deploy/overlays/tst/registry-secret.yaml
+deploy/overlays/tst/test-single-node/registry-secret.yaml

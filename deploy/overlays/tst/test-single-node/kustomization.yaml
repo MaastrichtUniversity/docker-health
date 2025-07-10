@@ -1,5 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: dh-health-test-single
 
 images:
   - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
@@ -8,6 +9,8 @@ images:
     newTag: '2024.1'
 
 resources:
+- namespace.yaml
+- registry-secret.yaml
 - job.yaml
 - ../../../base/common
 - ../../../base/transform-rest
@@ -20,17 +23,65 @@ patches:
 # Storage class patches
 - target:
     kind: PersistentVolume
+    name: log-pv
   patch: |-
     - op: replace
       path: /spec/storageClassName
       value: local-storage
+    - op: replace
+      path: /spec/claimRef/name
+      value: log-pvc-test
+- target:
+    kind: PersistentVolume
+    name: output-pv
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-storage
+    - op: replace
+      path: /spec/claimRef/name
+      value: output-pvc-test
+- target:
+    kind: PersistentVolume
+    name: postgresql-data-pv
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-storage
+    - op: replace
+      path: /spec/claimRef/name
+      value: postgresql-data-pvc-test
 - target:
     kind: PersistentVolumeClaim
+    name: log-pvc
   patch: |-
     - op: replace
       path: /spec/storageClassName
       value: local-storage
-      
+    - op: replace
+      path: /metadata/name
+      value: log-pvc-test
+- target:
+    kind: PersistentVolumeClaim
+    name: output-pvc
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-storage
+    - op: replace
+      path: /metadata/name
+      value: output-pvc-test
+- target:
+    kind: PersistentVolumeClaim
+    name: postgresql-data-pvc
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-storage
+    - op: replace
+      path: /metadata/name
+      value: postgresql-data-pvc-test
+
 # imagePullPolicy patches
 - target:
     kind: Deployment
@@ -45,7 +96,36 @@ patches:
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Always
 
-# Image pull secret
+# Update PVC references in deployments and jobs
+- target:
+    kind: Deployment
+    name: test-ehrdb
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/volumes/0/persistentVolumeClaim/claimName
+      value: log-pvc-test
+- target:
+    kind: Deployment
+    name: test-etl-rest
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/volumes/0/persistentVolumeClaim/claimName
+      value: log-pvc-test
+    - op: replace
+      path: /spec/template/spec/volumes/1/persistentVolumeClaim/claimName
+      value: output-pvc-test
+- target:
+    kind: Job
+    name: test-etl-pipeline
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/volumes/0/persistentVolumeClaim/claimName
+      value: log-pvc-test
+    - op: replace
+      path: /spec/template/spec/volumes/1/persistentVolumeClaim/claimName
+      value: output-pvc-test
+
+# Patches for imagePullSecrets and node affinity
 - target:
     kind: Deployment
   patch: |-
@@ -53,6 +133,27 @@ patches:
       path: /spec/template/spec/imagePullSecrets
       value:
       - name: registry-credentials
+    - op: add
+      path: /spec/template/spec/affinity
+      value:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: testtype
+                operator: In
+                values:
+                - singlenode
+    - op: add
+      path: /spec/template/spec/tolerations
+      value: []
+    - op: add
+      path: /spec/template/spec/tolerations/-
+      value:
+        key: ""
+        operator: "Exists"
+        effect: "NoSchedule"
+        tolerationSeconds: null
 - target:
     kind: Job
   patch: |-
@@ -60,37 +161,52 @@ patches:
       path: /spec/template/spec/imagePullSecrets
       value:
       - name: registry-credentials
+    - op: add
+      path: /spec/template/spec/affinity
+      value:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: testtype
+                operator: In
+                values:
+                - singlenode
+    - op: add
+      path: /spec/template/spec/tolerations
+      value: []
+    - op: add
+      path: /spec/template/spec/tolerations/-
+      value:
+        key: ""
+        operator: "Exists"
+        effect: "NoSchedule"
+        tolerationSeconds: null
 
 secretGenerator:
 # TEST-node
   - name: test-ehrbase-creds
-    namespace: dh-health
     literals:
       - username=user0
       - password=foobar0
   - name: test-ehrbase-admin-creds
-    namespace: dh-health
     literals:
       - username=admin0
       - password=admin0
   - name: test-ehrbase-db-admin-creds
-    namespace: dh-health
     literals:
       - username=ehrbase0
       - password=ehrbase0
   - name: test-ehrbase-db-creds
-    namespace: dh-health
     literals:
       - username=ehrbase_restricted0
       - password=ehrbase_restricted0
   - name: test-ehrbase-db-postgres-creds
-    namespace: dh-health
     literals:
       - username=postgres
       - password=postgres
 # transform
   - name: transform-creds
-    namespace: dh-health
     literals:
       - username=user
       - password=foobar
@@ -98,12 +214,10 @@ secretGenerator:
 # Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
 configMapGenerator:
 - name: test-ehrbase-config
-  namespace: dh-health
   behavior: merge
   literals:
     - ADMIN_API_ACTIVE=true
 - name: test-etl-config
-  namespace: dh-health
   behavior: merge
   literals:
-    - EHRBASE_ADMIN_BASE_URL=http://test-ehrbase.dh-health:8080/ehrbase/rest/admin
+    - EHRBASE_ADMIN_BASE_URL=http://test-ehrbase:8080/ehrbase/rest/admin

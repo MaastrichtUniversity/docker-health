@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jupyter-zib
-  namespace: dh-health
   labels:
     app: jupyter-zib
 spec:

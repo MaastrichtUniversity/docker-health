@@ -2,7 +2,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: test-ehrbase-ingress
-  namespace: dh-health
 spec:
   ingressClassName: nginx
   rules:

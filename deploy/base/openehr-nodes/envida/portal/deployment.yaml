@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: envida-portal
-  namespace: dh-health
   labels:
     app: envida-portal
 spec:
