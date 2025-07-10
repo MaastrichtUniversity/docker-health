@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: dh-health
 
 resources:
+- namespace.yaml
 - ../../base
 
 patches:
