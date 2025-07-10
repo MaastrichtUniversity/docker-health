@@ -44,6 +44,7 @@ The implementation relies on the following repositories:
 Add the following file to the relevant overlays folders: local, test-single-node, test-federation, etc ...
 e.g. `deploy/overlays/local/secrets.yaml`
 
+#### Secret file example (need to replace the values with your encoded credentials)
 ```
 apiVersion: v1
 kind: Secret
@@ -51,16 +52,36 @@ metadata:
   name: terminology-server-proxy-creds
   namespace: dh-health
 data:
-#  username: echo -n 'INSERT_YOUR_REAL_USERNAME' | base64
-#  password: echo -n 'INSERT_YOUR_REAL_PASSWORD' | base64
   username: SU5TRVJUX1lPVVJfUkVBTF9VU0VSTkFNRQ==
   password: SU5TRVJUX1lPVVJfUkVBTF9QQVNTV09SRA==
 ---
 # Add auto-generated secret of internals services to the kustomization's secretGenerator.
 # Add more secrets to externals services here.
 ```
+#### Encode your credentials with base64
 
-> ### Encryption between filebeat and elk [UNUSED ATM!]
+```shell
+$ echo -n 'INSERT_YOUR_REAL_USERNAME' | base64
+SU5TRVJUX1lPVVJfUkVBTF9VU0VSTkFNRQ==
+$ echo -n 'INSERT_YOUR_REAL_PASSWORD' | base64
+SU5TRVJUX1lPVVJfUkVBTF9QQVNTV09SRA==
+```
+Replace the username & password values by the output of the commands.
+
+#### Troubleshooting
+
+The `terminology-server-proxy` pod is not running, because of:
+ * Status: "CreateContainerConfigError"
+ * Message: "secret "terminology-server-proxy-creds" not found"
+
+Check the `dh.sh apply` logs:
+```
+Error from server (BadRequest): error when creating "deploy/overlays/local": Secret in version "v1" cannot be handled as a Secret: illegal base64 data at input byte 8
+```
+If you see the line from above, it means that you didn't encode the variables.
+
+
+### Encryption between filebeat and elk [UNUSED ATM!]
 >
 > CA certificates need to be manually stored in folder `filebeat/certs`.
 > The present files are used for development-purposes.
