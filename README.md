@@ -40,6 +40,26 @@ The implementation relies on the following repositories:
 - kubectl
 - minikube
 
+### Create the terminology secret files
+Add the following file to the relevant overlays folders: local, test-single-node, test-federation, etc ...
+e.g. `deploy/overlays/local/secrets.yaml`
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: terminology-server-proxy-creds
+  namespace: dh-health
+data:
+#  username: echo -n 'INSERT_YOUR_REAL_USERNAME' | base64
+#  password: echo -n 'INSERT_YOUR_REAL_PASSWORD' | base64
+  username: SU5TRVJUX1lPVVJfUkVBTF9VU0VSTkFNRQ==
+  password: SU5TRVJUX1lPVVJfUkVBTF9QQVNTV09SRA==
+---
+# Add auto-generated secret of internals services to the kustomization's secretGenerator.
+# Add more secrets to externals services here.
+```
+
 > ### Encryption between filebeat and elk [UNUSED ATM!]
 >
 > CA certificates need to be manually stored in folder `filebeat/certs`.
