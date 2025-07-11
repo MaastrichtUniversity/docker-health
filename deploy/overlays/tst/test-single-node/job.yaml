@@ -10,7 +10,7 @@ spec:
       initContainers:
       - name: wait-test-ehrbase-healthy
         image: busybox:1.28
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         command:
           - sh
           - -c
@@ -18,14 +18,15 @@ spec:
             for i in 1 2 3 4 5 6 7 8 9; do
               echo "waiting"
               sleep 10
-              if wget -T5 -qO- -Y off test-ehrbase:8080/ehrbase/management/health | grep UP; then
+              if wget -T5 -qO- -Y off test-ehrbase.dh-health-test-single:8080/ehrbase/management/health | grep UP; then
                 exit 0
               fi
             done
             exit 1
       containers:
       - name: test-single-node-runner
-        image: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test:latest
+        image: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test:2024.1
+        imagePullPolicy: Always
         # Uncomment the following lines to overwrite the Test Docker image command, and execute the test with different
         # options of your choice and/or execute only one test file.
 #        command: ["pytest"]
@@ -79,7 +80,7 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /code/data/test-demo-data
-        - name: etl-logs
+        - name: etl-logs-test
           mountPath: /code/logs/test
           subPath: test/etl
       volumes:
@@ -87,6 +88,6 @@ spec:
         hostPath:
           path: /mnt/data/test-demo-data
           type: Directory
-      - name: etl-logs
+      - name: etl-logs-test
         persistentVolumeClaim:
-          claimName: log-pvc
+          claimName: log-pvc-test

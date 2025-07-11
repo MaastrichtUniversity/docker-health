@@ -11,8 +11,9 @@ images:
 resources:
 - namespace.yaml
 - registry-secret.yaml
+- volumes.yaml
 - job.yaml
-- ../../../base/common
+- ../../../base/common/config
 - ../../../base/transform-rest
 ## TEST-node
 - ../../../base/openehr-nodes/test/ehrbase
@@ -23,64 +24,25 @@ patches:
 # Storage class patches
 - target:
     kind: PersistentVolume
-    name: log-pv
   patch: |-
     - op: replace
       path: /spec/storageClassName
       value: local-storage
+- target:
+    kind: PersistentVolumeClaim
+  patch: |-
     - op: replace
-      path: /spec/claimRef/name
+      path: /spec/storageClassName
+      value: local-storage
+
+# Update PVC reference for ehrdb
+- target:
+    kind: Deployment
+    name: test-ehrdb
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/volumes/0/persistentVolumeClaim/claimName
       value: log-pvc-test
-- target:
-    kind: PersistentVolume
-    name: output-pv
-  patch: |-
-    - op: replace
-      path: /spec/storageClassName
-      value: local-storage
-    - op: replace
-      path: /spec/claimRef/name
-      value: output-pvc-test
-- target:
-    kind: PersistentVolume
-    name: postgresql-data-pv
-  patch: |-
-    - op: replace
-      path: /spec/storageClassName
-      value: local-storage
-    - op: replace
-      path: /spec/claimRef/name
-      value: postgresql-data-pvc-test
-- target:
-    kind: PersistentVolumeClaim
-    name: log-pvc
-  patch: |-
-    - op: replace
-      path: /spec/storageClassName
-      value: local-storage
-    - op: replace
-      path: /metadata/name
-      value: log-pvc-test
-- target:
-    kind: PersistentVolumeClaim
-    name: output-pvc
-  patch: |-
-    - op: replace
-      path: /spec/storageClassName
-      value: local-storage
-    - op: replace
-      path: /metadata/name
-      value: output-pvc-test
-- target:
-    kind: PersistentVolumeClaim
-    name: postgresql-data-pvc
-  patch: |-
-    - op: replace
-      path: /spec/storageClassName
-      value: local-storage
-    - op: replace
-      path: /metadata/name
-      value: postgresql-data-pvc-test
 
 # imagePullPolicy patches
 - target:
@@ -95,35 +57,6 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Always
-
-# Update PVC references in deployments and jobs
-- target:
-    kind: Deployment
-    name: test-ehrdb
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0/persistentVolumeClaim/claimName
-      value: log-pvc-test
-- target:
-    kind: Deployment
-    name: test-etl-rest
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0/persistentVolumeClaim/claimName
-      value: log-pvc-test
-    - op: replace
-      path: /spec/template/spec/volumes/1/persistentVolumeClaim/claimName
-      value: output-pvc-test
-- target:
-    kind: Job
-    name: test-etl-pipeline
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0/persistentVolumeClaim/claimName
-      value: log-pvc-test
-    - op: replace
-      path: /spec/template/spec/volumes/1/persistentVolumeClaim/claimName
-      value: output-pvc-test
 
 # Patches for imagePullSecrets and node affinity
 - target:
@@ -144,16 +77,6 @@ patches:
                 operator: In
                 values:
                 - singlenode
-    - op: add
-      path: /spec/template/spec/tolerations
-      value: []
-    - op: add
-      path: /spec/template/spec/tolerations/-
-      value:
-        key: ""
-        operator: "Exists"
-        effect: "NoSchedule"
-        tolerationSeconds: null
 - target:
     kind: Job
   patch: |-
@@ -172,16 +95,6 @@ patches:
                 operator: In
                 values:
                 - singlenode
-    - op: add
-      path: /spec/template/spec/tolerations
-      value: []
-    - op: add
-      path: /spec/template/spec/tolerations/-
-      value:
-        key: ""
-        operator: "Exists"
-        effect: "NoSchedule"
-        tolerationSeconds: null
 
 secretGenerator:
 # TEST-node
