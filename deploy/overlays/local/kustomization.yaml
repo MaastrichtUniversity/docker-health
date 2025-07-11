@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
 - secrets.yaml
+- terminology-ingress.yaml
 - ../../base
 
 patches:
