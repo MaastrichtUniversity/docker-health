@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: terminology-server-proxy-ingress
   namespace: dh-health
+  labels:
+    ehrnode: all
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:

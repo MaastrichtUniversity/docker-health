@@ -51,6 +51,8 @@ kind: Secret
 metadata:
   name: terminology-server-proxy-creds
   namespace: dh-health
+  labels:
+    ehrnode: all
 data:
   username: SU5TRVJUX1lPVVJfUkVBTF9VU0VSTkFNRQ==
   password: SU5TRVJUX1lPVVJfUkVBTF9QQVNTV09SRA==
