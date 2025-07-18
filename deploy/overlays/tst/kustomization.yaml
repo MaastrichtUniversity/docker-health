@@ -61,16 +61,79 @@ patches:
 # Storage class patches
 - target:
     kind: PersistentVolume
+    name: log-pv
   patch: |-
     - op: replace
       path: /spec/storageClassName
       value: local-storage
+    - op: replace
+      path: /spec/claimRef
+      value:
+        name: log-pvc
+        namespace: dh-health
+    - op: replace
+      path: /spec/nodeAffinity
+      value:
+        required:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: testtype
+              operator: In
+              values:
+              - cluster
+- target:
+    kind: PersistentVolume
+    name: output-pv
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-storage
+    - op: replace
+      path: /spec/claimRef
+      value:
+        name: output-pvc
+        namespace: dh-health
+    - op: replace
+      path: /spec/nodeAffinity
+      value:
+        required:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: testtype
+              operator: In
+              values:
+              - cluster
+- target:
+    kind: PersistentVolume
+    name: postgresql-data-pv
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-storage
+    - op: replace
+      path: /spec/claimRef
+      value:
+        name: postgresql-data-pvc
+        namespace: dh-health
+    - op: replace
+      path: /spec/nodeAffinity
+      value:
+        required:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: testtype
+              operator: In
+              values:
+              - cluster
 - target:
     kind: PersistentVolumeClaim
   patch: |-
     - op: replace
       path: /spec/storageClassName
       value: local-storage
+    - op: replace
+      path: /metadata/namespace
+      value: dh-health
 
 # Image pull secret
 - target:
@@ -539,13 +602,11 @@ secretGenerator:
       - password=foobar
 # jupyter
   - name: jupyter-zib-creds
-    namespace: dh-health
     literals:
       - SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
 
 configMapGenerator:
 - name: portal-common-config
-  namespace: dh-health
   behavior: merge
   literals:
     - NEXT_PUBLIC_FEDERATION_BASE_URL=https://federation.tst.dh.unimaas.nl
