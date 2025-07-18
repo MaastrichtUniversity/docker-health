@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: terminology-server-proxy-config
+  namespace: dh-health
+data:
+  TERMINOLOGY_BASE_SERVER_URL: https://terminologieserver.nl
+  TERMINOLOGY_TOKEN_ENDPOINT: https://terminologieserver.nl/authorisation/auth/realms/nictiz/protocol/openid-connect/token

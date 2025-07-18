@@ -4,9 +4,11 @@ kind: Kustomization
 resources:
 - job.yaml
 - role.yaml
+- secrets.yaml
 - ../../base/common
 - ../../base/federation-rest
 - ../../base/transform-rest
+- ../../base/terminology-server-proxy
 # Envida-node
 - ../../base/openehr-nodes/envida/ehrbase
 - ../../base/openehr-nodes/envida/ehrdb
