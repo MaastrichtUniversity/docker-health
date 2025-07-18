@@ -61,6 +61,28 @@ patches:
 # Storage class patches
 - target:
     kind: PersistentVolume
+    name: notebooks-pv
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-storage
+    - op: replace
+      path: /spec/claimRef
+      value:
+        name: notebooks-pvc
+        namespace: dh-health
+    - op: replace
+      path: /spec/nodeAffinity
+      value:
+        required:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: testtype
+              operator: In
+              values:
+              - cluster
+- target:
+    kind: PersistentVolume
     name: log-pv
   patch: |-
     - op: replace
