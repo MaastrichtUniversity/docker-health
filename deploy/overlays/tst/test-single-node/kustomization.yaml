@@ -58,6 +58,52 @@ patches:
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Always
 
+# Proxy patches
+- target:
+    kind: Deployment
+  patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env"
+      value: []
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: http_proxy
+        value: "http://proxy.unimaas.nl:3128"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: https_proxy
+        value: "http://proxy.unimaas.nl:3128"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: no_proxy
+        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.96.0.0/12,10.244.0.0/16,10.96.0.10"
+
+# Proxy patches for Jobs
+- target:
+    kind: Job
+  patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env"
+      value: []
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: http_proxy
+        value: "http://proxy.unimaas.nl:3128"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: https_proxy
+        value: "http://proxy.unimaas.nl:3128"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: no_proxy
+        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.96.0.0/12,10.244.0.0/16,10.96.0.10"
+
 # Patches for imagePullSecrets and node affinity
 - target:
     kind: Deployment
@@ -99,31 +145,37 @@ patches:
 secretGenerator:
 # TEST-node
   - name: test-ehrbase-creds
+    namespace: dh-health-test-single
     literals:
       - username=user0
       - password=foobar0
   - name: test-ehrbase-admin-creds
+    namespace: dh-health-test-single
     literals:
       - username=admin0
       - password=admin0
   - name: test-ehrbase-db-admin-creds
+    namespace: dh-health-test-single
     literals:
       - username=ehrbase0
       - password=ehrbase0
   - name: test-ehrbase-db-creds
+    namespace: dh-health-test-single
     literals:
       - username=ehrbase_restricted0
       - password=ehrbase_restricted0
   - name: test-ehrbase-db-postgres-creds
+    namespace: dh-health-test-single
     literals:
       - username=postgres
       - password=postgres
 # transform
   - name: transform-creds
+    namespace: dh-health-test-single
     literals:
       - username=user
       - password=foobar
-      
+
 # Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
 configMapGenerator:
 - name: test-ehrbase-config
