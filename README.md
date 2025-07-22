@@ -26,6 +26,7 @@ The implementation relies on the following repositories:
   functions between different code bases
 - [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest/tree/2024.1): REST api for data
   class transformation into openEHR compositions
+- [dh-hdp-terminology-server-proxy](https://github.com/MaastrichtUniversity/dh-hdp-terminology-server-proxy/tree/2024.1): Connection to the terminology server
 - [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api/tree/2024.1): REST api service
   for querying across a federation of CDRs
 - [dh-hdp-portal](https://github.com/MaastrichtUniversity/dh-hdp-portal/tree/2024.1): Node User Interface service
@@ -40,7 +41,53 @@ The implementation relies on the following repositories:
 - kubectl
 - minikube
 
-> ### Encryption between filebeat and elk [UNUSED ATM!]
+### Create the terminology secret files
+
+Credentials of the [Dutch terminology server](https://terminologieserver.nl/authorisation/auth/realms/nictiz/protocol/openid-connect/auth?client_id=account-console&redirect_uri=https%3A%2F%2Fterminologieserver.nl%2Fauthorisation%2Fauth%2Frealms%2Fnictiz%2Faccount%2F%23%2F&state=e082a979-038c-41ab-8096-d0396ac9820f&response_mode=fragment&response_type=code&scope=openid&nonce=30f31617-2935-48d1-ae46-6df5d20a96dd&code_challenge=0VDfFvHqmPTtvKmuJUF6rNMzRlSNwyZu9vPhV47VQn4&code_challenge_method=S256) need to be stored in secret files.
+
+Add the following file to the relevant overlays folders: local, test-single-node, test-federation, etc.
+e.g., `deploy/overlays/local/secrets.yaml`
+
+#### Secret file example (need to replace the values with your encoded credentials)
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: terminology-server-proxy-creds
+  namespace: dh-health
+  labels:
+    ehrnode: all
+data:
+  username: SU5TRVJUX1lPVVJfUkVBTF9VU0VSTkFNRQ==
+  password: SU5TRVJUX1lPVVJfUkVBTF9QQVNTV09SRA==
+---
+# Add auto-generated secret of internals services to the kustomization's secretGenerator.
+# Add more secrets to externals services here.
+```
+#### Encode your credentials with base64
+
+```shell
+$ echo -n 'INSERT_YOUR_REAL_USERNAME' | base64
+SU5TRVJUX1lPVVJfUkVBTF9VU0VSTkFNRQ==
+$ echo -n 'INSERT_YOUR_REAL_PASSWORD' | base64
+SU5TRVJUX1lPVVJfUkVBTF9QQVNTV09SRA==
+```
+Replace the username & password values by the output of the commands.
+
+#### Troubleshooting
+
+The `terminology-server-proxy` pod is not running, because of:
+ * Status: "CreateContainerConfigError"
+ * Message: "secret "terminology-server-proxy-creds" not found"
+
+Check the `dh.sh apply` logs:
+```
+Error from server (BadRequest): error when creating "deploy/overlays/local": Secret in version "v1" cannot be handled as a Secret: illegal base64 data at input byte 8
+```
+If you see the line from above, it means that you didn't encode the variables.
+
+
+### Encryption between filebeat and elk [UNUSED ATM!]
 >
 > CA certificates need to be manually stored in folder `filebeat/certs`.
 > The present files are used for development-purposes.
