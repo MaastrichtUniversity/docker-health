@@ -147,7 +147,7 @@ build_images() {
         docker buildx bake
     else
         echo -e "${YELLOW}Building service: $service_name using docker-bake...${NC}"
-        docker buildx bake --set=\*.tags=registry.prod.dh.unimaas.nl/docker-health/$service_name:$image_tag
+        docker buildx bake $service_name --set=\*.tags=registry.prod.dh.unimaas.nl/docker-health/$service_name:$image_tag
     fi
     
     if [[ $? -eq 0 ]]; then
