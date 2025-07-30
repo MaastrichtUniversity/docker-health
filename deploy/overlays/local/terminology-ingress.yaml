@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: terminology-server-proxy-ingress
+  namespace: dh-health
+  labels:
+    ehrnode: all
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: terminology.local.dh.unimaas.nl
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: terminology-server-proxy
+            port:
+              number: 8080
