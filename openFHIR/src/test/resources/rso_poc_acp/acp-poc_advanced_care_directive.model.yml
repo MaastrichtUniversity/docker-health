@@ -1,0 +1,61 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: "EVALUATION.advance_care_directive.v2"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: "openEHR-EHR-EVALUATION.advance_care_directive.v2"
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Consent
+
+preprocessor:
+  fhirConditions:
+    - targetRoot: "$resource"
+      targetAttribute: "meta.profile"
+      operator: "one of"
+      criteria: "http://nictiz.nl/fhir/StructureDefinition/zib-AdvanceDirective"
+
+mappings:
+  - name: "author"
+    with:
+      fhir: "$resource.patient.display"
+      openehr: "$composition/composer"
+      
+
+  - name: "typeOfDirective"
+    with:
+      fhir: "$resource.category.coding"
+      openehr: "$archetype/data[at0001]/items[at0005]"
+      
+    fhirCondition:
+      targetRoot: "$resource.category.coding"
+      targetAttribute: "system"
+      operator: "one of"
+      criteria: "[urn:oid:2.16.840.1.113883.2.4.3.11.60.40.4.14.1]"
+
+  - name: "status"
+    with:
+      fhir: "$resource.status"
+      openehr: "$archetype/data[at0001]/items[at0004]"
+      
+
+  - name: "comment"
+    with:
+      fhir: "$resource.extension"
+      openehr: "$archetype/data[at0001]/items[at0038]"
+      
+    fhirCondition:
+      targetRoot: "$resource.extension"
+      targetAttribute: "url"
+      operator: "one of"
+      criteria: "[http://nictiz.nl/fhir/StructureDefinition/Comment]"
+
+  - name: "media"
+    with:
+      fhir: "$resource.source.as(Attachment)"
+      openehr: "$archetype/protocol[at0010]/items[openEHR-EHR-CLUSTER.media_file.v1]"
+      type: "NONE"
+    slotArchetype: "openEHR-EHR-CLUSTER.media_file.v1"

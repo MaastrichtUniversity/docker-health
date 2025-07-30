@@ -1,0 +1,118 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: "OBSERVATION.news2.v1"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: "openEHR-EHR-OBSERVATION.news2.v1"
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation
+
+preprocessor:
+  fhirConditions:
+    - targetRoot: "$resource"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "[$snomed.1104051000000101]"
+    - targetRoot: "$resource"
+      targetAttribute: "status"
+      operator: "one of"
+      criteria: "[final]"
+    - targetRoot: "$resource"
+      targetAttribute: "category.coding.code"
+      operator: "one of"
+      criteria: "[survey]"
+
+mappings:
+  - name: "nationalEarlyWarningScoreNEWS2"
+    with:
+      fhir: "$resource.value.as(Quantity)"
+      openehr: "$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0028]"
+
+  - name: "time"
+    with:
+      fhir: "$resource.effective"
+      openehr: "$archetype/data[at0001]/events[at0002]/time"
+
+  - name: "rrs"
+    with:
+      fhir: "$resource.component.value.as(Quantity)"
+      openehr: "$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0006]"
+    fhirCondition:
+      targetRoot: "$resource.component"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "[$snomed.1104301000000104]"
+
+  - name: "spos1"
+    with:
+      fhir: "$resource.component.value.as(Quantity)"
+      openehr: "$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0029]"
+    fhirCondition:
+      targetRoot: "$resource.component"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "[$snomed.1104311000000102]"
+
+  #  - name: "SPO Scale 2"
+  #    with:
+  #      fhir: "$resource.component.value"
+  #      openehr: "$archetype.national_early_warning_score_2_news2.spo_scale_2"
+  #    condition:
+  #      targetRoot: "$resource"
+  #      targetAttribute: "component.code.coding.code"
+  #      operator: "one of"
+  #      criteria: "[$snomed.1104331000000105]"
+
+  - name: "airOrOxygenScore"
+    with:
+      fhir: "$resource.component.value.as(Quantity)"
+      openehr: "$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0034]"
+    fhirCondition:
+      targetRoot: "$resource.component"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "[$snomed.1104331000000105]"
+
+  - name: "systolic"
+    with:
+      fhir: "$resource.component.value.as(Quantity)"
+      openehr: "$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0004]"
+    fhirCondition:
+      targetRoot: "$resource.component"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "[$snomed.1104341000000101]"
+
+  - name: "consciousness"
+    with:
+      fhir: "$resource.component.value.as(Quantity)"
+      openehr: "$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0008]"
+    fhirCondition:
+      targetRoot: "$resource.component"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "[$snomed.1104361000000100]"
+
+  - name: "temperature"
+    with:
+      fhir: "$resource.component.value.as(Quantity)"
+      openehr: "$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0007]"
+    fhirCondition:
+      targetRoot: "$resource.component"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "[$snomed.1104371000000107]"
+
+  - name: "pulse"
+    with:
+      fhir: "$resource.component.value.as(Quantity)"
+      openehr: "$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0005]"
+    fhirCondition:
+      targetRoot: "$resource.component"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "[$snomed.1104351000000103]"

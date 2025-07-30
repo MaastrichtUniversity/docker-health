@@ -1,0 +1,179 @@
+grammar: FHIRConnect/v0.9.0
+type: extension
+metadata:
+  name: KDS_episode_institution_local
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: ADMIN_ENTRY.episode_institution_local.v0
+
+mappings:
+  - name: "falltyp"
+    extension: "add"
+    with:
+      fhir: "$resource.type"
+      openehr: "$composition/context/other_context[at0001]/items[at0005]"
+      
+
+  - name: "fallklasse"
+    extension: "add"
+    with:
+      fhir: "$resource.class"
+      openehr: "$composition/context/other_context[at0001]/items[at0004]"
+      
+
+  - name: "fallart"
+    extension: "add"
+    with:
+      fhir: "$resource.status"
+      openehr: "$composition/context/other_context[at0001]/items[at0010]"
+      
+
+  - name: "fallIdParent"
+    extension: "add"
+    with:
+      fhir: "$resource.identifier"
+      openehr: "$composition"
+      type: "NONE"
+    fhirCondition:
+      targetRoot: "$resource.identifier"
+      targetAttribute: "type.coding.code"
+      operator: "one of"
+      criteria: "VN"
+    followedBy:
+      mappings:
+        - name: "fallId"
+          with:
+            fhir: "value"
+            openehr: "$composition/context/other_context[at0001]/items[at0003]"
+            
+        - name: "vncodingcode"
+          with:
+            fhir: "type.coding"
+          manual:
+            - name: "vncoding"
+              fhir:
+                - path: "code"
+                  value: "VN"
+
+
+  - name: "serviceProvider" # TODO deprecated needs to be deleted
+    extension: "add"
+    with:
+      fhir: "$resource.serviceProvider.as(Organization)"
+      openehr: "$reference"
+    reference:
+      resourceType: "Organization"
+      mappings:
+        - name: "organization"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.organisation.v1]"
+          slotArchetype: "CLUSTER.organisation.v1"
+
+  - name: "aufnahmegrundExtension"
+    extension: "add"
+    with:
+      fhir: "$resource.extension"
+      openehr: "$archetype"
+      type: "NONE"
+    fhirCondition:
+      targetRoot: "$resource.extension"
+      targetAttribute: "url"
+      operator: "one of"
+      criteria: "http://fhir.de/StructureDefinition/Aufnahmegrund"
+    followedBy:
+      mappings:
+        - name: "aufnahmegrund"
+          with:
+            fhir: "$fhirRoot"
+          manual:
+            - name: "extension"
+              fhir:
+                - path: "url"
+                  value: "http://fhir.de/StructureDefinition/Aufnahmegrund"
+
+        - name: "ersteUndZweiteStelle"
+          with:
+            fhir: "extension.value.as(Coding)" # since its two extensions nested
+            openehr: "data[at0001]/items[at0008 and name/value='Aufnahmegrund - ErsteUndZweiteStelle']"
+            
+          fhirCondition:
+            targetRoot: "extension"
+            targetAttribute: "url"
+            operator: "one of"
+            criteria: "ErsteUndZweiteStelle"
+
+        - name: "dritteStelle"
+          with:
+            fhir: "extension.value.as(Coding)"
+            openehr: "data[at0001]/items[at0008 and name/value='Aufnahmegrund - Dritte Stelle']"
+            
+          fhirCondition:
+            targetRoot: "extension"
+            targetAttribute: "url"
+            operator: "one of"
+            criteria: "DritteStelle"
+
+
+        - name: "vierteStelle"
+          with:
+            fhir: "extension.value.as(Coding)"
+            openehr: "data[at0001]/items[at0008 and name/value='Aufnahmegrund - Vierte Stelle']"
+            
+          fhirCondition:
+            targetRoot: "extension"
+            targetAttribute: "url"
+            operator: "one of"
+            criteria: "VierteStelle"
+
+
+  - name: "recordingDismissal"
+    extension: "add"
+    with:
+      fhir: "$resource.hospitalization"
+      openehr: "$archetype"
+      type: "NONE"
+    followedBy:
+      mappings:
+        - name: "aufnahmekategorie"
+          with:
+            fhir: "admitSource.coding"
+            openehr: "data[at0001]/items[at0009]"
+            
+
+        - name: "entlassungsgrund"
+          with:
+            fhir: "dischargeDisposition.extension"
+            openehr: "$openehrRoot"
+            type: "NONE"
+          fhirCondition:
+            targetRoot: "dischargeDisposition.extension"
+            targetAttribute: "url"
+            operator: "one of"
+            criteria: "http://fhir.de/StructureDefinition/Entlassungsgrund"
+          followedBy:
+            mappings:
+              - name: "entlassungsgrundValue"
+                with:
+                  fhir: "value.as(Coding)"
+                  openehr: "data[at0001]/items[at0006]"
+              - name: "entlassungsgrundUrl"
+                with:
+                  fhir: "dischargeDisposition.extension"
+                manual:
+                  - name: "extension"
+                    fhir:
+                      - path: "url"
+                        value: "http://fhir.de/StructureDefinition/Entlassungsgrund"
+
+
+  - name: "problemDiagnoseParent"
+    extension: "add"
+    with:
+      fhir: "$resource.diagnosis"
+      openehr: "$composition/content[openEHR-EHR-EVALUATION.problem_diagnosis.v1]"
+    slotArchetype: "EVALUATION.problem_diagnosis.v1"
+
+

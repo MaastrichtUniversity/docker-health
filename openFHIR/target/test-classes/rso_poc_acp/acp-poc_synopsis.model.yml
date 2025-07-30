@@ -1,0 +1,60 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: "EVALUATION.clinical_synopsis.v1"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: "openEHR-EHR-EVALUATION.clinical_synopsis.v1"
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse
+
+
+mappings:
+  - name: "groupMdtConclusion"
+    with:
+      fhir: "$resource.item"
+      openehr: "$archetype"
+      type: "NONE"
+    fhirCondition:
+      targetRoot: "$resource.item"
+      targetAttribute: "linkId"
+      operator: "one of"
+      criteria: "[groupMdtConclusion]"
+    followedBy:
+      mappings:
+        - name: "synopsis"
+          with:
+            fhir: "item.answer.value"
+            openehr: "$archetype/data[at0001]/items[at0002]"
+            
+          fhirCondition:
+            targetRoot: "item"
+            targetAttribute: "linkId"
+            operator: "one of"
+            criteria: "[conclusion]"
+
+  - name: "signatories"
+    with:
+      fhir: "$resource.item.answer"
+      openehr: "$composition/context/_participation[n]"
+      type: "NONE"
+    fhirCondition:
+      targetRoot: "$resource.item"
+      targetAttribute: "linkId"
+      operator: "one of"
+      criteria: "[signatories]"
+    followedBy:
+      mappings:
+        - name: "name"
+          with:
+            fhir: "value"
+            openehr: "|name"
+            
+        - name: "function"
+          with:
+            fhir: "value"
+            openehr: "|function"
+            
