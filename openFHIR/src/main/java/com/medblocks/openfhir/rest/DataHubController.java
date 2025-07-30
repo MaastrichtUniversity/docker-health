@@ -1,11 +1,15 @@
 package com.medblocks.openfhir.rest;
 
+import ca.uhn.fhir.validation.SingleValidationMessage;
+import ca.uhn.fhir.validation.ValidationResult;
 import com.medblocks.openfhir.OpenFhirEngine;
+import com.medblocks.openfhir.util.FhirProfileInstanceValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,13 +42,12 @@ public class DataHubController {
      * state of the openFHIR
      *
      * @param fhirResource incoming FHIR Resource (Bundle or any other), R4
-     * @param templateId template id is an optional parameter if you want to force a specific context mapper; if
-     *         no
-     *         templateId is provided, then out of all context mappers, the engine will try to find one that
-     *         matches the given incoming FHIR Resource (based on context mapper context.profileUrl)
-     * @param reqId request id that will be logged
+     * @param templateId   template id is an optional parameter if you want to force a specific context mapper; if
+     *                     no
+     *                     templateId is provided, then out of all context mappers, the engine will try to find one that
+     *                     matches the given incoming FHIR Resource (based on context mapper context.profileUrl)
      * @return openEHR Composition in either flat or canonical format, depending on "flat" argument (default is
-     *         canonical)
+     * canonical)
      */
     @PostMapping(value = "/datahub/toopenehr", produces = "application/json")
     @Operation(
@@ -63,9 +66,24 @@ public class DataHubController {
     ResponseEntity toOpenEhr(@RequestBody String fhirResource,
                              @RequestParam String templateId,
                              @RequestParam String subjectId,
-                             @RequestParam String openehrNodeName,
-                             @RequestHeader(value = "x-req-id", required = false) final String reqId) throws IOException, InterruptedException {
+                             @RequestParam String openehrNodeName) throws IOException, InterruptedException {
         try {
+            ValidationResult result = new FhirProfileInstanceValidator().instanceValidator(fhirResource);
+
+            if (result.isSuccessful()) {
+                log.info("Resource validation successful");
+                for (SingleValidationMessage next : result.getMessages()) {
+                    log.info("Next issue {} - {} - {}", next.getSeverity(), next.getLocationString(), next.getMessage());
+                }
+            } else {
+                log.error("Resource validation failed");
+                JSONObject jsonString = new JSONObject();
+                for (SingleValidationMessage next : result.getMessages()) {
+                    log.error("Next issue {} - {} - {}", next.getSeverity(), next.getLocationString(), next.getMessage());
+                    jsonString.put("%s - %s".formatted(next.getSeverity(), next.getLocationString()), next.getMessage());
+                }
+                return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(jsonString.toString());
+            }
 
             final String openEhr = openFhirEngine.toOpenEhr(fhirResource, templateId, true);
 
@@ -90,7 +108,7 @@ public class DataHubController {
         } catch (ResponseStatusException | IllegalArgumentException e) {
 
             return ResponseEntity.badRequest().body(e.getMessage());
-        }catch (Exception e) {
+        } catch (Exception e) {
 
             throw e;
         }
