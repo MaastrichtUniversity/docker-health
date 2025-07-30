@@ -1,0 +1,19 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: BurgerlijkeStaat-v3.2(2024NL)
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-EVALUATION.social_network.v1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Patient
+
+# Actual mapping points:
+mappings:
+  - name: "BurgerlijkeStaat"
+    with:
+      fhir: "$resource.maritalStatus"
+      openehr: "$archetype/data[at0001]/items[at0002, 'BurgerlijkeStaat']"

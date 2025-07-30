@@ -1,0 +1,17 @@
+grammar: FHIRConnect/v0.0.1
+type: context
+metadata:
+  name: "VermogenTotEten"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+
+context:
+  profile:
+    url: "nl-core-AbilityToEat"
+  template:
+    id: "DataHub-VermogenTotEten-2020"
+  archetypes:
+    - VermogenTotEten-v3.1.1(2020NL)
+  start: VermogenTotEten-v3.1.1(2020NL)

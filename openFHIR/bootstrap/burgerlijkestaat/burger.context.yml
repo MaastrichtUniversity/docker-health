@@ -1,0 +1,17 @@
+grammar: FHIRConnect/v0.0.1
+type: context
+metadata:
+  name: "BurgerlijkeStaat"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+
+context:
+  profile:
+    url: "nl-core-burgerlijkeStaat"
+  template:
+    id: "DataHub-BurgerlijkeStaat-2024"
+  archetypes:
+    - BurgerlijkeStaat-v3.2(2024NL)
+  start: BurgerlijkeStaat-v3.2(2024NL)

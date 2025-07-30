@@ -1,0 +1,83 @@
+{
+  "resourceType": "Bundle",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "nl-core-AbilityToEat-01",
+        "meta": {
+          "profile": [
+            "http://nictiz.nl/fhir/StructureDefinition/nl-core-AbilityToEat"
+          ]
+        },
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "288883002",
+              "display": "vermogen tot eten"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/nl-core-Patient-01",
+          "type": "Patient",
+          "display": "Patient, Johanna Petronella Maria (Jo) van Putten-van der Giessen"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "129033007",
+              "display": "Hulp nodig bij eten"
+            }
+          ]
+        },
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "288843005",
+                  "display": "vaardigheid betreffende eten"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "289078003",
+                  "display": "Moeite met in stukken snijden van voedsel"
+                }
+              ]
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "288843005",
+                  "display": "vaardigheid betreffende eten"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "289046006",
+                  "display": "Moeite met hanteren van eetgerei bij zelfstandig eten"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+

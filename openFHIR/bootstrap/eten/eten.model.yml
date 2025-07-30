@@ -1,0 +1,27 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: VermogenTotEten-v3.1.1(2020NL)
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-SECTION.adhoc.v1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation
+
+# Actual mapping points:
+mappings:
+  - name: "Eten"
+    with:
+      fhir: "$resource.value"
+      openehr: "$archetype/items[openEHR-EHR-OBSERVATION.adl.v0, 'Eten']/data[at0001]/events[at0002, 'Point in time']/data[at0003]/items[at0006, 'Eten']"
+
+  - name: "EetBeperkingen"
+    with:
+      fhir: "$resource.component.value"
+      openehr: "$archetype/items[openEHR-EHR-OBSERVATION.adl.v0, 'EetBeperkingen']/data[at0001]/events[at0002, 'Point in time']/data[at0003]/items[at0011, 'EetBeperkingen']"
+
+
+
