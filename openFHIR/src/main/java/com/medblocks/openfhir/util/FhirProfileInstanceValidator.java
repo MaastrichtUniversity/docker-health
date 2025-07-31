@@ -5,7 +5,6 @@ import ca.uhn.fhir.context.support.DefaultProfileValidationSupport;
 import ca.uhn.fhir.parser.IParser;
 import ca.uhn.fhir.parser.JsonParser;
 import ca.uhn.fhir.validation.FhirValidator;
-import ca.uhn.fhir.validation.SingleValidationMessage;
 import ca.uhn.fhir.validation.ValidationResult;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.common.hapi.validation.support.CommonCodeSystemsTerminologyService;
@@ -13,8 +12,6 @@ import org.hl7.fhir.common.hapi.validation.support.InMemoryTerminologyServerVali
 import org.hl7.fhir.common.hapi.validation.support.PrePopulatedValidationSupport;
 import org.hl7.fhir.common.hapi.validation.support.ValidationSupportChain;
 import org.hl7.fhir.common.hapi.validation.validator.FhirInstanceValidator;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -97,13 +94,4 @@ public class FhirProfileInstanceValidator {
 
         return validator.validateWithResult(incomingFhirResource);
     }
-
-    private Resource parseIncomingFhirResource(final String incomingFhirResource) {
-        try {
-            return jsonParser.parseResource(Bundle.class, incomingFhirResource);
-        } catch (final Exception e) {
-            return (Resource) jsonParser.parseResource(incomingFhirResource);
-        }
-    }
-
 }

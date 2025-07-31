@@ -1,8 +1,20 @@
 <ValueSet xmlns="http://hl7.org/fhir">
     <id value="2.16.840.1.113883.2.4.3.11.60.40.2.7.9.1--20200901000000"/>
     <meta>
-        <profile value="http://hl7.org/fhir/StructureDefinition/shareablevalueset"/><!--<profile value="http://hl7.org/fhir/3.0/StructureDefinition/ValueSet"/>-->
+        <source value="http://decor.nictiz.nl/fhir/4.0/zib2020bbr-"/>
+        <profile value="http://hl7.org/fhir/StructureDefinition/shareablevalueset"/>
+        <!--<profile value="http://hl7.org/fhir/4.0/StructureDefinition/ValueSet"/>-->
+        <tag>
+            <system value="http://hl7.org/fhir/FHIR-version"/>
+            <code value="4.0.1"/>
+        </tag>
     </meta>
+    <text>
+        <status value="empty"/>
+        <div xmlns="http://www.w3.org/1999/xhtml">No narrative is provided for definitional resources. A human-readable
+            rendering can be found in the implementation guide(s) where this resource is used.
+        </div>
+    </text>
     <extension url="http://hl7.org/fhir/StructureDefinition/resource-effectivePeriod">
         <valuePeriod>
             <start value="2020-09-01T00:00:00Z"/>
@@ -36,7 +48,7 @@
     <compose>
         <inactive value="true"/>
         <include>
-            <system value="http://hl7.org/fhir/v3/MaritalStatus"/>
+            <system value="http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"/>
             <concept>
                 <extension url="http://hl7.org/fhir/StructureDefinition/valueset-concept-comments">
                     <valueString value="Gescheiden (huwelijk/geregistreerd partnerschap ontbonden)"/>
