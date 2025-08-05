@@ -1,0 +1,44 @@
+{
+    "resourceType": "Observation",
+    "id": "nl-core-AbilityToDressOneself-01",
+    "meta": {"profile": ["http://nictiz.nl/fhir/StructureDefinition/nl-core-AbilityToDressOneself"]},
+    "text": {
+        "status": "extensions"
+    },
+    "status": "final",
+    "code": {
+        "coding": [
+            {"system": "http://snomed.info/sct", "code": "165235000", "display": "vermogen om zich aan te kleden"}
+        ]
+    },
+    "subject": {
+        "reference": "Patient/nl-core-Patient-01",
+        "type": "Patient",
+        "display": "Patient, Johanna Petronella Maria (Jo) van Putten-van der Giessen"
+    },
+    "valueCodeableConcept": {
+        "coding": [{"system": "http://snomed.info/sct", "code": "129039006", "display": "hulp nodig bij aankleden"}]
+    },
+    "component": [
+        {
+            "code": {
+                "coding": [
+                    {"system": "http://snomed.info/sct", "code": "38866009", "display": "structuur van lichaamsdeel"}
+                ]
+            },
+            "valueCodeableConcept": {
+                "coding": [{"system": "http://snomed.info/sct", "code": "362874006", "display": "gehele bovenlichaam"}]
+            }
+        },
+        {
+            "code": {
+                "coding": [
+                    {"system": "http://snomed.info/sct", "code": "38866009", "display": "structuur van lichaamsdeel"}
+                ]
+            },
+            "valueCodeableConcept": {
+                "coding": [{"system": "http://snomed.info/sct", "code": "362875007", "display": "Gehele onderlichaam"}]
+            }
+        }
+    ]
+}
