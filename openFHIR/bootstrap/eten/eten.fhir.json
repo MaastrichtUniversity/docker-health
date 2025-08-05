@@ -1,7 +1,9 @@
 {
   "resourceType": "Bundle",
+  "type": "transaction",
   "entry": [
     {
+      "fullUrl": "urn:uuid:61ebe359-bfdc-4613-8bf2-c5e300945f0a",
       "resource": {
         "resourceType": "Observation",
         "id": "nl-core-AbilityToEat-01",
@@ -11,6 +13,13 @@
           ]
         },
         "status": "final",
+        "hasMember": [
+          {
+            "reference": "Observation/61ebe359-bfdc-4613-8bf2-c5e300945f0b",
+            "type": "Observation",
+            "display": "EatingLimitations for Patient/nl-core-Patient-01"
+          }
+        ],
         "code": {
           "coding": [
             {
@@ -74,8 +83,72 @@
                 }
               ]
             }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "288843005",
+                  "display": "vaardigheid betreffende eten"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "123",
+                  "display": "Food"
+                }
+              ]
+            }
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:61ebe359-bfdc-4613-8bf2-c5e300945f0b",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "61ebe359-bfdc-4613-8bf2-c5e300945f0b",
+        "meta": {
+          "profile": [
+            "http://nictiz.nl/fhir/StructureDefinition/nl-core-AbilityToEat.EatingLimitations"
+          ]
+        },
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "288843005",
+              "display": "vaardigheid betreffende eten"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/nl-core-Patient-01",
+          "type": "Patient",
+          "display": "Patient, Johanna Petronella Maria (Jo) van Putten-van der Giessen"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "289046006",
+              "display": "Moeite met hanteren van eetgerei bij zelfstandig eten"
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
       }
     }
   ]

@@ -1,0 +1,35 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: VermogenTotEten-v3.1.1(2020NL)
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-SECTION.adhoc.v1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation
+
+# Actual mapping points:
+mappings:
+  - name: "Eten"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/items[openEHR-EHR-OBSERVATION.adl.v0, 'Eten']"
+    fhirCondition:
+      targetRoot: "$resource.code.coding"                       # Scope of object for 'condition'
+      targetAttribute: "code" # Actual attribute to check for 'condition'
+      operator: "one of"
+      criteria: "288883002"
+    slotArchetype: "Eten"
+  - name: "EatingLimitations"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/items[openEHR-EHR-OBSERVATION.adl.v0, 'EetBeperkingen']"
+    fhirCondition:
+      targetRoot: "$resource.code.coding"                       # Scope of object for 'condition'
+      targetAttribute: "code" # Actual attribute to check for 'condition'
+      operator: "one of"
+      criteria: "288843005"
+    slotArchetype: "EatingLimitations"

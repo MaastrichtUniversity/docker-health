@@ -9,9 +9,11 @@ spec: # schema specific to the FHIRConnect v0.0.1 engine
 
 context:
   profile:
-    url: "nl-core-AbilityToEat"
+    url: "Observation"
   template:
     id: "DataHub-VermogenTotEten-2020"
   archetypes:
     - VermogenTotEten-v3.1.1(2020NL)
+    - EatingLimitations
+    - Eten
   start: VermogenTotEten-v3.1.1(2020NL)
