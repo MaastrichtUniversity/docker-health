@@ -1,0 +1,59 @@
+{
+  "resourceType": "Observation",
+  "id": "nl-core-AbilityToDressOneself-01",
+  "meta": {
+    "profile": [
+      "http://nictiz.nl/fhir/StructureDefinition/nl-core-AbilityToDressOneself"
+    ]
+  },
+  "text": {
+    "status": "extensions",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table><caption>Observatie/bepaling. Subject: Patient, Johanna Petronella Maria (Jo) van Putten-van der Giessen. Status: definitief</caption><tbody><tr><th>Code</th><th>Waarde</th></tr><tr><td><span title=\"vermogen om zich aan te kleden (165235000 - SNOMED CT)\">vermogen om zich aan te kleden</span></td><td><span title=\"hulp nodig bij aankleden (129039006 - SNOMED CT)\">hulp nodig bij aankleden</span></td></tr><tr><td><span title=\"structuur van lichaamsdeel (38866009 - SNOMED CT)\">structuur van lichaamsdeel</span></td><td><span title=\"gehele bovenlichaam (362874006 - SNOMED CT)\">gehele bovenlichaam</span></td></tr></tbody></table></div>"
+  },
+  "status": "final",
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "165235000",
+        "display": "vermogen om zich aan te kleden"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "Patient/nl-core-Patient-01",
+    "type": "Patient",
+    "display": "Patient, Johanna Petronella Maria (Jo) van Putten-van der Giessen"
+  },
+  "valueCodeableConcept": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "129039006",
+        "display": "hulp nodig bij aankleden"
+      }
+    ]
+  },
+  "component": [
+    {
+      "code": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "38866009",
+            "display": "structuur van lichaamsdeel"
+          }
+        ]
+      },
+      "valueCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "362874006",
+            "display": "gehele bovenlichaam"
+          }
+        ]
+      }
+    }
+  ]
+}
