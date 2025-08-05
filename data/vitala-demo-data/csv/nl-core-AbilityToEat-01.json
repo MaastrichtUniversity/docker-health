@@ -1,0 +1,79 @@
+{
+  "resourceType": "Observation",
+  "id": "nl-core-AbilityToEat-01",
+  "meta": {
+    "profile": [
+      "http://nictiz.nl/fhir/StructureDefinition/nl-core-AbilityToEat"
+    ]
+  },
+  "text": {
+    "status": "extensions",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table><caption>Observatie/bepaling. Subject: Patient, Johanna Petronella Maria (Jo) van Putten-van der Giessen. Status: definitief</caption><tbody><tr><th>Code</th><th>Waarde</th></tr><tr><td><span title=\"vermogen tot eten (288883002 - SNOMED CT)\">vermogen tot eten</span></td><td><span title=\"Hulp nodig bij eten (129033007 - SNOMED CT)\">Hulp nodig bij eten</span></td></tr><tr><td><span title=\"vaardigheid betreffende eten (288843005 - SNOMED CT)\">vaardigheid betreffende eten</span></td><td><span title=\"Moeite met in stukken snijden van voedsel (289078003 - SNOMED CT)\">Moeite met in stukken snijden van voedsel</span></td></tr><tr><td><span title=\"vaardigheid betreffende eten (288843005 - SNOMED CT)\">vaardigheid betreffende eten</span></td><td><span title=\"Moeite met hanteren van eetgerei bij zelfstandig eten (289046006 - SNOMED CT)\">Moeite met hanteren van eetgerei bij zelfstandig eten</span></td></tr></tbody></table></div>"
+  },
+  "status": "final",
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "288883002",
+        "display": "vermogen tot eten"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "Patient/nl-core-Patient-01",
+    "type": "Patient",
+    "display": "Patient, Johanna Petronella Maria (Jo) van Putten-van der Giessen"
+  },
+  "valueCodeableConcept": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "129033007",
+        "display": "Hulp nodig bij eten"
+      }
+    ]
+  },
+  "component": [
+    {
+      "code": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "288843005",
+            "display": "vaardigheid betreffende eten"
+          }
+        ]
+      },
+      "valueCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "289078003",
+            "display": "Moeite met in stukken snijden van voedsel"
+          }
+        ]
+      }
+    },
+    {
+      "code": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "288843005",
+            "display": "vaardigheid betreffende eten"
+          }
+        ]
+      },
+      "valueCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "289046006",
+            "display": "Moeite met hanteren van eetgerei bij zelfstandig eten"
+          }
+        ]
+      }
+    }
+  ]
+}
