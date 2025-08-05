@@ -72,6 +72,7 @@ public class DataHubController {
 
             if (result.isSuccessful()) {
                 log.info("Resource validation successful");
+                log.info("FHIR result.getMessages(): {}", result.getMessages());
                 for (SingleValidationMessage next : result.getMessages()) {
                     log.info("Next issue {} - {} - {}", next.getSeverity(), next.getLocationString(), next.getMessage());
                 }

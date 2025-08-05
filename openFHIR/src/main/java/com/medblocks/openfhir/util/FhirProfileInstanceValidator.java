@@ -3,7 +3,6 @@ package com.medblocks.openfhir.util;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.context.support.DefaultProfileValidationSupport;
 import ca.uhn.fhir.parser.IParser;
-import ca.uhn.fhir.parser.JsonParser;
 import ca.uhn.fhir.validation.FhirValidator;
 import ca.uhn.fhir.validation.ValidationResult;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +24,6 @@ import java.io.IOException;
 @Slf4j
 public class FhirProfileInstanceValidator {
     private final FhirContext fhirContext = FhirContext.forR4();
-    private final JsonParser jsonParser = (JsonParser) fhirContext.newJsonParser();
-
 
     public FhirProfileInstanceValidator() {
     }
