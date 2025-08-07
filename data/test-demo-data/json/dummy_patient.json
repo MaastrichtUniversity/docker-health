@@ -1,0 +1,7 @@
+{
+    "resourceType": "Patient",
+    "id": "nl-core-Patient-01",
+    "name": [{"family": "van Putten-van der Giessen", "given": ["Johanna", "Petronella", "Maria"]}],
+    "gender": "female",
+    "birthDate": "1945-05-12"
+}
