@@ -13,3 +13,4 @@ BSN,Geslacht,Geboortedatum,DatumOverlijden,Genderidentiteit,MeerlingIndicator,Me
 315071710,WrongValue,2000-01-01,,,True,,False,,,,,,,,,,,,,,,,,,,,,,,,,,,1989-01-01T00:00:00.253,FAIL-Wrong Geslacht value
 362880311,F,WrongValue,,,True,,False,,,,,,,,,,,,,,,,,,,,,,,,,,,1989-01-01T00:00:00.253,FAIL-Geboortedatum has a wrong format
 525736712,F,2000-01-01,,,True,,False,,,,,,,,,,,,,,,,,,,,,,,,,,,1989-01-01T00:00:00.253,PASS-Wrong Naamgebruik value
+646236313,M,2012-10-10,,WrongValue,False,,False,Tom,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T00:00:00.000,PASS-Wrong Genderidentiteit
