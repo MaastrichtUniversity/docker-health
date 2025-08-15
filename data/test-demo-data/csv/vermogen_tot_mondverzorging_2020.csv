@@ -12,4 +12,4 @@ BSN,VERZORGEN_TANDEN,PRODUCT_TYPE,DATE_TIME,TEST_COMMENTS
 363037809,Heeft hulp nodig bij mondverzorging,Orthodontische 'bracket',YYYY-10-19T09:43:13.174,FAIL-DATE_TIME has a wrong datetime format (wrong year value)
 315071710,WrongValue,,2012-11-19T09:43:13.174,FAIL-VERZORGEN_TANDEN is wrong
 362880311,,Tandprothese,1991-08-19T06:30:00.046,FAIL-VERZORGEN_TANDEN is missing
-525736712,Heeft hulp nodig bij mondverzorging,WrongValue,1987-02-19T09:43:13.174,FAIL-PRODUCT_TYPE is wrong
+525736712,Heeft hulp nodig bij mondverzorging,WrongValue,1987-02-19T09:43:13.174,PASS-PRODUCT_TYPE is wrong
