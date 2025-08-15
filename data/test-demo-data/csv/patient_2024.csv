@@ -11,6 +11,10 @@ BSN,Geslacht,Geboortedatum,DatumOverlijden,Genderidentiteit,MeerlingIndicator,Me
 011168808,F,1989-05-08,2047-01-01,Non-binaire genderidentiteit,False,,True,Qui-Gon,,,,,Jinn,,,Jedi Master,80BBY,Mobile Phone,Work Place,h,q.jinn@jedi.sw,Work Place,Palace Court,,,,,Federal District,Coruscant,Imperial City,,,Primary Home,,FAIL-DATE_TIME is empty
 363037809,F,1983-11-01,,Vrouwelijke genderidentiteit,True,2,False,Jane Patricia Maya,J.P.M.,JJ,Eigen geslachtsnaam,van,Putten,van der,Giessen,Dr,31611234567,Mobile Phone,Work Place,b,giesput@myweb.nl,Primary Home,1e Jacob van Campenstr,15,BV,TG,Bij,1012 NX,Hoogmade,Kaag en Braassem,Nederland,Comments,Visit Address,2007-13-04T12:09:45.581,FAIL-DATE_TIME has a wrong datetime format (wrong month value)
 315071710,WrongValue,2000-01-01,,,True,,False,,,,,,,,,,,,,,,,,,,,,,,,,,,1989-01-01T00:00:00.253,FAIL-Wrong Geslacht value
-362880311,F,WrongValue,,,True,,False,,,,,,,,,,,,,,,,,,,,,,,,,,,1989-01-01T00:00:00.253,FAIL-Geboortedatum has a wrong format
-525736712,F,2000-01-01,,,True,,False,,,,,,,,,,,,,,,,,,,,,,,,,,,1989-01-01T00:00:00.253,PASS-Wrong Naamgebruik value
-646236313,M,2012-10-10,,WrongValue,False,,False,Tom,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T00:00:00.000,PASS-Wrong Genderidentiteit
+362880311,,2010,,,False,,True,Kate,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T00:00:00.000,FAIL-Missing Geslacht mandatory value
+525736712,F,WrongValue,,,True,,False,,,,,,,,,,,,,,,,,,,,,,,,,,,1989-01-01T00:00:00.253,FAIL-Geboortedatum has a wrong format
+646236313,F,,,,False,,True,Kate,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T00:00:00.000,FAIL-Missing Geboortedatum mandatory value
+640681414,M,2012-10-10,,WrongValue,False,,False,Tom,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T00:00:00.000,PASS-Wrong Genderidentiteit
+840027515,F,2010,,,,,True,Kate,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T00:00:00.000,FAIL-Missing MeerlingIndicator mandatory value
+880143216,F,2010,,,False,,,Kate,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T00:00:00.000,FAIL-Missing OverlijdensIndicator mandatory value
+893753117,F,2000-01-01,,,True,,False,,,,,,,,,,,,,,,,,,,,,,,,,,,1989-01-01T00:00:00.253,PASS-Wrong Naamgebruik value
