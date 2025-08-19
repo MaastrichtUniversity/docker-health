@@ -17,4 +17,4 @@ BSN,Geslacht,Geboortedatum,DatumOverlijden,Genderidentiteit,MeerlingIndicator,Me
 640681414,M,2012-10-10,,WrongValue,False,,False,Tom,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T00:00:00.000,PASS-Wrong Genderidentiteit
 840027515,F,2010,,,,,True,Kate,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T00:00:00.000,FAIL-Missing MeerlingIndicator mandatory value
 880143216,F,2010,,,False,,,Kate,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T00:00:00.000,FAIL-Missing OverlijdensIndicator mandatory value
-893753117,F,2000-01-01,,,True,,False,,,,,,,,,,,,,,,,,,,,,,,,,,,1989-01-01T00:00:00.253,PASS-Wrong Naamgebruik value
+893753117,F,2000-01-01,,,True,,False,,,,WrongValue,,,,,,,,,,,,,,,,,,,,,,,1989-01-01T00:00:00.253,PASS-Wrong Naamgebruik value
