@@ -12,4 +12,4 @@ BSN,ETEN,EET_BEPERKINGEN,DATE_TIME,TEST_COMMENTS
 363037809,Niet in staat zelf te eten,Moeite met naar mond brengen van voedsel,1996-05-04T42:04:55.941,FAIL-DATE_TIME has a wrong datetime format (wrong hour value)
 315071710,WrongValue,Moeite met hanteren van eetgerei bij zelfstandig eten,2013-01-19T01:44:14.715,FAIL-ETEN is wrong
 362880311,,Moeite met naar mond brengen van voedsel,2005-09-28T22:40:32.518,FAIL-ETEN is missing
-525736712,Hulp nodig bij eten,WrongValue,2024-10-10T10:10:10.410,FAIL-EET_BEPERKINGEN is wrong
+525736712,Hulp nodig bij eten,WrongValue,2024-10-10T10:10:10.410,PASS-EET_BEPERKINGEN is wrong

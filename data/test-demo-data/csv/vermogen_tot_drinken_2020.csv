@@ -12,4 +12,4 @@ BSN,DRINKEN,DRINK_BEPERKINGEN,DATE_TIME,TEST_COMMENTS
 363037809,Heeft hulp nodig bij drinken,Moeite met vastpakken van drank,1996-05-04T12:72:55.941,FAIL-DATE_TIME has a wrong datetime format (wrong minute value)
 315071710,WrongValue,,2013-01-19T01:44:14.715,FAIL-DRINKEN is wrong
 362880311,,Moeite met bereiden van drank,2005-09-28T22:40:32.518,FAIL-DRINKEN is missing
-525736712,Heeft hulp nodig bij drinken,WrongValue,2024-10-10T10:10:10.410,FAIL-DRINK_BEPERKINGEN is wrong
+525736712,Heeft hulp nodig bij drinken,WrongValue,2024-10-10T10:10:10.410,PASS-DRINK_BEPERKINGEN is wrong

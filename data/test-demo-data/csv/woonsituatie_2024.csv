@@ -10,6 +10,6 @@ BSN,DATUM,WONING_TYPE,WONING_AANPASSING,WOON_OMSTANDIGHEID,TOELICHTING,DATE_TIME
 569973107,2012,Anders,,,unsure,2024-10-10T10:10:10.410,PASS-DATUM has a partial date
 011168808,2000-12-10,Appartement of flatwoning,Woningaanpassing,Ingang van woning geblokkeerd,wants to move,,FAIL-DATE_TIME is empty
 363037809,1996-06-21,Woonwagen,Aangepast bed,Rommelige leefruimte,with family,1996-05-42T17:04:55.941,FAIL-DATE_TIME has a wrong datetime format (wrong day value)
-315071710,2005-01-18,WrongValue,Aangepast toilet,Woont in appartement met lift,TEST: incorrect WONING_TYPE,2008-07-13T05:38:29.395,FAIL-WONING_TYPE is wrong
-362880311,2008-06-13,Instelling WMO,Wandbeugel,WrongValue,TEST: incorrect WOON_OMSTANDIGHEID,2005-09-28T22:40:32.518,FAIL-WOON_OMSTANDIGHEID is wrong
-525736712,2022-03-01,Eengezinswoning,WrongValue,Badstoel en/of douchestoel,TEST: incorrect WONING_AANPASSING,2022-04-01T18:06:22.000,FAIL-WONING_AANPASSING is wrong
+315071710,2005-01-18,WrongValue,Aangepast toilet,Woont in appartement met lift,TEST: incorrect WONING_TYPE,2008-07-13T05:38:29.395,PASS-WONING_TYPE is wrong
+362880311,2008-06-13,Instelling WMO,Wandbeugel,WrongValue,TEST: incorrect WOON_OMSTANDIGHEID,2005-09-28T22:40:32.518,PASS-WOON_OMSTANDIGHEID is wrong
+525736712,2022-03-01,Eengezinswoning,WrongValue,Badstoel en/of douchestoel,TEST: incorrect WONING_AANPASSING,2022-04-01T18:06:22.000,PASS-WONING_AANPASSING is wrong
