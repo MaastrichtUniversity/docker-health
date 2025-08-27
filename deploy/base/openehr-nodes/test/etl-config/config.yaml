@@ -15,8 +15,6 @@ data:
   SUBJECT_IDS: '["001645201","083197102","339055303","389370204","683754105","316268306","569973107","011168808","363037809","315071710","362880311","525736712", "646236313", "640681414", "840027515", "880143216", "893753117", "698550018", "647893319", "647893320"]'
   TEMPLATE_IDS: |
     [
-      "DataHub-AlcoholGebruik-2017",
-      "DataHub-AlcoholGebruik-2023",
       "DataHub-AlcoholGebruik-2024",
       "DataHub-BurgerlijkeStaat-2017",
       "DataHub-BurgerlijkeStaat-2023",
