@@ -2,7 +2,7 @@ BSN,TABAK_GEBRUIK_STATUS,SOORT_TABAK_GEBRUIK,START_DATUM,STOP_DATUM,HOEVEELHEID_
 001645201,Rookt dagelijks tabak,Rookt sigaretten,2011-12-01,,1,1/mo,12,Duplicate,2023-11-14T15:50:14.321,PASS-Test valid start_time
 001645201,Anders,,2011-12-01,,1,1/mo,12,New version,2024-11-14T15:50:14.321,PASS-Test valid start_time
 001645201,Rookt dagelijks tabak,Rookt sigaretten,2011-12-01,,1,1/mo,12,Duplicate,2023-11-14T15:50:14.321,FAIL-Test valid start_time
-083197102,Rookt soms tabak,Rookt sigaren,1978-04-18,2025-01,1,1/yr,420,A lot,1985-08-03T00:08:52.165,PASS-Test data max
+083197102,Rookt soms tabak,Rookt sigaren,1978-04-18,2025-01,1,g/yr,420,A lot,1985-08-03T00:08:52.165,PASS-Test data max
 339055303,Rookt passief tabak,,,,,,,,1975-10-02T18:52:39.622,PASS-Test data min
 389370204,,,,,,,,,,FAIL-Test data none
 683754105,,,,,,,,,1992-07-18T19:28:41.085,FAIL-Test data empty
