@@ -28,6 +28,7 @@ resources:
 - ../../base/federation-rest
 - ../../base/transform-rest
 - ../../base/jupyter-zib
+- ../../base/terminology-server-proxy
 # Envida-node
 - ../../base/openehr-nodes/envida/ehrbase
 - ../../base/openehr-nodes/envida/ehrdb
