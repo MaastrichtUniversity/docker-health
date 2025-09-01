@@ -19,6 +19,13 @@ spec:
         image: ehrbase/ehrbase:2.6.0
         ports:
         - containerPort: 8080
+        resources:
+          limits:
+            cpu: "1"
+            memory: "2Gi"
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
         command:
           - "java"
         args:

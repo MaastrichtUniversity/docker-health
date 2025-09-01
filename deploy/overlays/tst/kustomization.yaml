@@ -71,16 +71,6 @@ patches:
       value:
         name: notebooks-pvc
         namespace: dh-health
-    - op: replace
-      path: /spec/nodeAffinity
-      value:
-        required:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: testtype
-              operator: In
-              values:
-              - cluster
 - target:
     kind: PersistentVolume
     name: log-pv
@@ -93,16 +83,6 @@ patches:
       value:
         name: log-pvc
         namespace: dh-health
-    - op: replace
-      path: /spec/nodeAffinity
-      value:
-        required:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: testtype
-              operator: In
-              values:
-              - cluster
 - target:
     kind: PersistentVolume
     name: output-pv
@@ -115,16 +95,6 @@ patches:
       value:
         name: output-pvc
         namespace: dh-health
-    - op: replace
-      path: /spec/nodeAffinity
-      value:
-        required:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: testtype
-              operator: In
-              values:
-              - cluster
 - target:
     kind: PersistentVolume
     name: postgresql-data-pv
@@ -137,16 +107,6 @@ patches:
       value:
         name: postgresql-data-pvc
         namespace: dh-health
-    - op: replace
-      path: /spec/nodeAffinity
-      value:
-        required:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: testtype
-              operator: In
-              values:
-              - cluster
 - target:
     kind: PersistentVolumeClaim
   patch: |-
@@ -165,17 +125,6 @@ patches:
       path: /spec/template/spec/imagePullSecrets
       value:
       - name: registry-credentials
-    - op: add
-      path: /spec/template/spec/affinity
-      value:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: testtype
-                operator: In
-                values:
-                - cluster
 - target:
     kind: Job
   patch: |-
@@ -183,17 +132,6 @@ patches:
       path: /spec/template/spec/imagePullSecrets
       value:
       - name: registry-credentials
-    - op: add
-      path: /spec/template/spec/affinity
-      value:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: testtype
-                operator: In
-                values:
-                - cluster
 
 # imagePullPolicy patches
 - target:
@@ -227,7 +165,7 @@ patches:
       path: "/spec/template/spec/containers/0/env/-"
       value:
         name: no_proxy
-        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.96.0.0/12,10.244.0.0/16,10.96.0.10"
+        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.96.0.0/12,10.42.0.0/16,10.43.0.10"
 
 # Individual ingress host patches
 ## Transform
