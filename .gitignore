@@ -54,3 +54,4 @@ deploy/overlays/tst/registry-secret.yaml
 
 # Secrets
 deploy/overlays/*/secrets.yaml
+deploy/overlays/tst/test-single-node/registry-secret.yaml
