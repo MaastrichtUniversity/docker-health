@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: zio-etl-zib-rest
-  namespace: dh-health
   labels:
     app: zio-etl-zib-rest
 spec:

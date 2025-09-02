@@ -24,6 +24,7 @@ resources:
 - ./tls-secrets-patch.yaml
 - ./secrets.yaml
 #- ./registry-secret.yaml
+- tls-secrets-patch.yaml
 - ../../base/common
 - ../../base/federation-rest
 - ../../base/transform-rest
@@ -62,16 +63,61 @@ patches:
 # Storage class patches
 - target:
     kind: PersistentVolume
+    name: notebooks-pv
   patch: |-
     - op: replace
       path: /spec/storageClassName
       value: local-storage
+    - op: replace
+      path: /spec/claimRef
+      value:
+        name: notebooks-pvc
+        namespace: dh-health
+- target:
+    kind: PersistentVolume
+    name: log-pv
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-storage
+    - op: replace
+      path: /spec/claimRef
+      value:
+        name: log-pvc
+        namespace: dh-health
+- target:
+    kind: PersistentVolume
+    name: output-pv
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-storage
+    - op: replace
+      path: /spec/claimRef
+      value:
+        name: output-pvc
+        namespace: dh-health
+- target:
+    kind: PersistentVolume
+    name: postgresql-data-pv
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-storage
+    - op: replace
+      path: /spec/claimRef
+      value:
+        name: postgresql-data-pvc
+        namespace: dh-health
 - target:
     kind: PersistentVolumeClaim
   patch: |-
     - op: replace
       path: /spec/storageClassName
       value: local-storage
+    - op: replace
+      path: /metadata/namespace
+      value: dh-health
 
 # Image pull secret
 - target:
@@ -121,7 +167,8 @@ patches:
       path: "/spec/template/spec/containers/0/env/-"
       value:
         name: no_proxy
-        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.96.0.0/12,10.244.0.0/16,10.96.0.10"
+        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.96.0.0/12,10.42.0.0/16,10.43.0.10"
+
 # Individual ingress host patches
 ## Transform
 - target:
@@ -310,7 +357,6 @@ patches:
 
 configMapGenerator:
 - name: portal-common-config
-  namespace: dh-health
   behavior: merge
   literals:
     - NEXT_PUBLIC_FEDERATION_BASE_URL=https://federation.tst.dh.unimaas.nl

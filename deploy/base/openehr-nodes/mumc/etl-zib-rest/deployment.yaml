@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mumc-etl-zib-rest
-  namespace: dh-health
   labels:
     app: mumc-etl-zib-rest
 spec:

@@ -2,7 +2,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: jupyter-zib-ingress
-  namespace: dh-health
 spec:
   ingressClassName: nginx
   rules:

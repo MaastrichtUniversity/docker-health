@@ -2,7 +2,6 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: test-single-node
-  namespace: dh-health
 spec:
   backoffLimit: 0
   template:

@@ -11,6 +11,5 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- namespace.yaml
 - volumes.yaml
 - config

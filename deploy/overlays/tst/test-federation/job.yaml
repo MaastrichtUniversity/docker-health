@@ -1,24 +1,49 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: federation-rest
-  labels:
-    app: federation-rest
+  name: test-federation
+  namespace: dh-health
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: federation-rest
+  backoffLimit: 0
   template:
-    metadata:
-      labels:
-        app: federation-rest
     spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-etl-jobs
+          image: bitnami/kubectl:1.27.13 # TODO: Try not to use a third-party docker image
+          imagePullPolicy: Never
+          command:
+            - sh
+            - -c
+            - |
+              set -e
+              JOBS=$(kubectl get jobs -n dh-health -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n' | grep 'etl-zib-pipeline$')
+              for job in $JOBS; do
+                echo "Waiting for job $job to complete..."
+                while true; do
+                  succeeded=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.succeeded}')                
+                  if [ "$succeeded" = "1" ]; then
+                    echo "$job is complete"
+                    break
+                  fi
+              
+                  failed=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.failed}')
+                  if [ "$failed" != "" ] && [ "$failed" -ge 1 ]; then
+                    echo "❌ $job has failed. Exiting."
+                    exit 1
+                  fi
+                  echo "$job not completed yet, sleeping 10s..."
+                  sleep 10
+                done
+              done
       containers:
-        - name: federation-rest
-          image: registry.prod.dh.unimaas.nl/docker-health/federation-rest:latest
-          ports:
-            - containerPort: 8000
+        - name: test-federation-runner
+          image: registry.prod.dh.unimaas.nl/docker-health/federation-test:latest
+          envFrom:
+            - configMapRef:
+                name: timezone-config
+            - configMapRef:
+                name: federation-rest-config
           env:
             # Envida-node
             - name: ENVIDA__NODENAME
@@ -145,15 +170,10 @@ spec:
                   name: zio-etl-config
                   key: EHRBASE_BASE_URL
 
-          envFrom:
-            - configMapRef:
-                name: timezone-config
-            - configMapRef:
-                name: federation-rest-config
           volumeMounts:
             - name: logs
               mountPath: /code/logs/federation-rest
-              subPath: federation
+              subPath: test-federation
       volumes:
         - name: logs
           persistentVolumeClaim:

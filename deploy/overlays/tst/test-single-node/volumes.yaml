@@ -1,28 +1,31 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: notebooks-pv
+  name: test-log-pv
 spec:
   capacity:
-    storage: 1Gi
+    storage: 10Gi
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-     name: notebooks-pvc
-  storageClassName: local
+    name: log-pvc-test
+    namespace: dh-health-test-single
+  storageClassName: local-storage
   hostPath:
-    path: /usr/share/notebooks
+    path: /usr/share/logs-test
     type: DirectoryOrCreate
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: notebooks-pvc
+  name: log-pvc-test
+  namespace: dh-health-test-single
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local
+  storageClassName: local-storage
   resources:
     requests:
-      storage: 1Gi
+      storage: 10Gi
+

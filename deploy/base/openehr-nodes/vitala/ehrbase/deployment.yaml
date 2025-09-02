@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vitala-ehrbase
-  namespace: dh-health
   labels:
     app: vitala-ehrbase
 spec:
