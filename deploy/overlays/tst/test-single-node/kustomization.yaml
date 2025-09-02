@@ -4,7 +4,7 @@ namespace: dh-health
 
 resources:
 - job.yaml
-- secrets.yaml
+- ../secrets.yaml
 #- registry-secret.yaml
 - ../../../base/common
 - ../../../base/transform-rest
@@ -109,33 +109,6 @@ patches:
       path: /spec/rules/0/host
       value: ehrbase.test.tst.dh.unimaas.nl
 
-secretGenerator:
-# TEST-node
-  - name: test-ehrbase-creds
-    literals:
-      - username=user0
-      - password=foobar0
-  - name: test-ehrbase-admin-creds
-    literals:
-      - username=admin0
-      - password=admin0
-  - name: test-ehrbase-db-admin-creds
-    literals:
-      - username=ehrbase0
-      - password=ehrbase0
-  - name: test-ehrbase-db-creds
-    literals:
-      - username=ehrbase_restricted0
-      - password=ehrbase_restricted0
-  - name: test-ehrbase-db-postgres-creds
-    literals:
-      - username=postgres
-      - password=postgres
-# transform
-  - name: transform-creds
-    literals:
-      - username=user
-      - password=foobar
 # Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
 configMapGenerator:
 - name: test-ehrbase-config
