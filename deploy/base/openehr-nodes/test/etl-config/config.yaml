@@ -4,6 +4,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: test-etl-config
+  namespace: dh-health
 data:
   NODENAME: test
   DATASET_FOLDER_NAME: test-demo-data

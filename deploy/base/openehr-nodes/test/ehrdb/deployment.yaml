@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: test-ehrdb
+  namespace: dh-health
   labels:
     app: test-ehrdb
 spec:
@@ -27,13 +28,6 @@ spec:
       containers:
       - name: test-ehrdb
         image: ehrbase/ehrbase-v2-postgres:16.2
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "250m"
-          limits:
-            memory: "1Gi"
-            cpu: "500m"
         ports:
         - containerPort: 5432
         env:

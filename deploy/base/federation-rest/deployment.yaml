@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: federation-rest
+  namespace: dh-health
   labels:
     app: federation-rest
 spec:

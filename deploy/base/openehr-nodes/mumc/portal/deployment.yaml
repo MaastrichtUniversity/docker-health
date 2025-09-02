@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mumc-portal
+  namespace: dh-health
   labels:
     app: mumc-portal
 spec:

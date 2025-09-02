@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: transform-rest
+  namespace: dh-health
   labels:
     app: transform-rest
 spec:

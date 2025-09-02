@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: zio-etl-zib-pipeline
+  namespace: dh-health
   labels:
     app: zio-etl-zib-pipeline
 spec:

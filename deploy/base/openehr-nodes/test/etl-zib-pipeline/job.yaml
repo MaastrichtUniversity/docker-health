@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: test-etl-zib-pipeline
+  namespace: dh-health
   labels:
     app: test-etl-zib-pipeline
 spec:
