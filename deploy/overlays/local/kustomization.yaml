@@ -6,7 +6,18 @@ resources:
 - terminology-ingress.yaml
 - ../../base
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 patches:
+- path: jupyter-delete-patch.yaml
+  target:
+    kind: Deployment
+    name: jupyter-zib
+- path: juypter-add-patch.yaml
+  target:
+    kind: Deployment
+    name: jupyter-zib
 # imagePullPolicy patches
 - target:
     kind: Deployment
@@ -439,10 +450,13 @@ configMapGenerator:
   behavior: merge
   literals:
     - NEXT_PUBLIC_FEDERATION_BASE_URL=http://federation.local.dh.unimaas.nl
-
 # Set ADMIN_API_ACTIVE: "true" in all nodes for development purposes for openEHRtool ADMIN methods.
 - name: ehrbase-config
   namespace: dh-health
   behavior: merge
   literals:
     - ADMIN_API_ACTIVE=true
+- name: git-config
+  namespace: dh-health
+  literals:
+    - GIT_BRANCH=PLACEHOLDER
