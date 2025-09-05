@@ -14,7 +14,7 @@ patches:
   target:
     kind: Deployment
     name: jupyter-zib
-- path: juypter-add-patch.yaml
+- path: jupyter-add-patch.yaml
   target:
     kind: Deployment
     name: jupyter-zib
