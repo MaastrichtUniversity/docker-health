@@ -36,7 +36,7 @@ spec:
 #          - log_cli=true
 #          - --log-cli-level=INFO
 #          - --verbose
-#          - /code/tests/test_vermogen_tot_zich_kleden.py
+#          - /code/tests/test_burgerlijke_staat.py
         envFrom:
         - configMapRef:
             name: timezone-config
