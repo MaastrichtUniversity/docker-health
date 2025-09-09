@@ -5,23 +5,6 @@ metadata:
 spec:
   template:
     spec:
-      initContainers:
-        - name: git-clone
-          image: bitnami/git:latest
-          envFrom:
-            - configMapRef:
-                name: git-config
-          command:
-            - sh
-            - -c
-            - |
-              git clone https://github.com/MaastrichtUniversity/docker-health.git /repo
-              ls /repo
-              cd /repo
-              git checkout "$GIT_BRANCH"
-          volumeMounts:
-            - name: git-repo
-              mountPath: /repo
       containers:
         - name: jupyter-zib
           volumeMounts:
@@ -30,5 +13,5 @@ spec:
               subPath: data
       volumes:
         - name: git-repo
-          emptyDir:
-            sizeLimit: 500Mi
+          persistentVolumeClaim:
+            claimName: git-repo-pvc

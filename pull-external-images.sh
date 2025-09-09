@@ -33,6 +33,6 @@ docker pull bitnami/kubectl:1.27.13
 
 # Alpine for git clone
 echo "Pulling alpine/git:latest ..."
-docker pull bitnami/git:latest
+docker pull alpine/git:latest
 
 echo "All external images have been pulled into Minikube's Docker daemon."
