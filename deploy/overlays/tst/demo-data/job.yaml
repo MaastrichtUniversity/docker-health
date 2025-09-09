@@ -23,7 +23,7 @@ spec:
             - sh
             - -c
             - |
-              rm -r /repo
+              rm -rf /repo/*
               git clone https://github.com/MaastrichtUniversity/docker-health.git /repo
               cd /repo
               git checkout "$GIT_BRANCH"
