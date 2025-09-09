@@ -8,7 +8,7 @@ spec:
     storage: 100Mi
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Delete
+  persistentVolumeReclaimPolicy: Retain
   claimRef:
      namespace: dh-health
      name: git-repo-pvc
