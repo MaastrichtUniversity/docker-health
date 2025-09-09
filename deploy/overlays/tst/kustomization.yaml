@@ -315,6 +315,21 @@ patches:
         - portal.zio.tst.dh.unimaas.nl
         secretName: portal-zio-tls-secret
 
+# Patch the data mounts to use the GIT PVC
+- target:
+    kind: Job
+    name: envida-etl-zib-pipeline
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/volumes/1  # assuming 'data' is the 2nd volume in the array
+      value:
+        name: data
+        persistentVolumeClaim:
+          claimName: git-repo-pvc
+    - op: add
+      path: /spec/template/spec/containers/0/volumeMounts/1/subPath
+      value: data
+
 configMapGenerator:
 - name: portal-common-config
   namespace: dh-health
