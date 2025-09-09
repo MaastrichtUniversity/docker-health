@@ -58,7 +58,18 @@ resources:
 - ../../base/openehr-nodes/zio/etl-zib-rest
 - ../../base/openehr-nodes/zio/portal
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 patches:
+- target:
+    kind: Deployment
+    name: jupyter-zib
+  path: jupyter-delete-patch.yaml
+- target:
+    kind: Deployment
+    name: jupyter-zib
+  path: jupyter-add-patch.yaml
 # Storage class patches
 - target:
     kind: PersistentVolume
@@ -314,3 +325,7 @@ configMapGenerator:
   behavior: merge
   literals:
     - NEXT_PUBLIC_FEDERATION_BASE_URL=https://federation.tst.dh.unimaas.nl
+- name: git-config
+  namespace: dh-health
+  literals:
+    - GIT_BRANCH=PLACEHOLDER

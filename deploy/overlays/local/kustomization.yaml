@@ -6,18 +6,7 @@ resources:
 - terminology-ingress.yaml
 - ../../base
 
-generatorOptions:
-  disableNameSuffixHash: true
-
 patches:
-- path: jupyter-delete-patch.yaml
-  target:
-    kind: Deployment
-    name: jupyter-zib
-- path: jupyter-add-patch.yaml
-  target:
-    kind: Deployment
-    name: jupyter-zib
 # imagePullPolicy patches
 - target:
     kind: Deployment
@@ -456,7 +445,3 @@ configMapGenerator:
   behavior: merge
   literals:
     - ADMIN_API_ACTIVE=true
-- name: git-config
-  namespace: dh-health
-  literals:
-    - GIT_BRANCH=PLACEHOLDER
