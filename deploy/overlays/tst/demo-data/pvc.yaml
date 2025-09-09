@@ -12,7 +12,7 @@ spec:
   claimRef:
      namespace: dh-health
      name: git-repo-pvc
-  storageClassName: local-storage
+  storageClassName: local-path
   hostPath:
     path: /mnt/demo-data
     type: DirectoryOrCreate
@@ -28,4 +28,4 @@ spec:
   resources:
     requests:
       storage: 100Mi
-  storageClassName: local-storage
+  storageClassName: local-path
