@@ -13,6 +13,9 @@ spec:
      namespace: dh-health
      name: git-repo-pvc
   storageClassName: local
+  hostPath:
+    path: /mnt/demo-data
+    type: DirectoryOrCreate
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
