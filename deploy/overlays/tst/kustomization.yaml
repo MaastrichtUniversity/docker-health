@@ -59,6 +59,14 @@ resources:
 - ../../base/openehr-nodes/zio/portal
 
 patches:
+- target:
+    kind: Deployment
+    name: jupyter-zib
+  path: jupyter-delete-patch.yaml
+- target:
+    kind: Deployment
+    name: jupyter-zib
+  path: jupyter-add-patch.yaml
 # Storage class patches
 - target:
     kind: PersistentVolume
