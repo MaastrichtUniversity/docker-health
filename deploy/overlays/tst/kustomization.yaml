@@ -58,9 +58,7 @@ resources:
 - ../../base/openehr-nodes/zio/etl-zib-rest
 - ../../base/openehr-nodes/zio/portal
 
-generatorOptions:
-  disableNameSuffixHash: true
-
+patches:
 # Storage class patches
 - target:
     kind: PersistentVolume
@@ -74,7 +72,6 @@ generatorOptions:
     - op: replace
       path: /spec/storageClassName
       value: local-storage
-
 # Image pull secret
 - target:
     kind: Deployment
