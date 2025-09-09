@@ -1,7 +1,24 @@
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: git-repo-pv
+  namespace: dh-health
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  claimRef:
+     namespace: dh-health
+     name: git-repo-pvc
+  storageClassName: local
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: git-repo-pvc
+  namespace: dh-health
 spec:
   accessModes:
     - ReadWriteOnce
