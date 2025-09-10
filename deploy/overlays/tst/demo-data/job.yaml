@@ -7,7 +7,7 @@ spec:
   template:
     spec:
       containers:
-        - name: git-clone
+        - name: git-sync
           image: alpine/git:latest
           envFrom:
             - configMapRef:
@@ -23,10 +23,19 @@ spec:
             - sh
             - -c
             - |
-              rm -rf /repo/*
-              git clone https://github.com/MaastrichtUniversity/docker-health.git /repo
-              cd /repo
-              git checkout "$GIT_BRANCH"
+              set -e
+              if [ -d "/repo/.git" ]; then
+                echo "Repository already exists, fetching updates..."
+                cd /repo
+                git fetch --all
+                git reset --hard "origin/$GIT_BRANCH"
+                git checkout "$GIT_BRANCH"
+              else
+                echo "Cloning fresh repository..."
+                git clone https://github.com/MaastrichtUniversity/docker-health.git /repo
+                cd /repo
+                git checkout "$GIT_BRANCH"
+              fi
           volumeMounts:
             - name: git-repo
               mountPath: /repo
