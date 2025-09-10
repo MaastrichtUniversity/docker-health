@@ -105,7 +105,25 @@ patches:
       path: "/spec/template/spec/containers/0/env/-"
       value:
         name: no_proxy
-        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/16,10.43.0.10"
+        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/16,10.43.0.1,10.43.0.10"
+- target:
+    kind: Job
+  patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: http_proxy
+        value: "http://proxy.unimaas.nl:3128"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: https_proxy
+        value: "http://proxy.unimaas.nl:3128"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: no_proxy
+        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/16,10.43.0.1,10.43.0.10"
 
 # Individual ingress host patches
 ## Transform
