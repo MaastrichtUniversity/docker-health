@@ -32,6 +32,7 @@ spec:
                 git checkout "$GIT_BRANCH"
               else
                 echo "Cloning fresh repository..."
+                rm -rf /repo/src   # <-- cleanup old junk
                 git clone https://github.com/MaastrichtUniversity/docker-health.git /repo/src
                 cd /repo/src
                 git checkout "$GIT_BRANCH"
