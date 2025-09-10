@@ -60,13 +60,13 @@ patches:
   patch: |-
     - op: replace
       path: /spec/storageClassName
-      value: local-storage
+      value: local-path
 - target:
     kind: PersistentVolumeClaim
   patch: |-
     - op: replace
       path: /spec/storageClassName
-      value: local-storage
+      value: local-path
 
 # Proxy patches
 - target:
