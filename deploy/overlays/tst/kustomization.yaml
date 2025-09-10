@@ -21,9 +21,9 @@ images:
   newTag: '2024.1'
 
 resources:
+- ./demo-data
 - ./tls-secrets-patch.yaml
 - ./secrets.yaml
-- ./demo-data
 #- ./registry-secret.yaml
 - ../../base/common
 - ../../base/federation-rest
