@@ -339,7 +339,7 @@ patches:
           claimName: git-repo-pvc
     - op: add
       path: /spec/template/spec/containers/0/volumeMounts/1/subPath
-      value: data/envida-demo-data
+      value: src/data/envida-demo-data
 - target:
     kind: Job
     name: zio-etl-zib-pipeline
@@ -352,7 +352,7 @@ patches:
           claimName: git-repo-pvc
     - op: add
       path: /spec/template/spec/containers/0/volumeMounts/1/subPath
-      value: data/zio-demo-data
+      value: src/data/zio-demo-data
 - target:
     kind: Job
     name: vitala-etl-zib-pipeline
@@ -365,7 +365,7 @@ patches:
           claimName: git-repo-pvc
     - op: add
       path: /spec/template/spec/containers/0/volumeMounts/1/subPath
-      value: data/vitala-demo-data
+      value: src/data/vitala-demo-data
 - target:
     kind: Job
     name: mumc-etl-zib-pipeline
@@ -378,7 +378,7 @@ patches:
           claimName: git-repo-pvc
     - op: add
       path: /spec/template/spec/containers/0/volumeMounts/1/subPath
-      value: data/mumc-demo-data
+      value: src/data/mumc-demo-data
 - target:
     kind: Deployment
     name: jupyter-zib
@@ -398,7 +398,7 @@ patches:
       value:
         name: demo-data
         mountPath: /home/jovyan/data
-        subPath: data
+        subPath: src/data
 
 configMapGenerator:
 - name: portal-common-config
