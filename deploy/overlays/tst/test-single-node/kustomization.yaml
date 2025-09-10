@@ -5,6 +5,7 @@ namespace: dh-health
 resources:
 - job.yaml
 - secrets.yaml
+- ../demo-data
 #- registry-secret.yaml
 - ../../../base/common
 - ../../../base/transform-rest
