@@ -314,7 +314,3 @@ configMapGenerator:
   behavior: merge
   literals:
     - NEXT_PUBLIC_FEDERATION_BASE_URL=https://federation.tst.dh.unimaas.nl
-- name: git-config
-  namespace: dh-health
-  literals:
-    - GIT_BRANCH=PLACEHOLDER
