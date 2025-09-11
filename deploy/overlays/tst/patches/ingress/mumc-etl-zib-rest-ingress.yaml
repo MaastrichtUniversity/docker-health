@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: zio-ehrbase-ingress
+  name: mumc-etl-zib-rest-ingress
   namespace: dh-health
 spec:
   rules:
-    - host: ehrbase.zio.tst.dh.unimaas.nl
+    - host: etl.mumc.tst.dh.unimaas.nl
