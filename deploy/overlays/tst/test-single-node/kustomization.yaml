@@ -89,9 +89,9 @@ patches:
 
 # Individual ingress host patches
 ## Transform
-- path: ../patches/ingress/common/transform.yaml
+- path: patches/ingress/common/transform.yaml
 ## TEST-node
-- path: ../patches/ingress/test/ehrbase.yaml
+- path: patches/ingress/test/ehrbase.yaml
 
 # Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
 configMapGenerator:
