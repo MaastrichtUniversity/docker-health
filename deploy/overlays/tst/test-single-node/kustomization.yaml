@@ -89,25 +89,9 @@ patches:
 
 # Individual ingress host patches
 ## Transform
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: transform-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: transform.tst.dh.unimaas.nl
+- path: ../patches/ingress/common/transform.yaml
 ## TEST-node
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: test-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.test.tst.dh.unimaas.nl
+- path: ../patches/ingress/test/ehrbase.yaml
 
 # Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
 configMapGenerator:
