@@ -1,0 +1,12 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: federation-rest-ingress
+  namespace: dh-health
+spec:
+  rules:
+    - host: federation.tst.dh.unimaas.nl
+  tls:
+    - hosts:
+        - federation.tst.dh.unimaas.nl
+      secretName: federation-tls-secret
