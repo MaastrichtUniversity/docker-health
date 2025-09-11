@@ -80,14 +80,14 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /code/data/test-demo-data
+          subPath: src/data/test-demo-data
         - name: etl-logs
           mountPath: /code/logs/test
           subPath: test/etl
       volumes:
       - name: data
-        hostPath:
-          path: /mnt/data/test-demo-data
-          type: Directory
+        persistentVolumeClaim:
+          claimName: git-repo-pvc
       - name: etl-logs
         persistentVolumeClaim:
           claimName: log-pvc

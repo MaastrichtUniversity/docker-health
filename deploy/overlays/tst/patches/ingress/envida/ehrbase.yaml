@@ -1,0 +1,8 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: envida-ehrbase-ingress
+  namespace: dh-health
+spec:
+  rules:
+    - host: ehrbase.envida.tst.dh.unimaas.nl

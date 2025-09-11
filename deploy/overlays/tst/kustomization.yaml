@@ -59,21 +59,21 @@ resources:
 - ../../base/openehr-nodes/zio/portal
 
 patches:
+# 'Global' patches that apply to all of one sort
 # Storage class patches
 - target:
     kind: PersistentVolume
   patch: |-
     - op: replace
       path: /spec/storageClassName
-      value: local-storage
+      value: local-path
 - target:
     kind: PersistentVolumeClaim
   patch: |-
     - op: replace
       path: /spec/storageClassName
-      value: local-storage
-
-# Image pull secret
+      value: local-path
+# Image pull secret patches
 - target:
     kind: Deployment
   patch: |-
@@ -88,7 +88,6 @@ patches:
       path: /spec/template/spec/imagePullSecrets
       value:
       - name: registry-credentials
-
 # imagePullPolicy patches
 - target:
     kind: Deployment
@@ -102,7 +101,6 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Always  
-
 # Proxy patches
 - target:
     kind: Deployment
@@ -121,192 +119,44 @@ patches:
       path: "/spec/template/spec/containers/0/env/-"
       value:
         name: no_proxy
-        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.96.0.0/12,10.244.0.0/16,10.96.0.10"
-# Individual ingress host patches
+        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/12,10.43.0.1,10.43.0.10"
+
+
+# Ingress patches
 ## Transform
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: transform-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: transform.tst.dh.unimaas.nl
-    - op: add
-      path: /spec/tls
-      value:
-      - hosts:
-        - transform.tst.dh.unimaas.nl
-        secretName: transform-tls-secret
+- path: patches/ingress/common/transform.yaml
 ## Federation
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: federation-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: federation.tst.dh.unimaas.nl
-    - op: add
-      path: /spec/tls
-      value:
-      - hosts:
-        - federation.tst.dh.unimaas.nl
-        secretName: federation-tls-secret
+- path: patches/ingress/common/federation.yaml
 ## Jupyter
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: jupyter-zib-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: jupyter.tst.dh.unimaas.nl
-    - op: add
-      path: /spec/tls
-      value:
-      - hosts:
-        - jupyter.tst.dh.unimaas.nl
-        secretName: jupyter-tls-secret
+- path: patches/ingress/common/jupyter.yaml
 ## Envida-node
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: envida-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.envida.tst.dh.unimaas.nl
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: envida-etl-zib-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: etl.envida.tst.dh.unimaas.nl
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: envida-portal-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: portal.envida.tst.dh.unimaas.nl
-    - op: add
-      path: /spec/tls
-      value:
-      - hosts:
-        - portal.envida.tst.dh.unimaas.nl
-        secretName: portal-envida-tls-secret
+- path: patches/ingress/envida/ehrbase.yaml
+- path: patches/ingress/envida/etl-zib-rest.yaml
+- path: patches/ingress/envida/portal.yaml
 ## MUMC-node
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: mumc-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.mumc.tst.dh.unimaas.nl
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: mumc-etl-zib-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: etl.mumc.tst.dh.unimaas.nl
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: mumc-portal-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: portal.mumc.tst.dh.unimaas.nl
-    - op: add
-      path: /spec/tls
-      value:
-      - hosts:
-        - portal.mumc.tst.dh.unimaas.nl
-        secretName: portal-mumc-tls-secret
+- path: patches/ingress/mumc/ehrbase.yaml
+- path: patches/ingress/mumc/etl-zib-rest.yaml
+- path: patches/ingress/mumc/portal.yaml
 ## VITALA-node
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: vitala-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.vitala.tst.dh.unimaas.nl
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: vitala-etl-zib-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: etl.vitala.tst.dh.unimaas.nl
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: vitala-portal-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: portal.vitala.tst.dh.unimaas.nl
-    - op: add
-      path: /spec/tls
-      value:
-      - hosts:
-        - portal.vitala.tst.dh.unimaas.nl
-        secretName: portal-vitala-tls-secret
+- path: patches/ingress/vitala/ehrbase.yaml
+- path: patches/ingress/vitala/etl-zib-rest.yaml
+- path: patches/ingress/vitala/portal.yaml
 ## ZIO-node
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: zio-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.zio.tst.dh.unimaas.nl
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: zio-etl-zib-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: etl.zio.tst.dh.unimaas.nl
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: zio-portal-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: portal.zio.tst.dh.unimaas.nl
-    - op: add
-      path: /spec/tls
-      value:
-      - hosts:
-        - portal.zio.tst.dh.unimaas.nl
-        secretName: portal-zio-tls-secret
+- path: patches/ingress/zio/ehrbase.yaml
+- path: patches/ingress/zio/etl-zib-rest.yaml
+- path: patches/ingress/zio/portal.yaml
+
+# Patch the data mounts to use the GIT PVC
+- path: patches/job/envida-etl-zib-delete-demo-data.yaml
+- path: patches/job/envida-etl-zib-add-demo-data.yaml
+- path: patches/job/vitala-etl-zib-delete-demo-data.yaml
+- path: patches/job/vitala-etl-zib-add-demo-data.yaml
+- path: patches/job/mumc-etl-zib-delete-demo-data.yaml
+- path: patches/job/mumc-etl-zib-add-demo-data.yaml
+- path: patches/job/zio-etl-zib-delete-demo-data.yaml
+- path: patches/job/zio-etl-zib-add-demo-data.yaml
+- path: patches/deployment/jupyter-delete-demo-data.yaml
+- path: patches/deployment/jupyter-add-demo-data.yaml
 
 configMapGenerator:
 - name: portal-common-config

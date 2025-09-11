@@ -31,4 +31,8 @@ docker pull busybox:1.28
 echo "Pulling kubectl:1.27.13..."
 docker pull bitnami/kubectl:1.27.13
 
+# Alpine for git clone
+echo "Pulling alpine/git:latest ..."
+docker pull alpine/git:latest
+
 echo "All external images have been pulled into Minikube's Docker daemon."

@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mumc-etl-zib-pipeline
+  namespace: dh-health
+spec:
+  template:
+    spec:
+      containers:
+        - name: mumc-etl-zib-pipeline
+          volumeMounts:
+            - name: demo-data
+              mountPath: /code/data/mumc-demo-data
+              subPath: src/data/mumc-demo-data
+      volumes:
+        - name: demo-data
+          persistentVolumeClaim:
+            claimName: git-repo-pvc
