@@ -27,15 +27,31 @@ spec:
               if [ -d "/repo/src/.git" ]; then
                 echo "Repository already exists, fetching updates..."
                 cd /repo/src
-                git fetch --all
-                git reset --hard "origin/$GIT_BRANCH"
-                git checkout "$GIT_BRANCH"
+                git fetch --all --tags
+                if git show-ref --verify --quiet "refs/heads/$GIT_BRANCH"; then
+                  echo "Checking out branch $GIT_BRANCH"
+                  git checkout "$GIT_BRANCH"
+                  git reset --hard "origin/$GIT_BRANCH"
+                elif git show-ref --verify --quiet "refs/tags/$GIT_BRANCH"; then
+                  echo "Checking out tag $GIT_BRANCH"
+                  git checkout "tags/$GIT_BRANCH"
+                else
+                  echo "Error: $GIT_BRANCH not found as branch or tag"
+                  exit 1
+                fi
               else
                 echo "Cloning fresh repository..."
-                rm -rf /repo/src   # <-- cleanup old junk
-                git clone https://github.com/MaastrichtUniversity/docker-health.git /repo/src
+                rm -rf /repo/src
+                git clone --tags https://github.com/MaastrichtUniversity/docker-health.git /repo/src
                 cd /repo/src
-                git checkout "$GIT_BRANCH"
+                if git show-ref --verify --quiet "refs/heads/$GIT_BRANCH"; then
+                  git checkout "$GIT_BRANCH"
+                elif git show-ref --verify --quiet "refs/tags/$GIT_BRANCH"; then
+                  git checkout "tags/$GIT_BRANCH"
+                else
+                  echo "Error: $GIT_BRANCH not found as branch or tag"
+                  exit 1
+                fi
               fi
           volumeMounts:
             - name: git-repo
