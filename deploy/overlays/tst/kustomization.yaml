@@ -21,7 +21,6 @@ images:
   newTag: '2024.1'
 
 resources:
-- ./demo-data
 - ./tls-secrets-patch.yaml
 - ./secrets.yaml
 #- ./registry-secret.yaml

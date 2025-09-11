@@ -7,7 +7,7 @@ spec:
   template:
     spec:
       containers:
-        - name: git-sync
+        - name: git-clone
           image: alpine/git:latest
           envFrom:
             - configMapRef:
@@ -18,41 +18,18 @@ spec:
             - name: https_proxy
               value: "http://proxy.unimaas.nl:3128"
             - name: no_proxy
-              value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/16,10.43.0.10"
+              value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/16,10.43.0.10"        
           command:
             - sh
             - -c
             - |
               set -e
-              if [ -d "/repo/src/.git" ]; then
-                echo "Repository already exists, fetching updates..."
-                cd /repo/src
-                git fetch --all --tags
-                if git show-ref --verify --quiet "refs/heads/$GIT_BRANCH"; then
-                  echo "Checking out branch $GIT_BRANCH"
-                  git checkout "$GIT_BRANCH"
-                  git reset --hard "origin/$GIT_BRANCH"
-                elif git show-ref --verify --quiet "refs/tags/$GIT_BRANCH"; then
-                  echo "Checking out tag $GIT_BRANCH"
-                  git checkout "tags/$GIT_BRANCH"
-                else
-                  echo "Error: $GIT_BRANCH not found as branch or tag"
-                  exit 1
-                fi
-              else
-                echo "Cloning fresh repository..."
-                rm -rf /repo/src
-                git clone --tags https://github.com/MaastrichtUniversity/docker-health.git /repo/src
-                cd /repo/src
-                if git show-ref --verify --quiet "refs/heads/$GIT_BRANCH"; then
-                  git checkout "$GIT_BRANCH"
-                elif git show-ref --verify --quiet "refs/tags/$GIT_BRANCH"; then
-                  git checkout "tags/$GIT_BRANCH"
-                else
-                  echo "Error: $GIT_BRANCH not found as branch or tag"
-                  exit 1
-                fi
-              fi
+              echo "Cleaning old repo..."
+              rm -rf /repo/src
+              echo "Cloning fresh repo into /repo/src"
+              git clone https://github.com/MaastrichtUniversity/docker-health.git /repo/src
+              cd /repo/src
+              git checkout "$GIT_BRANCH"
           volumeMounts:
             - name: git-repo
               mountPath: /repo
