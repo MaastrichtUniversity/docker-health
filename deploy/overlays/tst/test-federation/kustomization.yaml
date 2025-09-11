@@ -6,7 +6,6 @@ resources:
 - job.yaml
 - role.yaml
 - secrets.yaml
-- ../demo-data
 - ../../../base/common
 - ../../../base/federation-rest
 - ../../../base/transform-rest
