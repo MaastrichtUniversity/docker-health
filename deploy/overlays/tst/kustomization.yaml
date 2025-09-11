@@ -23,7 +23,6 @@ images:
 resources:
 - ./tls-secrets-patch.yaml
 - ./secrets.yaml
-- ./patches
 #- ./registry-secret.yaml
 - ../../base/common
 - ../../base/federation-rest
@@ -121,8 +120,6 @@ patches:
       value:
         name: no_proxy
         value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/12,10.43.0.1,10.43.0.10"
-
-
 
 
 # Individual ingress host patches
@@ -276,6 +273,11 @@ patches:
       - hosts:
         - portal.vitala.tst.dh.unimaas.nl
         secretName: portal-vitala-tls-secret
+# ZIO Node
+- path: patches/ingress/zio-ehrbase-ingress.yaml
+- path: patches/ingress/zio-etl-zib-rest-ingress.yaml
+- path: patches/ingress/zio-portal-ingress.yaml
+
 # Patch the data mounts to use the GIT PVC
 - target:
     kind: Job

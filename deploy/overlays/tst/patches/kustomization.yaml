@@ -1,4 +1,0 @@
-patches:
-  - path: ingress/zio-ehrbase-ingress.yaml
-  - path: ingress/zio-etl-zib-ingress.yaml
-  - path: ingress/zio-portal-ingress.yaml
