@@ -1,0 +1,11 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: zio-portal-ingress
+spec:
+  rules:
+    - host: portal.zio.tst.dh.unimaas.nl
+  tls:
+    - hosts:
+        - portal.zio.tst.dh.unimaas.nl
+      secretName: portal-zio-tls-secret

@@ -1,5 +1,4 @@
 patches:
-  - path: deployment/imagepullsecrets.yaml
-  - path: job/imagepullsecrets.yaml
-  - path: pv/storageclass.yaml
-  - path: pvc/storageclass.yaml
+  - path: ingress/zio-ehrbase-ingress.yaml
+  - path: ingress/zio-etl-zib-ingress.yaml
+  - path: ingress/zio-portal-ingress.yaml

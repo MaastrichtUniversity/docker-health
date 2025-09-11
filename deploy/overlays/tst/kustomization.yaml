@@ -60,6 +60,35 @@ resources:
 - ../../base/openehr-nodes/zio/portal
 
 patches:
+# 'Global' patches that apply to all of one sort
+# Storage class patches
+- target:
+    kind: PersistentVolume
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-path
+- target:
+    kind: PersistentVolumeClaim
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-path
+# Image pull secret patches
+- target:
+    kind: Deployment
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/imagePullSecrets
+      value:
+      - name: registry-credentials
+- target:
+    kind: Job
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/imagePullSecrets
+      value:
+      - name: registry-credentials
 # imagePullPolicy patches
 - target:
     kind: Deployment
@@ -73,7 +102,6 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Always  
-
 # Proxy patches
 - target:
     kind: Deployment
@@ -93,25 +121,10 @@ patches:
       value:
         name: no_proxy
         value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/12,10.43.0.1,10.43.0.10"
-# - target:
-#     kind: Job
-#   patch: |-
-#     - op: add
-#       path: "/spec/template/spec/containers/0/env/-"
-#       value:
-#         name: http_proxy
-#         value: "http://proxy.unimaas.nl:3128"
-#     - op: add
-#       path: "/spec/template/spec/containers/0/env/-"
-#       value:
-#         name: https_proxy
-#         value: "http://proxy.unimaas.nl:3128"
-#     - op: add
-#       path: "/spec/template/spec/containers/0/env/-"
-#       value:
-#         name: no_proxy
-#         value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/12,10.43.0.1,10.43.0.10"
-        
+
+
+
+
 # Individual ingress host patches
 ## Transform
 - target:
@@ -263,40 +276,6 @@ patches:
       - hosts:
         - portal.vitala.tst.dh.unimaas.nl
         secretName: portal-vitala-tls-secret
-## ZIO-node
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: zio-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.zio.tst.dh.unimaas.nl
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: zio-etl-zib-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: etl.zio.tst.dh.unimaas.nl
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: zio-portal-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: portal.zio.tst.dh.unimaas.nl
-    - op: add
-      path: /spec/tls
-      value:
-      - hosts:
-        - portal.zio.tst.dh.unimaas.nl
-        secretName: portal-zio-tls-secret
 # Patch the data mounts to use the GIT PVC
 - target:
     kind: Job
