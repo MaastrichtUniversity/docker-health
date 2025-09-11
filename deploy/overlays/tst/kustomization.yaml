@@ -23,6 +23,7 @@ images:
 resources:
 - ./tls-secrets-patch.yaml
 - ./secrets.yaml
+- ./patches
 #- ./registry-secret.yaml
 - ../../base/common
 - ../../base/federation-rest
@@ -59,35 +60,6 @@ resources:
 - ../../base/openehr-nodes/zio/portal
 
 patches:
-# Storage class patches
-- target:
-    kind: PersistentVolume
-  patch: |-
-    - op: replace
-      path: /spec/storageClassName
-      value: local-path
-- target:
-    kind: PersistentVolumeClaim
-  patch: |-
-    - op: replace
-      path: /spec/storageClassName
-      value: local-path
-# Image pull secret
-- target:
-    kind: Deployment
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/imagePullSecrets
-      value:
-      - name: registry-credentials
-- target:
-    kind: Job
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/imagePullSecrets
-      value:
-      - name: registry-credentials
-
 # imagePullPolicy patches
 - target:
     kind: Deployment
