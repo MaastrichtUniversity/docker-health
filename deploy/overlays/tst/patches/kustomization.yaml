@@ -1,5 +1,5 @@
 patches:
-  - path: deployment/
-  - path: job/
-  - path: pv/
-  - path: pvc/
+  - path: deployment/imagepullsecrets.yaml
+  - path: job/imagepullsecrets.yaml
+  - path: pv/storageclass.yaml
+  - path: pvc/storageclass.yaml
