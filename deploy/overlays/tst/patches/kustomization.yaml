@@ -1,5 +1,5 @@
-patchesStrategicMerge:
-  - deployment/
-  - job/
-  - pv/
-  - pvc/
+patches:
+  - path: deployment/
+  - path: job/
+  - path: pv/
+  - path: pvc/
