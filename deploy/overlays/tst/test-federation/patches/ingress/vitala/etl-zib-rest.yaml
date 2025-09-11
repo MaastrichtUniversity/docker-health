@@ -1,8 +1,0 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: vitala-etl-zib-rest-ingress
-  namespace: dh-health
-spec:
-  rules:
-    - host: etl.vitala.tst.dh.unimaas.nl

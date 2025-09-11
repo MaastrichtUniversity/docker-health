@@ -1,8 +1,0 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: envida-etl-zib-rest-ingress
-  namespace: dh-health
-spec:
-  rules:
-    - host: etl.envida.tst.dh.unimaas.nl

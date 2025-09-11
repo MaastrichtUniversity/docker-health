@@ -111,26 +111,15 @@ patches:
 - path: patches/ingress/common/transform.yaml
 ## Federation
 - path: patches/ingress/common/federation.yaml
-## Jupyter
-- path: patches/ingress/common/jupyter.yaml
 ## Envida-node
 - path: patches/ingress/envida/ehrbase.yaml
-- path: patches/ingress/envida/etl-zib-rest.yaml
-- path: patches/ingress/envida/portal.yaml
 ## MUMC-node
 - path: patches/ingress/mumc/ehrbase.yaml
-- path: patches/ingress/mumc/etl-zib-rest.yaml
-- path: patches/ingress/mumc/portal.yaml
 ## VITALA-node
 - path: patches/ingress/vitala/ehrbase.yaml
-- path: patches/ingress/vitala/etl-zib-rest.yaml
-- path: patches/ingress/vitala/portal.yaml
 ## ZIO-node
 - path: patches/ingress/zio/ehrbase.yaml
-- path: patches/ingress/zio/etl-zib-rest.yaml
-- path: patches/ingress/zio/portal.yaml
 
-# Patch the data mounts to use the GIT PVC
 # Patch the data mounts to use the GIT PVC
 - path: patches/job/envida-etl-zib-delete-demo-data.yaml
 - path: patches/job/envida-etl-zib-add-demo-data.yaml
@@ -140,5 +129,3 @@ patches:
 - path: patches/job/mumc-etl-zib-add-demo-data.yaml
 - path: patches/job/zio-etl-zib-delete-demo-data.yaml
 - path: patches/job/zio-etl-zib-add-demo-data.yaml
-- path: patches/deployment/jupyter-delete-demo-data.yaml
-- path: patches/deployment/jupyter-add-demo-data.yaml
