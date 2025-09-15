@@ -1,7 +1,7 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: federation-tls-secret
+  name: portal-mumc-tls-secret
   namespace: dh-health
 spec:
   refreshInterval: 1h
@@ -13,15 +13,15 @@ spec:
     template:
       type: kubernetes.io/tls
       data:
-        tls.crt: "{{ .portal.mumc.tst.dh.unimaas.nl.crt }}"
-        tls.key: "{{ .portal.mumc.tst.dh.unimaas.nl.key }}"
+        tls.crt: "{{ .portal_mumc_crt }}"
+        tls.key: "{{ .portal_mumc_key }}"
 
   data:
-  - secretKey: portal.mumc.tst.dh.unimaas.nl.crt
+  - secretKey: portal_mumc_crt
     remoteRef:
       key: fhml-srv018__tst-k3s-hdp
       property: portal.mumc.tst.dh.unimaas.nl.crt
-  - secretKey: portal.mumc.tst.dh.unimaas.nl.key
+  - secretKey: portal_mumc_key
     remoteRef:
       key: fhml-srv018__tst-k3s-hdp
       property: portal.mumc.tst.dh.unimaas.nl.key
