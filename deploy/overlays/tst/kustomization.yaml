@@ -21,7 +21,9 @@ images:
   newTag: '2024.1'
 
 resources:
-- ./tls-secrets-patch.yaml
+# NEW vaul secret operator
+- ./vault-operator
+#- ./tls-secrets-patch.yaml
 - ./secrets.yaml
 #- ./registry-secret.yaml
 - ../../base/common

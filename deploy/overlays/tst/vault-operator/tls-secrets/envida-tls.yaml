@@ -1,0 +1,27 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: federation-tls-secret
+  namespace: dh-health
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: prod-vault.dev-test
+    kind: ClusterSecretStore
+  target:
+    name: portal-envida-tls-secret
+    template:
+      type: kubernetes.io/tls
+      data:
+        tls.crt: "{{ .portal.envida.tst.dh.unimaas.nl.crt }}"
+        tls.key: "{{ .portal.envida.tst.dh.unimaas.nl.key }}"
+
+  data:
+  - secretKey: portal.envida.tst.dh.unimaas.nl.crt
+    remoteRef:
+      key: fhml-srv018__tst-k3s-hdp
+      property: portal.envida.tst.dh.unimaas.nl.crt
+  - secretKey: portal.envida.tst.dh.unimaas.nl.key
+    remoteRef:
+      key: fhml-srv018__tst-k3s-hdp
+      property: portal.envida.tst.dh.unimaas.nl.key

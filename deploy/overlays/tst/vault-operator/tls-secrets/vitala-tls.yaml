@@ -1,0 +1,27 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: federation-tls-secret
+  namespace: dh-health
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: prod-vault.dev-test
+    kind: ClusterSecretStore
+  target:
+    name: portal-vitala-tls-secret
+    template:
+      type: kubernetes.io/tls
+      data:
+        tls.crt: "{{ .portal.vitala.tst.dh.unimaas.nl.crt }}"
+        tls.key: "{{ .portal.vitala.tst.dh.unimaas.nl.key }}"
+
+  data:
+  - secretKey: portal.vitala.tst.dh.unimaas.nl.crt
+    remoteRef:
+      key: fhml-srv018__tst-k3s-hdp
+      property: portal.vitala.tst.dh.unimaas.nl.crt
+  - secretKey: portal.vitala.tst.dh.unimaas.nl.key
+    remoteRef:
+      key: fhml-srv018__tst-k3s-hdp
+      property: portal.vitala.tst.dh.unimaas.nl.key

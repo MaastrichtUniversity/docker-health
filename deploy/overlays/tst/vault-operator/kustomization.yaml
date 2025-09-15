@@ -5,4 +5,8 @@ namespace: dh-health
 resources:
 #- vault-auth.yaml # Disabled for now, because vault-auth service account is already created by Gitlab Manifests
 - vault-store.yaml
-- tls-secrets.yaml
+- tls-secrets/common-tls.yaml
+- tls-secrets/envida-tls.yaml
+- tls-secrets/mumc-tls.yaml
+- tls-secrets/vitala-tls.yaml
+- tls-secrets/zio-tls.yaml
