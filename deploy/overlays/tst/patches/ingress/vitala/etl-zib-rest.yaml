@@ -3,6 +3,22 @@ kind: Ingress
 metadata:
   name: vitala-etl-zib-rest-ingress
   namespace: dh-health
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - etl.vitala.tst.dh.unimaas.nl
+      secretName: etl-vitala-tls-secret
   rules:
     - host: etl.vitala.tst.dh.unimaas.nl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vitala-etl-zib-rest
+                port:
+                  number: 8040

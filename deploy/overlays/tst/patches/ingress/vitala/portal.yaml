@@ -3,10 +3,22 @@ kind: Ingress
 metadata:
   name: vitala-portal-ingress
   namespace: dh-health
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
-  rules:
-    - host: portal.vitala.tst.dh.unimaas.nl
+  ingressClassName: nginx
   tls:
     - hosts:
         - portal.vitala.tst.dh.unimaas.nl
       secretName: portal-vitala-tls-secret
+  rules:
+    - host: portal.vitala.tst.dh.unimaas.nl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vitala-portal
+                port:
+                  number: 3000

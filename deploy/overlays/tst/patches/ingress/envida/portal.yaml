@@ -3,10 +3,22 @@ kind: Ingress
 metadata:
   name: envida-portal-ingress
   namespace: dh-health
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
-  rules:
-    - host: portal.envida.tst.dh.unimaas.nl
+  ingressClassName: nginx
   tls:
     - hosts:
         - portal.envida.tst.dh.unimaas.nl
       secretName: portal-envida-tls-secret
+  rules:
+    - host: portal.envida.tst.dh.unimaas.nl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: envida-portal
+                port:
+                  number: 3000
