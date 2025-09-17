@@ -3,6 +3,22 @@ kind: Ingress
 metadata:
   name: mumc-ehrbase-ingress
   namespace: dh-health
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - ehrbase.mumc.tst.dh.unimaas.nl
+      secretName: ehrbase-tls-secret
   rules:
     - host: ehrbase.mumc.tst.dh.unimaas.nl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mumc-ehrbase
+                port:
+                  number: 8080
