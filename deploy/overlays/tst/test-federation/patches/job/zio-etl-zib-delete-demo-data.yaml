@@ -1,16 +1,16 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: envida-etl-zib-pipeline
+  name: zio-etl-zib-pipeline
   namespace: dh-health
 spec:
   template:
     spec:
       containers:
-        - name: envida-etl-zib-pipeline
+        - name: zio-etl-zib-pipeline
           volumeMounts:
             - name: data
-              mountPath: /code/data/envida-demo-data
+              mountPath: /code/data/zio-demo-data
               $patch: delete
       volumes:
         - name: data
