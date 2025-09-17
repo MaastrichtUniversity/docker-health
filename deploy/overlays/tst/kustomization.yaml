@@ -158,6 +158,16 @@ patches:
 - path: patches/deployment/jupyter-delete-demo-data.yaml
 - path: patches/deployment/jupyter-add-demo-data.yaml
 
+# Docker Hub official repository secret patch
+- target:
+    kind: Job
+    name: create-tls-secrets
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/imagePullSecrets
+      value:
+      - name: dockerhub-registry-credentials
+
 configMapGenerator:
 - name: portal-common-config
   namespace: dh-health
