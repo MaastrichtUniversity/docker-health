@@ -28,7 +28,11 @@ echo "Pulling busybox:1.28..."
 docker pull busybox:1.28
 
 # kubectl for test-federation initContainer
-echo "Pulling kubectl:1.27.13..."
-docker pull bitnami/kubectl:1.27.13
+echo "Pulling kubectl:1.33.4..."
+docker pull bitnamilegacy/kubectl:1.33.4 # TODO: Try not to use a third-party docker image
+
+# Alpine for git clone
+echo "Pulling alpine/git:latest ..."
+docker pull alpine/git:latest
 
 echo "All external images have been pulled into Minikube's Docker daemon."

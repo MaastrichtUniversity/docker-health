@@ -78,13 +78,13 @@ patches:
   patch: |-
     - op: replace
       path: /spec/storageClassName
-      value: local-storage
+      value: local-path
 - target:
     kind: PersistentVolumeClaim
   patch: |-
     - op: replace
       path: /spec/storageClassName
-      value: local-storage
+      value: local-path
 
 # Proxy patches
 - target:
@@ -104,66 +104,28 @@ patches:
       path: "/spec/template/spec/containers/0/env/-"
       value:
         name: no_proxy
-        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/16,10.43.0.10"
+        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/16,10.43.0.1,10.43.0.10"
 
-# Individual ingress host patches
+# Ingress patches
 ## Transform
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: transform-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: transform.tst.dh.unimaas.nl
+- path: patches/ingress/common/transform.yaml
 ## Federation
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: federation-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: federation.tst.dh.unimaas.nl
+- path: patches/ingress/common/federation.yaml
 ## Envida-node
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: envida-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.envida.tst.dh.unimaas.nl
+- path: patches/ingress/envida/ehrbase.yaml
 ## MUMC-node
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: mumc-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.mumc.tst.dh.unimaas.nl
+- path: patches/ingress/mumc/ehrbase.yaml
 ## VITALA-node
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: vitala-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.vitala.tst.dh.unimaas.nl
+- path: patches/ingress/vitala/ehrbase.yaml
 ## ZIO-node
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: zio-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.zio.tst.dh.unimaas.nl
+- path: patches/ingress/zio/ehrbase.yaml
+
+# Patch the data mounts to use the GIT PVC
+- path: patches/job/envida-etl-zib-delete-demo-data.yaml
+- path: patches/job/envida-etl-zib-add-demo-data.yaml
+- path: patches/job/vitala-etl-zib-delete-demo-data.yaml
+- path: patches/job/vitala-etl-zib-add-demo-data.yaml
+- path: patches/job/mumc-etl-zib-delete-demo-data.yaml
+- path: patches/job/mumc-etl-zib-add-demo-data.yaml
+- path: patches/job/zio-etl-zib-delete-demo-data.yaml
+- path: patches/job/zio-etl-zib-add-demo-data.yaml
