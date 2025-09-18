@@ -175,13 +175,12 @@ apply_manifests() {
 
 # Check a job execution status
 check_job_execution(){
-  job=$1
   echo "Waiting for job $job to complete..."
   while true; do
     succeeded=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.succeeded}')
     if [ "$succeeded" = "1" ]; then
       echo -e "${GREEN}$job is complete.${NC}"
-      kubectl delete -f deploy/overlays/$overlay/job.yaml
+      kubectl delete -f deploy/overlays/$overlay/$job/job.yaml
       exit 0
     fi
 
@@ -314,38 +313,38 @@ print_usage() {
     echo "Usage: $0 <command> [options]"
     echo
     echo "Commands:"
-    echo "  setup                        Initialize Minikube Kubernetes environment with docker engine"
-    echo "  start                        Start an already initialized Minikube Kubernetes environment with docker engine"
-    echo "  pull                         Pull external images"
-    echo "  build       <subcommand>     Build service images"
-    echo "  externals   <subcommand>     Manage external repositories"
-    echo "  apply       <subcommand>     Apply Kubernetes manifests (default overlay: local)"
-    echo "  delete      <subcommand>     Delete Kubernetes manifests (default overlay: local)"
-    echo "  status      <subcommand>     Show status of all pods"
-    echo "  rollout     <subcommand>     Manage the rollout to restart one or many resources (default all)"
-    echo "  up          <subcommand>     Apply a subset of deployments"
-    echo "  down        <subcommand>     Delete a subset of deployments"
-    echo "  run         <subcommand>     Apply Kubernetes manifests and wait & check the job (with the same name) execution"
-    echo "  headlamp                     Enable the addons headlamp, start the service and create a temporary token"
+    echo "  setup                                     Initialize Minikube Kubernetes environment with docker engine"
+    echo "  start                                     Start an already initialized Minikube Kubernetes environment with docker engine"
+    echo "  pull                                      Pull external images"
+    echo "  build       <subcommand>                  Build service images"
+    echo "  externals   <subcommand>                  Manage external repositories"
+    echo "  apply       <subcommand>                  Apply Kubernetes manifests (default overlay: local)"
+    echo "  delete      <subcommand>                  Delete Kubernetes manifests (default overlay: local)"
+    echo "  status      <subcommand>                  Show status of all pods"
+    echo "  rollout     <subcommand>                  Manage the rollout to restart one or many resources (default all)"
+    echo "  up          <subcommand>                  Apply a subset of deployments"
+    echo "  down        <subcommand>                  Delete a subset of deployments"
+    echo "  run         <subcommand>  <subcommand>    Apply Kubernetes manifests and wait & check the job (with the same name) execution"
+    echo "  headlamp                                  Enable the addons headlamp, start the service and create a temporary token"
     echo
     echo "Examples:"
-    echo "  $0 setup                  Setup Kubernetes environment"
-    echo "  $0 start                  Start Kubernetes environment"
-    echo "  $0 build                  Build all Docker images"
-    echo "  $0 apply                  Apply Kubernetes manifests with local overlay"
-    echo "  $0 apply tst              Apply Kubernetes manifests with tst overlay"
-    echo "  $0 delete                 Delete Kubernetes manifests with local overlay"
-    echo "  $0 delete tst             Delete Kubernetes manifests with tst overlay"
-    echo "  $0 status                 Print the pods status"
-    echo "  $0 status -w              Print and follow the pods status"
-    echo "  $0 rollout                Rollout a restart of all the deployments"
-    echo "  $0 rollout jupyter-zib    Rollout a restart of the jupyter-zib deployment"
-    echo "  $0 up test-node           Apply Kubernetes manifests with local overlay & the label test-node"
-    echo "  $0 up others              Apply Kubernetes manifests with local overlay & without the labels test-node"
-    echo "  $0 down test-node         Delete Kubernetes manifests with local overlay & the label test-node"
-    echo "  $0 down others            Delete Kubernetes manifests with local overlay & without the labels test-node"
-    echo "  $0 run test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status"
-    echo "  $0 run test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status"
+    echo "  $0 setup                        Setup Kubernetes environment"
+    echo "  $0 start                        Start Kubernetes environment"
+    echo "  $0 build                        Build all Docker images"
+    echo "  $0 apply                        Apply Kubernetes manifests with local overlay"
+    echo "  $0 apply tst                    Apply Kubernetes manifests with tst overlay"
+    echo "  $0 delete                       Delete Kubernetes manifests with local overlay"
+    echo "  $0 delete tst                   Delete Kubernetes manifests with tst overlay"
+    echo "  $0 status                       Print the pods status"
+    echo "  $0 status -w                    Print and follow the pods status"
+    echo "  $0 rollout                      Rollout a restart of all the deployments"
+    echo "  $0 rollout jupyter-zib          Rollout a restart of the jupyter-zib deployment"
+    echo "  $0 up test-node                 Apply Kubernetes manifests with local overlay & the label test-node"
+    echo "  $0 up others                    Apply Kubernetes manifests with local overlay & without the labels test-node"
+    echo "  $0 down test-node               Delete Kubernetes manifests with local overlay & the label test-node"
+    echo "  $0 down others                  Delete Kubernetes manifests with local overlay & without the labels test-node"
+    echo "  $0 run local test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status"
+    echo "  $0 run local test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status"
 }
 
 # Main command handler
@@ -404,8 +403,9 @@ main() {
 
         run)
             local overlay=$1
-            apply_manifests "$overlay"
-            check_job_execution "$overlay"
+            local job=$2
+            apply_manifests "$overlay/$job"
+            check_job_execution "$overlay" "$job"
             ;;
 
         up)

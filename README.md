@@ -174,21 +174,23 @@ For a UI overview of the Minikube kubernetes stack and pods with logs checkout o
 Checkout existing functionality in the dh.sh. For examples:
 
 ```bash
-./dh.sh setup               Setup Kubernetes environment
-./dh.sh start               Start Kubernetes environment
-./dh.sh build               Build all Docker images
-./dh.sh apply               Apply Kubernetes manifests with local overlay
-./dh.sh apply tst           Apply Kubernetes manifests with tst overlay
-./dh.sh delete              Delete Kubernetes manifests with local overlay
-./dh.sh delete tst          Delete Kubernetes manifests with tst overlay
-./dh.sh status              Print the pods status
-./dh.sh status -w           Print and follow the pods status
-./dh.sh rollout             Rollout a restart of all the deployments
-./dh.sh rollout jupyter-zib Rollout a restart of the jupyter-zib deployment
-./dh.sh up test-node        Apply Kubernetes manifests with local overlay & the label test-node
-./dh.sh up others           Apply Kubernetes manifests with local overlay & without the labels test-node
-./dh.sh down test-node      Delete Kubernetes manifests with local overlay & the label test-node
-./dh.sh down others         Delete Kubernetes manifests with local overlay & without the labels test-node
+./dh.sh setup                        Setup Kubernetes environment
+./dh.sh start                        Start Kubernetes environment
+./dh.sh build                        Build all Docker images
+./dh.sh apply                        Apply Kubernetes manifests with local overlay
+./dh.sh apply tst                    Apply Kubernetes manifests with tst overlay
+./dh.sh delete                       Delete Kubernetes manifests with local overlay
+./dh.sh delete tst                   Delete Kubernetes manifests with tst overlay
+./dh.sh status                       Print the pods status
+./dh.sh status -w                    Print and follow the pods status
+./dh.sh rollout                      Rollout a restart of all the deployments
+./dh.sh rollout jupyter-zib          Rollout a restart of the jupyter-zib deployment
+./dh.sh up test-node                 Apply Kubernetes manifests with local overlay & the label test-node
+./dh.sh up others                    Apply Kubernetes manifests with local overlay & without the labels test-node
+./dh.sh down test-node               Delete Kubernetes manifests with local overlay & the label test-nod
+./dh.sh down others                  Delete Kubernetes manifests with local overlay & without the labels test-node
+./dh.sh run local test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status
+./dh.sh run local test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status
 ```
 
 ### Rebuilding and Updating Services
@@ -219,9 +221,12 @@ To run tests on single node:
 ```bash
 # 1. Run the test job
 ./dh.sh apply local/test-single-node
+# Or Execute this command to wait & check the job execution
+./dh.sh run local test-single-node
 
 # 2 Check the results when the job has finished 
 kubectl get jobs/test-single-node -n dh-health -o jsonpath='{.status.conditions[1].type}'
+
 
 # 2. Check the logs of test-single-node pod 
 kubectl logs -n dh-health jobs/test-single-node
@@ -236,6 +241,8 @@ To run tests on federation:
 ```bash
 # 1. Run the test job
 ./dh.sh apply local/test-federation
+# Or Execute this command to wait & check the job execution
+./dh.sh run local test-federation 
 
 # 2 Check the results when the job has finished 
 kubectl get jobs/test-federation -n dh-health -o jsonpath='{.status.conditions[1].type}'
