@@ -24,6 +24,7 @@ spec:
         ports:
           - containerPort: 8888
         env:
+          # Jupyter configuration
           - name: CHOWN_HOME # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/troubleshooting.html#permission-denied-when-mounting-volumes
             value: 'yes'
           - name: CHOWN_HOME_OPTS # Ensure all the subfolders below "/home/jovyan" are owned by the user "jovyan", including the volume folder "/home/jovyan/work"
@@ -33,6 +34,7 @@ spec:
               secretKeyRef:
                 name: jupyter-zib-creds
                 key: SERVER_APP_TOKEN
+          # Transform credentials
           - name: TRANSFORM_SPRING_USERNAME
             valueFrom:
               secretKeyRef:
@@ -44,6 +46,161 @@ spec:
                 name: transform-creds
                 key:
                   password
+          # Envida-node
+          - name: ENVIDA__EHRBASE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: envida-ehrbase-creds
+                key: username
+          - name: ENVIDA__EHRBASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: envida-ehrbase-creds
+                key: password
+          - name: ENVIDA__EHRBASE_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: envida-etl-config
+                key: EHRBASE_BASE_URL
+          - name: ENVIDA__DATASET_FOLDER_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: envida-etl-config
+                key: DATASET_FOLDER_NAME
+          - name: ENVIDA__SOURCE_SYSTEM_ID
+            valueFrom:
+              configMapKeyRef:
+                name: envida-etl-config
+                key: SOURCE_SYSTEM_ID
+          - name: ENVIDA__LOGGER_FILENAME
+            valueFrom:
+              configMapKeyRef:
+                name: envida-etl-config
+                key: LOGGER_FILENAME
+          # MUMC-node
+          - name: MUMC__EHRBASE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-creds
+                key: username
+          - name: MUMC__EHRBASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-creds
+                key: password
+          - name: MUMC__EHRBASE_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: mumc-etl-config
+                key: EHRBASE_BASE_URL
+          - name: MUMC__DATASET_FOLDER_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: mumc-etl-config
+                key: DATASET_FOLDER_NAME
+          - name: MUMC__SOURCE_SYSTEM_ID
+            valueFrom:
+              configMapKeyRef:
+                name: mumc-etl-config
+                key: SOURCE_SYSTEM_ID
+          - name: MUMC__LOGGER_FILENAME
+            valueFrom:
+              configMapKeyRef:
+                name: mumc-etl-config
+                key: LOGGER_FILENAME
+          # VITALA-node
+          - name: VITALA__EHRBASE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: vitala-ehrbase-creds
+                key: username
+          - name: VITALA__EHRBASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: vitala-ehrbase-creds
+                key: password
+          - name: VITALA__EHRBASE_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: vitala-etl-config
+                key: EHRBASE_BASE_URL
+          - name: VITALA__DATASET_FOLDER_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: vitala-etl-config
+                key: DATASET_FOLDER_NAME
+          - name: VITALA__SOURCE_SYSTEM_ID
+            valueFrom:
+              configMapKeyRef:
+                name: vitala-etl-config
+                key: SOURCE_SYSTEM_ID
+          - name: VITALA__LOGGER_FILENAME
+            valueFrom:
+              configMapKeyRef:
+                name: vitala-etl-config
+                key: LOGGER_FILENAME
+          # ZIO-node
+          - name: ZIO__EHRBASE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: zio-ehrbase-creds
+                key: username
+          - name: ZIO__EHRBASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: zio-ehrbase-creds
+                key: password
+          - name: ZIO__EHRBASE_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: zio-etl-config
+                key: EHRBASE_BASE_URL
+          - name: ZIO__DATASET_FOLDER_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: zio-etl-config
+                key: DATASET_FOLDER_NAME
+          - name: ZIO__SOURCE_SYSTEM_ID
+            valueFrom:
+              configMapKeyRef:
+                name: zio-etl-config
+                key: SOURCE_SYSTEM_ID
+          - name: ZIO__LOGGER_FILENAME
+            valueFrom:
+              configMapKeyRef:
+                name: zio-etl-config
+                key: LOGGER_FILENAME
+          # Test-node
+          - name: TEST__EHRBASE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: test-ehrbase-creds
+                key: username
+          - name: TEST__EHRBASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: test-ehrbase-creds
+                key: password
+          - name: TEST__EHRBASE_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: test-etl-config
+                key: EHRBASE_BASE_URL
+          - name: TEST__DATASET_FOLDER_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: test-etl-config
+                key: DATASET_FOLDER_NAME
+          - name: TEST__SOURCE_SYSTEM_ID
+            valueFrom:
+              configMapKeyRef:
+                name: test-etl-config
+                key: SOURCE_SYSTEM_ID
+          - name: TEST__LOGGER_FILENAME
+            valueFrom:
+              configMapKeyRef:
+                name: test-etl-config
+                key: LOGGER_FILENAME
         envFrom:
           - configMapRef:
               name: timezone-config
