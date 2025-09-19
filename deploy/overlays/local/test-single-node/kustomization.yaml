@@ -4,13 +4,13 @@ kind: Kustomization
 resources:
 - job.yaml
 - secrets.yaml
-- ../../base/common
-- ../../base/transform-rest
-- ../../base/terminology-server-proxy
+- ../../../base/common
+- ../../../base/transform-rest
+- ../../../base/terminology-server-proxy
 ## TEST-node
-- ../../base/openehr-nodes/test/ehrbase
-- ../../base/openehr-nodes/test/ehrdb
-- ../../base/openehr-nodes/test/etl-config
+- ../../../base/openehr-nodes/test/ehrbase
+- ../../../base/openehr-nodes/test/ehrdb
+- ../../../base/openehr-nodes/test/etl-config
 
 patches:
 # imagePullPolicy patches

@@ -45,7 +45,7 @@ The implementation relies on the following repositories:
 
 Credentials of the [Dutch terminology server](https://terminologieserver.nl/authorisation/auth/realms/nictiz/protocol/openid-connect/auth?client_id=account-console&redirect_uri=https%3A%2F%2Fterminologieserver.nl%2Fauthorisation%2Fauth%2Frealms%2Fnictiz%2Faccount%2F%23%2F&state=e082a979-038c-41ab-8096-d0396ac9820f&response_mode=fragment&response_type=code&scope=openid&nonce=30f31617-2935-48d1-ae46-6df5d20a96dd&code_challenge=0VDfFvHqmPTtvKmuJUF6rNMzRlSNwyZu9vPhV47VQn4&code_challenge_method=S256) need to be stored in secret files.
 
-Add the following file to the relevant overlays folders: local, test-single-node, test-federation, etc.
+Add the following file to the relevant overlays folders: local, local/test-single-node, local/test-federation, etc.
 e.g., `deploy/overlays/local/secrets.yaml`
 
 #### Secret file example (need to replace the values with your encoded credentials)
@@ -174,21 +174,23 @@ For a UI overview of the Minikube kubernetes stack and pods with logs checkout o
 Checkout existing functionality in the dh.sh. For examples:
 
 ```bash
-./dh.sh setup               Setup Kubernetes environment
-./dh.sh start               Start Kubernetes environment
-./dh.sh build               Build all Docker images
-./dh.sh apply               Apply Kubernetes manifests with local overlay
-./dh.sh apply tst           Apply Kubernetes manifests with tst overlay
-./dh.sh delete              Delete Kubernetes manifests with local overlay
-./dh.sh delete tst          Delete Kubernetes manifests with tst overlay
-./dh.sh status              Print the pods status
-./dh.sh status -w           Print and follow the pods status
-./dh.sh rollout             Rollout a restart of all the deployments
-./dh.sh rollout jupyter-zib Rollout a restart of the jupyter-zib deployment
-./dh.sh up test-node        Apply Kubernetes manifests with local overlay & the label test-node
-./dh.sh up others           Apply Kubernetes manifests with local overlay & without the labels test-node
-./dh.sh down test-node      Delete Kubernetes manifests with local overlay & the label test-node
-./dh.sh down others         Delete Kubernetes manifests with local overlay & without the labels test-node
+./dh.sh setup                        Setup Kubernetes environment
+./dh.sh start                        Start Kubernetes environment
+./dh.sh build                        Build all Docker images
+./dh.sh apply                        Apply Kubernetes manifests with local overlay
+./dh.sh apply tst                    Apply Kubernetes manifests with tst overlay
+./dh.sh delete                       Delete Kubernetes manifests with local overlay
+./dh.sh delete tst                   Delete Kubernetes manifests with tst overlay
+./dh.sh status                       Print the pods status
+./dh.sh status -w                    Print and follow the pods status
+./dh.sh rollout                      Rollout a restart of all the deployments
+./dh.sh rollout jupyter-zib          Rollout a restart of the jupyter-zib deployment
+./dh.sh up test-node                 Apply Kubernetes manifests with local overlay & the label test-node
+./dh.sh up others                    Apply Kubernetes manifests with local overlay & without the labels test-node
+./dh.sh down test-node               Delete Kubernetes manifests with local overlay & the label test-nod
+./dh.sh down others                  Delete Kubernetes manifests with local overlay & without the labels test-node
+./dh.sh run local test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status
+./dh.sh run local test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status
 ```
 
 ### Rebuilding and Updating Services
@@ -218,24 +220,29 @@ To run tests on single node:
 
 ```bash
 # 1. Run the test job
-./dh.sh apply test-single-node
+./dh.sh apply local/test-single-node
+# Or Execute this command to wait & check the job execution
+./dh.sh run local test-single-node
 
 # 2 Check the results when the job has finished 
 kubectl get jobs/test-single-node -n dh-health -o jsonpath='{.status.conditions[1].type}'
+
 
 # 2. Check the logs of test-single-node pod 
 kubectl logs -n dh-health jobs/test-single-node
 kubectl logs -n dh-health -f jobs/test-single-node  (Autorefresh)
 
 # 3. Manually clean up the containers
-./dh.sh delete test-single-node
+./dh.sh delete local/test-single-node
 ```
 
 To run tests on federation:
 
 ```bash
 # 1. Run the test job
-./dh.sh apply test-federation
+./dh.sh apply local/test-federation
+# Or Execute this command to wait & check the job execution
+./dh.sh run local test-federation 
 
 # 2 Check the results when the job has finished 
 kubectl get jobs/test-federation -n dh-health -o jsonpath='{.status.conditions[1].type}'
@@ -245,7 +252,7 @@ kubectl logs -n dh-health jobs/test-federation
 kubectl logs -n dh-health -f jobs/test-federation (Autorefresh)
 
 # 3. Manually clean up the containers
-./dh.sh delete test-federation
+./dh.sh delete local/test-federation
 ```
 
 ### Viewing Logs
