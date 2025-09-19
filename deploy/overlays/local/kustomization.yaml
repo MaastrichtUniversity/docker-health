@@ -89,6 +89,15 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.envida.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: envida-federation-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: federation.envida.local.dh.unimaas.nl
 ## MUMC-node
 - target:
     group: networking.k8s.io
@@ -126,6 +135,15 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.mumc.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: mumc-federation-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: federation.mumc.local.dh.unimaas.nl
 ## VITALA-node
 - target:
     group: networking.k8s.io
@@ -163,6 +181,15 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.vitala.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: vitala-federation-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: federation.vitala.local.dh.unimaas.nl
 ## ZIO-node
 - target:
     group: networking.k8s.io
@@ -200,6 +227,15 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.zio.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-federation-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: federation.zio.local.dh.unimaas.nl
 ## TEST-node
 - target:
     group: networking.k8s.io
