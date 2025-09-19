@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: envida-federation-rest
+  namespace: dh-health
+  labels:
+    app: envida-federation-rest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: envida-federation-rest
+  template:
+    metadata:
+      labels:
+        app: envida-federation-rest
+    spec:
+      containers:
+        - name: envida-federation-rest
+          image: registry.prod.dh.unimaas.nl/docker-health/federation-rest:latest
+          ports:
+            - containerPort: 8000
+          env:
+            # Envida-node
+            - name: NODENAME
+              valueFrom:
+                configMapKeyRef:
+                  name: envida-etl-config
+                  key: NODENAME
+            - name: ENVIDA__FEDERATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: envida-federation-key
+                  key: key
+            - name: ENVIDA__FEDERATION_BTG_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: envida-federation-break-the-glass-key
+                  key: key
+            - name: EHRBASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: envida-ehrbase-creds
+                  key: username
+            - name: EHRBASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: envida-ehrbase-creds
+                  key: password
+            - name: EHRBASE_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: envida-etl-config
+                  key: EHRBASE_BASE_URL
+            # MUMC-node
+            - name: MUMC__FEDERATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mumc-federation-key
+                  key: key
+            - name: MUMC__FEDERATION_BTG_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mumc-federation-break-the-glass-key
+                  key: key
+            - name: MUMC__FEDERATION_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mumc-federation-rest-config
+                  key: FEDERATION_BASE_URL
+            # Vitala-node
+            - name: VITALA__FEDERATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: vitala-federation-key
+                  key: key
+            - name: VITALA__FEDERATION_BTG_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: vitala-federation-break-the-glass-key
+                  key: key
+            - name: VITALA__FEDERATION_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: vitala-federation-rest-config
+                  key: FEDERATION_BASE_URL
+            # ZIO-node
+            - name: ZIO__FEDERATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: zio-federation-key
+                  key: key
+            - name: ZIO__FEDERATION_BTG_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: zio-federation-break-the-glass-key
+                  key: key
+            - name: ZIO__FEDERATION_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: zio-federation-rest-config
+                  key: FEDERATION_BASE_URL
+          envFrom:
+            - configMapRef:
+                name: timezone-config
+            - configMapRef:
+                name: envida-federation-rest-config
+          volumeMounts:
+            - name: logs
+              mountPath: /code/logs/federation-rest-envida
+              subPath: federation
+      volumes:
+        - name: logs
+          persistentVolumeClaim:
+            claimName: log-pvc
