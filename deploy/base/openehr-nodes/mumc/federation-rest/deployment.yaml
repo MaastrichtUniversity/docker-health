@@ -27,7 +27,7 @@ spec:
                 secretKeyRef:
                   name: envida-federation-key
                   key: key
-            - name: ENVIDA__BTG_KEY
+            - name: ENVIDA__FEDERATION_BTG_KEY
               valueFrom:
                 secretKeyRef:
                   name: envida-federation-break-the-glass-key
@@ -53,6 +53,11 @@ spec:
                 secretKeyRef:
                   name: mumc-federation-break-the-glass-key
                   key: key
+            - name: MUMC__FEDERATION_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mumc-federation-rest-config
+                  key: FEDERATION_BASE_URL
             - name: EHRBASE_USERNAME
               valueFrom:
                 secretKeyRef:

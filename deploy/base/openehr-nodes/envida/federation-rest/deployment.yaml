@@ -37,6 +37,11 @@ spec:
                 secretKeyRef:
                   name: envida-federation-break-the-glass-key
                   key: key
+            - name: ENVIDA__FEDERATION_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: envida-federation-rest-config
+                  key: FEDERATION_BASE_URL
             - name: EHRBASE_USERNAME
               valueFrom:
                 secretKeyRef:

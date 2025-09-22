@@ -85,6 +85,11 @@ spec:
                 secretKeyRef:
                   name: zio-federation-break-the-glass-key
                   key: key
+            - name: ZIO__FEDERATION_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: zio-federation-rest-config
+                  key: FEDERATION_BASE_URL
             - name: EHRBASE_USERNAME
               valueFrom:
                 secretKeyRef:
