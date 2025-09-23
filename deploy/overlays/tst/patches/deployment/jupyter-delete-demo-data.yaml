@@ -4,6 +4,9 @@ metadata:
   name: jupyter-zib
   namespace: dh-health
 spec:
+  selector:
+    matchLabels:
+      app: jupyter-zib
   template:
     spec:
       containers:

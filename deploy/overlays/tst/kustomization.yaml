@@ -157,6 +157,8 @@ patches:
 - path: patches/job/zio-etl-zib-add-demo-data.yaml
 - path: patches/deployment/jupyter-delete-demo-data.yaml
 - path: patches/deployment/jupyter-add-demo-data.yaml
+# Delete TEST node configs
+- path: patches/deployment/jupyter-delete-test-config.yaml
 
 # Docker Hub official repository secret patch
 - target:
