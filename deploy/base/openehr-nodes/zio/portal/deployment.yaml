@@ -41,8 +41,11 @@ spec:
               secretKeyRef:
                 name: zio-federation-break-the-glass-key
                 key: key
+          - name: NEXT_PUBLIC_FEDERATION_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: zio-federation-rest-config
+                key: FEDERATION_BASE_URL
         envFrom:
         - configMapRef:
             name: zio-portal-config
-        - configMapRef:
-            name: portal-common-config
