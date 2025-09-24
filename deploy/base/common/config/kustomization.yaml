@@ -7,6 +7,5 @@ generatorOptions:
 resources:
 - ehrbase.yaml
 - openehrtool.yaml
-- portal.yaml
 - timezone.yaml
 - zib-templates.yaml

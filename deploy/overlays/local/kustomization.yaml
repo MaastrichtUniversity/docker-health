@@ -470,11 +470,6 @@ secretGenerator:
       - SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
 
 configMapGenerator:
-- name: portal-common-config
-  namespace: dh-health
-  behavior: merge
-  literals:
-    - NEXT_PUBLIC_FEDERATION_BASE_URL=http://federation.local.dh.unimaas.nl
 # Set ADMIN_API_ACTIVE: "true" in all nodes for development purposes for openEHRtool ADMIN methods.
 - name: ehrbase-config
   namespace: dh-health
