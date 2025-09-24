@@ -41,8 +41,11 @@ spec:
               secretKeyRef:
                 name: envida-federation-break-the-glass-key
                 key: key
+          - name: NEXT_PUBLIC_FEDERATION_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: envida-federation-rest-config
+                key: FEDERATION_BASE_URL
         envFrom:
         - configMapRef:
             name: envida-portal-config
-        - configMapRef:
-            name: portal-common-config
