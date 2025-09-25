@@ -12,7 +12,7 @@ BSN,Rol,Relatie,Toelichting,Voornamen,Initialen,Roepnaam,Naamgebruik,Voorvoegsel
 363037809,Voogd,Broer,,Obi-Wan,,Ben,,,Kenobi,,,,,,,,,,,,,,,,,,,,,007-12-04T12:09:45.581,FAIL-DATE_TIME has a wrong datetime format (wrong year value)
 315071710,WrongValue,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T10:00:00.000,PASS-Rol is wrong
 362880311,,WrongValue,,,,,,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T10:00:00.000,PASS-Relatie is wrong
-525736712,,,,,,,WrongValue,,,,,,,,,,,,,,,,,,,,,,,2025-01-01T10:00:00.000,PASS-Naamgebruik is wrong
+525736712,,,,,,,WrongValue,,Palpatine,,,,,,,,,,,,,,,,,,,,,2025-01-01T10:00:00.000,PASS-Naamgebruik is wrong (Achternaam or Achternaam partner is mandatory in Naamgegevens)
 646236313,,,,,,,,,,,,,0123456789,WrongValue,,,,,,,,,,,,,,,,2025-01-01T10:00:00.000,PASS-TelecomType is wrong (Telefoonnummer is mandatory within Contactgegevens/Telefoonnummers)
 640681414,,,,,,,,,,,,,0123456789,,WrongValue,,,,,,,,,,,,,,,2025-01-01T10:00:00.000,PASS-NummerSoort is wrong (Telefoonnummer is mandatory within Contactgegevens/Telefoonnummers)
 840027515,,,,,,,,,,,,,,,,,123@live.nl,WrongValue,,,,,,,,,,,,2025-01-01T10:00:00.000,PASS-EmailSoort is wrong (EmailAdres is mandatory within Contactgegevens/EmailAdressen)
