@@ -96,7 +96,10 @@ These changes take effect after restarting minikube and should persist across se
 127.0.0.1 etl.mumc.local.dh.unimaas.nl
 127.0.0.1 etl.zio.local.dh.unimaas.nl
 127.0.0.1 etl.vitala.local.dh.unimaas.nl
-127.0.0.1 federation.local.dh.unimaas.nl
+127.0.0.1 federation.mumc.local.dh.unimaas.nl
+127.0.0.1 federation.zio.local.dh.unimaas.nl
+127.0.0.1 federation.envida.local.dh.unimaas.nl
+127.0.0.1 federation.vitala.local.dh.unimaas.nl
 127.0.0.1 jupyter.local.dh.unimaas.nl
 127.0.0.1 openehrtool.envida.local.dh.unimaas.nl
 127.0.0.1 openehrtool.mumc.local.dh.unimaas.nl
