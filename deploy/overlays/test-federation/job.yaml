@@ -61,6 +61,11 @@ spec:
                 secretKeyRef:
                   name: envida-federation-break-the-glass-key
                   key: key
+            - name: ENVIDA__FEDERATION_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: envida-federation-rest-config
+                  key: FEDERATION_BASE_URL
             - name: ENVIDA__EHRBASE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -92,6 +97,11 @@ spec:
                 secretKeyRef:
                   name: mumc-federation-break-the-glass-key
                   key: key
+            - name: MUMC__FEDERATION_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mumc-federation-rest-config
+                  key: FEDERATION_BASE_URL
             - name: MUMC__EHRBASE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -123,6 +133,11 @@ spec:
                 secretKeyRef:
                   name: vitala-federation-break-the-glass-key
                   key: key
+            - name: VITALA__FEDERATION_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: vitala-federation-rest-config
+                  key: FEDERATION_BASE_URL
             - name: VITALA__EHRBASE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -154,6 +169,11 @@ spec:
                 secretKeyRef:
                   name: zio-federation-break-the-glass-key
                   key: key
+            - name: ZIO__FEDERATION_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: zio-federation-rest-config
+                  key: FEDERATION_BASE_URL
             - name: ZIO__EHRBASE_USERNAME
               valueFrom:
                 secretKeyRef:
