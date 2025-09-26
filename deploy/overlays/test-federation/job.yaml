@@ -65,7 +65,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: envida-federation-rest-config
-                  key: FEDERATION_BASE_URL
+                  key: FEDERATION_SERVER_URL
             # MUMC-node
             - name: MUMC__NODENAME
               valueFrom:
@@ -86,7 +86,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: mumc-federation-rest-config
-                  key: FEDERATION_BASE_URL
+                  key: FEDERATION_SERVER_URL
             # VITALA-node
             - name: VITALA__NODENAME
               valueFrom:
@@ -107,7 +107,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: vitala-federation-rest-config
-                  key: FEDERATION_BASE_URL
+                  key: FEDERATION_SERVER_URL
             # ZIO-node
             - name: ZIO__NODENAME
               valueFrom:
@@ -128,7 +128,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: zio-federation-rest-config
-                  key: FEDERATION_BASE_URL
+                  key: FEDERATION_SERVER_URL
           volumeMounts:
             - name: logs
               mountPath: /code/logs/federation-rest

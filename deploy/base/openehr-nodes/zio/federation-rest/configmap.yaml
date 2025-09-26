@@ -7,3 +7,4 @@ data:
   LOGSTASH_TAGS: "FEDERATION_REST_ZIO"
   FEDERATION_LOGGER_FILENAME: "logs/federation-rest/federation-rest-zio.log"
   FEDERATION_BASE_URL: http://federation.zio.local.dh.unimaas.nl
+  FEDERATION_SERVER_URL: http://zio-federation-rest.dh-health:8000

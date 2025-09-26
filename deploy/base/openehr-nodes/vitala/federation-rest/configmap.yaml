@@ -7,3 +7,4 @@ data:
   LOGSTASH_TAGS: "FEDERATION_REST_VITALA"
   FEDERATION_LOGGER_FILENAME: "logs/federation-rest/federation-rest-vitala.log"
   FEDERATION_BASE_URL: http://federation.vitala.local.dh.unimaas.nl
+  FEDERATION_SERVER_URL: http://vitala-federation-rest.dh-health:8000

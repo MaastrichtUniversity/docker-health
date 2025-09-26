@@ -7,3 +7,4 @@ data:
   LOGSTASH_TAGS: "FEDERATION_REST_MUMC"
   FEDERATION_LOGGER_FILENAME: "logs/federation-rest/federation-rest-mumc.log"
   FEDERATION_BASE_URL: http://federation.mumc.local.dh.unimaas.nl
+  FEDERATION_SERVER_URL: http://mumc-federation-rest.dh-health:8000
