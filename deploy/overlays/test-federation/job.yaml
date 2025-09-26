@@ -66,21 +66,6 @@ spec:
                 configMapKeyRef:
                   name: envida-federation-rest-config
                   key: FEDERATION_BASE_URL
-            - name: ENVIDA__EHRBASE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: envida-ehrbase-creds
-                  key: username
-            - name: ENVIDA__EHRBASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: envida-ehrbase-creds
-                  key: password
-            - name: ENVIDA__EHRBASE_BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: envida-etl-config
-                  key: EHRBASE_BASE_URL
             # MUMC-node
             - name: MUMC__NODENAME
               valueFrom:
@@ -102,21 +87,6 @@ spec:
                 configMapKeyRef:
                   name: mumc-federation-rest-config
                   key: FEDERATION_BASE_URL
-            - name: MUMC__EHRBASE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: mumc-ehrbase-creds
-                  key: username
-            - name: MUMC__EHRBASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mumc-ehrbase-creds
-                  key: password
-            - name: MUMC__EHRBASE_BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: mumc-etl-config
-                  key: EHRBASE_BASE_URL
             # VITALA-node
             - name: VITALA__NODENAME
               valueFrom:
@@ -138,21 +108,6 @@ spec:
                 configMapKeyRef:
                   name: vitala-federation-rest-config
                   key: FEDERATION_BASE_URL
-            - name: VITALA__EHRBASE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: vitala-ehrbase-creds
-                  key: username
-            - name: VITALA__EHRBASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: vitala-ehrbase-creds
-                  key: password
-            - name: VITALA__EHRBASE_BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: vitala-etl-config
-                  key: EHRBASE_BASE_URL
             # ZIO-node
             - name: ZIO__NODENAME
               valueFrom:
@@ -174,22 +129,6 @@ spec:
                 configMapKeyRef:
                   name: zio-federation-rest-config
                   key: FEDERATION_BASE_URL
-            - name: ZIO__EHRBASE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: zio-ehrbase-creds
-                  key: username
-            - name: ZIO__EHRBASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: zio-ehrbase-creds
-                  key: password
-            - name: ZIO__EHRBASE_BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: zio-etl-config
-                  key: EHRBASE_BASE_URL
-
           volumeMounts:
             - name: logs
               mountPath: /code/logs/federation-rest
