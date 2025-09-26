@@ -283,3 +283,8 @@ secretGenerator:
     literals:
       - username=user
       - password=foobar
+# federation
+  - name: federation-service-creds
+    namespace: dh-health
+    literals:
+      - key=serviceKey
