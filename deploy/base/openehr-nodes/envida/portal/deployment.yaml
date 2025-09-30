@@ -31,12 +31,12 @@ spec:
               secretKeyRef:
                 name: envida-portal-creds
                 key: password
-          - name: NEXT_PUBLIC_FEDERATION_API_KEY
+          - name: FEDERATION_API_KEY
             valueFrom:
               secretKeyRef:
                 name: envida-federation-key
                 key: key
-          - name: NEXT_PUBLIC_FEDERATION_BTG_API_KEY
+          - name: FEDERATION_BTG_API_KEY
             valueFrom:
               secretKeyRef:
                 name: envida-federation-break-the-glass-key

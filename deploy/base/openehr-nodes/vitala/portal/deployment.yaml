@@ -31,12 +31,12 @@ spec:
               secretKeyRef:
                 name: vitala-portal-creds
                 key: password
-          - name: NEXT_PUBLIC_FEDERATION_API_KEY
+          - name: FEDERATION_API_KEY
             valueFrom:
               secretKeyRef:
                 name: vitala-federation-key
                 key: key
-          - name: NEXT_PUBLIC_FEDERATION_BTG_API_KEY
+          - name: FEDERATION_BTG_API_KEY
             valueFrom:
               secretKeyRef:
                 name: vitala-federation-break-the-glass-key
