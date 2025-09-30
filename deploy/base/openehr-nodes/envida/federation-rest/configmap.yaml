@@ -6,5 +6,4 @@ metadata:
 data:
   LOGSTASH_TAGS: "FEDERATION_REST_ENVIDA"
   FEDERATION_LOGGER_FILENAME: "logs/federation-rest/federation-rest-envida.log"
-  FEDERATION_BASE_URL: http://federation.envida.local.dh.unimaas.nl
   FEDERATION_SERVER_URL: http://envida-federation-rest.dh-health:8000

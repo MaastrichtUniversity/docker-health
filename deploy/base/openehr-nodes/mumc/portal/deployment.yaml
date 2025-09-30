@@ -41,11 +41,6 @@ spec:
               secretKeyRef:
                 name: mumc-federation-break-the-glass-key
                 key: key
-          - name: NEXT_PUBLIC_FEDERATION_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: mumc-federation-rest-config
-                key: FEDERATION_BASE_URL
         envFrom:
         - configMapRef:
             name: mumc-portal-config
