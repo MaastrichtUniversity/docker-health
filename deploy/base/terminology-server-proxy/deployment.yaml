@@ -23,6 +23,11 @@ spec:
           - configMapRef:
               name: terminology-server-proxy-config
         env:
+          - name: DRY_RUN
+            valueFrom:
+              configMapKeyRef:
+                name: zib-templates-config
+                key: DRY_RUN
           - name: TERMINOLOGY_USERNAME
             valueFrom:
               secretKeyRef:
