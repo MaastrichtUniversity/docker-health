@@ -1,7 +1,8 @@
 apiVersion: external-secrets.io/v1
-kind: ClusterSecretStore
+kind: SecretStore
 metadata:
   name: prod-vault.dev-test
+  namespace: dh-health
 spec:
   provider:
     vault:
@@ -13,5 +14,5 @@ spec:
           mountPath: "kubernetes"
           role: "external-secrets"
           serviceAccountRef:
-            name: "vault-auth"
-            namespace: "dh-health"    # This should be the ServiceAccount running the ExternalSecrets operator
+            name: "vault-auth" # This should be the ServiceAccount running the ExternalSecrets operator
+            namespace: "dh-health" # Namespace of the ServiceAccount

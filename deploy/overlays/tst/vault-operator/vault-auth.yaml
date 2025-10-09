@@ -1,0 +1,63 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vault-auth
+  namespace: dh-health
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: vault-auth-token
+  namespace: dh-health
+  annotations:
+    kubernetes.io/service-account.name: vault-auth
+type: kubernetes.io/service-account-token
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: vault-auth-tokenreview
+rules:
+- apiGroups: ["authentication.k8s.io"]
+  resources: ["tokenreviews"]
+  verbs: ["create"]
+- apiGroups: [""]
+  resources: ["serviceaccounts"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: vault-auth-tokenreview
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: vault-auth-tokenreview
+subjects:
+- kind: ServiceAccount
+  name: vault-auth
+  namespace: dh-health
+---
+# This role allows the external-secrets operator to authenticate with Vault
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: external-secrets-vault-auth
+rules:
+- apiGroups: [""]
+  resources: ["serviceaccounts/token"]
+  verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: external-secrets-vault-auth
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: external-secrets-vault-auth
+subjects:
+- kind: ServiceAccount
+  name: vault-auth # Using the same service account referenced in vault-store.yaml
+  namespace: dh-health # Ensure this matches the namespace where external-secrets is deployed
