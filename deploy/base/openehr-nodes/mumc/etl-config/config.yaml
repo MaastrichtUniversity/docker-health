@@ -10,7 +10,9 @@ data:
   LOGGER_FILENAME: logs/mumc/etl-zib.log
   EHRBASE_BASE_URL: http://mumc-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
   WRITE_COMPOSITION: "true"
-  SUBJECT_IDS: '["001645201","083197102","339055303"]'
+  # If SUBJECT_IDS is empty, extract subject_ids from dataset:
+  SUBJECT_IDS: |
+    []
   TEMPLATE_IDS: |
     [
       "DataHub-AlcoholGebruik-2024",
