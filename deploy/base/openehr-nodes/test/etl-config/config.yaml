@@ -12,7 +12,7 @@ data:
   LOGGER_FILENAME: logs/test/etl-zib.log
   EHRBASE_BASE_URL: http://test-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
   WRITE_COMPOSITION: "False"
-  # SUBJECT_IDS need to stay empty for running the single-node tests:
+  # If SUBJECT_IDS is empty, extract subject_ids from dataset:
   SUBJECT_IDS: |
     []
   TEMPLATE_IDS: |
