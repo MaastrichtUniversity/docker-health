@@ -6,7 +6,7 @@ metadata:
 spec:
   refreshInterval: 1h
   secretStoreRef:
-    name: prod-vault.dev-test
+    name: prod-vault.tst
     kind: SecretStore
   target:
     name: federation-tls-secret
@@ -34,7 +34,7 @@ metadata:
 spec:
   refreshInterval: 1h
   secretStoreRef:
-    name: prod-vault.dev-test
+    name: prod-vault.tst
     kind: SecretStore
   target:
     name: jupyter-tls-secret
@@ -62,7 +62,7 @@ metadata:
 spec:
   refreshInterval: 1d
   secretStoreRef:
-    name: prod-vault.dev-test
+    name: prod-vault.tst
     kind: SecretStore
   target:
     name: transform-tls-secret

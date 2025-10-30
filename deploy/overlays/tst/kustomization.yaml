@@ -23,7 +23,6 @@ images:
 resources:
 # NEW vault secret operator
 - ./vault-operator
-#- ./tls-secrets-patch.yaml
 - ./secrets.yaml
 #- ./registry-secret.yaml
 - ../../base/common

@@ -6,7 +6,7 @@ metadata:
 spec:
   refreshInterval: 1d
   secretStoreRef:
-    name: prod-vault.dev-test
+    name: prod-vault.tst
     kind: SecretStore
   target:
     name: portal-zio-tls-secret
