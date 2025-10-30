@@ -11,7 +11,7 @@ spec:
       version: "v2" # This will automatically handle the /data/ prefix
       auth:
         kubernetes:
-          mountPath: "kubernetes"
+          mountPath: "fhml-srv018" # The mount path of the Kubernetes auth method in Vault
           role: "external-secrets"
           serviceAccountRef:
             name: "vault-auth" # This should be the ServiceAccount running the ExternalSecrets operator

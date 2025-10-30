@@ -4,10 +4,10 @@ metadata:
   name: portal-zio-tls-secret
   namespace: dh-health
 spec:
-  refreshInterval: 1h
+  refreshInterval: 1d
   secretStoreRef:
     name: prod-vault.dev-test
-    kind: ClusterSecretStore
+    kind: SecretStore
   target:
     name: portal-zio-tls-secret
     template:
