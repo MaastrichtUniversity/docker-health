@@ -10,6 +10,7 @@ data:
   LOGGER_FILENAME: logs/mumc/etl-zib.log
   EHRBASE_BASE_URL: http://mumc-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
   WRITE_COMPOSITION: "true"
+  # Specify the SUBJECT_IDS for MUMC manually as a control.
   SUBJECT_IDS: '["001645201","083197102","339055303"]'
   TEMPLATE_IDS: |
     [
