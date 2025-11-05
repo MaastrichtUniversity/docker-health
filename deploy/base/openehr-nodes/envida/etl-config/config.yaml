@@ -10,7 +10,9 @@ data:
   LOGGER_FILENAME: logs/envida/etl-zib.log
   EHRBASE_BASE_URL: http://envida-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
   WRITE_COMPOSITION: "True"
-  SUBJECT_IDS: '["001645201","339055303","316268306"]'
+  # If SUBJECT_IDS is empty, extract subject_ids from dataset:
+  SUBJECT_IDS: |
+    []
   TEMPLATE_IDS: |
     [
       "DataHub-AlcoholGebruik-2024",
