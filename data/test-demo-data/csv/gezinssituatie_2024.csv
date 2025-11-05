@@ -5,7 +5,7 @@ BSN,BURGERLIJKE_STAAT,GEZINSSAMENSTELLING,AANTAL_KINDEREN,AANTAL_KINDEREN_INWONE
 083197102,Married,Woont samen met levenspartner,3,1,zorgt voor partner,met partner,2022-03-14,True,twee kinderen in buitenland,1998-03-13T03:33:14.512,PASS-Test data max
 339055303,,,,,,,,,,1999-03-23T03:33:14.512,PASS-Test data min
 389370204,,,,,,,,,,,FAIL-Test data none
-683754105,,,,,,,,,,2014-06-11T03:33:14.613,PASS-Test data empty
+683754105,,,,,,,,,,2014-06-11T03:33:14.613,FAIL-Test data empty
 316268306,Unmarried,,1,0,geen,kind woont bij grootouders,,False,,2011-09-12T03:33:14.823,PASS
 569973107,Other,Woont samen met vrienden,0,0,niets,met vrienden,,,,2008-09-14T03:33:14.211,PASS
 011168808,Never Married,Inwonende meerderjarige kinderen,4,1,zorg voor ouders,kinderen wonen thuis,1997-06-15,True,wil verhuizen,,FAIL-DATE_TIME is empty
