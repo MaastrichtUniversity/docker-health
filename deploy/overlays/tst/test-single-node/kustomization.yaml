@@ -3,8 +3,9 @@ kind: Kustomization
 namespace: dh-health
 
 resources:
-- job.yaml
 - secrets.yaml
+- test-secrets.yaml
+- job.yaml
 #- registry-secret.yaml
 - ../../../base/common
 - ../../../base/transform-rest

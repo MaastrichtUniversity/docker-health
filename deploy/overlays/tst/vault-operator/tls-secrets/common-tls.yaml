@@ -1,0 +1,80 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: federation-tls-secret
+  namespace: dh-health
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: prod-vault.tst
+    kind: SecretStore
+  target:
+    name: federation-tls-secret
+    template:
+      type: kubernetes.io/tls
+      data:
+        tls.crt: "{{ .federation_crt }}"
+        tls.key: "{{ .federation_key }}"
+  data:
+  - secretKey: federation_crt
+    remoteRef:
+      key: fhml-srv018__tst-k3s-hdp
+      property: federation.tst.dh.unimaas.nl.crt
+  - secretKey: federation_key
+    remoteRef:
+      key: fhml-srv018__tst-k3s-hdp
+      property: federation.tst.dh.unimaas.nl.key
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: jupyter-tls-secret
+  namespace: dh-health
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: prod-vault.tst
+    kind: SecretStore
+  target:
+    name: jupyter-tls-secret
+    template:
+      type: kubernetes.io/tls
+      data:
+        tls.crt: "{{ .jupyter_crt }}"
+        tls.key: "{{ .jupyter_key }}"
+  data:
+  - secretKey: jupyter_crt
+    remoteRef:
+      key: fhml-srv018__tst-k3s-hdp
+      property: jupyter.tst.dh.unimaas.nl.crt
+  - secretKey: jupyter_key
+    remoteRef:
+      key: fhml-srv018__tst-k3s-hdp
+      property: jupyter.tst.dh.unimaas.nl.key
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: transform-tls-secret
+  namespace: dh-health
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: prod-vault.tst
+    kind: SecretStore
+  target:
+    name: transform-tls-secret
+    template:
+      type: kubernetes.io/tls
+      data:
+        tls.crt: "{{ .transform_crt }}"
+        tls.key: "{{ .transform_key }}"
+  data:
+  - secretKey: transform_crt
+    remoteRef:
+      key: fhml-srv018__tst-k3s-hdp
+      property: transform.tst.dh.unimaas.nl.crt
+  - secretKey: transform_key
+    remoteRef:
+      key: fhml-srv018__tst-k3s-hdp
+      property: transform.tst.dh.unimaas.nl.key
