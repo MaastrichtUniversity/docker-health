@@ -14,3 +14,4 @@ BSN,TOILETGEBRUIK,ZORG_BIJ_MENSTRUATIE,PRODUCT_TYPE,DATE_TIME,TEST_COMMENTS
 362880311,,Niet in staat zorg te dragen voor menstruatiehygiëne,Toiletstoel,1999-09-09T09:39:09.049,PASS-TOILETGEBRUIK is missing
 525736712,Hulp nodig bij toiletgang,WrongValue,Urinaal,1991-08-19T06:30:00.046,PASS-ZORG_BIJ_MENSTRUATIE is wrong
 646236313,In staat om zelfstandig naar toilet te gaan,,WrongValue,2023-12-31T23:59:59.871,PASS-PRODUCT_TYPE is wrong
+640681414,WrongValue,WrongValue,WrongValue,2023-12-31T23:59:59.871,FAIL-Test all fields wrong or empty
