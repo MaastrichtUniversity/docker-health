@@ -1,7 +1,7 @@
 BSN,BURGERLIJKE_STAAT,GEZINSSAMENSTELLING,AANTAL_KINDEREN,AANTAL_KINDEREN_INWONEND,ZORGTAAK,TOELICHTING_GEZINSSITUATIE,GEBOORTEDATUM,INWONEND,TOELICHTING_KIND,DATE_TIME,TEST_COMMENTS
-001645201,Divorced,Woont alleen,1,0,geen zorgtaak,kind uitwonend,2014-11-28,False,uitwonend,2003-11-25T03:33:14.321,PASS-Test valid start_time
-001645201,Widowed,Woont met ouders,2,1,zorg voor kind,ouders helpen,2015-12-29,True,woont thuis,2004-11-25T03:33:14.321,PASS-Test valid start_time
-001645201,Divorced,Woont alleen,1,0,geen zorgtaak,kind uitwonend,2014-11-28,False,uitwonend,2003-11-25T03:33:14.321,FAIL-Test valid start_time
+001645201,Divorced,Woont alleen,1,0,geen zorgtaak,kind uitwonend,2014-11-28,False,uitwonend,2003-11-25T03:33:14.321,PASS-Test duplication check
+001645201,Widowed,Woont met ouders,2,1,zorg voor kind,ouders helpen,2015-12-29,True,woont thuis,2004-11-25T03:33:14.321,PASS-Test duplication check
+001645201,Divorced,Woont alleen,1,0,geen zorgtaak,kind uitwonend,2014-11-28,False,uitwonend,2003-11-25T03:33:14.321,FAIL-Test duplication check
 083197102,Married,Woont samen met levenspartner,3,1,zorgt voor partner,met partner,2022-03-14,True,twee kinderen in buitenland,1998-03-13T03:33:14.512,PASS-Test data max
 339055303,,,,,,met vrienden,,,,1999-03-23T03:33:14.512,PASS-Test data min
 389370204,,,,,,,,,,,FAIL-Test data none
