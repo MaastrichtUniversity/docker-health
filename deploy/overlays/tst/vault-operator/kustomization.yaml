@@ -10,3 +10,8 @@ resources:
 - tls-secrets/mumc-tls.yaml
 - tls-secrets/vitala-tls.yaml
 - tls-secrets/zio-tls.yaml
+- secrets/common-secrets.yaml
+- secrets/envida-secrets.yaml
+- secrets/mumc-secrets.yaml
+- secrets/vitala-secrets.yaml
+- secrets/zio-secrets.yaml
