@@ -52,7 +52,3 @@ rit.sh
 .vscode/
 deploy/overlays/*/registry-secret.yaml
 deploy/overlays/*/*/registry-secret.yaml
-
-# Secrets
-deploy/overlays/*/secrets.yaml
-deploy/overlays/*/*/secrets.yaml

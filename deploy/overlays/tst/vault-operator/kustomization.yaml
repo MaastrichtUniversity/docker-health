@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: dh-health
+
+resources:
+- vault-auth.yaml
+- vault-store.yaml
+- tls-secrets/common-tls.yaml
+- tls-secrets/envida-tls.yaml
+- tls-secrets/mumc-tls.yaml
+- tls-secrets/vitala-tls.yaml
+- tls-secrets/zio-tls.yaml
+- secrets/common-secrets.yaml
+- secrets/envida-secrets.yaml
+- secrets/mumc-secrets.yaml
+- secrets/vitala-secrets.yaml
+- secrets/zio-secrets.yaml
