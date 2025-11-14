@@ -8,3 +8,4 @@ resources:
 - jupyter-zib
 - openehr-nodes
 - terminology-server-proxy
+- filebeat
