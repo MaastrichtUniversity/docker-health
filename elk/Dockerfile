@@ -36,6 +36,9 @@ RUN npm install -g elasticdump@${VER_ELASTICDUMP}
 RUN rm -r /etc/logstash/conf.d/ && mkdir /etc/logstash/conf.d/
 
 
+ADD ./elasticsearch.node1.yml /etc/elasticsearch/elasticsearch.yml
+ADD ./logstash-config /etc/logstash/conf.d
+
 ## Add customized logstash patterns
 ADD ./RIT.pattern ${LOGSTASH_HOME}/patterns/RIT
 
