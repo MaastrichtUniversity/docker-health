@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zio-transform-server-config
+  namespace: dh-health
+data:
+  TERMINOLOGY_BASE_URL: http://terminology-server-proxy.dh-health:8080
+  TRANSFORM_SPRING_BASE_URL: http://zio-transform-rest.dh-health:8080
+  LOGSTASH_TAGS: TRANSFORM_REST_ZIO
