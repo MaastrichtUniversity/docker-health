@@ -9,3 +9,4 @@ resources:
 - openehr-nodes
 - terminology-server-proxy
 - filebeat
+- elk
