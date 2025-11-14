@@ -23,12 +23,12 @@ spec:
           - name: TRANSFORM_SPRING_USERNAME
             valueFrom:
               secretKeyRef:
-                name: transform-creds
+                name: mumc-transform-creds
                 key: username
           - name: TRANSFORM_SPRING_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: transform-creds
+                name: mumc-transform-creds
                 key: password
         envFrom:
         - configMapRef:
