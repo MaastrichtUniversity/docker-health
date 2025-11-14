@@ -12,6 +12,6 @@ generatorOptions:
 
 resources:
 - configmap.yaml
-- daemonset.yaml
+- deployment.yaml
 - ingress.yaml
 - service.yaml

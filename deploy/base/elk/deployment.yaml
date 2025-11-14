@@ -1,22 +1,20 @@
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: elk
   namespace: dh-health
   labels:
-    k8s-app: elk
+    app: elk
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      k8s-app: elk
+      app: elk
   template:
     metadata:
       labels:
-        k8s-app: elk
+        app: elk
     spec:
-      terminationGracePeriodSeconds: 30
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: elk
         image: registry.prod.dh.unimaas.nl/docker-health/elk:latest

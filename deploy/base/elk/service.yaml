@@ -4,10 +4,10 @@ metadata:
   name: elk
   namespace: dh-health
 spec:
-  type: ClusterIP
-  ports:
-    - port: 5601
-      targetPort: 5601
-      protocol: TCP
   selector:
     app: elk
+  ports:
+  - port: 5601
+    targetPort: 5601
+    name: kibana
+  type: ClusterIP
