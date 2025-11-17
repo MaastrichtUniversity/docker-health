@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: vitala-transform-rest
+  name: transform-rest-vitala
   namespace: dh-health
 spec:
   type: ClusterIP
@@ -10,4 +10,4 @@ spec:
       targetPort: 8080
       protocol: TCP
   selector:
-    app: vitala-transform-rest
+    app: transform-rest-vitala
