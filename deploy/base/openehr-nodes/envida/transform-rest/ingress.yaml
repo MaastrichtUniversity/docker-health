@@ -15,6 +15,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: envida-transform-rest
+            name: transform-rest-envida
             port:
               number: 8080

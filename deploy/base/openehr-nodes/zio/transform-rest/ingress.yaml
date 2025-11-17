@@ -15,6 +15,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: zio-transform-rest
+            name: transform-rest-zio
             port:
               number: 8080

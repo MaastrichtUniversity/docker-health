@@ -15,6 +15,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: test-transform-rest
+            name: transform-rest-test
             port:
               number: 8080
