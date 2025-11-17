@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: zio-transform-rest
+  name: transform-rest-zio
   namespace: dh-health
   labels:
-    app: zio-transform-rest
+    app: transform-rest-zio
 spec:
   selector:
     matchLabels:
-      app: zio-transform-rest
+      app: transform-rest-zio
   template:
     metadata:
       labels:
-        app: zio-transform-rest
+        app: transform-rest-zio
     spec:
       containers:
       - name: transform-rest

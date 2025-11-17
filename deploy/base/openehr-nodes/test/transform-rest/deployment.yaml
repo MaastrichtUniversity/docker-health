@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-transform-rest
+  name: transform-rest-test
   namespace: dh-health
   labels:
-    app: test-transform-rest
+    app: transform-rest-test
 spec:
   selector:
     matchLabels:
-      app: test-transform-rest
+      app: transform-rest-test
   template:
     metadata:
       labels:
-        app: test-transform-rest
+        app: transform-rest-test
     spec:
       containers:
       - name: transform-rest

@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vitala-transform-rest
+  name: transform-rest-vitala
   namespace: dh-health
   labels:
-    app: vitala-transform-rest
+    app: transform-rest-vitala
 spec:
   selector:
     matchLabels:
-      app: vitala-transform-rest
+      app: transform-rest-vitala
   template:
     metadata:
       labels:
-        app: vitala-transform-rest
+        app: transform-rest-vitala
     spec:
       containers:
       - name: transform-rest

@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mumc-transform-rest
+  name: transform-rest-mumc
   namespace: dh-health
   labels:
-    app: mumc-transform-rest
+    app: transform-rest-mumc
 spec:
   selector:
     matchLabels:
-      app: mumc-transform-rest
+      app: transform-rest-mumc
   template:
     metadata:
       labels:
-        app: mumc-transform-rest
+        app: transform-rest-mumc
     spec:
       containers:
       - name: transform-rest

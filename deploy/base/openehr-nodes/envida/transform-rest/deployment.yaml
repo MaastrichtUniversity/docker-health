@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: envida-transform-rest
+  name: transform-rest-envida
   namespace: dh-health
   labels:
-    app: envida-transform-rest
+    app: transform-rest-envida
 spec:
   selector:
     matchLabels:
-      app: envida-transform-rest
+      app: transform-rest-envida
   template:
     metadata:
       labels:
-        app: envida-transform-rest
+        app: transform-rest-envida
     spec:
       containers:
       - name: transform-rest
