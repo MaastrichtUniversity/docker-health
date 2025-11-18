@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: elk
-  namespace: dh-health
+  namespace: dh-health-ops
 spec:
   selector:
     app: elk
