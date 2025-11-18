@@ -7,6 +7,12 @@ spec:
   selector:
     app: elk
   ports:
+  - port: 9200
+    targetPort: 9200
+    name: elasticsearch
+  - port: 5044
+    targetPort: 5044
+    name: logstash
   - port: 5601
     targetPort: 5601
     name: kibana
