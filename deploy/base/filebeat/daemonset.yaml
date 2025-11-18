@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: filebeat
-  namespace: kube-system
+  namespace: dh-health-ops
   labels:
     k8s-app: filebeat
 spec:
@@ -15,7 +15,7 @@ spec:
         k8s-app: filebeat
     spec:
       serviceAccountName: filebeat
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 5
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:

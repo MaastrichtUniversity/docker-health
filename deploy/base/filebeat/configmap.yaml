@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: filebeat-config
-  namespace: kube-system
+  namespace: dh-health-ops
   labels:
     k8s-app: filebeat
     # Terminology
