@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: transform-rest-test
+  name: test-transform-rest
   namespace: dh-health
   labels:
-    app: transform-rest-test
+    app: test-transform-rest
 spec:
   selector:
     matchLabels:
-      app: transform-rest-test
+      app: test-transform-rest
   template:
     metadata:
       labels:
-        app: transform-rest-test
+        app: test-transform-rest
     spec:
       containers:
-      - name: transform-rest
+      - name: test-transform-rest
         image: registry.prod.dh.unimaas.nl/docker-health/transform-rest:latest
         ports:
         - containerPort: 8080
@@ -34,6 +34,6 @@ spec:
         - configMapRef:
             name: timezone-config
         - configMapRef:
-            name: test-transform-server-config
+            name: test-transform-rest-config
         - configMapRef:
             name: zib-templates-config

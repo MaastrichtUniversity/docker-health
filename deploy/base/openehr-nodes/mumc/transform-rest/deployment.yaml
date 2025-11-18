@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: transform-rest-mumc
+  name: mumc-transform-rest
   namespace: dh-health
   labels:
-    app: transform-rest-mumc
+    app: mumc-transform-rest
 spec:
   selector:
     matchLabels:
-      app: transform-rest-mumc
+      app: mumc-transform-rest
   template:
     metadata:
       labels:
-        app: transform-rest-mumc
+        app: mumc-transform-rest
     spec:
       containers:
-      - name: transform-rest
+      - name: mumc-transform-rest
         image: registry.prod.dh.unimaas.nl/docker-health/transform-rest:latest
         ports:
         - containerPort: 8080
@@ -34,6 +34,6 @@ spec:
         - configMapRef:
             name: timezone-config
         - configMapRef:
-            name: mumc-transform-server-config
+            name: mumc-transform-rest-config
         - configMapRef:
             name: zib-templates-config
