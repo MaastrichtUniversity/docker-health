@@ -91,4 +91,4 @@ data:
       - add_cloud_metadata:
       - add_host_metadata:
     output.logstash:
-      hosts: ["elk.local.dh.unimaas.nl", "elk.dh-health:5044"]
+      hosts: ["elk.dh-health:5044"]
