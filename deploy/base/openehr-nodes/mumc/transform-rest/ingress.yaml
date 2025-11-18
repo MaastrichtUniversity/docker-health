@@ -15,6 +15,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: transform-rest-mumc
+            name: mumc-transform-rest
             port:
               number: 8080
