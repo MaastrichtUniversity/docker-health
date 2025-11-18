@@ -52,3 +52,6 @@ rit.sh
 .vscode/
 deploy/overlays/*/registry-secret.yaml
 deploy/overlays/*/*/registry-secret.yaml
+
+# ELK
+elk/GeoLite2-City.mmdb
