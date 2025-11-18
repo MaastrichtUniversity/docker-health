@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: transform-rest-mumc
+  name: mumc-transform-rest
   namespace: dh-health
 spec:
   type: ClusterIP
@@ -10,4 +10,4 @@ spec:
       targetPort: 8080
       protocol: TCP
   selector:
-    app: transform-rest-mumc
+    app: mumc-transform-rest
