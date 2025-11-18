@@ -22,7 +22,7 @@ spec:
         - configMapRef:
             name: timezone-config
         - configMapRef:
-            name: transform-server-config
+            name: transform-rest-config
         - configMapRef:
             name: zib-templates-config
         - configMapRef:
@@ -41,12 +41,12 @@ spec:
         - name: TRANSFORM_SPRING_USERNAME
           valueFrom:
             secretKeyRef:
-              name: transform-creds
+              name: zio-transform-creds
               key: username
         - name: TRANSFORM_SPRING_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: transform-creds
+              name: zio-transform-creds
               key: password
         volumeMounts:
         - name: outputs
