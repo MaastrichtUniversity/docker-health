@@ -34,6 +34,6 @@ spec:
         - configMapRef:
             name: timezone-config
         - configMapRef:
-            name: zio-transform-rest-config
+            name: transform-rest-config
         - configMapRef:
             name: zib-templates-config
