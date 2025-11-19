@@ -203,11 +203,15 @@ spec:
                 key: LOGGER_FILENAME
         envFrom:
           - configMapRef:
+              name: dry-run-config
+          - configMapRef:
               name: timezone-config
           - configMapRef:
-              name: transform-server-config
+              name: transform-rest-config
           - configMapRef:
               name: zib-templates-config
+          - configMapRef:
+              name: etl-config
         volumeMounts:
           - name: demo-data
             mountPath: /home/jovyan/data

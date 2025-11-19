@@ -32,6 +32,8 @@ spec:
                 key: password
         envFrom:
         - configMapRef:
+            name: dry-run-config
+        - configMapRef:
             name: timezone-config
         - configMapRef:
             name: transform-rest-config
