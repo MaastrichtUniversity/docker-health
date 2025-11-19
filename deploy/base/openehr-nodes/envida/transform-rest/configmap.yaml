@@ -5,5 +5,5 @@ metadata:
   namespace: dh-health
 data:
   TERMINOLOGY_BASE_URL: http://terminology-server-proxy.dh-health:8080
-  ENVIDA__TRANSFORM_SPRING_BASE_URL: http://envida-transform-rest.dh-health:8080
+  TRANSFORM_SPRING_BASE_URL: http://envida-transform-rest.dh-health:8080
   LOGSTASH_TAGS: TRANSFORM_REST
