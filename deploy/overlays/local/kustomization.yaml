@@ -22,16 +22,6 @@ patches:
       value: Never
 
 # Individual ingress host patches
-## Transform
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: transform-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: transform.local.dh.unimaas.nl
 ## Federation
 - target:
     group: networking.k8s.io
