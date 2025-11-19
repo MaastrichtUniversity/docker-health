@@ -362,6 +362,8 @@ main() {
             clone_externals
             setup_hosts
             setup_mounts
+            # ELK configuration
+            minikube ssh "sudo sysctl -w vm.max_map_count=262144"
             ;;
 
         pull)
@@ -431,10 +433,6 @@ main() {
             esac
             ;;
 
-        elk-config)
-            minikube ssh "sudo sysctl -w vm.max_map_count=262144"
-            ;;
-            
         *)
             echo -e "${RED}Unknown command: $command${NC}"
             print_usage
