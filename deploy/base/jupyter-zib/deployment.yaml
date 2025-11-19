@@ -34,18 +34,6 @@ spec:
               secretKeyRef:
                 name: jupyter-zib-creds
                 key: SERVER_APP_TOKEN
-          # Transform credentials
-          - name: TRANSFORM_SPRING_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: transform-creds
-                key: username
-          - name: TRANSFORM_SPRING_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: transform-creds
-                key:
-                  password
           # Envida-node
           - name: ENVIDA__EHRBASE_USERNAME
             valueFrom:
@@ -77,6 +65,17 @@ spec:
               configMapKeyRef:
                 name: envida-etl-config
                 key: LOGGER_FILENAME
+          - name: ENVIDA__TRANSFORM_SPRING_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: envida-transform-creds
+                key: username
+          - name: ENVIDA__TRANSFORM_SPRING_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: envida-transform-creds
+                key:
+                  password
           # MUMC-node
           - name: MUMC__EHRBASE_USERNAME
             valueFrom:
@@ -108,6 +107,17 @@ spec:
               configMapKeyRef:
                 name: mumc-etl-config
                 key: LOGGER_FILENAME
+          - name: MUMC__TRANSFORM_SPRING_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mumc-transform-creds
+                key: username
+          - name: MUMC__TRANSFORM_SPRING_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mumc-transform-creds
+                key:
+                  password
           # VITALA-node
           - name: VITALA__EHRBASE_USERNAME
             valueFrom:
@@ -139,6 +149,17 @@ spec:
               configMapKeyRef:
                 name: vitala-etl-config
                 key: LOGGER_FILENAME
+          - name: VITALA__TRANSFORM_SPRING_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: vitala-transform-creds
+                key: username
+          - name: VITALA__TRANSFORM_SPRING_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: vitala-transform-creds
+                key:
+                  password
           # ZIO-node
           - name: ZIO__EHRBASE_USERNAME
             valueFrom:
@@ -170,6 +191,17 @@ spec:
               configMapKeyRef:
                 name: zio-etl-config
                 key: LOGGER_FILENAME
+          - name: ZIO__TRANSFORM_SPRING_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: zio-transform-creds
+                key: username
+          - name: ZIO__TRANSFORM_SPRING_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: zio-transform-creds
+                key:
+                  password
           # Test-node
           - name: TEST__EHRBASE_USERNAME
             valueFrom:
@@ -201,11 +233,30 @@ spec:
               configMapKeyRef:
                 name: test-etl-config
                 key: LOGGER_FILENAME
+          - name: TEST__TRANSFORM_SPRING_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: test-transform-creds
+                key: username
+          - name: TEST__TRANSFORM_SPRING_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: test-transform-creds
+                key:
+                  password
         envFrom:
           - configMapRef:
               name: timezone-config
           - configMapRef:
-              name: transform-server-config
+              name: envida-transform-rest-config
+          - configMapRef:
+              name: mumc-transform-rest-config
+          - configMapRef:
+              name: test-transform-rest-config
+          - configMapRef:
+              name: vitala-transform-rest-config
+          - configMapRef:
+              name: zio-transform-rest-config
           - configMapRef:
               name: zib-templates-config
         volumeMounts:
