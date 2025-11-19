@@ -79,15 +79,6 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: ehrbase.envida.local.dh.unimaas.nl
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: envida-transform-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: transform.envida.local.dh.unimaas.nl
 ## MUMC-node
 - target:
     group: networking.k8s.io
@@ -98,16 +89,7 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: ehrbase.mumc.local.dh.unimaas.nl
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: mumc-transform-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: transform.mumc.local.dh.unimaas.nl
-## VITALA-node
+# VITALA-node
 - target:
     group: networking.k8s.io
     version: v1
@@ -117,15 +99,6 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: ehrbase.vitala.local.dh.unimaas.nl
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: vitala-transform-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: transform.vitala.local.dh.unimaas.nl
 ## ZIO-node
 - target:
     group: networking.k8s.io
@@ -136,15 +109,6 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: ehrbase.zio.local.dh.unimaas.nl
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: zio-transform-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: transform.zio.local.dh.unimaas.nl
 
 secretGenerator:
 # Envida-node
