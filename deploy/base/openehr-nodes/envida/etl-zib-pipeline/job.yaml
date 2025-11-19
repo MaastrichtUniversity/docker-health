@@ -5,6 +5,7 @@ metadata:
   namespace: dh-health
   labels:
     app: envida-etl-zib-pipeline
+    ehr-node-name: envida
 spec:
   backoffLimit: 0
   template:

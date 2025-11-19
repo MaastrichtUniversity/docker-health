@@ -5,6 +5,7 @@ metadata:
   namespace: dh-health
   labels:
     app: mumc-etl-zib-pipeline
+    ehr-node-name: mumc
 spec:
   backoffLimit: 0
   template:

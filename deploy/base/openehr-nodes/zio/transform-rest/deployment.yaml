@@ -5,6 +5,7 @@ metadata:
   namespace: dh-health
   labels:
     app: zio-transform-rest
+    ehr-node-name: zio
 spec:
   selector:
     matchLabels:

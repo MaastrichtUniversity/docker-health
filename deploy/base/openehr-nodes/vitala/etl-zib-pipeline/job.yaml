@@ -5,6 +5,7 @@ metadata:
   namespace: dh-health
   labels:
     app: vitala-etl-zib-pipeline
+    ehr-node-name: vitala
 spec:
   backoffLimit: 0
   template:

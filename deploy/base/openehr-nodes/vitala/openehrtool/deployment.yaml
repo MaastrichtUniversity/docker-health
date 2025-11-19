@@ -5,6 +5,7 @@ metadata:
   namespace: dh-health
   labels:
     app: vitala-openehrtool
+    ehr-node-name: vitala
 spec:
   replicas: 1
   selector:

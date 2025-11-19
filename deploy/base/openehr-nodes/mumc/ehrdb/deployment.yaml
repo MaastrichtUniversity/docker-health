@@ -5,6 +5,7 @@ metadata:
   namespace: dh-health
   labels:
     app: mumc-ehrdb
+    ehr-node-name: mumc
 spec:
   replicas: 1
   selector:

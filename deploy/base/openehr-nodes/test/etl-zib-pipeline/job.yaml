@@ -5,6 +5,7 @@ metadata:
   namespace: dh-health
   labels:
     app: test-etl-zib-pipeline
+    ehr-node-name: test
 spec:
   backoffLimit: 0
   template:
