@@ -7,28 +7,31 @@ resources:
 - secrets.yaml
 - ../../../base/common
 - ../../../base/federation-rest
-- ../../../base/transform-rest
 - ../../../base/terminology-server-proxy
 # Envida-node
 - ../../../base/openehr-nodes/envida/ehrbase
 - ../../../base/openehr-nodes/envida/ehrdb
 - ../../../base/openehr-nodes/envida/etl-config
 - ../../../base/openehr-nodes/envida/etl-zib-pipeline
+- ../../../base/openehr-nodes/envida/transform-rest
 # MUMC-node
 - ../../../base/openehr-nodes/mumc/ehrbase
 - ../../../base/openehr-nodes/mumc/ehrdb
 - ../../../base/openehr-nodes/mumc/etl-config
 - ../../../base/openehr-nodes/mumc/etl-zib-pipeline
+- ../../../base/openehr-nodes/mumc/transform-rest
 # VITALA-node
 - ../../../base/openehr-nodes/vitala/ehrbase
 - ../../../base/openehr-nodes/vitala/ehrdb
 - ../../../base/openehr-nodes/vitala/etl-config
 - ../../../base/openehr-nodes/vitala/etl-zib-pipeline
+- ../../../base/openehr-nodes/vitala/transform-rest
 # ZIO-node
 - ../../../base/openehr-nodes/zio/ehrbase
 - ../../../base/openehr-nodes/zio/ehrdb
 - ../../../base/openehr-nodes/zio/etl-config
 - ../../../base/openehr-nodes/zio/etl-zib-pipeline
+- ../../../base/openehr-nodes/zio/transform-rest
 
 patches:
 # imagePullPolicy patches
@@ -76,6 +79,15 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: ehrbase.envida.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: envida-transform-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: transform.envida.local.dh.unimaas.nl
 ## MUMC-node
 - target:
     group: networking.k8s.io
@@ -86,6 +98,15 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: ehrbase.mumc.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: mumc-transform-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: transform.mumc.local.dh.unimaas.nl
 ## VITALA-node
 - target:
     group: networking.k8s.io
@@ -96,6 +117,15 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: ehrbase.vitala.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: vitala-transform-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: transform.vitala.local.dh.unimaas.nl
 ## ZIO-node
 - target:
     group: networking.k8s.io
@@ -106,6 +136,15 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: ehrbase.zio.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-transform-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: transform.zio.local.dh.unimaas.nl
 
 secretGenerator:
 # Envida-node
@@ -142,6 +181,11 @@ secretGenerator:
     namespace: dh-health
     literals:
       - key=btgkey3
+  - name: envida-transform-creds
+    namespace: dh-health
+    literals:
+      - username=transform3
+      - password=transform3
 # MUMC-node
   - name: mumc-ehrbase-creds
     namespace: dh-health
@@ -176,6 +220,11 @@ secretGenerator:
     namespace: dh-health
     literals:
       - key=btgkey1
+  - name: mumc-transform-creds
+    namespace: dh-health
+    literals:
+      - username=transform1
+      - password=transform1
 # VITALA-node
   - name: vitala-ehrbase-creds
     namespace: dh-health
@@ -210,6 +259,11 @@ secretGenerator:
     literals:
       - username=postgres
       - password=postgres
+  - name: vitala-transform-creds
+    namespace: dh-health
+    literals:
+      - username=transform4
+      - password=transform4
 # ZIO-node
   - name: zio-ehrbase-creds
     namespace: dh-health
@@ -244,12 +298,8 @@ secretGenerator:
     namespace: dh-health
     literals:
       - key=btgkey2
-# transform
-  - name: transform-creds
+  - name: zio-transform-creds
     namespace: dh-health
-    options:
-      labels:
-        ehrnode: all
     literals:
-      - username=user
-      - password=foobar
+      - username=transform2
+      - password=transform2
