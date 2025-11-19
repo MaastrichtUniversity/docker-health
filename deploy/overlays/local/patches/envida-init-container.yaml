@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: envida-init-container-patch
+spec:
+  template:
+    spec:
+      initContainers:
+      - name: staggered-startup-delay
+        image: busybox:1.28
+        command: ["/bin/sh", "-c", "sleep $(STAGGERED_STARTUP_DELAY)"]
+        env:
+        - name: STAGGERED_STARTUP_DELAY
+          valueFrom:
+            configMapKeyRef:
+              name: staggered-startup-config
+              key: ENVIDA_NODE_STARTUP_DELAY

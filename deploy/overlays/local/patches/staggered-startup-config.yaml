@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: staggered-startup-config
+  namespace: dh-health
+data:
+  TEST_NODE_STARTUP_DELAY: "1"
+  ENVIDA_NODE_STARTUP_DELAY: "15"
+  MUMC_NODE_STARTUP_DELAY: "30"
+  VITALA_NODE_STARTUP_DELAY: "45"
+  ZIO_NODE_STARTUP_DELAY: "60"
