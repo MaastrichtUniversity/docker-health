@@ -142,6 +142,11 @@ secretGenerator:
     namespace: dh-health
     literals:
       - key=btgkey3
+  - name: envida-transform-creds
+    namespace: dh-health
+    literals:
+      - username=transform3
+      - password=transform3
 # MUMC-node
   - name: mumc-ehrbase-creds
     namespace: dh-health
@@ -176,6 +181,11 @@ secretGenerator:
     namespace: dh-health
     literals:
       - key=btgkey1
+  - name: mumc-transform-creds
+    namespace: dh-health
+    literals:
+      - username=transform1
+      - password=transform1
 # VITALA-node
   - name: vitala-ehrbase-creds
     namespace: dh-health
@@ -210,6 +220,11 @@ secretGenerator:
     literals:
       - username=postgres
       - password=postgres
+  - name: vitala-transform-creds
+    namespace: dh-health
+    literals:
+      - username=transform4
+      - password=transform4
 # ZIO-node
   - name: zio-ehrbase-creds
     namespace: dh-health
@@ -244,12 +259,8 @@ secretGenerator:
     namespace: dh-health
     literals:
       - key=btgkey2
-# transform
-  - name: transform-creds
+  - name: zio-transform-creds
     namespace: dh-health
-    options:
-      labels:
-        ehrnode: all
     literals:
-      - username=user
-      - password=foobar
+      - username=transform2
+      - password=transform2
