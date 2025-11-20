@@ -30,6 +30,7 @@ data:
                 logs_path: "/var/log/containers/"
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/mumc/pipeline/etl-zib.log
         - /usr/share/logs/mumc/ehrdb/postgresql.log
@@ -40,6 +41,7 @@ data:
       tags: ["MUMC","POSTGRESQL","ETL_ZIB"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/envida/pipeline/etl-zib.log
         - /usr/share/logs/envida/ehrdb/postgresql.log
@@ -50,6 +52,7 @@ data:
       tags: ["ENVIDA","POSTGRESQL","ETL_ZIB"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/zio/pipeline/etl-zib.log
         - /usr/share/logs/zio/ehrdb/postgresql.log
@@ -60,6 +63,7 @@ data:
       tags: ["ZIO","POSTGRESQL","ETL_ZIB"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/test/pipeline/etl-zib.log
         - /usr/share/logs/test/ehrdb/postgresql.log
@@ -70,6 +74,7 @@ data:
       tags: ["TEST","POSTGRESQL","ETL_ZIB"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/vitala/pipeline/etl-zib.log
         - /usr/share/logs/vitala/ehrdb/postgresql.log
@@ -80,6 +85,7 @@ data:
       tags: ["VITALA","POSTGRESQL","ETL_ZIB"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/federation/federation-rest.log
       multiline:
