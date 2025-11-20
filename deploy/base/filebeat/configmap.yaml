@@ -31,6 +31,7 @@ data:
                 logs_path: "/var/log/containers/"
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/mumc/pipeline/etl-zib.log
       multiline:
@@ -49,6 +50,7 @@ data:
       tags: ["MUMC","POSTGRESQL"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/envida/pipeline/etl-zib.log
       multiline:
@@ -67,6 +69,7 @@ data:
       tags: ["ENVIDA","POSTGRESQL"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/zio/pipeline/etl-zib.log
       multiline:
@@ -85,6 +88,7 @@ data:
       tags: ["ZIO","POSTGRESQL"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/test/pipeline/etl-zib.log
       multiline:
@@ -103,6 +107,7 @@ data:
       tags: ["TEST","POSTGRESQL"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/vitala/pipeline/etl-zib.log
       multiline:
@@ -121,6 +126,7 @@ data:
       tags: ["VITALA","POSTGRESQL"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/federation/federation-rest.log
       multiline:
@@ -133,3 +139,4 @@ data:
       - add_host_metadata:
     output.logstash:
       hosts: ["elk.dh-health-ops:5044"]
+      ssl.enabled: false
