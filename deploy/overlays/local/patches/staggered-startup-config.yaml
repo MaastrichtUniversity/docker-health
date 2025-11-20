@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: staggered-startup-config
   namespace: dh-health
+  labels:
+      ehrnode: test-node
 data:
   TEST_NODE_STARTUP_DELAY: "1"
   ENVIDA_NODE_STARTUP_DELAY: "5"
