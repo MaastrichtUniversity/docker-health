@@ -8,6 +8,7 @@ metadata:
     # Terminology
     # Transform
     # Jupyter
+    # ETL rest
 data:
   filebeat.yml: |-
     filebeat.inputs:
@@ -32,52 +33,92 @@ data:
       enabled: true
       paths:
         - /usr/share/logs/mumc/pipeline/etl-zib.log
+      multiline:
+        pattern: '^\['
+        negate: true
+        match: after
+      tags: ["MUMC","ETL_ZIB"]
+    - type: log
+      enabled: true
+      paths:
         - /usr/share/logs/mumc/ehrdb/postgresql.log
       multiline:
         pattern: '^\['
         negate: true
         match: after
-      tags: ["MUMC","POSTGRESQL","ETL_ZIB"]
+      tags: ["MUMC","POSTGRESQL"]
     - type: log
       enabled: true
       paths:
         - /usr/share/logs/envida/pipeline/etl-zib.log
+      multiline:
+        pattern: '^\['
+        negate: true
+        match: after
+      tags: ["ENVIDA","ETL_ZIB"]
+    - type: log
+      enabled: true
+      paths:
         - /usr/share/logs/envida/ehrdb/postgresql.log
       multiline:
         pattern: '^\['
         negate: true
         match: after
-      tags: ["ENVIDA","POSTGRESQL","ETL_ZIB"]
+      tags: ["ENVIDA","POSTGRESQL"]
     - type: log
       enabled: true
       paths:
         - /usr/share/logs/zio/pipeline/etl-zib.log
+      multiline:
+        pattern: '^\['
+        negate: true
+        match: after
+      tags: ["ZIO","ETL_ZIB"]
+    - type: log
+      enabled: true
+      paths:
         - /usr/share/logs/zio/ehrdb/postgresql.log
       multiline:
         pattern: '^\['
         negate: true
         match: after
-      tags: ["ZIO","POSTGRESQL","ETL_ZIB"]
+      tags: ["ZIO","POSTGRESQL"]
     - type: log
       enabled: true
       paths:
         - /usr/share/logs/test/pipeline/etl-zib.log
+      multiline:
+        pattern: '^\['
+        negate: true
+        match: after
+      tags: ["TEST","ETL_ZIB"]
+    - type: log
+      enabled: true
+      paths:
         - /usr/share/logs/test/ehrdb/postgresql.log
       multiline:
         pattern: '^\['
         negate: true
         match: after
-      tags: ["TEST","POSTGRESQL","ETL_ZIB"]
+      tags: ["TEST","POSTGRESQL"]
     - type: log
       enabled: true
       paths:
         - /usr/share/logs/vitala/pipeline/etl-zib.log
+      multiline:
+        pattern: '^\['
+        negate: true
+        match: after
+      tags: ["VITALA","ETL_ZIB"]
+    - type: log
+      enabled: true
+      paths:
         - /usr/share/logs/vitala/ehrdb/postgresql.log
       multiline:
         pattern: '^\['
         negate: true
         match: after
-      tags: ["VITALA","POSTGRESQL","ETL_ZIB"]
+      tags: ["VITALA","POSTGRESQL"]
     - type: log
       enabled: true
       paths:
