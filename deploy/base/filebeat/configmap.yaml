@@ -98,3 +98,4 @@ data:
       - add_host_metadata:
     output.logstash:
       hosts: ["elk.dh-health-ops:5044"]
+      ssl.enabled: false
