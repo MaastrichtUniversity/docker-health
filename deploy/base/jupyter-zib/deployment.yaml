@@ -76,6 +76,11 @@ spec:
                 name: envida-transform-creds
                 key:
                   password
+          - name: ENVIDA__TRANSFORM_SPRING_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: envida-etl-config
+                key: TRANSFORM_SPRING_BASE_URL
           # MUMC-node
           - name: MUMC__EHRBASE_USERNAME
             valueFrom:
@@ -118,6 +123,11 @@ spec:
                 name: mumc-transform-creds
                 key:
                   password
+          - name: MUMC__TRANSFORM_SPRING_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: mumc-etl-config
+                key: TRANSFORM_SPRING_BASE_URL
           # VITALA-node
           - name: VITALA__EHRBASE_USERNAME
             valueFrom:
@@ -160,6 +170,11 @@ spec:
                 name: vitala-transform-creds
                 key:
                   password
+          - name: VITALA__TRANSFORM_SPRING_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: vitala-etl-config
+                key: TRANSFORM_SPRING_BASE_URL
           # ZIO-node
           - name: ZIO__EHRBASE_USERNAME
             valueFrom:
@@ -202,6 +217,11 @@ spec:
                 name: zio-transform-creds
                 key:
                   password
+          - name: ZIO__TRANSFORM_SPRING_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: zio-etl-config
+                key: TRANSFORM_SPRING_BASE_URL
           # Test-node
           - name: TEST__EHRBASE_USERNAME
             valueFrom:
@@ -244,6 +264,11 @@ spec:
                 name: test-transform-creds
                 key:
                   password
+          - name: TEST__TRANSFORM_SPRING_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: test-etl-config
+                key: TRANSFORM_SPRING_BASE_URL
         envFrom:
           - configMapRef:
               name: dry-run-config
