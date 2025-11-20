@@ -1,8 +1,8 @@
-FROM sebp/elk:7.17.5
+FROM sebp/elk:9.1.5
 
 ENV LOGSTASH_HOME=/opt/logstash
 
-ARG VER_ELK=7.17.5
+ARG VER_ELK=9.1.5
 #note: elk version must correspond to the version of the docker-image of sebp/elk!
 ARG VER_ELASTICDUMP=6.14.1
 ARG VER_JRUBY=2.5.0
