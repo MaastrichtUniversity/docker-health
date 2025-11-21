@@ -12,6 +12,9 @@ resources:
 - ../../../base/openehr-nodes/test/etl-config
 - ../../../base/openehr-nodes/test/transform-rest
 
+components:
+  - ../common-resources/ingress/test/
+
 patches:
 # imagePullPolicy patches
 - target:
@@ -28,15 +31,6 @@ patches:
       value: Never
 
 # Individual ingress host patches
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: test-transform-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: transform.test.local.dh.unimaas.nl
 - target:
     group: networking.k8s.io
     version: v1
