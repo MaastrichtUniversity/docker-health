@@ -26,3 +26,19 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: elk.local.dh.unimaas.nl
+
+
+secretGenerator:
+# Filebeat
+  - name: filebeat-certificate-authorities
+    namespace: dh-health-ops
+    files:
+        -  certs/ca.crt
+  - name: filebeat-certificate
+    namespace: dh-health-ops
+    files:
+        -  certs/filebeat.dh-health-ops.crt
+  - name: filebeat-key
+    namespace: dh-health-ops
+    files:
+        -  certs/filebeat.dh-health-ops.key

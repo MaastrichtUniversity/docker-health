@@ -139,4 +139,7 @@ data:
       - add_host_metadata:
     output.logstash:
       hosts: ["elk.dh-health-ops:5044"]
-      ssl.enabled: false
+      ssl.enabled: true
+      ssl.certificate_authorities: [ "/etc/filebeat_ssl/ca.crt" ]
+      ssl.certificate: "/etc/filebeat_ssl/filebeat.dh-health-ops.crt"
+      ssl.key: "/etc/filebeat_ssl/filebeat.dh-health-ops.key"

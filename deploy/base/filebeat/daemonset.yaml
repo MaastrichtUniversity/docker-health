@@ -15,7 +15,7 @@ spec:
         k8s-app: filebeat
     spec:
       serviceAccountName: filebeat
-      terminationGracePeriodSeconds: 5
+      terminationGracePeriodSeconds: 30
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
@@ -58,6 +58,18 @@ spec:
         - name: usrlog
           mountPath: /usr/share/logs
           readOnly: true
+        - name: filebeat-certificate-authorities
+          mountPath: /etc/filebeat_ssl/ca.crt
+          readOnly: true
+          subPath: ca.crt
+        - name: filebeat-certificate
+          mountPath: /etc/filebeat_ssl/filebeat.dh-health-ops.crt
+          readOnly: true
+          subPath: filebeat.dh-health-ops.crt
+        - name: filebeat-key
+          mountPath: /etc/filebeat_ssl/filebeat.dh-health-ops.key
+          readOnly: true
+          subPath: filebeat.dh-health-ops.key
       volumes:
       - name: config
         configMap:
@@ -75,3 +87,16 @@ spec:
           # When filebeat runs as non-root user, this directory needs to be writable by group (g+w).
           path: /var/lib/filebeat-data
           type: DirectoryOrCreate
+      # SSL
+      - name: filebeat-certificate-authorities
+        secret:
+          defaultMode: 0640
+          secretName: filebeat-certificate-authorities
+      - name: filebeat-certificate
+        secret:
+          defaultMode: 0640
+          secretName: filebeat-certificate
+      - name: filebeat-key
+        secret:
+          defaultMode: 0640
+          secretName: filebeat-key
