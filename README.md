@@ -167,6 +167,25 @@ For a UI overview of the Minikube kubernetes stack and pods with logs checkout o
 
 - Enable the default dashboard with `minikube dashboard`
 
+
+## How to start the OPS containers (ELK, Filebeat)
+
+The OPS (monitoring, logging etc...) containers are in a different namespace and sub-overlay than the application containers.
+
+1. Start the containers
+
+```bash
+./dh.sh apply local/ops
+```
+
+2. Check the ELK web interface - [Kibana](http://elk.local.dh.unimaas.nl)
+
+3. Remove the containers
+
+```bash
+./dh.sh delete local/ops
+```
+
 ## Development Workflow
 
 ### dh.sh functionalities
@@ -178,8 +197,10 @@ Checkout existing functionality in the dh.sh. For examples:
 ./dh.sh start                        Start Kubernetes environment
 ./dh.sh build                        Build all Docker images
 ./dh.sh apply                        Apply Kubernetes manifests with local overlay
+./dh.sh apply local/ops              Apply Kubernetes manifests with local/ops overlay (ELK, Filbeat)
 ./dh.sh apply tst                    Apply Kubernetes manifests with tst overlay
 ./dh.sh delete                       Delete Kubernetes manifests with local overlay
+./dh.sh delete local/ops             Delete Kubernetes manifests with local/ops overlay (ELK, Filbeat)
 ./dh.sh delete tst                   Delete Kubernetes manifests with tst overlay
 ./dh.sh status                       Print the pods status
 ./dh.sh status -w                    Print and follow the pods status
