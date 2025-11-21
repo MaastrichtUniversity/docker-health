@@ -1,21 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: transform-rest
+  name: mumc-transform-rest
   namespace: dh-health
   labels:
-    app: transform-rest
+    app: mumc-transform-rest
+    ehr-node-name: mumc
 spec:
   selector:
     matchLabels:
-      app: transform-rest
+      app: mumc-transform-rest
   template:
     metadata:
       labels:
-        app: transform-rest
+        app: mumc-transform-rest
     spec:
       containers:
-      - name: transform-rest
+      - name: mumc-transform-rest
         image: registry.prod.dh.unimaas.nl/docker-health/transform-rest:latest
         ports:
         - containerPort: 8080
@@ -23,17 +24,19 @@ spec:
           - name: TRANSFORM_SPRING_USERNAME
             valueFrom:
               secretKeyRef:
-                name: transform-creds
+                name: mumc-transform-creds
                 key: username
           - name: TRANSFORM_SPRING_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: transform-creds
+                name: mumc-transform-creds
                 key: password
         envFrom:
         - configMapRef:
+            name: dry-run-config
+        - configMapRef:
             name: timezone-config
         - configMapRef:
-            name: transform-server-config
+            name: transform-rest-config
         - configMapRef:
             name: zib-templates-config

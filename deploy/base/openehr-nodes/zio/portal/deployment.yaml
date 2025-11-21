@@ -5,6 +5,7 @@ metadata:
   namespace: dh-health
   labels:
     app: zio-portal
+    ehr-node-name: zio
 spec:
   replicas: 1
   selector:

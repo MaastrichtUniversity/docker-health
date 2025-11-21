@@ -5,6 +5,7 @@ metadata:
   namespace: dh-health
   labels:
     app: mumc-etl-zib-rest
+    ehr-node-name: mumc
 spec:
   replicas: 1
   selector:
@@ -20,11 +21,15 @@ spec:
         image: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest:latest
         envFrom:
         - configMapRef:
+            name: dry-run-config
+        - configMapRef:
             name: timezone-config
         - configMapRef:
-            name: transform-server-config
+            name: transform-rest-config
         - configMapRef:
             name: zib-templates-config
+        - configMapRef:
+            name: etl-config
         - configMapRef:
             name: mumc-etl-config
         env:
@@ -41,12 +46,12 @@ spec:
         - name: TRANSFORM_SPRING_USERNAME
           valueFrom:
             secretKeyRef:
-              name: transform-creds
+              name: mumc-transform-creds
               key: username
         - name: TRANSFORM_SPRING_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: transform-creds
+              name: mumc-transform-creds
               key: password
         volumeMounts:
         - name: outputs

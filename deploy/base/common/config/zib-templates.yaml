@@ -4,11 +4,6 @@ metadata:
   name: zib-templates-config
   namespace: dh-health
 data:
-  ETL_PROJECT_NAME: "zib"
-  SUBJECT_NAMESPACE: "bsn"
-  LOGSTASH_TAGS: ETL_ZIB
-  DRY_RUN: "False"
-
   TEMPLATES__ALCOHOLGEBRUIK2024__ID: "DataHub-AlcoholGebruik-2024"
   TEMPLATES__ALCOHOLGEBRUIK2024__SEM_VER: "0.1.0"
   TEMPLATES__ALCOHOLGEBRUIK2024__API_ROUTE: "zib/AlcoholGebruik2024"

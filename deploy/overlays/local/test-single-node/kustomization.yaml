@@ -5,12 +5,15 @@ resources:
 - job.yaml
 - secrets.yaml
 - ../../../base/common
-- ../../../base/transform-rest
 - ../../../base/terminology-server-proxy
 ## TEST-node
 - ../../../base/openehr-nodes/test/ehrbase
 - ../../../base/openehr-nodes/test/ehrdb
 - ../../../base/openehr-nodes/test/etl-config
+- ../../../base/openehr-nodes/test/transform-rest
+
+components:
+  - ../common-resources/ingress/test/
 
 patches:
 # imagePullPolicy patches
@@ -28,17 +31,6 @@ patches:
       value: Never
 
 # Individual ingress host patches
-## Transform
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: transform-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: transform.local.dh.unimaas.nl
-## TEST-node
 - target:
     group: networking.k8s.io
     version: v1
@@ -76,12 +68,11 @@ secretGenerator:
     literals:
       - username=postgres
       - password=postgres
-# transform
-  - name: transform-creds
+  - name: test-transform-creds
     namespace: dh-health
     literals:
-      - username=user
-      - password=foobar
+      - username=transform0
+      - password=transform0
 # Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
 configMapGenerator:
 - name: test-ehrbase-config

@@ -107,7 +107,12 @@ These changes take effect after restarting minikube and should persist across se
 127.0.0.1 portal.mumc.local.dh.unimaas.nl
 127.0.0.1 portal.zio.local.dh.unimaas.nl
 127.0.0.1 portal.vitala.local.dh.unimaas.nl
-127.0.0.1 transform.local.dh.unimaas.nl
+127.0.0.1 terminology.local.dh.unimaas.nl
+127.0.0.1 transform.envida.local.dh.unimaas.nl
+127.0.0.1 transform.mumc.local.dh.unimaas.nl
+127.0.0.1 transform.test.local.dh.unimaas.nl
+127.0.0.1 transform.vitala.local.dh.unimaas.nl
+127.0.0.1 transform.zio.local.dh.unimaas.nl
 ```
 
 

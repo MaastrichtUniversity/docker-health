@@ -5,6 +5,7 @@ metadata:
   namespace: dh-health
   labels:
     app: test-openehrtool
+    ehr-node-name: test
 spec:
   replicas: 1
   selector:
