@@ -41,6 +41,7 @@ data:
       tags: ["MUMC","ETL_ZIB"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/mumc/ehrdb/postgresql.log
       multiline:
@@ -60,6 +61,7 @@ data:
       tags: ["ENVIDA","ETL_ZIB"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/envida/ehrdb/postgresql.log
       multiline:
@@ -79,6 +81,7 @@ data:
       tags: ["ZIO","ETL_ZIB"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/zio/ehrdb/postgresql.log
       multiline:
@@ -98,6 +101,7 @@ data:
       tags: ["TEST","ETL_ZIB"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/test/ehrdb/postgresql.log
       multiline:
@@ -117,6 +121,7 @@ data:
       tags: ["VITALA","ETL_ZIB"]
     - type: log
       enabled: true
+      allow_deprecated_use: true
       paths:
         - /usr/share/logs/vitala/ehrdb/postgresql.log
       multiline:
