@@ -9,7 +9,6 @@ deploy/
 ├── base                         # Contains base Kubernetes resources for all environments
 │   ├── common                   # Common resources shared across services
 │   ├── federation-rest          # federation-rest service
-│   ├── transform-rest           # transform-rest service
 │   ├── jupyter-zib              # jupyter-zib service
 │   ├── openehr-nodes            # All existing openEHR node services
 └── overlays                     # Environment-specific configurations
@@ -26,11 +25,11 @@ deploy/
 ### Currently supported environments
 
 - **local**
+  - **test-single-node**: Run a subset of the base
+  - **test-federation**: Run a subset of the base
 - **tst**
 - <s>**acc**</s>
 - <s>**prod**</s>
-- **test-single-node**: Run a subset of the base
-- **test-federation**: Run a subset of the base
 
 ### Currently supported nodes in the network
 
@@ -47,6 +46,8 @@ deploy/
 - **ehrdb**: PostgreSQL database linked to EHRBase
 - **etl-zib**: Data extraction, transformation and loading service
     - Hosts available at: http://etl.{NODENAME}.{ENV}.dh.unimaas.nl
+- **transform-rest**: Performs transformation of data to openEHR composition via a REST api
+    - Host available at: http://transform.{NODENAME}.{ENV}.dh.unimaas.nl
 - **openehrtool**: Development tool for openEHR
     - Hosts available at: http://openehrtool.{NODENAME}.{ENV}.dh.unimaas.nl
 - **portal**: User Interface of the federated network
@@ -54,8 +55,7 @@ deploy/
 
 ### Additional deployed services
 
-- **transform-rest**: Performs transformation of data to openEHR composition via a REST api
-    - Host available at: http://transform.{ENV}.dh.unimaas.nl
+- **terminology-server-proxy**: Connection to the terminology server
 - **federation-rest**: Provides a federation REST api for querying data of multiple nodes
     - Host available at: http://federation.{ENV}.dh.unimaas.nl
 - <s>**filebeat**: A service used for shipping logs to a central location</s>
