@@ -109,6 +109,16 @@ data:
         negate: true
         match: after
       tags: ["TEST","POSTGRESQL"]
+    - type: filestream
+      id: test-ehrbase-logs
+      paths:
+         - /usr/share/logs/test/ehrbase/ehrbase.log
+      parsers:
+         - multiline:
+             pattern: '^\['
+             negate: true
+             match: after
+      tags: ["TEST","EHRBASE"]
     - type: log
       enabled: true
       allow_deprecated_use: true
