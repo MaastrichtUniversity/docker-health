@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
 - secrets.yaml
 - terminology-ingress.yaml
-- patches/staggered-startup-config.yaml
 - ../../base
 
 patches:
@@ -21,53 +20,6 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Never
-
-# Init container patches (stagger the pod startups to prevent resource exhaustion)
-## Envida-node
-- target:
-    kind: Deployment
-    labelSelector: "ehr-node-name=envida"
-  path: patches/envida-init-container.yaml
-- target:
-    kind: Job
-    labelSelector: "ehr-node-name=envida"
-  path: patches/envida-init-container.yaml
-## Mumc-node
-- target:
-    kind: Deployment
-    labelSelector: "ehr-node-name=mumc"
-  path: patches/mumc-init-container.yaml
-- target:
-    kind: Job
-    labelSelector: "ehr-node-name=mumc"
-  path: patches/mumc-init-container.yaml
-## Vitala-node
-- target:
-    kind: Deployment
-    labelSelector: "ehr-node-name=vitala"
-  path: patches/vitala-init-container.yaml
-- target:
-    kind: Job
-    labelSelector: "ehr-node-name=vitala"
-  path: patches/vitala-init-container.yaml
-## Zio-node
-- target:
-    kind: Deployment
-    labelSelector: "ehr-node-name=zio"
-  path: patches/zio-init-container.yaml
-- target:
-    kind: Job
-    labelSelector: "ehr-node-name=zio"
-  path: patches/zio-init-container.yaml
-## Test-node
-- target:
-    kind: Deployment
-    labelSelector: "ehr-node-name=test"
-  path: patches/test-init-container.yaml
-- target:
-    kind: Job
-    labelSelector: "ehr-node-name=test"
-  path: patches/test-init-container.yaml
 
 # Individual ingress host patches
 ## Federation
