@@ -5,7 +5,6 @@ metadata:
   namespace: dh-health
   labels:
     app: zio-etl-zib-pipeline
-    ehr-node-name: zio
 spec:
   backoffLimit: 0
   template:

@@ -5,7 +5,6 @@ metadata:
   namespace: dh-health
   labels:
     app: test-transform-rest
-    ehr-node-name: test
 spec:
   selector:
     matchLabels:
