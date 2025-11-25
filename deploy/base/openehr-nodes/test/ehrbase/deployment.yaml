@@ -5,7 +5,6 @@ metadata:
   namespace: dh-health
   labels:
     app: test-ehrbase
-    ehr-node-name: test
 spec:
   replicas: 1
   selector:
