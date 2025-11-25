@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: test-transform-rest-ingress
   namespace: dh-health
+  labels:
+    ehrnode: test-node
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
