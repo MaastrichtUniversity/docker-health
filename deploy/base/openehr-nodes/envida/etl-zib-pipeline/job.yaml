@@ -39,8 +39,6 @@ spec:
         - configMapRef:
             name: timezone-config
         - configMapRef:
-            name: transform-rest-config
-        - configMapRef:
             name: zib-templates-config
         - configMapRef:
             name: etl-config
@@ -74,7 +72,7 @@ spec:
         - name: data
           mountPath: /code/data/envida-demo-data
         - name: etl-logs
-          mountPath: /code/logs/envida
+          mountPath: /code/logs/envida # logs/envida/etl-zib.log
           subPath: envida/pipeline
       volumes:
       - name: outputs
