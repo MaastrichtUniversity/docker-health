@@ -42,3 +42,11 @@ spec:
             name: mumc-transform-rest-config
         - configMapRef:
             name: zib-templates-config
+        volumeMounts:
+        - name: transform-rest-logs
+          mountPath: /var/log/mumc
+          subPath: mumc/transform-rest
+      volumes:
+      - name: transform-rest-logs
+        persistentVolumeClaim:
+          claimName: log-pvc

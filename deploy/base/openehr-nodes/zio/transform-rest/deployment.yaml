@@ -42,3 +42,11 @@ spec:
             name: zio-transform-rest-config
         - configMapRef:
             name: zib-templates-config
+        volumeMounts:
+        - name: transform-rest-logs
+          mountPath: /var/log/zio
+          subPath: zio/transform-rest
+      volumes:
+      - name: transform-rest-logs
+        persistentVolumeClaim:
+          claimName: log-pvc
