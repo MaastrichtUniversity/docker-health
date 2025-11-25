@@ -6,7 +6,6 @@ metadata:
   labels:
     k8s-app: filebeat
     # Terminology
-    # Transform
     # Jupyter
     # ETL rest
 data:
@@ -49,6 +48,11 @@ data:
         negate: true
         match: after
       tags: ["MUMC","POSTGRESQL"]
+    - type: filestream
+      id: mumc-transform-rest-logs
+      paths:
+        - /usr/share/logs/mumc/transform-rest/transform-rest.log
+      tags: ["MUMC","TRANSFORM_REST"]
     - type: log
       enabled: true
       allow_deprecated_use: true
@@ -69,6 +73,11 @@ data:
         negate: true
         match: after
       tags: ["ENVIDA","POSTGRESQL"]
+    - type: filestream
+      id: envida-transform-rest-logs
+      paths:
+        - /usr/share/logs/envida/transform-rest/transform-rest.log
+      tags: ["ENVIDA","TRANSFORM_REST"]
     - type: log
       enabled: true
       allow_deprecated_use: true
@@ -89,6 +98,11 @@ data:
         negate: true
         match: after
       tags: ["ZIO","POSTGRESQL"]
+    - type: filestream
+      id: zio-transform-rest-logs
+      paths:
+        - /usr/share/logs/zio/transform-rest/transform-rest.log
+      tags: ["ZIO","TRANSFORM_REST"]
     - type: log
       enabled: true
       allow_deprecated_use: true
@@ -119,6 +133,11 @@ data:
              negate: true
              match: after
       tags: ["TEST","EHRBASE"]
+    - type: filestream
+      id: test-transform-rest-logs
+      paths:
+        - /usr/share/logs/test/transform-rest/transform-rest.log
+      tags: ["TEST","TRANSFORM_REST"]
     - type: log
       enabled: true
       allow_deprecated_use: true
@@ -139,6 +158,11 @@ data:
         negate: true
         match: after
       tags: ["VITALA","POSTGRESQL"]
+    - type: filestream
+      id: vitala-transform-rest-logs
+      paths:
+        - /usr/share/logs/vitala/transform-rest/transform-rest.log
+      tags: [ "VITALA","TRANSFORM_REST" ]
     - type: log
       enabled: true
       allow_deprecated_use: true
