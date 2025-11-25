@@ -6,6 +6,9 @@ resources:
 - ../../../base/elk
 - ../../../base/filebeat
 
+components:
+  - ../ingress/elk/
+
 patches:
 # imagePullPolicy patches
 - target:
@@ -14,19 +17,6 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Never
-
-# Individual ingress host patches
-## ELK (Kibana)
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: elk-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: elk.local.dh.unimaas.nl
-
 
 secretGenerator:
 # Filebeat

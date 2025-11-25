@@ -3,7 +3,6 @@ kind: Kustomization
 
 resources:
 - job.yaml
-- secrets.yaml
 - ../../../base/common
 - ../../../base/terminology-server-proxy
 ## TEST-node
@@ -13,7 +12,8 @@ resources:
 - ../../../base/openehr-nodes/test/transform-rest
 
 components:
-  - ../common-resources/ingress/test/
+  - ../ingress/terminology-server-proxy/
+  - ../ingress/openehr-nodes/test/
 
 patches:
 # imagePullPolicy patches
@@ -29,50 +29,6 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Never
-
-# Individual ingress host patches
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: test-ehrbase-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: ehrbase.test.local.dh.unimaas.nl
-
-secretGenerator:
-# TEST-node
-  - name: test-ehrbase-creds
-    namespace: dh-health
-    literals:
-      - username=user0
-      - password=foobar0
-  - name: test-ehrbase-admin-creds
-    namespace: dh-health
-    literals:
-      - username=admin0
-      - password=admin0
-  - name: test-ehrbase-db-admin-creds
-    namespace: dh-health
-    literals:
-      - username=ehrbase0
-      - password=ehrbase0
-  - name: test-ehrbase-db-creds
-    namespace: dh-health
-    literals:
-      - username=ehrbase_restricted0
-      - password=ehrbase_restricted0
-  - name: test-ehrbase-db-postgres-creds
-    namespace: dh-health
-    literals:
-      - username=postgres
-      - password=postgres
-  - name: test-transform-creds
-    namespace: dh-health
-    literals:
-      - username=transform0
-      - password=transform0
 # Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
 configMapGenerator:
 - name: test-ehrbase-config
