@@ -33,6 +33,26 @@ data:
             matchers:
             - logs_path:
                 logs_path: "/var/log/containers/"
+    # ENVIDA node
+    - type: filestream
+      id: envida-etl-zib-logs
+      paths:
+        - /usr/share/logs/envida/pipeline/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["ENVIDA","ETL_ZIB"]
+    - type: filestream
+      id: envida-ehrdb-logs
+      paths:
+        - /usr/share/logs/envida/ehrdb/postgresql.log
+      multiline: *multiline_parser
+      tags: ["ENVIDA","POSTGRESQL","EHRDB"]
+    - type: filestream
+      id: envida-transform-rest-logs
+      paths:
+        - /usr/share/logs/envida/transform-rest/transform-rest.log
+      tags: ["ENVIDA","TRANSFORM_REST"]
+    # MUMC node
     - type: filestream
       id: mumc-etl-zib-logs
       paths:
@@ -52,69 +72,7 @@ data:
       paths:
         - /usr/share/logs/mumc/transform-rest/transform-rest.log
       tags: ["MUMC","TRANSFORM_REST"]
-    - type: filestream
-      id: envida-etl-zib-logs
-      paths:
-        - /usr/share/logs/envida/pipeline/etl-zib.log
-      parsers:
-        - multiline: *multiline_parser
-      tags: ["ENVIDA","ETL_ZIB"]
-    - type: filestream
-      id: envida-ehrdb-logs
-      paths:
-        - /usr/share/logs/envida/ehrdb/postgresql.log
-      multiline: *multiline_parser
-      tags: ["ENVIDA","POSTGRESQL","EHRDB"]
-    - type: filestream
-      id: envida-transform-rest-logs
-      paths:
-        - /usr/share/logs/envida/transform-rest/transform-rest.log
-      tags: ["ENVIDA","TRANSFORM_REST"]
-    - type: filestream
-      id: zio-etl-zib-logs
-      paths:
-        - /usr/share/logs/zio/pipeline/etl-zib.log
-      parsers:
-        - multiline: *multiline_parser
-      tags: ["ZIO","ETL_ZIB"]
-    - type: filestream
-      id: zio-ehrdb-logs
-      paths:
-        - /usr/share/logs/zio/ehrdb/postgresql.log
-      parsers:
-        - multiline: *multiline_parser
-      tags: ["ZIO","POSTGRESQL","EHRDB"]
-    - type: filestream
-      id: zio-transform-rest-logs
-      paths:
-        - /usr/share/logs/zio/transform-rest/transform-rest.log
-      tags: ["ZIO","TRANSFORM_REST"]
-    - type: filestream
-      id: test-etl-zib-logs
-      paths:
-        - /usr/share/logs/test/pipeline/etl-zib.log
-      parsers:
-        - multiline: *multiline_parser
-      tags: ["TEST","ETL_ZIB"]
-    - type: filestream
-      id: test-ehrdb-logs
-      paths:
-        - /usr/share/logs/test/ehrdb/postgresql.log
-      parsers:
-        - multiline: *multiline_parser
-      tags: ["TEST","POSTGRESQL","EHRDB"]
-    - type: filestream
-      id: test-ehrbase-logs
-      paths:
-         - /usr/share/logs/test/ehrbase/ehrbase.log
-      parsers:
-        - multiline: *multiline_parser
-      tags: ["TEST","EHRBASE"]
-    - type: filestream
-      id: test-transform-rest-logs
-      paths:
-        - /usr/share/logs/test/transform-rest/transform-rest.log
-      tags: ["TEST","TRANSFORM_REST"]
+    # VITALA node
     - type: filestream
       id: vitala-etl-zib-logs
       paths:
@@ -134,6 +92,54 @@ data:
       paths:
         - /usr/share/logs/vitala/transform-rest/transform-rest.log
       tags: [ "VITALA","TRANSFORM_REST" ]
+    # ZIO node
+    - type: filestream
+      id: zio-etl-zib-logs
+      paths:
+        - /usr/share/logs/zio/pipeline/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["ZIO","ETL_ZIB"]
+    - type: filestream
+      id: zio-ehrdb-logs
+      paths:
+        - /usr/share/logs/zio/ehrdb/postgresql.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["ZIO","POSTGRESQL","EHRDB"]
+    - type: filestream
+      id: zio-transform-rest-logs
+      paths:
+        - /usr/share/logs/zio/transform-rest/transform-rest.log
+      tags: ["ZIO","TRANSFORM_REST"]
+    # TEST node
+    - type: filestream
+      id: test-etl-zib-logs
+      paths:
+        - /usr/share/logs/test/pipeline/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["TEST","ETL_ZIB"]
+    - type: filestream
+      id: test-ehrdb-logs
+      paths:
+        - /usr/share/logs/test/ehrdb/postgresql.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["TEST","POSTGRESQL","EHRDB"]
+    - type: filestream
+      id: test-ehrbase-logs
+      paths:
+        - /usr/share/logs/test/ehrbase/ehrbase.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["TEST","EHRBASE"]
+    - type: filestream
+      id: test-transform-rest-logs
+      paths:
+        - /usr/share/logs/test/transform-rest/transform-rest.log
+      tags: ["TEST","TRANSFORM_REST"]
+    # Federation
     - type: filestream
       id: federation-rest-logs
       paths:
