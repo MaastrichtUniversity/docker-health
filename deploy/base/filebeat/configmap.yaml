@@ -10,12 +10,11 @@ metadata:
     # ETL rest
 data:
   filebeat.yml: |-
-    filebeat.inputs:
-    # Common multiline parser
-    - multiline-parser: &multiline_parser
+    multiline-parser: &multiline_parser
       pattern: '^\['
       negate: true
       match: after
+    filebeat.inputs:
     - type: filestream
       id: kubernetes-container-logs
       paths:
@@ -45,7 +44,8 @@ data:
       id: envida-ehrdb-logs
       paths:
         - /usr/share/logs/envida/ehrdb/postgresql.log
-      multiline: *multiline_parser
+      parsers:
+        - multiline: *multiline_parser
       tags: ["ENVIDA","POSTGRESQL","EHRDB"]
     - type: filestream
       id: envida-transform-rest-logs
