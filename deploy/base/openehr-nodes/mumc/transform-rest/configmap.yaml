@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mumc-transform-rest-config
+  namespace: dh-health
+data:
+  LOGGER_FILENAME: /var/log/mumc/transform-rest.log

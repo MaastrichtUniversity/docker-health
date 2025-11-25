@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zio-transform-rest-config
+  namespace: dh-health
+data:
+  LOGGER_FILENAME: /var/log/zio/transform-rest.log

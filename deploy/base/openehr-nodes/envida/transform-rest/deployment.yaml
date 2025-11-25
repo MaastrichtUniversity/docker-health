@@ -39,4 +39,6 @@ spec:
         - configMapRef:
             name: transform-rest-config
         - configMapRef:
+            name: envida-transform-rest-config
+        - configMapRef:
             name: zib-templates-config
