@@ -11,6 +11,11 @@ metadata:
 data:
   filebeat.yml: |-
     filebeat.inputs:
+    # Common multiline parser
+    - multiline-parser: &multiline_parser
+      pattern: '^\['
+      negate: true
+      match: after
     - type: filestream
       id: kubernetes-container-logs
       paths:
@@ -28,150 +33,113 @@ data:
             matchers:
             - logs_path:
                 logs_path: "/var/log/containers/"
-    - type: log
-      enabled: true
-      allow_deprecated_use: true
+    - type: filestream
+      id: mumc-etl-zib-logs
       paths:
         - /usr/share/logs/mumc/pipeline/etl-zib.log
-      multiline:
-        pattern: '^\['
-        negate: true
-        match: after
+      parsers:
+        - multiline: *multiline_parser
       tags: ["MUMC","ETL_ZIB"]
-    - type: log
-      enabled: true
-      allow_deprecated_use: true
+    - type: filestream
+      id: mumc-ehrdb-logs
       paths:
         - /usr/share/logs/mumc/ehrdb/postgresql.log
-      multiline:
-        pattern: '^\['
-        negate: true
-        match: after
-      tags: ["MUMC","POSTGRESQL"]
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["MUMC","POSTGRESQL","EHRDB"]
     - type: filestream
       id: mumc-transform-rest-logs
       paths:
         - /usr/share/logs/mumc/transform-rest/transform-rest.log
       tags: ["MUMC","TRANSFORM_REST"]
-    - type: log
-      enabled: true
-      allow_deprecated_use: true
+    - type: filestream
+      id: envida-etl-zib-logs
       paths:
         - /usr/share/logs/envida/pipeline/etl-zib.log
-      multiline:
-        pattern: '^\['
-        negate: true
-        match: after
+      parsers:
+        - multiline: *multiline_parser
       tags: ["ENVIDA","ETL_ZIB"]
-    - type: log
-      enabled: true
-      allow_deprecated_use: true
+    - type: filestream
+      id: envida-ehrdb-logs
       paths:
         - /usr/share/logs/envida/ehrdb/postgresql.log
-      multiline:
-        pattern: '^\['
-        negate: true
-        match: after
-      tags: ["ENVIDA","POSTGRESQL"]
+      multiline: *multiline_parser
+      tags: ["ENVIDA","POSTGRESQL","EHRDB"]
     - type: filestream
       id: envida-transform-rest-logs
       paths:
         - /usr/share/logs/envida/transform-rest/transform-rest.log
       tags: ["ENVIDA","TRANSFORM_REST"]
-    - type: log
-      enabled: true
-      allow_deprecated_use: true
+    - type: filestream
+      id: zio-etl-zib-logs
       paths:
         - /usr/share/logs/zio/pipeline/etl-zib.log
-      multiline:
-        pattern: '^\['
-        negate: true
-        match: after
+      parsers:
+        - multiline: *multiline_parser
       tags: ["ZIO","ETL_ZIB"]
-    - type: log
-      enabled: true
-      allow_deprecated_use: true
+    - type: filestream
+      id: zio-ehrdb-logs
       paths:
         - /usr/share/logs/zio/ehrdb/postgresql.log
-      multiline:
-        pattern: '^\['
-        negate: true
-        match: after
-      tags: ["ZIO","POSTGRESQL"]
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["ZIO","POSTGRESQL","EHRDB"]
     - type: filestream
       id: zio-transform-rest-logs
       paths:
         - /usr/share/logs/zio/transform-rest/transform-rest.log
       tags: ["ZIO","TRANSFORM_REST"]
-    - type: log
-      enabled: true
-      allow_deprecated_use: true
+    - type: filestream
+      id: test-etl-zib-logs
       paths:
         - /usr/share/logs/test/pipeline/etl-zib.log
-      multiline:
-        pattern: '^\['
-        negate: true
-        match: after
+      parsers:
+        - multiline: *multiline_parser
       tags: ["TEST","ETL_ZIB"]
-    - type: log
-      enabled: true
-      allow_deprecated_use: true
+    - type: filestream
+      id: test-ehrdb-logs
       paths:
         - /usr/share/logs/test/ehrdb/postgresql.log
-      multiline:
-        pattern: '^\['
-        negate: true
-        match: after
-      tags: ["TEST","POSTGRESQL"]
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["TEST","POSTGRESQL","EHRDB"]
     - type: filestream
       id: test-ehrbase-logs
       paths:
          - /usr/share/logs/test/ehrbase/ehrbase.log
       parsers:
-         - multiline:
-             pattern: '^\['
-             negate: true
-             match: after
+        - multiline: *multiline_parser
       tags: ["TEST","EHRBASE"]
     - type: filestream
       id: test-transform-rest-logs
       paths:
         - /usr/share/logs/test/transform-rest/transform-rest.log
       tags: ["TEST","TRANSFORM_REST"]
-    - type: log
-      enabled: true
-      allow_deprecated_use: true
+    - type: filestream
+      id: vitala-etl-zib-logs
       paths:
         - /usr/share/logs/vitala/pipeline/etl-zib.log
-      multiline:
-        pattern: '^\['
-        negate: true
-        match: after
+      parsers:
+        - multiline: *multiline_parser
       tags: ["VITALA","ETL_ZIB"]
-    - type: log
-      enabled: true
-      allow_deprecated_use: true
+    - type: filestream
+      id: vitala-ehrdb-logs
       paths:
         - /usr/share/logs/vitala/ehrdb/postgresql.log
-      multiline:
-        pattern: '^\['
-        negate: true
-        match: after
-      tags: ["VITALA","POSTGRESQL"]
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["VITALA","POSTGRESQL","EHRDB"]
     - type: filestream
       id: vitala-transform-rest-logs
       paths:
         - /usr/share/logs/vitala/transform-rest/transform-rest.log
       tags: [ "VITALA","TRANSFORM_REST" ]
-    - type: log
-      enabled: true
-      allow_deprecated_use: true
+    - type: filestream
+      id: federation-rest-logs
       paths:
         - /usr/share/logs/federation/federation-rest.log
-      multiline:
-        pattern: '^\['
-        negate: true
-        match: after
+      parsers:
+        - multiline: *multiline_parser
       tags: ["FEDERATION_REST"]
     processors:
       - add_cloud_metadata:
