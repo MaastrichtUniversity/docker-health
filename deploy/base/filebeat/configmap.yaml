@@ -51,15 +51,11 @@ data:
       id: envida-ehrdb-logs
       paths:
         - /usr/share/logs/envida/ehrdb/postgresql.log
-      parsers:
-        - multiline: *multiline_parser
       tags: ["ENVIDA","POSTGRESQL","EHRDB"]
     - type: filestream
       id: envida-ehrbase-logs
       paths:
          - /usr/share/logs/envida/ehrbase/ehrbase.log
-      parsers:
-         - multiline: *multiline_parser
       tags: ["ENVIDA","EHRBASE"]
     - type: filestream
       id: envida-transform-rest-logs
@@ -85,15 +81,11 @@ data:
       id: mumc-ehrdb-logs
       paths:
         - /usr/share/logs/mumc/ehrdb/postgresql.log
-      parsers:
-        - multiline: *multiline_parser
       tags: ["MUMC","POSTGRESQL","EHRDB"]
     - type: filestream
       id: mumc-ehrbase-logs
       paths:
          - /usr/share/logs/mumc/ehrbase/ehrbase.log
-      parsers:
-         - multiline: *multiline_parser
       tags: ["MUMC","EHRBASE"]
     - type: filestream
       id: mumc-transform-rest-logs
@@ -119,15 +111,11 @@ data:
       id: vitala-ehrdb-logs
       paths:
         - /usr/share/logs/vitala/ehrdb/postgresql.log
-      parsers:
-        - multiline: *multiline_parser
       tags: ["VITALA","POSTGRESQL","EHRDB"]
     - type: filestream
       id: vitala-ehrbase-logs
       paths:
          - /usr/share/logs/vitala/ehrbase/ehrbase.log
-      parsers:
-         - multiline: *multiline_parser
       tags: ["VITALA","EHRBASE"]
     - type: filestream
       id: vitala-transform-rest-logs
@@ -153,15 +141,11 @@ data:
       id: zio-ehrdb-logs
       paths:
         - /usr/share/logs/zio/ehrdb/postgresql.log
-      parsers:
-        - multiline: *multiline_parser
       tags: ["ZIO","POSTGRESQL","EHRDB"]
     - type: filestream
       id: zio-ehrbase-logs
       paths:
          - /usr/share/logs/zio/ehrbase/ehrbase.log
-      parsers:
-         - multiline: *multiline_parser
       tags: ["ZIO","EHRBASE"]
     - type: filestream
       id: zio-transform-rest-logs
@@ -180,15 +164,11 @@ data:
       id: test-ehrdb-logs
       paths:
         - /usr/share/logs/test/ehrdb/postgresql.log
-      parsers:
-        - multiline: *multiline_parser
       tags: ["TEST","POSTGRESQL","EHRDB"]
     - type: filestream
       id: test-ehrbase-logs
       paths:
         - /usr/share/logs/test/ehrbase/ehrbase.log
-      parsers:
-        - multiline: *multiline_parser
       tags: ["TEST","EHRBASE"]
     - type: filestream
       id: test-transform-rest-logs
