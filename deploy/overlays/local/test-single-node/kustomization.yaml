@@ -13,6 +13,7 @@ resources:
 
 components:
   - ../ingress/terminology-server-proxy/
+  # TODO: only ehrbase and transform-rest ingresses are required:
   - ../ingress/openehr-nodes/test/
 
 patches:

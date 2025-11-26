@@ -35,6 +35,7 @@ resources:
 components:
   - ../ingress/terminology-server-proxy/
   - ../ingress/federation-rest/
+  # TODO: only ehrbase and transform-rest ingresses are required:
   - ../ingress/openehr-nodes/envida/
   - ../ingress/openehr-nodes/mumc/
   - ../ingress/openehr-nodes/vitala/
