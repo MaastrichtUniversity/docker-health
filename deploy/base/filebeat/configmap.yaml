@@ -48,6 +48,13 @@ data:
         - multiline: *multiline_parser
       tags: ["ENVIDA","POSTGRESQL","EHRDB"]
     - type: filestream
+      id: envida-ehrbase-logs
+      paths:
+         - /usr/share/logs/envida/ehrbase/ehrbase.log
+      parsers:
+         - multiline: *multiline_parser
+      tags: ["ENVIDA","EHRBASE"]
+    - type: filestream
       id: envida-transform-rest-logs
       paths:
         - /usr/share/logs/envida/transform-rest/transform-rest.log
@@ -67,6 +74,13 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: ["MUMC","POSTGRESQL","EHRDB"]
+    - type: filestream
+      id: mumc-ehrbase-logs
+      paths:
+         - /usr/share/logs/mumc/ehrbase/ehrbase.log
+      parsers:
+         - multiline: *multiline_parser
+      tags: ["MUMC","EHRBASE"]
     - type: filestream
       id: mumc-transform-rest-logs
       paths:
@@ -88,6 +102,13 @@ data:
         - multiline: *multiline_parser
       tags: ["VITALA","POSTGRESQL","EHRDB"]
     - type: filestream
+      id: vitala-ehrbase-logs
+      paths:
+         - /usr/share/logs/vitala/ehrbase/ehrbase.log
+      parsers:
+         - multiline: *multiline_parser
+      tags: ["VITALA","EHRBASE"]
+    - type: filestream
       id: vitala-transform-rest-logs
       paths:
         - /usr/share/logs/vitala/transform-rest/transform-rest.log
@@ -107,6 +128,13 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: ["ZIO","POSTGRESQL","EHRDB"]
+    - type: filestream
+      id: zio-ehrbase-logs
+      paths:
+         - /usr/share/logs/zio/ehrbase/ehrbase.log
+      parsers:
+         - multiline: *multiline_parser
+      tags: ["ZIO","EHRBASE"]
     - type: filestream
       id: zio-transform-rest-logs
       paths:
