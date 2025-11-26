@@ -53,10 +53,10 @@ spec:
         volumeMounts:
         - name: outputs
           mountPath: /code/outputs
-          subPath: mumc/rest
+          subPath: mumc/etl-rest
         - name: etl-logs
           mountPath: /code/logs/mumc
-          subPath: mumc/rest
+          subPath: mumc/etl-rest
       volumes:
       - name: outputs
         persistentVolumeClaim:

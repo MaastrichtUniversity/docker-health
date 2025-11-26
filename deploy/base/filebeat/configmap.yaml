@@ -34,12 +34,19 @@ data:
                 logs_path: "/var/log/containers/"
     # ENVIDA node
     - type: filestream
-      id: envida-etl-zib-logs
+      id: envida-etl-zib-pipeline-logs
       paths:
         - /usr/share/logs/envida/pipeline/etl-zib.log
       parsers:
         - multiline: *multiline_parser
-      tags: ["ENVIDA","ETL_ZIB"]
+      tags: ["ENVIDA","ETL_ZIB","ETL_PIPELINE"]
+    - type: filestream
+      id: envida-etl-zib-rest-logs
+      paths:
+        - /usr/share/logs/envida/etl-rest/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["ENVIDA","ETL_ZIB","ETL_REST"]
     - type: filestream
       id: envida-ehrdb-logs
       paths:
@@ -61,12 +68,19 @@ data:
       tags: ["ENVIDA","TRANSFORM_REST"]
     # MUMC node
     - type: filestream
-      id: mumc-etl-zib-logs
+      id: mumc-etl-zib-pipeline-logs
       paths:
         - /usr/share/logs/mumc/pipeline/etl-zib.log
       parsers:
         - multiline: *multiline_parser
-      tags: ["MUMC","ETL_ZIB"]
+      tags: ["MUMC","ETL_ZIB","ETL_PIPELINE"]
+    - type: filestream
+      id: mumc-etl-zib-rest-logs
+      paths:
+        - /usr/share/logs/mumc/etl-rest/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["MUMC","ETL_ZIB","ETL_REST"]
     - type: filestream
       id: mumc-ehrdb-logs
       paths:
@@ -88,12 +102,19 @@ data:
       tags: ["MUMC","TRANSFORM_REST"]
     # VITALA node
     - type: filestream
-      id: vitala-etl-zib-logs
+      id: vitala-etl-zib-pipeline-logs
       paths:
         - /usr/share/logs/vitala/pipeline/etl-zib.log
       parsers:
         - multiline: *multiline_parser
-      tags: ["VITALA","ETL_ZIB"]
+      tags: ["VITALA","ETL_ZIB","ETL_PIPELINE"]
+    - type: filestream
+      id: vitala-etl-zib-rest-logs
+      paths:
+        - /usr/share/logs/vitala/etl-rest/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["VITALA","ETL_ZIB","ETL_REST"]
     - type: filestream
       id: vitala-ehrdb-logs
       paths:
@@ -115,12 +136,19 @@ data:
       tags: [ "VITALA","TRANSFORM_REST" ]
     # ZIO node
     - type: filestream
-      id: zio-etl-zib-logs
+      id: zio-etl-zib-pipeline-logs
       paths:
         - /usr/share/logs/zio/pipeline/etl-zib.log
       parsers:
         - multiline: *multiline_parser
-      tags: ["ZIO","ETL_ZIB"]
+      tags: ["ZIO","ETL_ZIB","ETL_PIPELINE"]
+    - type: filestream
+      id: zio-etl-zib-rest-logs
+      paths:
+        - /usr/share/logs/zio/etl-rest/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["ZIO","ETL_ZIB","ETL_REST"]
     - type: filestream
       id: zio-ehrdb-logs
       paths:
@@ -142,12 +170,12 @@ data:
       tags: ["ZIO","TRANSFORM_REST"]
     # TEST node
     - type: filestream
-      id: test-etl-zib-logs
+      id: test-etl-zib-pipeline-logs
       paths:
         - /usr/share/logs/test/pipeline/etl-zib.log
       parsers:
         - multiline: *multiline_parser
-      tags: ["TEST","ETL_ZIB"]
+      tags: ["TEST","ETL_ZIB","ETL_PIPELINE"]
     - type: filestream
       id: test-ehrdb-logs
       paths:

@@ -53,10 +53,10 @@ spec:
         volumeMounts:
         - name: outputs
           mountPath: /code/outputs
-          subPath: vitala/rest
+          subPath: vitala/etl-rest
         - name: etl-logs
           mountPath: /code/logs/vitala
-          subPath: vitala/rest
+          subPath: vitala/etl-rest
       volumes:
       - name: outputs
         persistentVolumeClaim:
