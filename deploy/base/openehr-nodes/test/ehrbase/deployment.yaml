@@ -24,7 +24,7 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           # uid=100(ehrbase) gid=101(ehrbase) groups=101(ehrbase)
-          - mkdir -p /var/log/ehrbase && chown 100:100 /var/log/ehrbase
+          - mkdir -p /var/log/ehrbase && chown 100:101 /var/log/ehrbase
         volumeMounts:
           - name: ehrbase-logs
             mountPath: /var/log/ehrbase
