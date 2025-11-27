@@ -4,7 +4,6 @@ metadata:
   name: ehrbase-config
   namespace: dh-health
 data:
-  LOGSTASH_TAGS: EHRBASE
   SECURITY_AUTHTYPE: BASIC
   # MANAGEMENT_ENDPOINT 'health' needs to be enabled for livenessProbe and readinessProbe of the ehrbase pods 
   MANAGEMENT_ENDPOINTS_WEB_EXPOSURE: health
