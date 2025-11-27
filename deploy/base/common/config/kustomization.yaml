@@ -7,6 +7,7 @@ generatorOptions:
 resources:
 - dry-run.yaml
 - ehrbase.yaml
+- ehrdb.yaml
 - etl.yaml
 - openehrtool.yaml
 - portal.yaml

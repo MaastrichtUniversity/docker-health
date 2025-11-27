@@ -80,6 +80,8 @@ spec:
         envFrom:
         - configMapRef:
             name: timezone-config
+        - configMapRef:
+            name: ehrdb-config
         livenessProbe:
           exec:
             command:
