@@ -101,5 +101,4 @@ cluster.routing.allocation.disk.watermark.low: 10gb
 cluster.routing.allocation.disk.watermark.high: 5gb
 
 
-# TODO Remove when TLS is enabled
 xpack.security.enabled: false
