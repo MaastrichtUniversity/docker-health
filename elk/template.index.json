@@ -12497,6 +12497,8 @@
           "zeek.notice.email_body_sections",
           "zeek.notice.email_delay_tokens",
           "zeek.notice.identifier",
+          "ehrbase.thread",
+          "ehrbase.logger_name",
           "ehrdb.postgres_pid",
           "ehr.node_name",
           "ehr.dataset",
