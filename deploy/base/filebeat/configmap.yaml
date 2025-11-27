@@ -183,6 +183,12 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: ["FEDERATION_REST"]
+    # Jupyter
+    - type: filestream
+      id: jupyter-zib-logs
+      paths:
+        - /usr/share/logs/jupyter/jupyter_server.log
+      tags: ["JUPYTER_ZIB"]
     processors:
       - add_cloud_metadata:
       - add_host_metadata:
