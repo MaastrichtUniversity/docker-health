@@ -35,3 +35,12 @@ spec:
               secretKeyRef:
                 name: terminology-server-proxy-creds
                 key: password
+        volumeMounts:
+          - name: logs
+            mountPath: /code/logs/terminology
+            subPath: terminology
+      volumes:
+        - name: logs
+          persistentVolumeClaim:
+            claimName: log-pvc
+

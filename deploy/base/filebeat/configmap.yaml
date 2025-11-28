@@ -203,6 +203,14 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: ["FEDERATION_REST"]
+    # Terminology Server Proxy
+    - type: filestream
+      id: terminology-proxy-logs
+      paths:
+        - /usr/share/logs/terminology/terminology-proxy.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["TERMINOLOGY_PROXY"]
     processors:
       - add_cloud_metadata:
       - add_host_metadata:
