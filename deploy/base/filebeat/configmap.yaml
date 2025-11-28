@@ -144,6 +144,13 @@ data:
         - multiline: *multiline_parser
       tags: ["TEST","ETL_ZIB","ETL_PIPELINE"]
     - type: filestream
+      id: test-etl-zib-test-single-node-logs
+      paths:
+        - /usr/share/logs/test/etl-test-single-node/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["TEST","ETL_ZIB","ETL_TEST"]
+    - type: filestream
       id: test-ehrdb-logs
       paths:
         - /usr/share/logs/test/ehrdb/postgresql.log
