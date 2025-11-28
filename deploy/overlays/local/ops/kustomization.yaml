@@ -4,8 +4,7 @@ kind: Kustomization
 resources:
 - namespace.yaml
 - elk-ingress.yaml
-- ../../../base/elk
-- ../../../base/filebeat
+- ../../../base-ops
 
 patches:
 # imagePullPolicy patches
