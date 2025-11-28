@@ -15,23 +15,6 @@ data:
       negate: true
       match: after
     filebeat.inputs:
-    - type: filestream
-      id: kubernetes-container-logs
-      paths:
-        - /var/log/containers/*.log
-      parsers:
-        - container: ~
-      prospector:
-        scanner:
-          fingerprint.enabled: true
-          symlinks: true
-      file_identity.fingerprint: ~
-      processors:
-        - add_kubernetes_metadata:
-            host: ${NODE_NAME}
-            matchers:
-            - logs_path:
-                logs_path: "/var/log/containers/"
     # ENVIDA node
     - type: filestream
       id: envida-etl-zib-pipeline-logs
@@ -51,15 +34,11 @@ data:
       id: envida-ehrdb-logs
       paths:
         - /usr/share/logs/envida/ehrdb/postgresql.log
-      parsers:
-        - multiline: *multiline_parser
       tags: ["ENVIDA","POSTGRESQL","EHRDB"]
     - type: filestream
       id: envida-ehrbase-logs
       paths:
          - /usr/share/logs/envida/ehrbase/ehrbase.log
-      parsers:
-         - multiline: *multiline_parser
       tags: ["ENVIDA","EHRBASE"]
     - type: filestream
       id: envida-transform-rest-logs
@@ -85,15 +64,11 @@ data:
       id: mumc-ehrdb-logs
       paths:
         - /usr/share/logs/mumc/ehrdb/postgresql.log
-      parsers:
-        - multiline: *multiline_parser
       tags: ["MUMC","POSTGRESQL","EHRDB"]
     - type: filestream
       id: mumc-ehrbase-logs
       paths:
          - /usr/share/logs/mumc/ehrbase/ehrbase.log
-      parsers:
-         - multiline: *multiline_parser
       tags: ["MUMC","EHRBASE"]
     - type: filestream
       id: mumc-transform-rest-logs
@@ -119,15 +94,11 @@ data:
       id: vitala-ehrdb-logs
       paths:
         - /usr/share/logs/vitala/ehrdb/postgresql.log
-      parsers:
-        - multiline: *multiline_parser
       tags: ["VITALA","POSTGRESQL","EHRDB"]
     - type: filestream
       id: vitala-ehrbase-logs
       paths:
          - /usr/share/logs/vitala/ehrbase/ehrbase.log
-      parsers:
-         - multiline: *multiline_parser
       tags: ["VITALA","EHRBASE"]
     - type: filestream
       id: vitala-transform-rest-logs
@@ -153,15 +124,11 @@ data:
       id: zio-ehrdb-logs
       paths:
         - /usr/share/logs/zio/ehrdb/postgresql.log
-      parsers:
-        - multiline: *multiline_parser
       tags: ["ZIO","POSTGRESQL","EHRDB"]
     - type: filestream
       id: zio-ehrbase-logs
       paths:
          - /usr/share/logs/zio/ehrbase/ehrbase.log
-      parsers:
-         - multiline: *multiline_parser
       tags: ["ZIO","EHRBASE"]
     - type: filestream
       id: zio-transform-rest-logs
@@ -177,18 +144,21 @@ data:
         - multiline: *multiline_parser
       tags: ["TEST","ETL_ZIB","ETL_PIPELINE"]
     - type: filestream
+      id: test-etl-zib-test-single-node-logs
+      paths:
+        - /usr/share/logs/test/etl-test-single-node/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["TEST","ETL_ZIB","ETL_TEST"]
+    - type: filestream
       id: test-ehrdb-logs
       paths:
         - /usr/share/logs/test/ehrdb/postgresql.log
-      parsers:
-        - multiline: *multiline_parser
       tags: ["TEST","POSTGRESQL","EHRDB"]
     - type: filestream
       id: test-ehrbase-logs
       paths:
         - /usr/share/logs/test/ehrbase/ehrbase.log
-      parsers:
-        - multiline: *multiline_parser
       tags: ["TEST","EHRBASE"]
     - type: filestream
       id: test-transform-rest-logs
@@ -211,6 +181,12 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: ["TERMINOLOGY_PROXY"]
+    # Jupyter
+    - type: filestream
+      id: jupyter-zib-logs
+      paths:
+        - /usr/share/logs/jupyter/jupyter_server.log
+      tags: ["JUPYTER_ZIB"]
     processors:
       - add_cloud_metadata:
       - add_host_metadata:

@@ -12497,12 +12497,16 @@
           "zeek.notice.email_body_sections",
           "zeek.notice.email_delay_tokens",
           "zeek.notice.identifier",
+          "ehrbase.thread",
+          "ehrbase.logger_name",
+          "ehrdb.postgres_pid",
           "ehr.node_name",
           "ehr.dataset",
           "ehr.input_data",
           "ehr.id",
           "ehr.topic",
           "ehr.template",
+          "transform.api_method",
           "fields.*"
         ]
       },

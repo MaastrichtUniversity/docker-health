@@ -84,7 +84,7 @@ spec:
           mountPath: /code/data/test-demo-data
         - name: etl-logs
           mountPath: /code/logs/test
-          subPath: test/etl
+          subPath: test/etl-test-single-node
       volumes:
       - name: data
         hostPath:

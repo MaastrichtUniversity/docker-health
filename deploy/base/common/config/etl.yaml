@@ -4,6 +4,5 @@ metadata:
   name: etl-config
   namespace: dh-health
 data:
-  LOGSTASH_TAGS: ETL_ZIB
   ETL_PROJECT_NAME: "zib"
   SUBJECT_NAMESPACE: "bsn"
