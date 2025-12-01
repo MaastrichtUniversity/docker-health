@@ -49,6 +49,7 @@ Add the following file to the relevant overlays folders: local, local/test-singl
 e.g., `deploy/overlays/local/secrets.yaml`
 
 #### Secret file example (need to replace the values with your encoded credentials)
+
 ```
 apiVersion: v1
 kind: Secret
@@ -64,6 +65,7 @@ data:
 # Add auto-generated secret of internals services to the kustomization's secretGenerator.
 # Add more secrets to externals services here.
 ```
+
 #### Encode your credentials with base64
 
 ```shell
@@ -72,20 +74,23 @@ SU5TRVJUX1lPVVJfUkVBTF9VU0VSTkFNRQ==
 $ echo -n 'INSERT_YOUR_REAL_PASSWORD' | base64
 SU5TRVJUX1lPVVJfUkVBTF9QQVNTV09SRA==
 ```
+
 Replace the username & password values by the output of the commands.
 
 #### Troubleshooting
 
 The `terminology-server-proxy` pod is not running, because of:
- * Status: "CreateContainerConfigError"
- * Message: "secret "terminology-server-proxy-creds" not found"
+
+- Status: "CreateContainerConfigError"
+- Message: "secret "terminology-server-proxy-creds" not found"
 
 Check the `dh.sh apply` logs:
+
 ```
 Error from server (BadRequest): error when creating "deploy/overlays/local": Secret in version "v1" cannot be handled as a Secret: illegal base64 data at input byte 8
 ```
-If you see the line from above, it means that you didn't encode the variables.
 
+If you see the line from above, it means that you didn't encode the variables.
 
 ### Encryption between filebeat and elk
 
@@ -146,7 +151,6 @@ For a UI overview of the Minikube kubernetes stack and pods with logs checkout o
 
 - Enable the default dashboard with `minikube dashboard`
 
-
 ## How to start the OPS containers (ELK, Filebeat)
 
 The OPS (monitoring, logging etc...) containers are in a different namespace and sub-overlay than the application containers.
@@ -157,7 +161,7 @@ The OPS (monitoring, logging etc...) containers are in a different namespace and
 ./dh.sh apply local/ops
 ```
 
-2. Check the ELK web interface - [Kibana](http://elk.local.dh.unimaas.nl)
+2. Check the ELK web interface - [Kibana](http://elk.local.dh.unimaas.nl) To see the logs, create a new Data View index pattern idx\*
 
 3. Remove the containers
 
@@ -224,11 +228,11 @@ To run tests on single node:
 # Or Execute this command to wait & check the job execution
 ./dh.sh run local test-single-node
 
-# 2 Check the results when the job has finished 
+# 2 Check the results when the job has finished
 kubectl get jobs/test-single-node -n dh-health -o jsonpath='{.status.conditions[1].type}'
 
 
-# 2. Check the logs of test-single-node pod 
+# 2. Check the logs of test-single-node pod
 kubectl logs -n dh-health jobs/test-single-node
 kubectl logs -n dh-health -f jobs/test-single-node  (Autorefresh)
 
@@ -242,9 +246,9 @@ To run tests on federation:
 # 1. Run the test job
 ./dh.sh apply local/test-federation
 # Or Execute this command to wait & check the job execution
-./dh.sh run local test-federation 
+./dh.sh run local test-federation
 
-# 2 Check the results when the job has finished 
+# 2 Check the results when the job has finished
 kubectl get jobs/test-federation -n dh-health -o jsonpath='{.status.conditions[1].type}'
 
 # 3. Check the logs of test-federation pod
