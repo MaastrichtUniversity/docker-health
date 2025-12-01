@@ -5,9 +5,6 @@ metadata:
   namespace: dh-health-ops
   labels:
     k8s-app: filebeat
-    # Terminology
-    # Jupyter
-    # ETL rest
 data:
   filebeat.yml: |-
     multiline-parser: &multiline_parser
