@@ -37,10 +37,9 @@ spec:
                 key: password
         volumeMounts:
           - name: logs
-            mountPath: /code/logs/terminology
+            mountPath: /opt/app/logs/terminology
             subPath: terminology
       volumes:
         - name: logs
           persistentVolumeClaim:
             claimName: log-pvc
-
