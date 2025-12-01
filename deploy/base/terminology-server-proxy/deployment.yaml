@@ -24,6 +24,8 @@ spec:
               name: terminology-server-proxy-config
           - configMapRef:
               name: dry-run-config
+          - configMapRef:
+              name: timezone-config
         env:
           - name: TERMINOLOGY_USERNAME
             valueFrom:
