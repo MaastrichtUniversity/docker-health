@@ -1,10 +1,16 @@
-apiVersion: batch/v1
-kind: Job
+apiVersion: apps/v1
+kind: DaemonSet
 metadata:
   name: populate-pvc-with-git-repo
   namespace: dh-health
 spec:
+  selector:
+    matchLabels:
+      app: git-repo-sync
   template:
+    metadata:
+      labels:
+        app: git-repo-sync
     spec:
       containers:
         - name: git-clone
@@ -30,10 +36,12 @@ spec:
               git clone https://github.com/MaastrichtUniversity/docker-health.git /repo/src
               cd /repo/src
               git checkout "$GIT_BRANCH"
+              echo "Sync complete, keeping pod alive to satisfy DaemonSet"
+              sleep infinity
           volumeMounts:
             - name: git-repo
               mountPath: /repo
-      restartPolicy: Never
+      restartPolicy: Always
       volumes:
         - name: git-repo
           persistentVolumeClaim:
