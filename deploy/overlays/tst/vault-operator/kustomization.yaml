@@ -3,8 +3,6 @@ kind: Kustomization
 namespace: dh-health
 
 resources:
-- vault-auth.yaml
-- vault-store.yaml
 - tls-secrets/common-tls.yaml
 - tls-secrets/envida-tls.yaml
 - tls-secrets/mumc-tls.yaml

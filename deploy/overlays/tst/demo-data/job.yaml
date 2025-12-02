@@ -4,6 +4,8 @@ metadata:
   name: populate-pvc-with-git-repo
   namespace: dh-health
 spec:
+  parallelism: 2
+  completions: 2
   template:
     spec:
       containers:
@@ -34,7 +36,25 @@ spec:
             - name: git-repo
               mountPath: /repo
       restartPolicy: Never
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - fhml-srv039
+                - fhml-srv075
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                job-name: populate-pvc-with-git-repo
+            topologyKey: kubernetes.io/hostname
       volumes:
         - name: git-repo
           persistentVolumeClaim:
             claimName: git-repo-pvc
+  backoffLimit: 4
