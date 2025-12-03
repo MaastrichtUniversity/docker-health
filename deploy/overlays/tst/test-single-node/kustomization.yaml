@@ -85,12 +85,6 @@ patches:
         name: no_proxy
         value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/12,10.43.0.1,10.43.0.10"
 
-# Individual ingress host patches
-## Transform
-- path: patches/ingress/common/transform.yaml
-## TEST-node
-- path: patches/ingress/test/ehrbase.yaml
-
 # Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
 configMapGenerator:
 - name: test-ehrbase-config
