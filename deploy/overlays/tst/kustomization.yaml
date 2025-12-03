@@ -27,13 +27,10 @@ resources:
 - ../../base/common
 - ../../base/federation-rest
 - ../../base/jupyter-zib
-# Envida-node
+# EHR-nodes
 - ../../base/openehr-nodes/envida
-# MUMC-node
 - ../../base/openehr-nodes/mumc
-# VITALA-node
 - ../../base/openehr-nodes/vitala
-# ZIO-node
 - ../../base/openehr-nodes/zio
 # Gateway resources
 - patches/gateway/common/federation.yaml
