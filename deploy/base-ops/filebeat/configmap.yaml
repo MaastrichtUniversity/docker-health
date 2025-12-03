@@ -41,6 +41,8 @@ data:
       id: envida-transform-rest-logs
       paths:
         - /usr/share/logs/envida/transform-rest/transform-rest.log
+      parsers:
+        - multiline: *multiline_parser
       tags: ["ENVIDA","TRANSFORM_REST"]
     # MUMC node
     - type: filestream
@@ -71,6 +73,8 @@ data:
       id: mumc-transform-rest-logs
       paths:
         - /usr/share/logs/mumc/transform-rest/transform-rest.log
+      parsers:
+        - multiline: *multiline_parser
       tags: ["MUMC","TRANSFORM_REST"]
     # VITALA node
     - type: filestream
@@ -101,6 +105,8 @@ data:
       id: vitala-transform-rest-logs
       paths:
         - /usr/share/logs/vitala/transform-rest/transform-rest.log
+      parsers:
+        - multiline: *multiline_parser
       tags: [ "VITALA","TRANSFORM_REST" ]
     # ZIO node
     - type: filestream
@@ -131,6 +137,8 @@ data:
       id: zio-transform-rest-logs
       paths:
         - /usr/share/logs/zio/transform-rest/transform-rest.log
+      parsers:
+        - multiline: *multiline_parser
       tags: ["ZIO","TRANSFORM_REST"]
     # TEST node
     - type: filestream
@@ -161,6 +169,8 @@ data:
       id: test-transform-rest-logs
       paths:
         - /usr/share/logs/test/transform-rest/transform-rest.log
+      parsers:
+        - multiline: *multiline_parser
       tags: ["TEST","TRANSFORM_REST"]
     # Federation
     - type: filestream
