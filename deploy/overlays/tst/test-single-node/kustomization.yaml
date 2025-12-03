@@ -15,6 +15,8 @@ resources:
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
   newTag: '2024.1.7'
+- name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
+  newTag: '2024.1.7'
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
   newTag: '2024.1.7'
 - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
@@ -84,6 +86,10 @@ patches:
       value:
         name: no_proxy
         value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/12,10.43.0.1,10.43.0.10"
+
+# Patch the data mounts to use the GIT PVC
+- path: patches/job/test-etl-zib-delete-demo-data.yaml
+- path: patches/job/test-etl-zib-add-demo-data.yaml
 
 # Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
 configMapGenerator:
