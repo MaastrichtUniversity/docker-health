@@ -2,13 +2,13 @@ BSN,HOOR_FUNCTIE,PRODUCT_TYPE,LOCATIE,LATERALITEIT,TOELICHTING,DATE_TIME,TEST_CO
 001645201,Gehoorverlies,Hoortoestel,Beide oren,Rechts,gebruikt een hoortoestel,2011-04-07T04:23:31.512,PASS-Test duplication check
 001645201,Complete doofheid,Hoortoestel,Beide oren,Rechts,gebruikt een hoortoestel,2012-04-07T04:23:31.512,PASS-Test duplication check
 001645201,Gehoorverlies,Hoortoestel,Beide oren,Rechts,gebruikt een hoortoestel,2011-04-07T04:23:31.512,FAIL-Test duplication check
-083197102,Gehoor normaal,Geen,Structuur van rechter oor,Links,alleen rechts,2007-01-09T04:23:31.123,PASS-Test data max
+083197102,Gehoor normaal,Other,Structuur van rechter oor,Links,alleen rechts,2007-01-09T04:23:31.123,PASS-Test data max
 339055303,Complete doofheid,,,,,2009-05-20T04:23:31.317,PASS-Test data min
 389370204,,,,,,,FAIL-Test data none
 683754105,,,,,,2017-04-03T04:23:31.276,FAIL-Test data empty
-316268306,Gehoorverlies,Geen,,,,2004-02-01T06:23:21.400,PASS
+316268306,Gehoorverlies,Other,,,,2004-02-01T06:23:21.400,PASS
 569973107,Gehoor normaal,Hoortoestel,Structuur van linker oor,Bilateraal,,2012-06-02T06:23:21.664,PASS
-011168808,Complete doofheid,Hoortoestel,Structuur van rechter oor,Rechts,geen,,FAIL-DATE_TIME is empty
+011168808,Complete doofheid,Other,Structuur van rechter oor,Rechts,geen,,FAIL-DATE_TIME is empty
 363037809,Gehoorverlies,Geen,Beide oren,Bilateraal,geen hulpmiddel,WrongValue,FAIL-DATE_TIME has a wrong datetime format
 315071710,WrongValue,,,,hoort niet goed,1999-08-12T06:23:21.377,FAIL-HOOR_FUNCTIE is wrong
 362880311,Gehoor normaal,WrongValue,,,,2009-08-12T06:23:21.256,PASS-PRODUCT_TYPE is wrong
