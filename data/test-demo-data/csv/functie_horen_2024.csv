@@ -1,7 +1,7 @@
 BSN,HOOR_FUNCTIE,PRODUCT_TYPE,LOCATIE,LATERALITEIT,TOELICHTING,DATE_TIME,TEST_COMMENTS
-001645201,Gehoorverlies,Hoortoestel,Beide oren,Rechts,gebruikt een hoortoestel,2011-04-07T04:23:31.512,PASS-Test duplication check
-001645201,Complete doofheid,Hoortoestel,Beide oren,Rechts,gebruikt een hoortoestel,2012-04-07T04:23:31.512,PASS-Test duplication check
-001645201,Gehoorverlies,Hoortoestel,Beide oren,Rechts,gebruikt een hoortoestel,2011-04-07T04:23:31.512,FAIL-Test duplication check
+001645201,Gehoorverlies,Hoortoestel,Beide oren,Rechts,gebruikt een hoortoestel,2023-11-14T15:50:14.321,PASS-Test duplication check
+001645201,Complete doofheid,Hoortoestel,Beide oren,Rechts,gebruikt een hoortoestel,2024-11-14T15:50:14.321,PASS-Test duplication check
+001645201,Gehoorverlies,Hoortoestel,Beide oren,Rechts,gebruikt een hoortoestel,2023-11-14T15:50:14.321,FAIL-Test duplication check
 083197102,Gehoor normaal,Other,Structuur van rechter oor,Links,alleen rechts,2007-01-09T04:23:31.123,PASS-Test data max
 339055303,Complete doofheid,,,,,2009-05-20T04:23:31.317,PASS-Test data min
 389370204,,,,,,,FAIL-Test data none
