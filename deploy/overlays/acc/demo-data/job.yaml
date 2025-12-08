@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: populate-pvc-with-git-repo
+  namespace: dh-health
+spec:
+  template:
+    spec:
+      containers:
+        - name: git-clone
+          image: alpine/git:latest
+          envFrom:
+            - configMapRef:
+                name: git-config   
+          command:
+            - sh
+            - -c
+            - |
+              set -e
+              echo "Cleaning old repo..."
+              rm -rf /repo/src
+              echo "Cloning fresh repo into /repo/src"
+              git clone https://github.com/MaastrichtUniversity/docker-health.git /repo/src
+              cd /repo/src
+              git checkout "$GIT_BRANCH"
+          volumeMounts:
+            - name: git-repo
+              mountPath: /repo
+      restartPolicy: Never
+      volumes:
+        - name: git-repo
+          persistentVolumeClaim:
+            claimName: git-repo-pvc
