@@ -1,0 +1,18 @@
+BSN,LOPEN,TRAPLOPEN,HOUDING_VERANDEREN,HOUDING_HANDHAVEN,UITVOEREN_TRANSFER,PRODUCT_TYPE,TOELICHTING,DATE_TIME,TEST_COMMENTS
+001645201,In staat om zelfstandig te lopen,Hulp nodig bij traplopen,Niet in staat van positie te veranderen,Niet in staat positie te handhaven,Hulp nodig bij transfer,Other,hulp nodig,2012-07-12T09:43:13.411,PASS-Test duplication check
+001645201,Hulp nodig bij lopen,Hulp nodig bij traplopen,Niet in staat van positie te veranderen,Niet in staat positie te handhaven,Hulp nodig bij transfer,Other,hulp nodig,2013-07-12T09:43:13.411,PASS-Test duplication check
+001645201,In staat om zelfstandig te lopen,Hulp nodig bij traplopen,Niet in staat van positie te veranderen,Niet in staat positie te handhaven,Hulp nodig bij transfer,Other,hulp nodig,2012-07-12T09:43:13.411,FAIL-Test duplication check
+083197102,Niet in staat om te lopen,In staat om zelfstandig trap te lopen,Niet in staat van positie te veranderen,In staat om zelfstandig positie aan te houden,In staat om transfer zelfstandig uit te voeren,Scootmobiel,rijdt soms scootmobiel,2008-08-02T09:43:13.351,PASS-Test data max
+339055303,,,,,,,test,2001-06-12T09:43:13.351,PASS-Test data min
+389370204,,,,,,,,,FAIL-Test data none
+683754105,,,,,,,,2012-01-19T03:33:14.355,FAIL-Test data empty
+316268306,In staat om zelfstandig te lopen,,Hulp nodig bij veranderen van positie,,Niet in staat om transfer onafhankelijk uit te voeren,Other,,1998-09-21T03:33:14.211,PASS
+569973107,,Niet in staat trap te lopen,,In staat om zelfstandig positie aan te houden,,,toelichting,2003-03-11T03:33:14.925,PASS
+011168808,Hulp nodig bij lopen,Hulp nodig bij traplopen,Niet in staat van positie te veranderen,Niet in staat positie te handhaven,In staat om transfer zelfstandig uit te voeren,Sta-op-hulp,krijgt hulp,,FAIL-DATE_TIME is empty
+363037809,In staat om zelfstandig te lopen,In staat om zelfstandig trap te lopen,In staat om zelfstandig van positie te veranderen,Hulp nodig bij behouden van positie,Hulp nodig bij transfer,Sta-orthese,veel hulp nodig,WrongValue,FAIL-DATE_TIME has a wrong datetime format
+315071710,WrongValue,,,,,,geen,2003-08-19T03:33:14.581,PASS-Optional LOPEN WrongValue converts to None
+362880311,,WrongValue,,,,,toelichting,1997-07-12T03:33:14.317,PASS-Optional TRAPLOPEN WrongValue converts to None
+525736712,,,WrongValue,,,,krijgt hulp,2013-09-22T03:33:14.509,PASS-Optional HOUDING_VERANDEREN WrongValue converts to None
+646236313,,,,WrongValue,,,woont alleen,2019-11-22T03:33:14.361,PASS-Optional HOUDING_HANDHAVEN WrongValue converts to None
+640681414,,,,,WrongValue,,slechte mobiliteit,2021-01-17T03:33:14.510,PASS-Optional UITVOEREN_TRANSFER WrongValue converts to None
+840027515,,,,,,WrongValue,gebruikt hulpmiddel,2024-04-12T03:33:14.357,PASS-Optional PRODUCT_TYPE WrongValue converts to None
