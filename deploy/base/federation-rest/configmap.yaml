@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: federation-rest-config
+  namespace: dh-health
+data:
+  FEDERATION_LOGGER_FILENAME: "logs/federation-rest/federation-rest.log"

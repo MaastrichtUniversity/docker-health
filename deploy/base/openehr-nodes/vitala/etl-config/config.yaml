@@ -9,6 +9,7 @@ data:
   SOURCE_SYSTEM_ID: "Nedap Ons"
   LOGGER_FILENAME: logs/vitala/etl-zib.log
   EHRBASE_BASE_URL: http://vitala-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
+  TRANSFORM_SPRING_BASE_URL: http://vitala-transform-rest.dh-health:8080
   WRITE_COMPOSITION: "true"
   # If SUBJECT_IDS is empty, extract subject_ids from dataset:
   SUBJECT_IDS: |

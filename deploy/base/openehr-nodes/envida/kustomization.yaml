@@ -13,5 +13,4 @@ resources:
 - federation-rest
 - openehrtool
 - portal
-
-
+- transform-rest
