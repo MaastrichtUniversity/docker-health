@@ -11,9 +11,7 @@ resources:
 - ../../../base/transform-rest
 - ../../../base/terminology-server-proxy
 ## TEST-node
-- ../../../base/openehr-nodes/test/ehrbase
-- ../../../base/openehr-nodes/test/ehrdb
-- ../../../base/openehr-nodes/test/etl-config
+- ../../../base/openehr-nodes/test
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
