@@ -7,6 +7,7 @@ resources:
   - openehrtool-ingress.yaml
   - portal-ingress.yaml
   - transform-rest-ingress.yaml
+  - federation-rest-ingress.yaml
 
 secretGenerator:
   - name: mumc-ehrbase-creds

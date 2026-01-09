@@ -18,7 +18,6 @@ components:
   - ingress/openehr-nodes/mumc/
   - ingress/openehr-nodes/vitala/
   - ingress/openehr-nodes/zio/
-  - ingress/openehr-nodes/test/
 
 patches:
 # imagePullPolicy patches
@@ -36,11 +35,6 @@ patches:
       value: Never
 
 configMapGenerator:
-- name: portal-common-config
-  namespace: dh-health
-  behavior: merge
-  literals:
-    - NEXT_PUBLIC_FEDERATION_BASE_URL=http://federation.local.dh.unimaas.nl
 # Set ADMIN_API_ACTIVE: "true" in all nodes for development purposes for openEHRtool ADMIN methods.
 - name: ehrbase-config
   namespace: dh-health
