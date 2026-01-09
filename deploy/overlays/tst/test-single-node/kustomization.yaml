@@ -11,15 +11,17 @@ resources:
 - ../../../base/transform-rest
 - ../../../base/terminology-server-proxy
 ## TEST-node
-- ../../../base/openehr-nodes/test
+- ../../../base/openehr-nodes/test/ehrdb
+- ../../../base/openehr-nodes/test/ehrbase
+- ../../../base/openehr-nodes/test/etl-config
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
-  newTag: '2024.1.4'
+  newTag: '2024.1.8'
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-  newTag: '2024.1.4'
+  newTag: '2024.1.8'
 - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
-  newTag: '2024.1.4'
+  newTag: '2024.1.8'
 
 patches:
 # imagePullPolicy patches
