@@ -5,8 +5,11 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
+- dry-run.yaml
 - ehrbase.yaml
+- etl.yaml
 - openehrtool.yaml
 - portal.yaml
 - timezone.yaml
+- transform.yaml
 - zib-templates.yaml

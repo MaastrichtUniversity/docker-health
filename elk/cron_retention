@@ -1,0 +1,9 @@
+# The script index_retention.sh will run every first day of the month aournd 2:00 AM to remove old indexes for several patterns
+
+#crontab sytax:
+#MI HH DOM MM DOW user command
+
+# idx-YYYY.MM indices should be retained 2 years and 2 months (=26 months)
+2 2 1 * * root /etc/cron.monthly/retention.sh -i idx -r 26 -v INFO >>/var/log/crontab.log
+
+

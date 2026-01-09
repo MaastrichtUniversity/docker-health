@@ -11,6 +11,7 @@ data:
   SOURCE_SYSTEM_ID: test
   LOGGER_FILENAME: logs/test/etl-zib.log
   EHRBASE_BASE_URL: http://test-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
+  TRANSFORM_SPRING_BASE_URL: http://test-transform-rest.dh-health:8080
   WRITE_COMPOSITION: "False"
   # If SUBJECT_IDS is empty, extract subject_ids from dataset:
   SUBJECT_IDS: |

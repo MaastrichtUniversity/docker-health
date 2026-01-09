@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dry-run-config
+  namespace: dh-health
+data:
+  DRY_RUN: "False"

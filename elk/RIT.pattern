@@ -1,0 +1,7 @@
+11-Aug-2016 09:36:20.893 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version:        Apache Tomcat/8.0.35
+TOMCAT8_DATESTAMP %{MONTHDAY}-%{MONTH}-20%{YEAR} %{HOUR}:?%{MINUTE}(?::?%{SECOND})
+
+# Atlassian
+RIT_SERVICE (%{NOTSPACE}|Backup Service|Datahub from mumc)
+RIT_PROG (%{PROG}|Gemini Blueprint context shutdown thread|Modification Check)
+
