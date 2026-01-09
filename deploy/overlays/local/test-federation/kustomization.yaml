@@ -5,7 +5,6 @@ resources:
 - job.yaml
 - role.yaml
 - ../../../base/common
-- ../../../base/federation-rest
 - ../../../base/terminology-server-proxy
 # Envida-node
 - ../../../base/openehr-nodes/envida/ehrbase
@@ -38,7 +37,6 @@ resources:
 
 components:
   - ../ingress/terminology-server-proxy/
-  - ../ingress/federation-rest/
   # TODO: only ehrbase and transform-rest ingresses are required:
   - ../ingress/openehr-nodes/envida/
   - ../ingress/openehr-nodes/mumc/
@@ -59,3 +57,16 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Never
+
+configMapGenerator:
+  - name: federation-rest-config
+    namespace: dh-health
+    literals:
+      - FEDERATION_LOGGER_FILENAME="logs/federation-rest/federation-rest.log"
+
+secretGenerator:
+# federation
+  - name: federation-service-creds
+    namespace: dh-health
+    literals:
+      - key=serviceKey
