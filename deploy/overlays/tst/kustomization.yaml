@@ -23,7 +23,6 @@ images:
 resources:
 # NEW vault secret operator
 - ./vault-operator
-- ./registry-secret.yaml # Docker registry secret for local testning only 
 # Base resources
 - ../../base/common
 - ../../base/federation-rest
