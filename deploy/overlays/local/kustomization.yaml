@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
 - secrets.yaml
 - terminology-ingress.yaml
+- role.yaml
 - ../../base
 
 patches:
@@ -32,16 +33,6 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: transform.local.dh.unimaas.nl
-## Federation
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: federation-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: federation.local.dh.unimaas.nl
 ## Jupyter
 - target:
     group: networking.k8s.io
@@ -89,6 +80,15 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.envida.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: envida-federation-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: federation.envida.local.dh.unimaas.nl
 ## MUMC-node
 - target:
     group: networking.k8s.io
@@ -126,6 +126,15 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.mumc.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: mumc-federation-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: federation.mumc.local.dh.unimaas.nl
 ## VITALA-node
 - target:
     group: networking.k8s.io
@@ -163,6 +172,15 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.vitala.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: vitala-federation-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: federation.vitala.local.dh.unimaas.nl
 ## ZIO-node
 - target:
     group: networking.k8s.io
@@ -200,6 +218,15 @@ patches:
     - op: replace
       path: /spec/rules/0/host
       value: openehrtool.zio.local.dh.unimaas.nl
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: zio-federation-rest-ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: federation.zio.local.dh.unimaas.nl
 ## TEST-node
 - target:
     group: networking.k8s.io
@@ -432,13 +459,13 @@ secretGenerator:
     namespace: dh-health
     literals:
       - SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7
+# federation
+  - name: federation-service-creds
+    namespace: dh-health
+    literals:
+      - key=serviceKey
 
 configMapGenerator:
-- name: portal-common-config
-  namespace: dh-health
-  behavior: merge
-  literals:
-    - NEXT_PUBLIC_FEDERATION_BASE_URL=http://federation.local.dh.unimaas.nl
 # Set ADMIN_API_ACTIVE: "true" in all nodes for development purposes for openEHRtool ADMIN methods.
 - name: ehrbase-config
   namespace: dh-health

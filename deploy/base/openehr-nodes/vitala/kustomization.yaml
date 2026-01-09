@@ -10,5 +10,6 @@ resources:
 - ehrdb
 - etl-zib-pipeline
 - etl-zib-rest
+- federation-rest
 - openehrtool
 - portal

@@ -5,7 +5,7 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- ehrbase.yaml
-- openehrtool.yaml
-- timezone.yaml
-- zib-templates.yaml
+- deployment.yaml
+- service.yaml
+- ingress.yaml
+- configmap.yaml
