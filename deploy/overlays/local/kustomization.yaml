@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+- role.yaml # For the service registry
 - ../../base/common/
 - ../../base/jupyter-zib/
 - ../../base/terminology-server-proxy/
@@ -18,6 +19,7 @@ components:
   - ingress/openehr-nodes/mumc/
   - ingress/openehr-nodes/vitala/
   - ingress/openehr-nodes/zio/
+  - ingress/openehr-nodes/test/ # For jupyter ??
 
 patches:
 # imagePullPolicy patches
@@ -41,3 +43,11 @@ configMapGenerator:
   behavior: merge
   literals:
     - ADMIN_API_ACTIVE=true
+
+
+secretGenerator:
+# federation
+  - name: federation-service-creds
+    namespace: dh-health
+    literals:
+      - key=serviceKey
