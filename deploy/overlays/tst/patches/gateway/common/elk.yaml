@@ -1,0 +1,39 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: elk-gateway
+  namespace: dh-health
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: elk.tst.dh.unimaas.nl
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: elk-tls-secret
+    - name: http
+      port: 80
+      protocol: HTTP
+      hostname: elk.tst.dh.unimaas.nl
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: elk-route
+  namespace: dh-health
+spec:
+  parentRefs:
+    - name: elk-gateway
+  hostnames:
+    - elk.tst.dh.unimaas.nl
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: elk
+          port: 5601

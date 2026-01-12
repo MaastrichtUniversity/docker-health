@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+secretGenerator:
+# Filebeat
+  - name: filebeat-certificate-authorities
+    namespace: dh-health-ops
+    files:
+        -  certs/ca.crt
+  - name: filebeat-certificate
+    namespace: dh-health-ops
+    files:
+        -  certs/filebeat.dh-health-ops.crt
+  - name: filebeat-key
+    namespace: dh-health-ops
+    files:
+        -  certs/filebeat.dh-health-ops.key
+# Logstash (ELK)
+  - name: logstash-certificate-authorities
+    namespace: dh-health-ops
+    files:
+        -  certs/ca.crt
+  - name: logstash-certificate
+    namespace: dh-health-ops
+    files:
+        -  certs/elk.dh-health-ops.crt
+  - name: logstash-key
+    namespace: dh-health-ops
+    files:
+        -  certs/elk.dh-health-ops.key
