@@ -58,4 +58,8 @@ deploy/overlays/*/registry-secret.yaml
 deploy/overlays/*/*/registry-secret.yaml
 
 # ELK
+build-elk-arm64.sh
 elk/GeoLite2-City.mmdb
+
+# etc/hosts/ MacOS specific setup
+dh-mac.sh
