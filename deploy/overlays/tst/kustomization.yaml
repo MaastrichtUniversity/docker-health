@@ -19,8 +19,6 @@ images:
   newTag: '2024.1.8'
 - name: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib
   newTag: '2024.1.8'
-- name: registry.prod.dh.unimaas.nl/docker-health/elk
-  newTag: '2024.1.8'
 
 resources:
 # NEW vault secret operator
@@ -37,15 +35,10 @@ resources:
 # Gateway resources
 - patches/gateway/common/federation.yaml
 - patches/gateway/common/jupyter.yaml
-- patches/gateway/common/elk.yaml
 - patches/gateway/envida/portal.yaml
 - patches/gateway/mumc/portal.yaml
 - patches/gateway/vitala/portal.yaml
 - patches/gateway/zio/portal.yaml
-# Ops
-- ./ops
-# Base ops
-- ../../base-ops
 
 patches:
 # 'Global' patches that apply to all of one sort
