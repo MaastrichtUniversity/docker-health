@@ -9,7 +9,11 @@ spec:
     - name: http
       port: 80
       protocol: HTTP
-      hostname: elk.devops.unimaas.nl
+      hostname: elk-hdp.tst.dh.unimaas.nl
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: elk-hdp.tst.dh.unimaas.nl
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -20,7 +24,7 @@ spec:
   parentRefs:
     - name: elk-gateway
   hostnames:
-    - elk.devops.unimaas.nl
+    - elk-hdp.tst.dh.unimaas.nl
   rules:
     - matches:
         - path:
