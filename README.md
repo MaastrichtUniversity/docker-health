@@ -132,10 +132,15 @@ Note: Build with a custom tag is supported (not needed for local development).
 ```
 
 4. Apply Kubernetes manifests on the `local` overlay
-
-```bash
-./dh.sh apply local
-```
+   1. Apply all resources
+    ```bash
+    ./dh.sh apply local
+    ```
+   2. Apply a specific node resources
+    ```bash
+    ./dh.sh apply/{nodename}
+    ```
+    with `{nodename}` corresponding to either `envida`, `mumc`, `vitala`, `zio` or `test`.
 
 5. Show status of all pods
 
