@@ -1,0 +1,19 @@
+BSN,HOOR_FUNCTIE,PRODUCT_TYPE,LOCATIE,LATERALITEIT,TOELICHTING,DATE_TIME,TEST_COMMENTS
+001645201,Gehoorverlies,Hoortoestel,Beide oren,Rechts,gebruikt een hoortoestel,2023-11-14T15:50:14.321,PASS-Test valid start_time
+001645201,Complete doofheid,Hoortoestel,Beide oren,Rechts,gebruikt een hoortoestel,2024-11-14T15:50:14.321,PASS-Test valid start_time
+001645201,Gehoorverlies,Hoortoestel,Beide oren,Rechts,gebruikt een hoortoestel,2023-11-14T15:50:14.321,FAIL-Test valid start_time
+083197102,Gehoor normaal,Other,Structuur van rechter oor,Links,alleen rechts,2007-01-09T04:23:31.123,PASS-Test data max
+339055303,Complete doofheid,,,,,2009-05-20T04:23:31.317,PASS-Test data min
+389370204,,,,,,,FAIL-Test data none
+683754105,,,,,,2017-04-03T04:23:31.276,FAIL-Test data empty
+316268306,Gehoorverlies,Other,,,,2004-02-01T06:23:21.400,PASS
+569973107,Gehoor normaal,Hoortoestel,Structuur van linker oor,Bilateraal,,2012-06-02T06:23:21.664,PASS
+011168808,Complete doofheid,Other,Structuur van rechter oor,Rechts,geen,,FAIL-DATE_TIME is empty
+363037809,Gehoorverlies,Geen,Beide oren,Bilateraal,geen hulpmiddel,WrongValue,FAIL-DATE_TIME has a wrong datetime format
+315071710,WrongValue,,,,hoort niet goed,1999-08-12T06:23:21.377,FAIL-HOOR_FUNCTIE is wrong
+362880311,,Other,Structuur van rechter oor,Bilateraal,vanaf geboorte,2010-06-10T06:23:21.641,FAIL-HOOR_FUNCTIE is missing
+525736712,Gehoor normaal,WrongValue,,,,2009-08-12T06:23:21.256,PASS-PRODUCT_TYPE is wrong
+646236313,Gehoorverlies,Geen,WrongValue,,,2010-08-10T06:23:21.360,PASS-LOCATIE is wrong
+640681414,Complete doofheid,Hoortoestel,Structuur van linker oor,WrongValue,,2016-06-16T06:23:21.260,PASS-LATERALITEIT is wrong
+840027515,Gehoorverlies,,Structuur van rechter oor,,,2008-06-16T06:23:21.511,PASS-LOCATIE is present without PRODUCT_TYPE
+880143216,Gehoor normaal,Other,,Links,,2011-06-26T06:23:21.701,PASS-LATERALITEIT is present without LOCATIE

@@ -59,14 +59,14 @@ patches:
 - target:
     kind: Deployment
   patch: |-
-    - op: replace
+    - op: add
       path: /spec/template/spec/imagePullSecrets
       value:
       - name: registry-credentials
 - target:
     kind: Job
   patch: |-
-    - op: replace
+    - op: add
       path: /spec/template/spec/imagePullSecrets
       value:
       - name: registry-credentials
@@ -74,14 +74,16 @@ patches:
 - target:
     kind: Deployment
   patch: |-
-    - op: replace
+    - op: add
       path: /spec/template/spec/containers/0/imagePullPolicy
+      value: IfNotPresent
       value: IfNotPresent
 - target:
     kind: Job
   patch: |-
-    - op: replace
+    - op: add
       path: /spec/template/spec/containers/0/imagePullPolicy
+      value: IfNotPresent
       value: IfNotPresent
 # Proxy patches
 - target:
