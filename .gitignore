@@ -52,7 +52,7 @@ rit.sh
 .vscode/
 
 # secrets for local (dev)
-deploy/overlays/local/ingress/terminology-server-proxy/secrets.yaml
+deploy/overlays/local/components/terminology-server-proxy-ingress/secrets.yaml
 # secrets for tst, acc and prod
 deploy/overlays/*/registry-secret.yaml
 deploy/overlays/*/*/registry-secret.yaml
