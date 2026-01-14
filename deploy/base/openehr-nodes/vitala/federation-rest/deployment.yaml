@@ -62,10 +62,10 @@ spec:
             - configMapRef:
                 name: timezone-config
             - configMapRef:
-                name: vitala-federation-rest-config
+                name: zio-federation-rest-config
           volumeMounts:
             - name: logs
-              mountPath: /code/logs/federation-rest-vitala
+              mountPath: /code/logs/federation-rest
               subPath: vitala/federation-rest
       volumes:
         - name: logs
