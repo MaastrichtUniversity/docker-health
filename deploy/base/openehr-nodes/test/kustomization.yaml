@@ -13,7 +13,6 @@ generatorOptions:
 resources:
 - ehrbase
 - ehrdb
-- etl-config
-- etl-zib-pipeline
+- etl-zib
 - openehrtool
 - transform-rest

@@ -127,7 +127,7 @@ in [dh-hdp-etl/README.md](https://github.com/MaastrichtUniversity/dh-hdp-etl/tre
     2. Update the new version number in `pyproject.toml` and release a new tag
     3. Update the package version in the `requirements.txt` file in both `dh-hdp-etl` and `dh-hdp-federation-api`
 6. Add a new demo-data folder in `data`
-   1. Remember to update the new configuration in `base/openehr-nodes/{nodename}/etl-config/config.yaml`
+   1. Remember to update the new configuration in `base/openehr-nodes/{nodename}/etl-zib/etl-config/config.yaml`
 7. In `dh-hdp-federation-api`
     1. Add a new `list` item into `SuccessQueryModel` in `src/response_models.py`
     2. Add a new `NodeCredentialsSettings` item into `CredentialsSettings` in `src/settings.py`
