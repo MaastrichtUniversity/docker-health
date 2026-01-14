@@ -2,61 +2,77 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- job.yaml
-- role.yaml
-- ../../../base/common
-- ../../../base/terminology-server-proxy
-# Envida-node
-- ../../../base/openehr-nodes/envida/ehrbase
-- ../../../base/openehr-nodes/envida/ehrdb
-- ../../../base/openehr-nodes/envida/etl-zib/etl-config
-- ../../../base/openehr-nodes/envida/etl-zib/etl-zib-pipeline
-- ../../../base/openehr-nodes/envida/federation-rest
-- ../../../base/openehr-nodes/envida/transform-rest
-# MUMC-node
-- ../../../base/openehr-nodes/mumc/ehrbase
-- ../../../base/openehr-nodes/mumc/ehrdb
-- ../../../base/openehr-nodes/mumc/etl-zib/etl-config
-- ../../../base/openehr-nodes/mumc/etl-zib/etl-zib-pipeline
-- ../../../base/openehr-nodes/mumc/federation-rest
-- ../../../base/openehr-nodes/mumc/transform-rest
-# VITALA-node
-- ../../../base/openehr-nodes/vitala/ehrbase
-- ../../../base/openehr-nodes/vitala/ehrdb
-- ../../../base/openehr-nodes/vitala/etl-zib/etl-config
-- ../../../base/openehr-nodes/vitala/etl-zib/etl-zib-pipeline
-- ../../../base/openehr-nodes/vitala/federation-rest
-- ../../../base/openehr-nodes/vitala/transform-rest
-# ZIO-node
-- ../../../base/openehr-nodes/zio/ehrbase
-- ../../../base/openehr-nodes/zio/ehrdb
-- ../../../base/openehr-nodes/zio/etl-zib/etl-config
-- ../../../base/openehr-nodes/zio/etl-zib/etl-zib-pipeline
-- ../../../base/openehr-nodes/zio/federation-rest
-- ../../../base/openehr-nodes/zio/transform-rest
+  - job.yaml
+  - job-reader-role.yaml
+  - ../../../base/common
+  - ../../../base/terminology-server-proxy
+  # ENVIDA-node
+  - ../../../base/openehr-nodes/envida/ehrbase
+  - ../../../base/openehr-nodes/envida/ehrdb
+  - ../../../base/openehr-nodes/envida/etl-zib/etl-config
+  - ../../../base/openehr-nodes/envida/etl-zib/etl-zib-pipeline
+  - ../../../base/openehr-nodes/envida/federation-rest
+  - ../../../base/openehr-nodes/envida/transform-rest
+  # MUMC-node
+  - ../../../base/openehr-nodes/mumc/ehrbase
+  - ../../../base/openehr-nodes/mumc/ehrdb
+  - ../../../base/openehr-nodes/mumc/etl-zib/etl-config
+  - ../../../base/openehr-nodes/mumc/etl-zib/etl-zib-pipeline
+  - ../../../base/openehr-nodes/mumc/federation-rest
+  - ../../../base/openehr-nodes/mumc/transform-rest
+  # VITALA-node
+  - ../../../base/openehr-nodes/vitala/ehrbase
+  - ../../../base/openehr-nodes/vitala/ehrdb
+  - ../../../base/openehr-nodes/vitala/etl-zib/etl-config
+  - ../../../base/openehr-nodes/vitala/etl-zib/etl-zib-pipeline
+  - ../../../base/openehr-nodes/vitala/federation-rest
+  - ../../../base/openehr-nodes/vitala/transform-rest
+  # ZIO-node
+  - ../../../base/openehr-nodes/zio/ehrbase
+  - ../../../base/openehr-nodes/zio/ehrdb
+  - ../../../base/openehr-nodes/zio/etl-zib/etl-config
+  - ../../../base/openehr-nodes/zio/etl-zib/etl-zib-pipeline
+  - ../../../base/openehr-nodes/zio/federation-rest
+  - ../../../base/openehr-nodes/zio/transform-rest
 
 components:
-  - ../ingress/terminology-server-proxy/
-  # TODO: only ehrbase and transform-rest ingresses are required:
-  - ../ingress/openehr-nodes/envida/
-  - ../ingress/openehr-nodes/mumc/
-  - ../ingress/openehr-nodes/vitala/
-  - ../ingress/openehr-nodes/zio/
+  - ../components/services-list-role # For the service registry
+  - ../components/terminology-server-proxy-ingress
+  # ENVIDA-node
+  - ../envida/components/ehrbase-ingress
+  - ../envida/components/federation-rest-ingress
+  - ../envida/components/transform-rest-ingress
+  - ../envida/components/secrets
+  # MUMC-node
+  - ../mumc/components/ehrbase-ingress
+  - ../mumc/components/federation-rest-ingress
+  - ../mumc/components/transform-rest-ingress
+  - ../mumc/components/secrets
+  # VITALA-node
+  - ../vitala/components/ehrbase-ingress
+  - ../vitala/components/federation-rest-ingress
+  - ../vitala/components/transform-rest-ingress
+  - ../vitala/components/secrets
+  # ZIO-node
+  - ../zio/components/ehrbase-ingress
+  - ../zio/components/federation-rest-ingress
+  - ../zio/components/transform-rest-ingress
+  - ../zio/components/secrets
 
 patches:
-# imagePullPolicy patches
-- target:
-    kind: Deployment
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/containers/0/imagePullPolicy
-      value: Never
-- target:
-    kind: Job
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/containers/0/imagePullPolicy
-      value: Never
+  # imagePullPolicy patches
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Never
+  - target:
+      kind: Job
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Never
 
 configMapGenerator:
   - name: federation-rest-config
@@ -65,7 +81,6 @@ configMapGenerator:
       - FEDERATION_LOGGER_FILENAME="logs/federation-rest/federation-rest.log"
 
 secretGenerator:
-# federation
   - name: federation-service-creds
     namespace: dh-health
     literals:
