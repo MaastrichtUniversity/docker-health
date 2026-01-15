@@ -194,20 +194,32 @@ data:
         - /usr/share/logs/jupyter/jupyter_server.log
       tags: ["JUPYTER_ZIB"]
     - type: filestream
-      id: external-secrets-logs
+      id: kubernetes-container-logs
       paths:
-        - /var/log/containers/*external-secrets*.log
-      tags: ["EXTERNAL_SECRETS"]
-    - type: filestream
-      id: traefik-logs
-      paths:
-        - /var/log/containers/*traefik*.log
-      tags: ["TRAEFIK"]
+        - /var/log/containers/*.log
+      parsers:
+        - container: ~
+      prospector:
+        scanner:
+          fingerprint.enabled: true
+          symlinks: true
+          include_files:
+            - '.*coredns.*'
+            - '.*traefik.*'
+            - '.*external-secrets.*'
+      tags: ["KUBERNETES","CONTAINER_LOGS"]
+      file_identity.fingerprint: ~
+      processors:
+        - add_kubernetes_metadata:
+            host: ${NODE_NAME}
+            matchers:
+            - logs_path:
+                logs_path: "/var/log/containers/"
     processors:
       - add_cloud_metadata:
       - add_host_metadata:
     output.logstash:
-      hosts: ["elk:5044"]
+      hosts: ["elk.dh-health-ops:5044"]
       ssl.enabled: true
       ssl.certificate_authorities: [ "/etc/filebeat_ssl/ca.crt" ]
       ssl.certificate: "/etc/filebeat_ssl/filebeat.dh-health-ops.crt"
