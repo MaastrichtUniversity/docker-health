@@ -1,16 +1,12 @@
-apiVersion: apps/v1
-kind: DaemonSet
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: populate-pvc-with-git-repo
   namespace: dh-health
 spec:
-  selector:
-    matchLabels:
-      app: git-repo-sync
+  parallelism: 2
+  completions: 2
   template:
-    metadata:
-      labels:
-        app: git-repo-sync
     spec:
       containers:
         - name: git-clone
@@ -36,13 +32,29 @@ spec:
               git clone https://github.com/MaastrichtUniversity/docker-health.git /repo/src
               cd /repo/src
               git checkout "$GIT_BRANCH"
-              echo "Sync complete, keeping pod alive to satisfy DaemonSet"
-              sleep infinity
           volumeMounts:
             - name: git-repo
               mountPath: /repo
-      restartPolicy: Always
+      restartPolicy: Never
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - fhml-srv039
+                - fhml-srv075
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                job-name: populate-pvc-with-git-repo
+            topologyKey: kubernetes.io/hostname
       volumes:
         - name: git-repo
           persistentVolumeClaim:
             claimName: git-repo-pvc
+  backoffLimit: 4
