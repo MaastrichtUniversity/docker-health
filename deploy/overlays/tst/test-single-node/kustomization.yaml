@@ -8,12 +8,12 @@ resources:
 - job.yaml
 #- registry-secret.yaml
 - ../../../base/common
-- ../../../base/transform-rest
 - ../../../base/terminology-server-proxy
 ## TEST-node
 - ../../../base/openehr-nodes/test/ehrdb
 - ../../../base/openehr-nodes/test/ehrbase
 - ../../../base/openehr-nodes/test/etl-config
+- ../../../base/openehr-nodes/test/transform-rest
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
@@ -87,12 +87,6 @@ patches:
       value:
         name: no_proxy
         value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/12,10.43.0.1,10.43.0.10"
-
-# Individual ingress host patches
-## Transform
-- path: patches/ingress/common/transform.yaml
-## TEST-node
-- path: patches/ingress/test/ehrbase.yaml
 
 # Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
 configMapGenerator:
