@@ -39,11 +39,13 @@ spec:
 #          - /code/tests/test_vermogen_tot_zich_kleden.py
         envFrom:
         - configMapRef:
+            name: dry-run-config
+        - configMapRef:
             name: timezone-config
         - configMapRef:
-            name: transform-server-config
-        - configMapRef:
             name: zib-templates-config
+        - configMapRef:
+            name: etl-config
         - configMapRef:
             name: test-etl-config
         env:
@@ -70,19 +72,19 @@ spec:
         - name: TRANSFORM_SPRING_USERNAME
           valueFrom:
             secretKeyRef:
-              name: transform-creds
+              name: test-transform-creds
               key: username
         - name: TRANSFORM_SPRING_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: transform-creds
+              name: test-transform-creds
               key: password
         volumeMounts:
         - name: data
           mountPath: /code/data/test-demo-data
         - name: etl-logs
           mountPath: /code/logs/test
-          subPath: test/etl
+          subPath: test/etl-test-single-node
       volumes:
       - name: data
         hostPath:

@@ -49,6 +49,7 @@ Add the following file to the relevant overlays folders: local, local/test-singl
 e.g., `deploy/overlays/local/secrets.yaml`
 
 #### Secret file example (need to replace the values with your encoded credentials)
+
 ```
 apiVersion: v1
 kind: Secret
@@ -64,6 +65,7 @@ data:
 # Add auto-generated secret of internals services to the kustomization's secretGenerator.
 # Add more secrets to externals services here.
 ```
+
 #### Encode your credentials with base64
 
 ```shell
@@ -72,46 +74,28 @@ SU5TRVJUX1lPVVJfUkVBTF9VU0VSTkFNRQ==
 $ echo -n 'INSERT_YOUR_REAL_PASSWORD' | base64
 SU5TRVJUX1lPVVJfUkVBTF9QQVNTV09SRA==
 ```
+
 Replace the username & password values by the output of the commands.
 
 #### Troubleshooting
 
 The `terminology-server-proxy` pod is not running, because of:
- * Status: "CreateContainerConfigError"
- * Message: "secret "terminology-server-proxy-creds" not found"
+
+- Status: "CreateContainerConfigError"
+- Message: "secret "terminology-server-proxy-creds" not found"
 
 Check the `dh.sh apply` logs:
+
 ```
 Error from server (BadRequest): error when creating "deploy/overlays/local": Secret in version "v1" cannot be handled as a Secret: illegal base64 data at input byte 8
 ```
+
 If you see the line from above, it means that you didn't encode the variables.
 
+### Encryption between filebeat and elk
 
-### Encryption between filebeat and elk [UNUSED ATM!]
->
-> CA certificates need to be manually stored in folder `filebeat/certs`.
-> The present files are used for development-purposes.
->
-> Right now, we're not using encryption, but we've kept these configurations in case we decide to enable them in the
-> future, hence the commented configurations, for example:
->
-> In `docker-compose.yml` :
->
-> ```
-> #   - ./filebeat/certs:/etc/certs:ro
-> ```
->
-> In `filebeat/filebeat.yml` :
->
-> ```
-> #  ssl.certificate_authorities: ["/etc/certs/ca.crt"]
-> #  ssl.certificate: "/etc/certs/filebeat.dh.local.crt"
-> #  ssl.key: "/etc/certs/filebeat.dh.local.key"
-> ```
->
-> and others.
->
-> If encryption needs to be restored, uncomment the configurations and see `2025.1-ssl` branch of `docker-common`.
+CA certificates need to be manually stored in folders `overlays/.../ops/certs`.
+The present files are used for development-purposes.
 
 ## Quick start installation of the HDP local env
 
@@ -150,7 +134,7 @@ Note: Build with a custom tag is supported (not needed for local development).
 4. Apply Kubernetes manifests on the `local` overlay
 
 ```bash
-./dh.sh apply
+./dh.sh apply local
 ```
 
 5. Show status of all pods
@@ -167,6 +151,24 @@ For a UI overview of the Minikube kubernetes stack and pods with logs checkout o
 
 - Enable the default dashboard with `minikube dashboard`
 
+## How to start the OPS containers (ELK, Filebeat)
+
+The OPS (monitoring, logging etc...) containers are in a different namespace and sub-overlay than the application containers.
+
+1. Start the containers
+
+```bash
+./dh.sh apply local/ops
+```
+
+2. Check the ELK web interface - [Kibana](http://elk.local.dh.unimaas.nl) To see the logs, create a new Data View index pattern idx\*
+
+3. Remove the containers
+
+```bash
+./dh.sh delete local/ops
+```
+
 ## Development Workflow
 
 ### dh.sh functionalities
@@ -178,8 +180,10 @@ Checkout existing functionality in the dh.sh. For examples:
 ./dh.sh start                        Start Kubernetes environment
 ./dh.sh build                        Build all Docker images
 ./dh.sh apply                        Apply Kubernetes manifests with local overlay
+./dh.sh apply local/ops              Apply Kubernetes manifests with local/ops overlay (ELK, Filbeat)
 ./dh.sh apply tst                    Apply Kubernetes manifests with tst overlay
 ./dh.sh delete                       Delete Kubernetes manifests with local overlay
+./dh.sh delete local/ops             Delete Kubernetes manifests with local/ops overlay (ELK, Filbeat)
 ./dh.sh delete tst                   Delete Kubernetes manifests with tst overlay
 ./dh.sh status                       Print the pods status
 ./dh.sh status -w                    Print and follow the pods status
@@ -224,11 +228,11 @@ To run tests on single node:
 # Or Execute this command to wait & check the job execution
 ./dh.sh run local test-single-node
 
-# 2 Check the results when the job has finished 
+# 2 Check the results when the job has finished
 kubectl get jobs/test-single-node -n dh-health -o jsonpath='{.status.conditions[1].type}'
 
 
-# 2. Check the logs of test-single-node pod 
+# 2. Check the logs of test-single-node pod
 kubectl logs -n dh-health jobs/test-single-node
 kubectl logs -n dh-health -f jobs/test-single-node  (Autorefresh)
 
@@ -242,9 +246,9 @@ To run tests on federation:
 # 1. Run the test job
 ./dh.sh apply local/test-federation
 # Or Execute this command to wait & check the job execution
-./dh.sh run local test-federation 
+./dh.sh run local test-federation
 
-# 2 Check the results when the job has finished 
+# 2 Check the results when the job has finished
 kubectl get jobs/test-federation -n dh-health -o jsonpath='{.status.conditions[1].type}'
 
 # 3. Check the logs of test-federation pod

@@ -34,11 +34,13 @@ spec:
         image: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline:latest
         envFrom:
         - configMapRef:
+            name: dry-run-config
+        - configMapRef:
             name: timezone-config
         - configMapRef:
-            name: transform-server-config
-        - configMapRef:
             name: zib-templates-config
+        - configMapRef:
+            name: etl-config
         - configMapRef:
             name: vitala-etl-config
         env:
@@ -55,12 +57,12 @@ spec:
         - name: TRANSFORM_SPRING_USERNAME
           valueFrom:
             secretKeyRef:
-              name: transform-creds
+              name: vitala-transform-creds
               key: username
         - name: TRANSFORM_SPRING_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: transform-creds
+              name: vitala-transform-creds
               key: password
         volumeMounts:
         - name: outputs

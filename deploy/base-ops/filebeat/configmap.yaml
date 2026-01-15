@@ -1,0 +1,205 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebeat-config
+  namespace: dh-health-ops
+  labels:
+    k8s-app: filebeat
+data:
+  filebeat.yml: |-
+    multiline-parser: &multiline_parser
+      pattern: '^\['
+      negate: true
+      match: after
+    filebeat.inputs:
+    # ENVIDA node
+    - type: filestream
+      id: envida-etl-zib-pipeline-logs
+      paths:
+        - /usr/share/logs/envida/pipeline/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["ENVIDA","ETL_ZIB","ETL_PIPELINE"]
+    - type: filestream
+      id: envida-etl-zib-rest-logs
+      paths:
+        - /usr/share/logs/envida/etl-rest/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["ENVIDA","ETL_ZIB","ETL_REST"]
+    - type: filestream
+      id: envida-ehrdb-logs
+      paths:
+        - /usr/share/logs/envida/ehrdb/postgresql.log
+      tags: ["ENVIDA","POSTGRESQL","EHRDB"]
+    - type: filestream
+      id: envida-ehrbase-logs
+      paths:
+         - /usr/share/logs/envida/ehrbase/ehrbase.log
+      tags: ["ENVIDA","EHRBASE"]
+    - type: filestream
+      id: envida-transform-rest-logs
+      paths:
+        - /usr/share/logs/envida/transform-rest/transform-rest.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["ENVIDA","TRANSFORM_REST"]
+    # MUMC node
+    - type: filestream
+      id: mumc-etl-zib-pipeline-logs
+      paths:
+        - /usr/share/logs/mumc/pipeline/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["MUMC","ETL_ZIB","ETL_PIPELINE"]
+    - type: filestream
+      id: mumc-etl-zib-rest-logs
+      paths:
+        - /usr/share/logs/mumc/etl-rest/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["MUMC","ETL_ZIB","ETL_REST"]
+    - type: filestream
+      id: mumc-ehrdb-logs
+      paths:
+        - /usr/share/logs/mumc/ehrdb/postgresql.log
+      tags: ["MUMC","POSTGRESQL","EHRDB"]
+    - type: filestream
+      id: mumc-ehrbase-logs
+      paths:
+         - /usr/share/logs/mumc/ehrbase/ehrbase.log
+      tags: ["MUMC","EHRBASE"]
+    - type: filestream
+      id: mumc-transform-rest-logs
+      paths:
+        - /usr/share/logs/mumc/transform-rest/transform-rest.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["MUMC","TRANSFORM_REST"]
+    # VITALA node
+    - type: filestream
+      id: vitala-etl-zib-pipeline-logs
+      paths:
+        - /usr/share/logs/vitala/pipeline/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["VITALA","ETL_ZIB","ETL_PIPELINE"]
+    - type: filestream
+      id: vitala-etl-zib-rest-logs
+      paths:
+        - /usr/share/logs/vitala/etl-rest/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["VITALA","ETL_ZIB","ETL_REST"]
+    - type: filestream
+      id: vitala-ehrdb-logs
+      paths:
+        - /usr/share/logs/vitala/ehrdb/postgresql.log
+      tags: ["VITALA","POSTGRESQL","EHRDB"]
+    - type: filestream
+      id: vitala-ehrbase-logs
+      paths:
+         - /usr/share/logs/vitala/ehrbase/ehrbase.log
+      tags: ["VITALA","EHRBASE"]
+    - type: filestream
+      id: vitala-transform-rest-logs
+      paths:
+        - /usr/share/logs/vitala/transform-rest/transform-rest.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: [ "VITALA","TRANSFORM_REST" ]
+    # ZIO node
+    - type: filestream
+      id: zio-etl-zib-pipeline-logs
+      paths:
+        - /usr/share/logs/zio/pipeline/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["ZIO","ETL_ZIB","ETL_PIPELINE"]
+    - type: filestream
+      id: zio-etl-zib-rest-logs
+      paths:
+        - /usr/share/logs/zio/etl-rest/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["ZIO","ETL_ZIB","ETL_REST"]
+    - type: filestream
+      id: zio-ehrdb-logs
+      paths:
+        - /usr/share/logs/zio/ehrdb/postgresql.log
+      tags: ["ZIO","POSTGRESQL","EHRDB"]
+    - type: filestream
+      id: zio-ehrbase-logs
+      paths:
+         - /usr/share/logs/zio/ehrbase/ehrbase.log
+      tags: ["ZIO","EHRBASE"]
+    - type: filestream
+      id: zio-transform-rest-logs
+      paths:
+        - /usr/share/logs/zio/transform-rest/transform-rest.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["ZIO","TRANSFORM_REST"]
+    # TEST node
+    - type: filestream
+      id: test-etl-zib-pipeline-logs
+      paths:
+        - /usr/share/logs/test/pipeline/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["TEST","ETL_ZIB","ETL_PIPELINE"]
+    - type: filestream
+      id: test-etl-zib-test-single-node-logs
+      paths:
+        - /usr/share/logs/test/etl-test-single-node/etl-zib.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["TEST","ETL_ZIB","ETL_TEST"]
+    - type: filestream
+      id: test-ehrdb-logs
+      paths:
+        - /usr/share/logs/test/ehrdb/postgresql.log
+      tags: ["TEST","POSTGRESQL","EHRDB"]
+    - type: filestream
+      id: test-ehrbase-logs
+      paths:
+        - /usr/share/logs/test/ehrbase/ehrbase.log
+      tags: ["TEST","EHRBASE"]
+    - type: filestream
+      id: test-transform-rest-logs
+      paths:
+        - /usr/share/logs/test/transform-rest/transform-rest.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["TEST","TRANSFORM_REST"]
+    # Federation
+    - type: filestream
+      id: federation-rest-logs
+      paths:
+        - /usr/share/logs/federation/federation-rest.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["FEDERATION_REST"]
+    # Terminology Server Proxy
+    - type: filestream
+      id: terminology-proxy-logs
+      paths:
+        - /usr/share/logs/terminology/terminology-proxy.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["TERMINOLOGY_PROXY"]
+    # Jupyter
+    - type: filestream
+      id: jupyter-zib-logs
+      paths:
+        - /usr/share/logs/jupyter/jupyter_server.log
+      tags: ["JUPYTER_ZIB"]
+    processors:
+      - add_cloud_metadata:
+      - add_host_metadata:
+    output.logstash:
+      hosts: ["elk.dh-health-ops:5044"]
+      ssl.enabled: true
+      ssl.certificate_authorities: [ "/etc/filebeat_ssl/ca.crt" ]
+      ssl.certificate: "/etc/filebeat_ssl/filebeat.dh-health-ops.crt"
+      ssl.key: "/etc/filebeat_ssl/filebeat.dh-health-ops.key"

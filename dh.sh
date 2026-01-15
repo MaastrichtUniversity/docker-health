@@ -211,20 +211,33 @@ setup_hosts() {
 #!/bin/bash
 MINIKUBE_IP=$(minikube ip)
 
-echo "$MINIKUBE_IP transform.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP elk.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.test.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP federation.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP jupyter.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP terminology.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP portal.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP portal.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP portal.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP portal.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP openehrtool.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP openehrtool.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP openehrtool.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP openehrtool.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP openehrtool.test.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP ehrbase.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP ehrbase.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP ehrbase.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP ehrbase.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP ehrbase.test.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 EOF
         chmod +x ./localhost.sh
     fi
@@ -332,8 +345,10 @@ print_usage() {
     echo "  $0 start                        Start Kubernetes environment"
     echo "  $0 build                        Build all Docker images"
     echo "  $0 apply                        Apply Kubernetes manifests with local overlay"
+    echo "  $0 apply local/ops              Apply Kubernetes manifests with local/ops overlay  (ELK, Filbeat)"
     echo "  $0 apply tst                    Apply Kubernetes manifests with tst overlay"
     echo "  $0 delete                       Delete Kubernetes manifests with local overlay"
+    echo "  $0 delete local/ops             Delete Kubernetes manifests with local/ops overlay (ELK, Filbeat)"
     echo "  $0 delete tst                   Delete Kubernetes manifests with tst overlay"
     echo "  $0 status                       Print the pods status"
     echo "  $0 status -w                    Print and follow the pods status"
@@ -361,6 +376,8 @@ main() {
             clone_externals
             setup_hosts
             setup_mounts
+            # ELK configuration
+            minikube ssh "sudo sysctl -w vm.max_map_count=262144"
             ;;
 
         pull)
@@ -429,7 +446,7 @@ main() {
                 ;;
             esac
             ;;
-            
+
         *)
             echo -e "${RED}Unknown command: $command${NC}"
             print_usage
