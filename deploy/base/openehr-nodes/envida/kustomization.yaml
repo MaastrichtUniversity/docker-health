@@ -12,5 +12,4 @@ resources:
 - etl-zib-rest
 - openehrtool
 - portal
-
-
+- transform-rest

@@ -16,4 +16,4 @@ resources:
 - etl-config
 - etl-zib-pipeline
 - openehrtool
-
+- transform-rest

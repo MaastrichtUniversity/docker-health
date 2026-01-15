@@ -9,6 +9,7 @@ data:
   SOURCE_SYSTEM_ID: Tetra
   LOGGER_FILENAME: logs/zio/etl-zib.log
   EHRBASE_BASE_URL: http://zio-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
+  TRANSFORM_SPRING_BASE_URL: http://zio-transform-rest.dh-health:8080
   WRITE_COMPOSITION: "true"
   # If SUBJECT_IDS is empty, extract subject_ids from dataset:
   SUBJECT_IDS: |

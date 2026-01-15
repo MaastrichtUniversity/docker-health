@@ -150,7 +150,7 @@ Note: Build with a custom tag is supported (not needed for local development).
 4. Apply Kubernetes manifests on the `local` overlay
 
 ```bash
-./dh.sh apply
+./dh.sh apply local
 ```
 
 5. Show status of all pods

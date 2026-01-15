@@ -6,6 +6,9 @@ resources:
 - terminology-ingress.yaml
 - ../../base
 
+components:
+  - common-resources/ingress
+
 patches:
 # imagePullPolicy patches
 - target:
@@ -22,16 +25,6 @@ patches:
       value: Never
 
 # Individual ingress host patches
-## Transform
-- target:
-    group: networking.k8s.io
-    version: v1
-    kind: Ingress
-    name: transform-rest-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: transform.local.dh.unimaas.nl
 ## Federation
 - target:
     group: networking.k8s.io
@@ -260,6 +253,14 @@ secretGenerator:
     literals:
       - username=postgres
       - password=postgres
+  - name: envida-transform-creds
+    namespace: dh-health
+    options:
+      labels:
+        ehrnode: envida-node
+    literals:
+      - username=transform3
+      - password=transform3
 # MUMC-node
   - name: mumc-ehrbase-creds
     namespace: dh-health
@@ -299,6 +300,14 @@ secretGenerator:
     literals:
       - username=postgres
       - password=postgres
+  - name: mumc-transform-creds
+    namespace: dh-health
+    options:
+      labels:
+        ehrnode: mumc-node
+    literals:
+      - username=transform1
+      - password=transform1
 # VITALA-node
   - name: vitala-ehrbase-creds
     namespace: dh-health
@@ -338,6 +347,14 @@ secretGenerator:
     literals:
       - username=postgres
       - password=postgres
+  - name: vitala-transform-creds
+    namespace: dh-health
+    options:
+      labels:
+        ehrnode: vitala-node
+    literals:
+      - username=transform4
+      - password=transform4
 # ZIO-node
   - name: zio-ehrbase-creds
     namespace: dh-health
@@ -377,6 +394,14 @@ secretGenerator:
     literals:
       - username=postgres
       - password=postgres
+  - name: zio-transform-creds
+    namespace: dh-health
+    options:
+      labels:
+        ehrnode: zio-node
+    literals:
+      - username=transform2
+      - password=transform2
 # TEST-node
   - name: test-ehrbase-creds
     namespace: dh-health
@@ -418,15 +443,14 @@ secretGenerator:
     literals:
       - username=postgres
       - password=postgres
-# transform
-  - name: transform-creds
+  - name: test-transform-creds
     namespace: dh-health
     options:
       labels:
-        ehrnode: all
+        ehrnode: test-node
     literals:
-      - username=user
-      - password=foobar
+      - username=transform0
+      - password=transform0
 # jupyter
   - name: jupyter-zib-creds
     namespace: dh-health
