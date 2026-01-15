@@ -15,11 +15,11 @@ components:
   - components/services-list-role # For the service registry
   - components/jupyter-zib-ingress
   - components/terminology-server-proxy-ingress
-  - envida/components
-  - mumc/components
-  - vitala/components
-  - zio/components
-  - test/components
+  - node-envida/components
+  - node-mumc/components
+  - node-vitala/components
+  - node-zio/components
+  - node-test/components
 
 patches:
   # imagePullPolicy patches

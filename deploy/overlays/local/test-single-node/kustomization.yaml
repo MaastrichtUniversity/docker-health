@@ -13,9 +13,9 @@ resources:
 
 components:
   - ../components/terminology-server-proxy-ingress
-  - ../test/components/ehrbase-ingress
-  - ../test/components/transform-rest-ingress
-  - ../test/components/secrets
+  - ../node-test/components/ehrbase-ingress
+  - ../node-test/components/transform-rest-ingress
+  - ../node-test/components/secrets
 
 patches:
   # imagePullPolicy patches

@@ -39,25 +39,25 @@ components:
   - ../components/services-list-role # For the service registry
   - ../components/terminology-server-proxy-ingress
   # ENVIDA-node
-  - ../envida/components/ehrbase-ingress
-  - ../envida/components/federation-rest-ingress
-  - ../envida/components/transform-rest-ingress
-  - ../envida/components/secrets
+  - ../node-envida/components/ehrbase-ingress
+  - ../node-envida/components/federation-rest-ingress
+  - ../node-envida/components/transform-rest-ingress
+  - ../node-envida/components/secrets
   # MUMC-node
-  - ../mumc/components/ehrbase-ingress
-  - ../mumc/components/federation-rest-ingress
-  - ../mumc/components/transform-rest-ingress
-  - ../mumc/components/secrets
+  - ../node-mumc/components/ehrbase-ingress
+  - ../node-mumc/components/federation-rest-ingress
+  - ../node-mumc/components/transform-rest-ingress
+  - ../node-mumc/components/secrets
   # VITALA-node
-  - ../vitala/components/ehrbase-ingress
-  - ../vitala/components/federation-rest-ingress
-  - ../vitala/components/transform-rest-ingress
-  - ../vitala/components/secrets
+  - ../node-vitala/components/ehrbase-ingress
+  - ../node-vitala/components/federation-rest-ingress
+  - ../node-vitala/components/transform-rest-ingress
+  - ../node-vitala/components/secrets
   # ZIO-node
-  - ../zio/components/ehrbase-ingress
-  - ../zio/components/federation-rest-ingress
-  - ../zio/components/transform-rest-ingress
-  - ../zio/components/secrets
+  - ../node-zio/components/ehrbase-ingress
+  - ../node-zio/components/federation-rest-ingress
+  - ../node-zio/components/transform-rest-ingress
+  - ../node-zio/components/secrets
 
 patches:
   # imagePullPolicy patches

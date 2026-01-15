@@ -138,9 +138,9 @@ Note: Build with a custom tag is supported (not needed for local development).
     ```
    2. Apply a specific node resources
     ```bash
-    ./dh.sh apply/{nodename}
+    ./dh.sh apply/node-{NODENAME}
     ```
-    with `{nodename}` corresponding to either `envida`, `mumc`, `vitala`, `zio` or `test`.
+    with `{NODENAME}` corresponding to either `envida`, `mumc`, `vitala`, `zio` or `test`.
 
 5. Show status of all pods
 
