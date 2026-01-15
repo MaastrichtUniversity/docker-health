@@ -35,57 +35,61 @@ secretGenerator:
         -  certs/elk.dh-health-ops.key
 
 patches:
-# 'Global' patches that apply to all of one sort
-# Storage class patches
-- target:
-    kind: PersistentVolume
-  patch: |-
-    - op: replace
-      path: /spec/storageClassName
-      value: local-path
-- target:
-    kind: PersistentVolumeClaim
-  patch: |-
-    - op: replace
-      path: /spec/storageClassName
-      value: local-path
-# Image pull secret patches
-- target:
-    kind: Deployment
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/imagePullSecrets
-      value:
-      - name: registry-credentials
-- target:
-    kind: Job
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/imagePullSecrets
-      value:
-      - name: registry-credentials
-# imagePullPolicy patches
-- target:
-    kind: Deployment
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/containers/0/imagePullPolicy
-      value: IfNotPresent
-- target:
-    kind: Job
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/containers/0/imagePullPolicy
-      value: IfNotPresent
-# Proxy patches
-- target:
-    kind: Deployment
-  patch: |-
-    - op: add
-      path: "/spec/template/spec/containers/0/envFrom/-"
-      value:
-        configMapRef:
-          name: proxy-config
+  - path: filebeat-configmap-patch.yaml
+    target:
+      kind: ConfigMap
+      name: filebeat-config
+  # 'Global' patches that apply to all of one sort
+  # Storage class patches
+  - target:
+      kind: PersistentVolume
+    patch: |-
+      - op: replace
+        path: /spec/storageClassName
+        value: local-path
+  - target:
+      kind: PersistentVolumeClaim
+    patch: |-
+      - op: replace
+        path: /spec/storageClassName
+        value: local-path
+  # Image pull secret patches
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/imagePullSecrets
+        value:
+        - name: registry-credentials
+  - target:
+      kind: Job
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/imagePullSecrets
+        value:
+        - name: registry-credentials
+  # imagePullPolicy patches
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: IfNotPresent
+  - target:
+      kind: Job
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: IfNotPresent
+  # Proxy patches
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: add
+        path: "/spec/template/spec/containers/0/envFrom/-"
+        value:
+          configMapRef:
+            name: proxy-config
 
 configMapGenerator:
 - name: proxy-config
