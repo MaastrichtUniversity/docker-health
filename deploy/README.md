@@ -11,6 +11,10 @@ deploy/
 │   ├── federation-rest          # federation-rest service
 │   ├── jupyter-zib              # jupyter-zib service
 │   ├── openehr-nodes            # All existing openEHR node services
+│   └── terminology-server-proxy # terminology-server-proxy service
+├── base-ops                     # Contains base Kubernetes resources for log monitoring
+│   ├── elk                      # elk service
+│   └── filebeat                 # filebeat service
 └── overlays                     # Environment-specific configurations
     ├── local                    # Local development environment
     ├── tst                      # Development test environment customizations
@@ -22,9 +26,10 @@ deploy/
 
 ## Services
 
-### Currently supported environments
+### Currently supported overlays/environments
 
 - **local**
+  - **ops**: Run elk log monitoring service
   - **test-single-node**: Run a subset of the base
   - **test-federation**: Run a subset of the base
 - **tst**
@@ -58,9 +63,14 @@ deploy/
 - **terminology-server-proxy**: Connection to the terminology server
 - **federation-rest**: Provides a federation REST api for querying data of multiple nodes
     - Host available at: http://federation.{ENV}.dh.unimaas.nl
-- <s>**filebeat**: A service used for shipping logs to a central location</s>
 - **jupyter-zib**: Jupyter notebook for data analysis and visualization
     - Host available at: http://jupyter.{ENV}.dh.unimaas.nl
+
+#### Log monitoring
+- **filebeat**: A service used for shipping logs to a central location
+- **elk**: An open-source software suite for log monitoring
+
+For encryption between filebeat and elk, CA certificates need to be stored in `certs`.
 
 ### Notes on Kubernetes configurations
 

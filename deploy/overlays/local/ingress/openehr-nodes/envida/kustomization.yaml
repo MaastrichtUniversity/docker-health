@@ -1,0 +1,57 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+resources:
+  - ehrbase-ingress.yaml
+  - etl-zib-rest-ingress.yaml
+  - openehrtool-ingress.yaml
+  - portal-ingress.yaml
+  - transform-rest-ingress.yaml
+
+secretGenerator:
+  - name: envida-ehrbase-creds
+    namespace: dh-health
+    literals:
+      - username=user3
+      - password=foobar3
+  - name: envida-ehrbase-admin-creds
+    namespace: dh-health
+    literals:
+      - username=admin3
+      - password=admin3
+  - name: envida-ehrbase-db-admin-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase3
+      - password=ehrbase3
+  - name: envida-ehrbase-db-creds
+    namespace: dh-health
+    literals:
+      - username=ehrbase_restricted3
+      - password=ehrbase_restricted3
+  - name: envida-portal-creds
+    namespace: dh-health
+    literals:
+      - username=demo@envida.nl
+      - password=foobar
+  - name: envida-federation-key
+    namespace: dh-health
+    literals:
+      - key=key3
+  - name: envida-federation-break-the-glass-key
+    namespace: dh-health
+    literals:
+      - key=btgkey3
+  - name: envida-ehrbase-db-postgres-creds
+    namespace: dh-health
+    literals:
+      - username=postgres
+      - password=postgres
+  - name: envida-transform-creds
+    namespace: dh-health
+    options:
+      labels:
+        ehrnode: envida-node
+    literals:
+      - username=transform3
+      - password=transform3

@@ -24,6 +24,8 @@ spec:
               name: terminology-server-proxy-config
           - configMapRef:
               name: dry-run-config
+          - configMapRef:
+              name: timezone-config
         env:
           - name: TERMINOLOGY_USERNAME
             valueFrom:
@@ -35,3 +37,11 @@ spec:
               secretKeyRef:
                 name: terminology-server-proxy-creds
                 key: password
+        volumeMounts:
+          - name: logs
+            mountPath: /opt/app/logs/terminology
+            subPath: terminology
+      volumes:
+        - name: logs
+          persistentVolumeClaim:
+            claimName: log-pvc

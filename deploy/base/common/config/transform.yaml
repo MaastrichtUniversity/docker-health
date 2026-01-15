@@ -4,5 +4,4 @@ metadata:
   name: transform-rest-config
   namespace: dh-health
 data:
-  LOGSTASH_TAGS: TRANSFORM_REST
   TERMINOLOGY_BASE_URL: http://terminology-server-proxy.dh-health:8080

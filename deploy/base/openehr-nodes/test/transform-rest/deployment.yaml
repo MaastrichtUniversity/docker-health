@@ -38,4 +38,14 @@ spec:
         - configMapRef:
             name: transform-rest-config
         - configMapRef:
+            name: test-transform-rest-config
+        - configMapRef:
             name: zib-templates-config
+        volumeMounts:
+        - name: transform-rest-logs
+          mountPath: /var/log/test
+          subPath: test/transform-rest
+      volumes:
+      - name: transform-rest-logs
+        persistentVolumeClaim:
+          claimName: log-pvc

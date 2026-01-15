@@ -24,8 +24,6 @@ spec:
         - configMapRef:
             name: timezone-config
         - configMapRef:
-            name: transform-rest-config
-        - configMapRef:
             name: zib-templates-config
         - configMapRef:
             name: etl-config
@@ -55,10 +53,10 @@ spec:
         volumeMounts:
         - name: outputs
           mountPath: /code/outputs
-          subPath: vitala/rest
+          subPath: vitala/etl-rest
         - name: etl-logs
           mountPath: /code/logs/vitala
-          subPath: vitala/rest
+          subPath: vitala/etl-rest
       volumes:
       - name: outputs
         persistentVolumeClaim:

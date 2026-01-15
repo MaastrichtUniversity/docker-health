@@ -38,4 +38,14 @@ spec:
         - configMapRef:
             name: transform-rest-config
         - configMapRef:
+            name: vitala-transform-rest-config
+        - configMapRef:
             name: zib-templates-config
+        volumeMounts:
+        - name: transform-rest-logs
+          mountPath: /var/log/vitala
+          subPath: vitala/transform-rest
+      volumes:
+      - name: transform-rest-logs
+        persistentVolumeClaim:
+          claimName: log-pvc

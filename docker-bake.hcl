@@ -12,7 +12,7 @@ variable "ENV_REGISTRY_HOST" {
 }
 
 group "default" {
-  targets = ["transform-rest", "federation-rest", "test-federation-rest", "etl-zib-pipeline", "etl-zib-rest", "test-single-node", "jupyter-zib", "portal", "terminology-server-proxy"]
+  targets = ["transform-rest", "federation-rest", "test-federation-rest", "etl-zib-pipeline", "etl-zib-rest", "test-single-node", "jupyter-zib", "portal", "terminology-server-proxy", "elk"]
 }
 
 target "_src_etl" {
@@ -93,4 +93,10 @@ target "terminology-server-proxy" {
   dockerfile = "Dockerfile"
   tags = ["${ENV_REGISTRY_HOST}/docker-health/terminology-server-proxy:${ENV_TAG}"]
   context = "./externals/dh-hdp-terminology-server-proxy"
+}
+
+target "elk" {
+  dockerfile = "Dockerfile"
+  tags = ["${ENV_REGISTRY_HOST}/docker-health/elk:${ENV_TAG}"]
+  context = "./elk"
 }

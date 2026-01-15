@@ -17,6 +17,20 @@ spec:
     spec:
       securityContext:
         runAsUser: 0 # Run as Root to avoid permission issue with volume mount
+      initContainers:
+        # WORKAROUND to give ownership of the volume-mount log file to the "ehrbase" user
+        # The EHRbase container runs as a non-root user "ehrbase"
+        # The files in a volume-mount are owned by root
+        - name: init-log-dir
+          image: busybox:1.28
+          command: [ "/bin/sh", "-c" ]
+          args:
+            # uid=1000(jovyan) gid=100(users) groups=100(users)
+            - mkdir -p /var/log/jupyter && chown 1000:100 /var/log/jupyter
+          volumeMounts:
+            - name: jupyter-logs
+              mountPath: /var/log/jupyter
+              subPath: jupyter
       containers:
       - name: jupyter-zib
         image: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib:latest
@@ -275,8 +289,6 @@ spec:
           - configMapRef:
               name: timezone-config
           - configMapRef:
-              name: transform-rest-config
-          - configMapRef:
               name: zib-templates-config
           - configMapRef:
               name: etl-config
@@ -285,6 +297,9 @@ spec:
             mountPath: /home/jovyan/data
           - name: notebooks
             mountPath: /home/jovyan/work
+          - name: jupyter-logs
+            mountPath: /var/log/jupyter
+            subPath: jupyter
       volumes:
         - name: demo-data
           hostPath:
@@ -293,4 +308,7 @@ spec:
         - name: notebooks
           persistentVolumeClaim:
               claimName: notebooks-pvc
+        - name: jupyter-logs
+          persistentVolumeClaim:
+            claimName: log-pvc
             

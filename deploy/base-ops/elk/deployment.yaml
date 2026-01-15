@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elk
+  namespace: dh-health-ops
+  labels:
+    app: elk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elk
+  template:
+    metadata:
+      labels:
+        app: elk
+    spec:
+      containers:
+      - name: elk
+        image: registry.prod.dh.unimaas.nl/docker-health/elk:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 9200 # Elasticsearch
+        - containerPort: 5044 # Logstash
+        - containerPort: 5601 # Kibana
+        envFrom:
+        - configMapRef:
+            name: elk-config
+        volumeMounts:
+        - name: logstash-certificate-authorities
+          mountPath: /etc/logstash/ca.crt
+          readOnly: true
+          subPath: ca.crt
+        - name: logstash-certificate
+          mountPath: /etc/logstash/elk.dh-health-ops.crt
+          readOnly: true
+          subPath: elk.dh-health-ops.crt
+        - name: logstash-key
+          mountPath: /etc/logstash/elk.dh-health-ops.key
+          readOnly: true
+          subPath: elk.dh-health-ops.key
+      volumes:
+      # SSL
+      - name: logstash-certificate-authorities
+        secret:
+          defaultMode: 0644
+          secretName: logstash-certificate-authorities
+      - name: logstash-certificate
+        secret:
+          defaultMode: 0644
+          secretName: logstash-certificate
+      - name: logstash-key
+        secret:
+          defaultMode: 0644
+          secretName: logstash-key

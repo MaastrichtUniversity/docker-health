@@ -211,6 +211,7 @@ setup_hosts() {
 #!/bin/bash
 MINIKUBE_IP=$(minikube ip)
 
+echo "$MINIKUBE_IP elk.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP transform.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP transform.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP transform.test.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
@@ -344,8 +345,10 @@ print_usage() {
     echo "  $0 start                        Start Kubernetes environment"
     echo "  $0 build                        Build all Docker images"
     echo "  $0 apply                        Apply Kubernetes manifests with local overlay"
+    echo "  $0 apply local/ops              Apply Kubernetes manifests with local/ops overlay  (ELK, Filbeat)"
     echo "  $0 apply tst                    Apply Kubernetes manifests with tst overlay"
     echo "  $0 delete                       Delete Kubernetes manifests with local overlay"
+    echo "  $0 delete local/ops             Delete Kubernetes manifests with local/ops overlay (ELK, Filbeat)"
     echo "  $0 delete tst                   Delete Kubernetes manifests with tst overlay"
     echo "  $0 status                       Print the pods status"
     echo "  $0 status -w                    Print and follow the pods status"
@@ -373,6 +376,8 @@ main() {
             clone_externals
             setup_hosts
             setup_mounts
+            # ELK configuration
+            minikube ssh "sudo sysctl -w vm.max_map_count=262144"
             ;;
 
         pull)
@@ -441,7 +446,7 @@ main() {
                 ;;
             esac
             ;;
-            
+
         *)
             echo -e "${RED}Unknown command: $command${NC}"
             print_usage
