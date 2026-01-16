@@ -173,6 +173,16 @@ apply_manifests() {
     echo -e "${GREEN}Successfully applied manifests${NC}"
 }
 
+# Delete kubernetes manifests
+delete_manifests() {
+    local overlay=${1:-local}
+
+    echo -e "${YELLOW}Deleting Kubernetes manifests using kustomize overlay: $overlay${NC}"
+    kubectl delete -k deploy/overlays/$overlay | awk '/deleted/ {print "\033[1;34m" $0 "\033[0m"; next} {print}'
+
+    echo -e "${GREEN}Successfully deleted manifests${NC}"
+}
+
 # Check a job execution status
 check_job_execution(){
   echo "Waiting for job $job to complete..."
@@ -334,8 +344,8 @@ print_usage() {
     echo "  pull                                      Pull external images"
     echo "  build       <subcommand>                  Build service images"
     echo "  externals   <subcommand>                  Manage external repositories"
-    echo "  apply       <subcommand>                  Apply Kubernetes manifests (default overlay: local)"
-    echo "  delete      <subcommand>                  Delete Kubernetes manifests (default overlay: local)"
+    echo "  apply       <option>      <subcommand>    Apply Kubernetes manifests (default overlay: local) (-s also apply the shared overlay)"
+    echo "  delete      <option>      <subcommand>    Delete Kubernetes manifests (default overlay: local) (-s also delete the shared overlay)"
     echo "  status      <subcommand>                  Show status of all pods"
     echo "  rollout     <subcommand>                  Manage the rollout to restart one or many resources (default all)"
     echo "  up          <subcommand>                  Apply a subset of deployments"
@@ -348,9 +358,11 @@ print_usage() {
     echo "  $0 start                        Start Kubernetes environment"
     echo "  $0 build                        Build all Docker images"
     echo "  $0 apply                        Apply Kubernetes manifests with local overlay"
+    echo "  $0 apply -s local/node-mumc     Apply Kubernetes manifests with local + shared overlays for the MUMC node"
     echo "  $0 apply local/ops              Apply Kubernetes manifests with local/ops overlay  (ELK, Filbeat)"
     echo "  $0 apply tst                    Apply Kubernetes manifests with tst overlay"
     echo "  $0 delete                       Delete Kubernetes manifests with local overlay"
+    echo "  $0 delete -s local/node-mumc    Delete Kubernetes manifests with local + shared overlays for the MUMC node"
     echo "  $0 delete local/ops             Delete Kubernetes manifests with local/ops overlay (ELK, Filbeat)"
     echo "  $0 delete tst                   Delete Kubernetes manifests with tst overlay"
     echo "  $0 status                       Print the pods status"
@@ -402,13 +414,39 @@ main() {
             ;;
 
         apply)
-            local overlay=${1:-local}
-            apply_manifests $overlay
+            case $1 in
+              -s)
+                local overlay=${2:-local}
+                if [[ "${overlay}" = *"/"* ]]; then
+                  apply_manifests "${overlay}/../shared"
+                else
+                  apply_manifests "${overlay}/shared"
+                fi
+                apply_manifests "${overlay}"
+              ;;
+              *)
+                local overlay=${1:-local}
+                apply_manifests "${overlay}"
+              ;;
+            esac
             ;;
 
         delete)
-            local overlay=${1:-local}
-            kubectl delete -k "deploy/overlays/${overlay}"
+            case $1 in
+              -s)
+                local overlay=${2:-local}
+                if [[ "${overlay}" = *"/"* ]]; then
+                  delete_manifests "${overlay}/../shared"
+                else
+                  delete_manifests "${overlay}/shared"
+                fi
+                delete_manifests "${overlay}"
+              ;;
+              *)
+                local overlay=${1:-local}
+                delete_manifests "${overlay}"
+              ;;
+            esac
             ;;
 
         headlamp)
@@ -424,6 +462,7 @@ main() {
         run)
             local overlay=$1
             local job=$2
+            apply_manifests "${overlay}/shared"
             apply_manifests "$overlay/$job"
             check_job_execution "$overlay" "$job"
             ;;
