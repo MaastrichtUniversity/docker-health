@@ -5,3 +5,4 @@ components:
   - services-list-role
   - jupyter-zib-ingress
   - terminology-server-proxy-ingress
+  - federation

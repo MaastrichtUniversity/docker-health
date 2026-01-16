@@ -8,6 +8,7 @@ resources:
 components:
   - ../components/services-list-role # For the service registry
   - ../components/terminology-server-proxy-ingress
+  - ../components/federation
 
 patches:
   # imagePullPolicy patches
