@@ -39,9 +39,11 @@ spec:
 #          - /code/tests/test_burgerlijke_staat.py
         envFrom:
         - configMapRef:
+            name: dry-run-config
+        - configMapRef:
             name: timezone-config
         - configMapRef:
-            name: transform-server-config
+            name: transform-rest-config
         - configMapRef:
             name: zib-templates-config
         - configMapRef:
@@ -78,14 +80,14 @@ spec:
               name: transform-creds
               key: password
         volumeMounts:
-        - name: data
-          mountPath: /code/data/test-demo-data
-          subPath: src/data/test-demo-data
+        - name: demo-data
+          mountPath: /code/data/envida-demo-data
+          subPath: src/data/envida-demo-data
         - name: etl-logs
           mountPath: /code/logs/test
           subPath: test/etl
       volumes:
-      - name: data
+      - name: demo-data
         persistentVolumeClaim:
           claimName: git-repo-pvc
       - name: etl-logs

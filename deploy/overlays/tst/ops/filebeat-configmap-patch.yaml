@@ -43,13 +43,6 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: ["ENVIDA","TRANSFORM_REST"]
-    - type: filestream
-      id: envida-federation-rest-logs
-      paths:
-        - /usr/share/logs/envida/federation-rest/federation-rest.log
-      parsers:
-        - multiline: *multiline_parser
-      tags: [ "ENVIDA","FEDERATION_REST" ]
     # MUMC node
     - type: filestream
       id: mumc-etl-zib-pipeline-logs
@@ -82,13 +75,6 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: ["MUMC","TRANSFORM_REST"]
-    - type: filestream
-      id: mumc-federation-rest-logs
-      paths:
-        - /usr/share/logs/mumc/federation-rest/federation-rest.log
-      parsers:
-        - multiline: *multiline_parser
-      tags: [ "MUMC","FEDERATION_REST" ]
     # VITALA node
     - type: filestream
       id: vitala-etl-zib-pipeline-logs
@@ -121,13 +107,6 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: [ "VITALA","TRANSFORM_REST" ]
-    - type: filestream
-      id: vitala-federation-rest-logs
-      paths:
-        - /usr/share/logs/vitala/federation-rest/federation-rest.log
-      parsers:
-        - multiline: *multiline_parser
-      tags: [ "VITALA","FEDERATION_REST" ]
     # ZIO node
     - type: filestream
       id: zio-etl-zib-pipeline-logs
@@ -160,13 +139,6 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: ["ZIO","TRANSFORM_REST"]
-    - type: filestream
-      id: zio-federation-rest-logs
-      paths:
-        - /usr/share/logs/zio/federation-rest/federation-rest.log
-      parsers:
-        - multiline: *multiline_parser
-      tags: [ "ZIO","FEDERATION_REST" ]
     # TEST node
     - type: filestream
       id: test-etl-zib-pipeline-logs
@@ -221,6 +193,28 @@ data:
       paths:
         - /usr/share/logs/jupyter/jupyter_server.log
       tags: ["JUPYTER_ZIB"]
+    - type: filestream
+      id: kubernetes-container-logs
+      paths:
+        - /var/log/containers/*.log
+      parsers:
+        - container: ~
+      prospector:
+        scanner:
+          fingerprint.enabled: true
+          symlinks: true
+          include_files:
+            - '.*coredns.*'
+            - '.*traefik.*'
+            - '.*external-secrets.*'
+      tags: ["KUBERNETES","CONTAINER_LOGS"]
+      file_identity.fingerprint: ~
+      processors:
+        - add_kubernetes_metadata:
+            host: ${NODE_NAME}
+            matchers:
+            - logs_path:
+                logs_path: "/var/log/containers/"
     processors:
       - add_cloud_metadata:
       - add_host_metadata:

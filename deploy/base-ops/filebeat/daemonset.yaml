@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: filebeat
-  namespace: dh-health-ops
   labels:
     k8s-app: filebeat
 spec:

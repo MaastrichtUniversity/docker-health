@@ -1,0 +1,39 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: federation-gateway
+  namespace: dh-health
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: federation.tst.dh.unimaas.nl
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: federation-tls-secret
+    - name: http
+      port: 80
+      protocol: HTTP
+      hostname: federation.tst.dh.unimaas.nl
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: federation-route
+  namespace: dh-health
+spec:
+  parentRefs:
+    - name: federation-gateway
+  hostnames:
+    - federation.tst.dh.unimaas.nl
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: federation-rest
+          port: 8000
