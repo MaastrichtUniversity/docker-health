@@ -7,7 +7,6 @@ resources:
   - ../../base/openehr-nodes/mumc
   - ../../base/openehr-nodes/vitala
   - ../../base/openehr-nodes/zio
-  - ../../base/openehr-nodes/test
 
 components:
   - components/jupyter-zib-ingress
@@ -15,7 +14,6 @@ components:
   - node-mumc/components
   - node-vitala/components
   - node-zio/components
-  - node-test/components
 
 patches:
   # imagePullPolicy patches
