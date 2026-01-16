@@ -70,12 +70,6 @@ patches:
         path: /spec/template/spec/containers/0/imagePullPolicy
         value: Never
 
-configMapGenerator:
-  - name: federation-rest-config
-    namespace: dh-health
-    literals:
-      - FEDERATION_LOGGER_FILENAME="logs/federation-rest/federation-rest.log"
-
 secretGenerator:
   - name: federation-service-creds
     namespace: dh-health
