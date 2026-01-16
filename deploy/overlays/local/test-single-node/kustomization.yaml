@@ -3,8 +3,6 @@ kind: Kustomization
 
 resources:
   - job.yaml
-  - ../../../base/common
-  - ../../../base/terminology-server-proxy
   # TEST-node
   - ../../../base/openehr-nodes/test/ehrbase
   - ../../../base/openehr-nodes/test/ehrdb
@@ -12,7 +10,7 @@ resources:
   - ../../../base/openehr-nodes/test/transform-rest
 
 components:
-  - ../components/terminology-server-proxy-ingress
+  # TEST-node
   - ../node-test/components/ehrbase-ingress
   - ../node-test/components/transform-rest-ingress
   - ../node-test/components/secrets
@@ -33,12 +31,6 @@ patches:
         value: Never
 
 configMapGenerator:
-  # Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
-  - name: test-ehrbase-config
-    namespace: dh-health
-    behavior: merge
-    literals:
-      - ADMIN_API_ACTIVE=true
   - name: test-etl-config
     namespace: dh-health
     behavior: merge

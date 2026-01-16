@@ -4,8 +4,6 @@ kind: Kustomization
 resources:
   - job.yaml
   - job-reader-role.yaml
-  - ../../../base/common
-  - ../../../base/terminology-server-proxy
   # ENVIDA-node
   - ../../../base/openehr-nodes/envida/ehrbase
   - ../../../base/openehr-nodes/envida/ehrdb
@@ -36,8 +34,6 @@ resources:
   - ../../../base/openehr-nodes/zio/transform-rest
 
 components:
-  - ../components/services-list-role # For the service registry
-  - ../components/terminology-server-proxy-ingress
   # ENVIDA-node
   - ../node-envida/components/ehrbase-ingress
   - ../node-envida/components/federation-rest-ingress

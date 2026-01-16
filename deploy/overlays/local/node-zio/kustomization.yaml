@@ -2,13 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../../base/common
-  - ../../../base/terminology-server-proxy
   - ../../../base/openehr-nodes/zio
 
 components:
-  - ../components/services-list-role # For the service registry
-  - ../components/terminology-server-proxy-ingress
   - components
 
 patches:
@@ -25,14 +21,6 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/imagePullPolicy
         value: Never
-
-configMapGenerator:
-  # Set ADMIN_API_ACTIVE: "true" in all nodes for development purposes for openEHRtool ADMIN methods.
-  - name: ehrbase-config
-    namespace: dh-health
-    behavior: merge
-    literals:
-      - ADMIN_API_ACTIVE=true
 
 secretGenerator:
   - name: federation-service-creds
