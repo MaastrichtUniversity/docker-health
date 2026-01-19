@@ -200,10 +200,6 @@ Checkout existing functionality in the dh.sh. For examples:
 ./dh.sh status -w                    Print and follow the pods status
 ./dh.sh rollout                      Rollout a restart of all the deployments
 ./dh.sh rollout jupyter-zib          Rollout a restart of the jupyter-zib deployment
-./dh.sh up test-node                 Apply Kubernetes manifests with local overlay & the label test-node
-./dh.sh up others                    Apply Kubernetes manifests with local overlay & without the labels test-node
-./dh.sh down test-node               Delete Kubernetes manifests with local overlay & the label test-node
-./dh.sh down others                  Delete Kubernetes manifests with local overlay & without the labels test-node
 ./dh.sh run local test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status
 ./dh.sh run local test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status
 ```

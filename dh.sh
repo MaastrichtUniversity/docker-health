@@ -369,10 +369,6 @@ print_usage() {
     echo "  $0 status -w                    Print and follow the pods status"
     echo "  $0 rollout                      Rollout a restart of all the deployments"
     echo "  $0 rollout jupyter-zib          Rollout a restart of the jupyter-zib deployment"
-    echo "  $0 up test-node                 Apply Kubernetes manifests with local overlay & the label test-node"
-    echo "  $0 up others                    Apply Kubernetes manifests with local overlay & without the labels test-node"
-    echo "  $0 down test-node               Delete Kubernetes manifests with local overlay & the label test-node"
-    echo "  $0 down others                  Delete Kubernetes manifests with local overlay & without the labels test-node"
     echo "  $0 run local test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status"
     echo "  $0 run local test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status"
 }
@@ -382,9 +378,6 @@ main() {
     local command=$1
     shift || true
 
-    TEST_NODE_LABELS="ehrnode in (test-node, all)"
-    OTHERS_LABELS="ehrnode notin (test-node)"
-    
     case $command in
         setup)
             check_minikube
@@ -465,28 +458,6 @@ main() {
             apply_manifests "${overlay}/shared"
             apply_manifests "$overlay/$job"
             check_job_execution "$overlay" "$job"
-            ;;
-
-        up)
-            case $1 in
-              test-node)
-                kubectl apply -k deploy/overlays/local -l "${TEST_NODE_LABELS}"
-                ;;
-              others)
-                kubectl apply -k deploy/overlays/local -l "${OTHERS_LABELS}"
-                ;;
-            esac
-            ;;
-
-        down)
-            case $1 in
-              test-node)
-                kubectl delete -k deploy/overlays/local -l "${TEST_NODE_LABELS}"
-                ;;
-              others)
-                kubectl delete -k deploy/overlays/local -l "${OTHERS_LABELS}"
-                ;;
-            esac
             ;;
 
         *)
