@@ -6,9 +6,9 @@ resources:
   - ../../../base/terminology-server-proxy
 
 components:
-  - ../components/services-list-role # For the service registry
-  - ../components/terminology-server-proxy-ingress
-  - ../components/federation-secret
+  - components/services-list-role # For the service registry
+  - components/terminology-server-proxy-ingress
+  - components/federation-secret
 
 patches:
   # imagePullPolicy patches
