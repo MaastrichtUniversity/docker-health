@@ -43,7 +43,7 @@ spec:
             - configMapRef:
                 name: timezone-config
           env:
-            # Envida-node
+            # ENVIDA-node
             - name: ENVIDA__NODENAME
               valueFrom:
                 configMapKeyRef:

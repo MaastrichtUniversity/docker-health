@@ -48,7 +48,7 @@ spec:
               secretKeyRef:
                 name: jupyter-zib-creds
                 key: SERVER_APP_TOKEN
-          # Envida-node
+          # ENVIDA-node
           - name: ENVIDA__EHRBASE_USERNAME
             valueFrom:
               secretKeyRef:
