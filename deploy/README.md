@@ -8,7 +8,6 @@ This repository includes Kubernetes manifests for deploying the federated networ
 deploy/
 ├── base                         # Contains base Kubernetes resources for all environments
 │   ├── common                   # Common resources shared across services
-│   ├── federation-rest          # federation-rest service
 │   ├── jupyter-zib              # jupyter-zib service
 │   ├── openehr-nodes            # All existing openEHR node services
 │   └── terminology-server-proxy # terminology-server-proxy service
@@ -19,9 +18,7 @@ deploy/
     ├── local                    # Local development environment
     ├── tst                      # Development test environment customizations
     ├── acc                      # Acceptance environment customizations
-    ├── prod                     # Production environment customizations
-    ├── test-federation          # Specific environment for running the federation tests
-    └── test-single-node         # Specific environment for running the single-node tests
+    └── prod                     # Production environment customizations
 ```
 
 ## Services
@@ -29,9 +26,11 @@ deploy/
 ### Currently supported overlays/environments
 
 - **local**
+  - **node-{NODENAME}**: Run a specific node
   - **ops**: Run elk log monitoring service
-  - **test-single-node**: Run a subset of the base
-  - **test-federation**: Run a subset of the base
+  - **shared**: Run shared resources such as terminology server
+  - **test-single-node**: Run the single-node tests
+  - **test-federation**: Run the federation tests
 - **tst**
 - <s>**acc**</s>
 - <s>**prod**</s>
@@ -53,16 +52,16 @@ deploy/
     - Hosts available at: http://etl.{NODENAME}.{ENV}.dh.unimaas.nl
 - **transform-rest**: Performs transformation of data to openEHR composition via a REST api
     - Host available at: http://transform.{NODENAME}.{ENV}.dh.unimaas.nl
+- **federation-rest**: Provides a federation REST api for querying data from multiple nodes
+    - Host available at: http://federation.{NODENAME}.{ENV}.dh.unimaas.nl
 - **openehrtool**: Development tool for openEHR
     - Hosts available at: http://openehrtool.{NODENAME}.{ENV}.dh.unimaas.nl
 - **portal**: User Interface of the federated network
     - Hosts available at: http://portal.{NODENAME}.{ENV}.dh.unimaas.nl
 
-### Additional deployed services
+### Shared deployed services
 
 - **terminology-server-proxy**: Connection to the terminology server
-- **federation-rest**: Provides a federation REST api for querying data of multiple nodes
-    - Host available at: http://federation.{ENV}.dh.unimaas.nl
 - **jupyter-zib**: Jupyter notebook for data analysis and visualization
     - Host available at: http://jupyter.{ENV}.dh.unimaas.nl
 
@@ -106,31 +105,31 @@ in [dh-hdp-etl/README.md](https://github.com/MaastrichtUniversity/dh-hdp-etl/tre
 ### Adding/Updating a Kubernetes resources
 
 1. Update the base resources in `base/` directory
-2. Create or update environment-specific patches in one of the `overlays/`
-3. Update the appropriate `kustomization.yaml` file to include new resources
+2. Create or update environment-specific components or patches in one of the `overlays/`
+3. Update the appropriate `kustomization.yaml` file to include new resources or components
 
 ### Adding a new node
 
 1. In `base/openehr-nodes`,
-    1. Add a complete new node folder
-       (After copy/pasting, make sure the name of the new node is updated in every file)
-    2. Add the new resource folder name to `base/openehr-nodes/kustomization.yaml`
-2. In the `kustomization.yaml` file of `overlay/local`, `tst`, etc.,
-    1. If required, add the new resources
-    2. Add new ingress patches
-    3. Add new secretGenerators
-3. Add new container environment variables to `base/federation-rest/deployment.yaml` and
-   `overlay/test-federation/job.yaml`
-4. Add the new local hosts to `localhost.sh`
-5. In `dh-hdp-etl-utils`
-    1. Add the new node name to `dhhdpetlutils/core/enums.py`
-    2. Update the new version number in `pyproject.toml` and release a new tag
-    3. Update the package version in the `requirements.txt` file in both `dh-hdp-etl` and `dh-hdp-federation-api`
-6. Add a new demo-data folder in `data`
+   1. Add a complete new node folder
+    (After copy/pasting, make sure the name of the new node is updated in every file)
+   2. Add the new resource folder name to `kustomization.yaml`
+2. Add a new demo-data folder in `data`
    1. Remember to update the new configuration in `base/openehr-nodes/{nodename}/etl-zib/etl-config/config.yaml`
-7. In `dh-hdp-federation-api`
-    1. Add a new `list` item into `SuccessQueryModel` in `src/response_models.py`
-    2. Add a new `NodeCredentialsSettings` item into `CredentialsSettings` in `src/settings.py`
-    3. In `test_federation_rest.py`
-        1. Add new variable lists containing the expected results from the newly created demo-data
-        2. Add new `TestClient` and `TestBtgClient` test classes, and update existing `TestClient` to include the new node.
+3. Add the new node-specific local hosts to `localhost.sh`
+4. In `overlay/local`, `tst`, etc.
+   1. Add a complete new node folder containing all required `components` (ingresses, secrets) and a node-specific `kustomization.yaml` file 
+   2. Add the new node-specific resources and components into `kustomization.yaml`
+   3. In `test-federation`:
+      1. Add the new node-specific resources and components into `kustomization.yaml`
+      2. Add new environment variables to `job.yaml`
+5. In `dh-hdp-federation-api`
+   1. Add a new `list` item into `SuccessQueryModel` in `src/response_models.py`
+   2. In `test_federation_rest.py`
+      1. Add a new node item into `CredentialsSettings`
+      2. Add new variable lists containing the expected results from the newly created demo-data
+      3. Add new `TestClient` and `TestBtgClient` test classes, and update existing `TestClient` to include the new node.
+6. In `dh-hdp-etl-utils`
+   1. Add the new node name to `dhhdpetlutils/core/enums.py`
+   2. Update the new version number in `pyproject.toml` and release a new tag
+   3. Update the package version in the `requirements.txt` file in both `dh-hdp-etl` and `dh-hdp-federation-api`
