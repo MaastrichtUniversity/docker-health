@@ -2,11 +2,11 @@ BSN,ZICH_WASSEN,TE_WASSEN_LICHAAMSDEEL,DATE_TIME,TEST_COMMENTS
 001645201,In staat om zich zelfstandig te wassen,,2023-11-14T15:50:14.321,PASS-Test duplication check
 001645201,Hulp nodig bij zich wassen,Gehele lichaam in totaliteit,2024-11-14T15:50:14.321,PASS-Test duplication check
 001645201,In staat om zich zelfstandig te wassen,,2023-11-14T15:50:14.321,FAIL-Test duplication check
-083197102,In staat om zich zelfstandig te wassen,Gehele bovenlichaam,2005-01-19T09:43:13.174,PASS-Test data max
+083197102,In staat om zich zelfstandig te wassen,"Gehele bovenlichaam,Gehele aangezicht,Gehele onderlichaam",2005-01-19T09:43:13.174,PASS-Test data max
 339055303,Hulp nodig bij zich wassen,,2023-12-31T23:59:59.871,PASS-Test data min
 389370204,,,,FAIL-Test data none
 683754105,,,2024-10-10T10:10:10.410,FAIL-Test data empty
-316268306,Hulp nodig bij zich wassen,Gehele aangezicht,2016-10-02T06:30:00.046,PASS
+316268306,Hulp nodig bij zich wassen,"Gehele aangezicht,Gehele bovenlichaam",2016-10-02T06:30:00.046,PASS
 569973107,Niet in staat zichzelf te wassen,Gehele bovenlichaam,1996-05-21T17:04:55.941,PASS
 011168808,In staat om zich zelfstandig te wassen,Gehele onderlichaam,,FAIL-DATE_TIME is empty
 363037809,Hulp nodig bij zich wassen,,1989-01-01THH:00:00.253,FAIL-DATE_TIME has a wrong datetime format (wrong hour value)
