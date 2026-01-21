@@ -6,7 +6,7 @@ BSN,DATUM,WONING_TYPE,WONING_AANPASSING,WOON_OMSTANDIGHEID,TOELICHTING,DATE_TIME
 339055303,,Justitiële Inrichting,,,,2023-12-31T23:59:59.871,PASS-Test data min (No mandatory variables)
 389370204,,,,,,,FAIL-Test data none
 683754105,,,,,,2024-10-10T10:10:10.410,FAIL-Test data empty
-316268306,2013-12,Instelling ZVW,Wandbeugel,Vieze leefomstandigheden,,2016-10-02T06:30:00.046,PASS-DATUM has a partial date
+316268306,2013-12,Instelling ZVW,"Wandbeugel,Aangepast bed","Vieze leefomstandigheden,Huis bevat trap",,2016-10-02T06:30:00.046,PASS-DATUM has a partial date
 569973107,2012,Other,,,unsure,2024-10-10T10:10:10.410,PASS-DATUM has a partial date
 011168808,2000-12-10,Appartement of flatwoning,Woningaanpassing,Ingang van woning geblokkeerd,wants to move,,FAIL-DATE_TIME is empty
 363037809,1996-06-21,Woonwagen,Aangepast bed,Rommelige leefruimte,with family,1996-05-42T17:04:55.941,FAIL-DATE_TIME has a wrong datetime format (wrong day value)
