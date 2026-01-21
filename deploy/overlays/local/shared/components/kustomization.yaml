@@ -5,4 +5,3 @@ components:
   - service-discovery
   - terminology-server-proxy
   - federation-secret
-  - jupyter-zib-ingress

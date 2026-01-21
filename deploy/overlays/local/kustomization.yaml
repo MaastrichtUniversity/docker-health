@@ -9,7 +9,7 @@ resources:
   - ../../base/openehr-nodes/zio
 
 components:
-  - shared/components/jupyter-zib-ingress
+  - jupyter-zib-config
   - node-envida/components
   - node-mumc/components
   - node-vitala/components
