@@ -3,6 +3,6 @@ kind: Component
 
 components:
   - services-list-role
-  - terminology-server-proxy-ingress
+  - terminology-server-proxy
   - federation-secret
   - jupyter-zib-ingress
