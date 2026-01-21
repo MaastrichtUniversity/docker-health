@@ -4,7 +4,7 @@ variable "ENV_TAG" {
 }
 
 variable "MAVEN_VERSION" {
-  default = "3.9.11"
+  default = "3.9.12"
 }
 
 variable "ENV_REGISTRY_HOST" {
