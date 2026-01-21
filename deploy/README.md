@@ -21,19 +21,25 @@ deploy/
     └── prod                     # Production environment customizations
 ```
 
-## Services
+### Overlays
 
-### Currently supported overlays/environments
+#### Currently supported overlays/environments
 
 - **local**
-  - **node-{NODENAME}**: Run a specific node
-  - **ops**: Run elk log monitoring service
-  - **shared**: Run shared resources such as terminology server
-  - **test-single-node**: Run the single-node tests
-  - **test-federation**: Run the federation tests
+  - Overlay to deploy **all client nodes** and **jupyter-zib**
+  - Includes the following specific overlays:
+    - **node-{NODENAME}**: Overlay to deploy a specific node
+    - **ops**: Overlay for elk log monitoring services
+    - **shared**: Overlay for shared resources and components
+      (e.g. terminology server, federation secrets)
+  - Includes the following test overlays:
+    - **test-single-node**: Job for running single-node tests
+    - **test-federation**: Job for running federation tests
 - **tst**
 - <s>**acc**</s>
 - <s>**prod**</s>
+
+## Services
 
 ### Currently supported nodes in the network
 
@@ -43,29 +49,30 @@ deploy/
 - **zio**
 - (**test**: Used for running single-node tests)
 
-#### Each node includes the following components
+#### Each node includes the following services
 
 - **ehrbase**: open-source openEHR backend
-    - Hosts available at: http://ehrbase.{NODENAME}.{ENV}.dh.unimaas.nl
+  - Hosts available at: http://ehrbase.{NODENAME}.{ENV}.dh.unimaas.nl
 - **ehrdb**: PostgreSQL database linked to EHRBase
 - **etl-zib**: Data extraction, transformation and loading service
-    - Hosts available at: http://etl.{NODENAME}.{ENV}.dh.unimaas.nl
+  - Hosts available at: http://etl.{NODENAME}.{ENV}.dh.unimaas.nl
 - **transform-rest**: Performs transformation of data to openEHR composition via a REST api
-    - Host available at: http://transform.{NODENAME}.{ENV}.dh.unimaas.nl
+  - Host available at: http://transform.{NODENAME}.{ENV}.dh.unimaas.nl
 - **federation-rest**: Provides a federation REST api for querying data from multiple nodes
-    - Host available at: http://federation.{NODENAME}.{ENV}.dh.unimaas.nl
+  - Host available at: http://federation.{NODENAME}.{ENV}.dh.unimaas.nl
 - **openehrtool**: Development tool for openEHR
-    - Hosts available at: http://openehrtool.{NODENAME}.{ENV}.dh.unimaas.nl
+  - Hosts available at: http://openehrtool.{NODENAME}.{ENV}.dh.unimaas.nl
 - **portal**: User Interface of the federated network
-    - Hosts available at: http://portal.{NODENAME}.{ENV}.dh.unimaas.nl
+  - Hosts available at: http://portal.{NODENAME}.{ENV}.dh.unimaas.nl
 
-### Shared deployed services
+### Other services
 
 - **terminology-server-proxy**: Connection to the terminology server
 - **jupyter-zib**: Jupyter notebook for data analysis and visualization
-    - Host available at: http://jupyter.{ENV}.dh.unimaas.nl
+  - Host available at: http://jupyter.{ENV}.dh.unimaas.nl
 
 #### Log monitoring
+
 - **filebeat**: A service used for shipping logs to a central location
 - **elk**: An open-source software suite for log monitoring
 
@@ -77,18 +84,19 @@ For encryption between filebeat and elk, CA certificates need to be stored in `c
 - This setup uses the Minikube Docker daemon to avoid pushing images to a registry
 - Services are exposed through Nginx Ingress controller with domain patterns:
   Each service has its own ingress configuration in its respective directory.
-    - Ensure that your Kubernetes cluster has the Nginx Ingress Controller installed
+
+  - Ensure that your Kubernetes cluster has the Nginx Ingress Controller installed
 
 - Each service has its own kustomization, deployment, service, ingress, etc. resources
 - PersistentVolumeClaims require appropriate StorageClass configurations in your cluster
 - Environment-specific configurations are maintained through Kustomize overlays
-    - Sensitive information should be stored using a secretGenerator in each overlay
+  - Sensitive information should be stored using a secretGenerator in each overlay
 - Environment variables are configured via ConfigMap generators
 - Internal hostnames are formated `servicename.namespace` example "Envida ehrbase server" hostname =
   envida-ehrbase.dh-health
 - The `local` overlay applies the following customizations:
-    - Sets empty registry host (using images built directly in Minikube)
-    - Sets `imagePullPolicy: Never` to ensure Kubernetes uses locally built images
+  - Sets empty registry host (using images built directly in Minikube)
+  - Sets `imagePullPolicy: Never` to ensure Kubernetes uses locally built images
 - To deploy a specific environment:
   ```bash
   kubectl apply -k deploy/overlays/tst    # For development
@@ -112,13 +120,13 @@ in [dh-hdp-etl/README.md](https://github.com/MaastrichtUniversity/dh-hdp-etl/tre
 
 1. In `base/openehr-nodes`,
    1. Add a complete new node folder
-    (After copy/pasting, make sure the name of the new node is updated in every file)
+      (After copy/pasting, make sure the name of the new node is updated in every file)
    2. Add the new resource folder name to `kustomization.yaml`
 2. Add a new demo-data folder in `data`
    1. Remember to update the new configuration in `base/openehr-nodes/{nodename}/etl-zib/etl-config/config.yaml`
 3. Add the new node-specific local hosts to `localhost.sh`
 4. In `overlay/local`, `tst`, etc.
-   1. Add a complete new node folder containing all required `components` (ingresses, secrets) and a node-specific `kustomization.yaml` file 
+   1. Add a complete new node folder containing all required `components` (ingresses, secrets) and a node-specific `kustomization.yaml` file
    2. Add the new node-specific resources and components into `kustomization.yaml`
    3. In `test-federation`:
       1. Add the new node-specific resources and components into `kustomization.yaml`

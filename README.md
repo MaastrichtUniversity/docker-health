@@ -104,37 +104,37 @@ for more information on the Kubernetes architecture and deployed services.
 
 1. Setup the Kubernetes cluster and folders
 
-    ```bash
-    ./dh.sh setup
-    ```
-    
-    This will start Minikube with all needed addons, pull down the external repos, add log folders to the Minikube machine
-    and set hostnames in /etc/hosts with the Minikube ip.
+   ```bash
+   ./dh.sh setup
+   ```
+
+   This will start Minikube with all needed addons, pull down the external repos, add log folders to the Minikube machine
+   and set hostnames in /etc/hosts with the Minikube ip.
 
 2. Pull default docker images from Dockerhub
 
-    ```bash
-    ./dh.sh pull
-    ```
+   ```bash
+   ./dh.sh pull
+   ```
 
 3. Build the docker images from externals
 
-    ```bash
-    ./dh.sh build
-    ```
+   ```bash
+   ./dh.sh build
+   ```
 
-    Note: Build with a custom tag is supported (not needed for local development).
-    
-    ```bash
-    ./dh.sh build transform-rest 2.0.0
-    ```
+   Note: Build with a custom tag is supported (not needed for local development).
+
+   ```bash
+   ./dh.sh build transform-rest 2.0.0
+   ```
 
 4. Apply Kubernetes manifests on the `local` overlay
-   
+
    **Note:** It is necessary to add the option `-s` in the command-line to apply the shared resources (terminology server, configmaps, etc.)
-   
+
    1. Apply all node resources
-   
+
       ```bash
       ./dh.sh apply -s local
       ```
@@ -144,13 +144,14 @@ for more information on the Kubernetes architecture and deployed services.
       ```bash
       ./dh.sh apply -s local/node-{NODENAME}
       ```
-    with `{NODENAME}` corresponding to either `envida`, `mumc`, `vitala`, `zio` or `test`.
+
+      with `{NODENAME}` corresponding to either `envida`, `mumc`, `vitala`, `zio` or `test`.
 
 5. Show status of all pods
 
-    ```bash
-    ./dh.sh status
-    ```
+   ```bash
+   ./dh.sh status
+   ```
 
 For a UI overview of the Minikube kubernetes stack and pods with logs checkout one of the following dashboard:
 
@@ -166,17 +167,17 @@ The OPS (monitoring, logging etc...) containers are in a different namespace and
 
 1. Start the containers
 
-    ```bash
-    ./dh.sh apply local/ops
-    ```
+   ```bash
+   ./dh.sh apply local/ops
+   ```
 
 2. Check the ELK web interface - [Kibana](http://elk.local.dh.unimaas.nl) To see the logs, create a new Data View index pattern idx\*
 
 3. Remove the containers
 
-    ```bash
-    ./dh.sh delete local/ops
-    ```
+   ```bash
+   ./dh.sh delete local/ops
+   ```
 
 ## Development Workflow
 
@@ -188,12 +189,13 @@ Checkout existing functionality in the dh.sh. For examples:
 ./dh.sh setup                        Setup Kubernetes environment
 ./dh.sh start                        Start Kubernetes environment
 ./dh.sh build                        Build all Docker images
+./dh.sh apply -s                     Apply Kubernetes manifests with local + shared overlay
 ./dh.sh apply                        Apply Kubernetes manifests with local overlay
-./dh.sh apply -s local/node-mumc     Apply Kubernetes manifests with local + shared overlays for the MUMC node
+./dh.sh apply -s local/node-mumc     Apply Kubernetes manifests for MUMC and shared overlays
 ./dh.sh apply local/ops              Apply Kubernetes manifests with local/ops overlay  (ELK, Filbeat)
 ./dh.sh apply tst                    Apply Kubernetes manifests with tst overlay
 ./dh.sh delete                       Delete Kubernetes manifests with local overlay
-./dh.sh delete -s local/node-mumc    Delete Kubernetes manifests with local + shared overlays for the MUMC node
+./dh.sh delete -s                    Delete Kubernetes manifests with local and shared overlay, including the namespace
 ./dh.sh delete local/ops             Delete Kubernetes manifests with local/ops overlay (ELK, Filbeat)
 ./dh.sh delete tst                   Delete Kubernetes manifests with tst overlay
 ./dh.sh status                       Print the pods status
@@ -323,52 +325,52 @@ Follow these manual steps to deploy the stack in your local Minikube manually:
 
 1. Start Minikube
 
-    ```bash
-    minikube start --cpus 4 --memory 8192 --disk-size=30g --driver=docker
-    ```
+   ```bash
+   minikube start --cpus 4 --memory 8192 --disk-size=30g --driver=docker
+   ```
 
 2. Enable the Ingress Controller
 
-    ```bash
-    minikube addons enable ingress
-    ```
+   ```bash
+   minikube addons enable ingress
+   ```
 
 3. Set up Local DNS Entries
 
-    Add the local hostname entries to your `/etc/hosts` file:
+   Add the local hostname entries to your `/etc/hosts` file:
 
-    ```bash
-    ./localhost.sh
-    ```
+   ```bash
+   ./localhost.sh
+   ```
 
 4. Point to Minikube's Docker Daemon && set docker build vars
 
-    ```bash
-    eval $(minikube -p minukube docker-env)
-    export ENV_TAG=latest
-    export MAVEN_VERSION=3.9.11
-    ```
+   ```bash
+   eval $(minikube -p minukube docker-env)
+   export ENV_TAG=latest
+   export MAVEN_VERSION=3.9.11
+   ```
 
-   1. Pull external images into Minikube's Docker daemon 
-   
-       Some components use external images from Docker Hub. Pull them into Minikube's Docker daemon:
+   1. Pull external images into Minikube's Docker daemon
 
-       ```bash
-       ./pull-external-images.sh
-       ```
+      Some components use external images from Docker Hub. Pull them into Minikube's Docker daemon:
+
+      ```bash
+      ./pull-external-images.sh
+      ```
 
 5. Build Docker Images
 
-    ```bash
-    docker buildx bake
-    ```
+   ```bash
+   docker buildx bake
+   ```
 
 6. Deploy to Minikube
 
-    ```bash
-    kubectl create namespace dh-health
-    ```
+   ```bash
+   kubectl create namespace dh-health
+   ```
 
-    ```bash
-    kubectl apply -k deploy/overlays/local
-    ```
+   ```bash
+   kubectl apply -k deploy/overlays/local
+   ```

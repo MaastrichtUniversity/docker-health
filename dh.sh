@@ -427,13 +427,9 @@ main() {
         delete)
             case $1 in
               -s)
-                local overlay=${2:-local}
-                if [[ "${overlay}" = *"/"* ]]; then
-                  delete_manifests "${overlay}/../shared"
-                else
-                  delete_manifests "${overlay}/shared"
-                fi
-                delete_manifests "${overlay}"
+              # Deleting the shared overlay removes all resources and volumes in "dh-health" namespace
+              # so no need to delete other overlays after that
+                delete_manifests "local/shared"
               ;;
               *)
                 local overlay=${1:-local}

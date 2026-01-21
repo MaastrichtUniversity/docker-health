@@ -6,8 +6,8 @@ resources:
   - ../../../base/terminology-server-proxy
 
 components:
-  - components/services-list-role # For the service registry
-  - components/terminology-server-proxy-ingress
+  - components/service-discovery # For the service registry
+  - components/terminology-server-proxy
   - components/federation-secret
 
 patches:
