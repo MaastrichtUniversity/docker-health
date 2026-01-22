@@ -4,5 +4,5 @@ metadata:
   name: envida-federation-rest-config
   namespace: dh-health
 data:
-  FEDERATION_LOGGER_FILENAME: "logs/federation-rest/federation-rest.log"
+  FEDERATION_LOGGER_FILENAME: "logs/envida/federation-rest.log"
   FEDERATION_SERVER_URL: http://envida-federation-rest.dh-health:8000

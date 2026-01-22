@@ -4,5 +4,5 @@ metadata:
   name: vitala-federation-rest-config
   namespace: dh-health
 data:
-  FEDERATION_LOGGER_FILENAME: "logs/federation-rest/federation-rest.log"
+  FEDERATION_LOGGER_FILENAME: "logs/vitala/federation-rest.log"
   FEDERATION_SERVER_URL: http://vitala-federation-rest.dh-health:8000
