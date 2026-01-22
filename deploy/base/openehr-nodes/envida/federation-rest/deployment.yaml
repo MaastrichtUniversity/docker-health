@@ -65,7 +65,7 @@ spec:
                 name: envida-federation-rest-config
           volumeMounts:
             - name: logs
-              mountPath: /code/logs/federation-rest
+              mountPath: /code/logs/envida
               subPath: envida/federation-rest
       volumes:
         - name: logs
