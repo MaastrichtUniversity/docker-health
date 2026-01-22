@@ -429,7 +429,8 @@ main() {
               -s)
               # Deleting the shared overlay removes all resources and volumes in "dh-health" namespace
               # so no need to delete other overlays after that
-                delete_manifests "local/shared"
+                local overlay=${1:-local}
+                delete_manifests "${overlay}/shared"
               ;;
               *)
                 local overlay=${1:-local}
