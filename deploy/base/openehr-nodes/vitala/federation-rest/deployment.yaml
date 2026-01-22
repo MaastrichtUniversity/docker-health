@@ -65,7 +65,7 @@ spec:
                 name: vitala-federation-rest-config
           volumeMounts:
             - name: logs
-              mountPath: /code/logs/federation-rest
+              mountPath: /code/logs/vitala
               subPath: vitala/federation-rest
       volumes:
         - name: logs

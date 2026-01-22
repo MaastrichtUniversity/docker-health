@@ -65,7 +65,7 @@ spec:
                 name: mumc-federation-rest-config
           volumeMounts:
             - name: logs
-              mountPath: /code/logs/federation-rest
+              mountPath: /code/logs/mumc
               subPath: mumc/federation-rest
       volumes:
         - name: logs

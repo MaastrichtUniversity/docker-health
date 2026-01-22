@@ -65,7 +65,7 @@ spec:
                 name: zio-federation-rest-config
           volumeMounts:
             - name: logs
-              mountPath: /code/logs/federation-rest
+              mountPath: /code/logs/zio
               subPath: zio/federation-rest
       volumes:
         - name: logs
