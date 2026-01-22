@@ -4,5 +4,5 @@ metadata:
   name: zio-federation-rest-config
   namespace: dh-health
 data:
-  FEDERATION_LOGGER_FILENAME: "logs/federation-rest/federation-rest.log"
+  FEDERATION_LOGGER_FILENAME: "logs/zio/federation-rest.log"
   FEDERATION_SERVER_URL: http://zio-federation-rest.dh-health:8000

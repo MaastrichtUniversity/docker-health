@@ -199,14 +199,6 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: ["TEST","TRANSFORM_REST"]
-    # Federation
-    - type: filestream
-      id: federation-rest-logs
-      paths:
-        - /usr/share/logs/federation/federation-rest.log
-      parsers:
-        - multiline: *multiline_parser
-      tags: ["FEDERATION_REST"]
     # Terminology Server Proxy
     - type: filestream
       id: terminology-proxy-logs
