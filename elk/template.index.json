@@ -12507,6 +12507,7 @@
           "ehr.topic",
           "ehr.template",
           "transform.api_method",
+          "break_the_glass",
           "fields.*"
         ]
       },
