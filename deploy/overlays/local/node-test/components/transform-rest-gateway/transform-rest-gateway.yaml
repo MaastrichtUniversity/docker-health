@@ -1,0 +1,35 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: test-transform-rest-gateway
+  namespace: dh-health
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: transform.test.local.dh.unimaas.nl
+    - name: http
+      port: 80
+      protocol: HTTP
+      hostname: transform.test.local.dh.unimaas.nl
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: test-transform-rest-route
+  namespace: dh-health
+spec:
+  parentRefs:
+    - name: test-transform-rest-gateway
+  hostnames:
+    - transform.test.local.dh.unimaas.nl
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: test-transform-rest
+          port: 8080

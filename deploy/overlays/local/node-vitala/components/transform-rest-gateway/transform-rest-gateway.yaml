@@ -1,0 +1,35 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: vitala-transform-rest-gateway
+  namespace: dh-health
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: transform.vitala.local.dh.unimaas.nl
+    - name: http
+      port: 80
+      protocol: HTTP
+      hostname: transform.vitala.local.dh.unimaas.nl
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: vitala-transform-rest-route
+  namespace: dh-health
+spec:
+  parentRefs:
+    - name: vitala-transform-rest-gateway
+  hostnames:
+    - transform.vitala.local.dh.unimaas.nl
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: vitala-transform-rest
+          port: 8080
