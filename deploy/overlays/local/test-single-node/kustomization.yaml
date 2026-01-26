@@ -11,8 +11,8 @@ resources:
 
 components:
   # TEST-node
-  - ../node-test/components/ehrbase-ingress
-  - ../node-test/components/transform-rest-ingress
+  - ../node-test/components/ehrbase-gateway
+  - ../node-test/components/transform-rest-gateway
   - ../node-test/components/secrets
 
 patches:
