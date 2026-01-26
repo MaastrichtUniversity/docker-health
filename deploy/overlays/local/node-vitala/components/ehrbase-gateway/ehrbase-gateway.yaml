@@ -1,0 +1,35 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: vitala-ehrbase-gateway
+  namespace: dh-health
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: ehrbase.vitala.local.dh.unimaas.nl
+    - name: http
+      port: 80
+      protocol: HTTP
+      hostname: ehrbase.vitala.local.dh.unimaas.nl
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: vitala-ehrbase-route
+  namespace: dh-health
+spec:
+  parentRefs:
+    - name: vitala-ehrbase-gateway
+  hostnames:
+    - ehrbase.vitala.local.dh.unimaas.nl
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: vitala-ehrbase
+          port: 8080
