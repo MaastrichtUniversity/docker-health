@@ -1,0 +1,35 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: test-openehrtool-gateway
+  namespace: dh-health
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: openehrtool.test.local.dh.unimaas.nl
+    - name: http
+      port: 80
+      protocol: HTTP
+      hostname: openehrtool.test.local.dh.unimaas.nl
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: test-openehrtool-route
+  namespace: dh-health
+spec:
+  parentRefs:
+    - name: test-openehrtool-gateway
+  hostnames:
+    - openehrtool.test.local.dh.unimaas.nl
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: test-openehrtool
+          port: 9000
