@@ -6,10 +6,6 @@ metadata:
 spec:
   gatewayClassName: traefik
   listeners:
-    - name: https
-      port: 443
-      protocol: HTTPS
-      hostname: openehrtool.mumc.local.dh.unimaas.nl
     - name: http
       port: 80
       protocol: HTTP
