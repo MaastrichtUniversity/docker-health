@@ -362,7 +362,7 @@ print_usage() {
     echo "  $0 apply local/ops              Apply Kubernetes manifests with local/ops overlay  (ELK, Filbeat)"
     echo "  $0 apply tst                    Apply Kubernetes manifests with tst overlay"
     echo "  $0 delete                       Delete Kubernetes manifests with local overlay"
-    echo "  $0 delete -s local/node-mumc    Delete Kubernetes manifests with local + shared overlays for the MUMC node"
+    echo "  $0 delete -s                    Delete Kubernetes manifests with local + shared overlays"
     echo "  $0 delete local/ops             Delete Kubernetes manifests with local/ops overlay (ELK, Filbeat)"
     echo "  $0 delete tst                   Delete Kubernetes manifests with tst overlay"
     echo "  $0 status                       Print the pods status"
@@ -429,7 +429,7 @@ main() {
               -s)
               # Deleting the shared overlay removes all resources and volumes in "dh-health" namespace
               # so no need to delete other overlays after that
-                local overlay=${1:-local}
+                local overlay=${2:-local}
                 delete_manifests "${overlay}/shared"
               ;;
               *)
