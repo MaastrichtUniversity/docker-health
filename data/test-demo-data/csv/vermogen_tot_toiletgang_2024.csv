@@ -10,8 +10,8 @@ BSN,TOILETGEBRUIK,ZORG_BIJ_MENSTRUATIE,PRODUCT_TYPE,DATE_TIME,TEST_COMMENTS
 569973107,Hulp nodig bij toiletgang,Niet in staat zorg te dragen voor menstruatiehygiëne,Stoma,1992-10-06T06:30:00.046,PASS
 011168808,In staat om zelfstandig naar toilet te gaan,In staat om zelfstandig te zorgen voor menstruatiehygiëne,,,FAIL-DATE_TIME is empty
 363037809,Hulp nodig bij toiletgang,,,1979-10-06T06:30:SS.046,FAIL-DATE_TIME has a wrong datetime format (wrong second value)
-315071710,WrongValue,Hulp nodig bij zorgen voor menstruatiehygiëne,Verblijfskatheter,1987-04-06T06:30:00.046,PASS-TOILETGEBRUIK is wrong
-362880311,,Niet in staat zorg te dragen voor menstruatiehygiëne,Toiletstoel,1999-09-09T09:39:09.049,PASS-TOILETGEBRUIK is missing
-525736712,Hulp nodig bij toiletgang,WrongValue,Urinaal,1991-08-19T06:30:00.046,PASS-ZORG_BIJ_MENSTRUATIE is wrong
-646236313,In staat om zelfstandig naar toilet te gaan,,WrongValue,2023-12-31T23:59:59.871,PASS-PRODUCT_TYPE is wrong
-640681414,WrongValue,WrongValue,WrongValue,2023-12-31T23:59:59.871,FAIL-Test all fields wrong or empty
+315071710,WrongValue,WrongValue,WrongValue,2023-12-31T23:59:59.871,FAIL-Test noneCheckValidator.validate
+362880311,WrongValue,Hulp nodig bij zorgen voor menstruatiehygiëne,Verblijfskatheter,1987-04-06T06:30:00.046,PASS-TOILETGEBRUIK is wrong
+525736712,,Niet in staat zorg te dragen voor menstruatiehygiëne,Toiletstoel,1999-09-09T09:39:09.049,PASS-TOILETGEBRUIK is missing
+646236313,Hulp nodig bij toiletgang,WrongValue,Urinaal,1991-08-19T06:30:00.046,PASS-ZORG_BIJ_MENSTRUATIE is wrong
+640681414,In staat om zelfstandig naar toilet te gaan,,WrongValue,2023-12-31T23:59:59.871,PASS-PRODUCT_TYPE is wrong
