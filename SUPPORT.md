@@ -22,12 +22,12 @@ minikube addons enable storage-provisioner
 kubectl get pvc -n dh-health
 ```
 
-## Ingress Not Working
+## Gateways not working
 
-Check if the ingress controller is properly installed:
+Check if traefik is properly installed:
 
 ```bash
-kubectl get pods -n ingress-nginx
+kubectl get pods -n traefik
 ```
 
 ## Troubleshooting MacOS specifically

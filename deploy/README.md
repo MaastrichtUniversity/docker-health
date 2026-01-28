@@ -82,12 +82,10 @@ For encryption between filebeat and elk, CA certificates need to be stored in `c
 
 - All services are deployed in the `dh-health` namespace
 - This setup uses the Minikube Docker daemon to avoid pushing images to a registry
-- Services are exposed through Nginx Ingress controller with domain patterns:
-  Each service has its own ingress configuration in its respective directory.
-
-  - Ensure that your Kubernetes cluster has the Nginx Ingress Controller installed
-
-- Each service has its own kustomization, deployment, service, ingress, etc. resources
+- Services are exposed through traefik/gateway-api with domain patterns:
+  Each service has its own Gateway and HTTPRoute configuration in its respective directory.
+  - Ensure that your Kubernetes cluster has traefik installed
+- Each service has its own kustomization, deployment, service, gateway, etc. resources
 - PersistentVolumeClaims require appropriate StorageClass configurations in your cluster
 - Environment-specific configurations are maintained through Kustomize overlays
   - Sensitive information should be stored using a secretGenerator in each overlay
@@ -126,7 +124,7 @@ in [dh-hdp-etl/README.md](https://github.com/MaastrichtUniversity/dh-hdp-etl/tre
    1. Remember to update the new configuration in `base/openehr-nodes/{nodename}/etl-zib/etl-config/config.yaml`
 3. Add the new node-specific local hosts to `localhost.sh`
 4. In `overlay/local`, `tst`, etc.
-   1. Add a complete new node folder containing all required `components` (ingresses, secrets) and a node-specific `kustomization.yaml` file
+   1. Add a complete new node folder containing all required `components` (gateways, secrets) and a node-specific `kustomization.yaml` file
    2. Add the new node-specific resources and components into `kustomization.yaml`
    3. In `test-federation`:
       1. Add the new node-specific resources and components into `kustomization.yaml`

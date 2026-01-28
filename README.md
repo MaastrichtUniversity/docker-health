@@ -46,7 +46,7 @@ The implementation relies on the following repositories:
 Credentials of the [Dutch terminology server](https://terminologieserver.nl/authorisation/auth/realms/nictiz/protocol/openid-connect/auth?client_id=account-console&redirect_uri=https%3A%2F%2Fterminologieserver.nl%2Fauthorisation%2Fauth%2Frealms%2Fnictiz%2Faccount%2F%23%2F&state=e082a979-038c-41ab-8096-d0396ac9820f&response_mode=fragment&response_type=code&scope=openid&nonce=30f31617-2935-48d1-ae46-6df5d20a96dd&code_challenge=0VDfFvHqmPTtvKmuJUF6rNMzRlSNwyZu9vPhV47VQn4&code_challenge_method=S256) need to be stored in secret files.
 
 Add the following file to the relevant overlays folders: local, local/test-single-node, local/test-federation, etc.
-e.g., `deploy/overlays/{overlay}/shared/components/terminology-server-proxy-ingress/secrets.yaml`
+e.g., `deploy/overlays/{overlay}/shared/components/terminology-server-proxy/secrets.yaml`
 
 #### Secret file example (need to replace the values with your encoded credentials)
 
@@ -102,7 +102,7 @@ Deployment of the services to a Minikube environment using Kubernetes manifests.
 Check out [deploy/README.md](https://github.com/MaastrichtUniversity/docker-health/tree/2024.1/deploy#kubernetes-deployment)
 for more information on the Kubernetes architecture and deployed services.
 
-1. Setup the Kubernetes cluster and folders
+1. Set up the Kubernetes cluster and folders
 
    ```bash
    ./dh.sh setup
@@ -111,13 +111,15 @@ for more information on the Kubernetes architecture and deployed services.
    This will start Minikube with all needed addons, pull down the external repos, add log folders to the Minikube machine
    and set hostnames in /etc/hosts with the Minikube ip.
 
-2. Pull default docker images from Dockerhub
+2. Install and set up traefik/gateway-api: instructions are located in `traefik/README.md`
+
+3. Pull default docker images from Dockerhub
 
    ```bash
    ./dh.sh pull
    ```
 
-3. Build the docker images from externals
+4. Build the docker images from externals
 
    ```bash
    ./dh.sh build
@@ -129,7 +131,7 @@ for more information on the Kubernetes architecture and deployed services.
    ./dh.sh build transform-rest 2.0.0
    ```
 
-4. Apply Kubernetes manifests on the `local` overlay
+5. Apply Kubernetes manifests on the `local` overlay
 
    **Note:** It is necessary to add the option `-s` in the command-line to apply the shared resources (terminology server, configmaps, etc.)
 
@@ -147,7 +149,7 @@ for more information on the Kubernetes architecture and deployed services.
 
       with `{NODENAME}` corresponding to either `envida`, `mumc`, `vitala`, `zio` or `test`.
 
-5. Show status of all pods
+6. Show status of all pods
 
    ```bash
    ./dh.sh status
@@ -329,19 +331,15 @@ Follow these manual steps to deploy the stack in your local Minikube manually:
    minikube start --cpus 4 --memory 8192 --disk-size=30g --driver=docker
    ```
 
-2. Enable the Ingress Controller
-
-   ```bash
-   minikube addons enable ingress
-   ```
-
-3. Set up Local DNS Entries
+2. Set up Local DNS Entries
 
    Add the local hostname entries to your `/etc/hosts` file:
 
    ```bash
    ./localhost.sh
    ```
+
+3. Install and set up traefik: instructions are located in `traefik/README.md`
 
 4. Point to Minikube's Docker Daemon && set docker build vars
 

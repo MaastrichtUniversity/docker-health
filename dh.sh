@@ -203,7 +203,7 @@ check_job_execution(){
 }
 
 
-# Setup ingress host entries using existing localhost.sh script
+# Setup localhost entries using existing localhost.sh script
 setup_hosts() {
     # Get the current Minikube IP
     local minikube_ip=$(minikube ip)
