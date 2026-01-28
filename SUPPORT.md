@@ -117,6 +117,7 @@ These changes take effect after restarting minikube and should persist across se
 127.0.0.1 transform.test.local.dh.unimaas.nl
 127.0.0.1 transform.vitala.local.dh.unimaas.nl
 127.0.0.1 transform.zio.local.dh.unimaas.nl
+127.0.0.1 traefik.dashboard.local.dh.unimaas.nl
 ```
 
 
