@@ -11,5 +11,5 @@ BSN,SOCIAAL_NETWERK,VRIJETIJDSBESTEDING,ARBEIDSSITUATIE,TOELICHTING,DATE_TIME,TE
 011168808,Heeft een groot sociaal netwerk,Muziek maken,,,,FAIL-DATE_TIME is empty
 363037809,Contact met familie en vrienden,Dansen,,,WrongValue,FAIL-DATE_TIME has a wrong datetime format
 315071710,,Reizen,Zelfstandige artiest,,2024-12-01T10:30:00.000,PASS
-362880311,,,Vrijwilliger,Organiseert maandelijks activiteit,2024-12-01T10:30:00.000,Pass
+362880311,,,Vrijwilliger,Organiseert maandelijks activiteit,2024-12-01T10:30:00.000,PASS
 525736712,,,Parttime baan,,2010-01-01T00:00:00.000,PASS
