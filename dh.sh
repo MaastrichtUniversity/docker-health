@@ -129,8 +129,6 @@ check_minikube() {
     if ! minikube status &>/dev/null; then
         echo -e "${YELLOW}Minikube is not running. Starting Minikube...${NC}"
         minikube start --cpus 4 --memory 8192 --disk-size=30g --driver=docker
-        minikube addons enable ingress
-        minikube addons enable ingress-dns
     fi
 
     # Set docker environment to minikube's docker
@@ -272,9 +270,10 @@ EOF
     # Apply the modified hosts file without our entries
     sudo cp "$temp_file" /etc/hosts
     rm "$temp_file"
-    
+    TUNNEL_IP=$(kubectl get svc traefik -n traefik -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
     # Now add the hosts with current Minikube IP
     echo -e "${YELLOW}Adding host entries with current Minikube IP (${minikube_ip})...${NC}"
+
     for host in $hosts; do
         echo "$minikube_ip $host" | sudo tee -a /etc/hosts > /dev/null
     done
