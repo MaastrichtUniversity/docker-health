@@ -3,7 +3,6 @@ kind: Kustomization
 
 resources:
 - common
-- federation-rest
 - jupyter-zib
 - openehr-nodes
 - terminology-server-proxy

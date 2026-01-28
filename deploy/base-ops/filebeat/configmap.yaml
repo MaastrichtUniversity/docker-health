@@ -44,6 +44,13 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: ["ENVIDA","TRANSFORM_REST"]
+    - type: filestream
+      id: envida-federation-rest-logs
+      paths:
+        - /usr/share/logs/envida/federation-rest/federation-rest.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: [ "ENVIDA","FEDERATION_REST" ]
     # MUMC node
     - type: filestream
       id: mumc-etl-zib-pipeline-logs
@@ -76,6 +83,13 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: ["MUMC","TRANSFORM_REST"]
+    - type: filestream
+      id: mumc-federation-rest-logs
+      paths:
+        - /usr/share/logs/mumc/federation-rest/federation-rest.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: [ "MUMC","FEDERATION_REST" ]
     # VITALA node
     - type: filestream
       id: vitala-etl-zib-pipeline-logs
@@ -108,6 +122,13 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: [ "VITALA","TRANSFORM_REST" ]
+    - type: filestream
+      id: vitala-federation-rest-logs
+      paths:
+        - /usr/share/logs/vitala/federation-rest/federation-rest.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: [ "VITALA","FEDERATION_REST" ]
     # ZIO node
     - type: filestream
       id: zio-etl-zib-pipeline-logs
@@ -140,6 +161,13 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: ["ZIO","TRANSFORM_REST"]
+    - type: filestream
+      id: zio-federation-rest-logs
+      paths:
+        - /usr/share/logs/zio/federation-rest/federation-rest.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: [ "ZIO","FEDERATION_REST" ]
     # TEST node
     - type: filestream
       id: test-etl-zib-pipeline-logs
@@ -172,14 +200,6 @@ data:
       parsers:
         - multiline: *multiline_parser
       tags: ["TEST","TRANSFORM_REST"]
-    # Federation
-    - type: filestream
-      id: federation-rest-logs
-      paths:
-        - /usr/share/logs/federation/federation-rest.log
-      parsers:
-        - multiline: *multiline_parser
-      tags: ["FEDERATION_REST"]
     # Terminology Server Proxy
     - type: filestream
       id: terminology-proxy-logs

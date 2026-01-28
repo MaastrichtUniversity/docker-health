@@ -5,36 +5,38 @@ resources:
 - job.yaml
 - role.yaml
 - ../../../base/common
-- ../../../base/federation-rest
 - ../../../base/terminology-server-proxy
 # Envida-node
 - ../../../base/openehr-nodes/envida/ehrbase
 - ../../../base/openehr-nodes/envida/ehrdb
 - ../../../base/openehr-nodes/envida/etl-config
 - ../../../base/openehr-nodes/envida/etl-zib-pipeline
+- ../../../base/openehr-nodes/envida/federation-rest
 - ../../../base/openehr-nodes/envida/transform-rest
 # MUMC-node
 - ../../../base/openehr-nodes/mumc/ehrbase
 - ../../../base/openehr-nodes/mumc/ehrdb
 - ../../../base/openehr-nodes/mumc/etl-config
 - ../../../base/openehr-nodes/mumc/etl-zib-pipeline
+- ../../../base/openehr-nodes/mumc/federation-rest
 - ../../../base/openehr-nodes/mumc/transform-rest
 # VITALA-node
 - ../../../base/openehr-nodes/vitala/ehrbase
 - ../../../base/openehr-nodes/vitala/ehrdb
 - ../../../base/openehr-nodes/vitala/etl-config
 - ../../../base/openehr-nodes/vitala/etl-zib-pipeline
+- ../../../base/openehr-nodes/vitala/federation-rest
 - ../../../base/openehr-nodes/vitala/transform-rest
 # ZIO-node
 - ../../../base/openehr-nodes/zio/ehrbase
 - ../../../base/openehr-nodes/zio/ehrdb
 - ../../../base/openehr-nodes/zio/etl-config
 - ../../../base/openehr-nodes/zio/etl-zib-pipeline
+- ../../../base/openehr-nodes/zio/federation-rest
 - ../../../base/openehr-nodes/zio/transform-rest
 
 components:
   - ../ingress/terminology-server-proxy/
-  - ../ingress/federation-rest/
   # TODO: only ehrbase and transform-rest ingresses are required:
   - ../ingress/openehr-nodes/envida/
   - ../ingress/openehr-nodes/mumc/
@@ -55,3 +57,16 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: Never
+
+configMapGenerator:
+  - name: federation-rest-config
+    namespace: dh-health
+    literals:
+      - FEDERATION_LOGGER_FILENAME="logs/federation-rest/federation-rest.log"
+
+secretGenerator:
+# federation
+  - name: federation-service-creds
+    namespace: dh-health
+    literals:
+      - key=serviceKey

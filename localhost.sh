@@ -10,7 +10,10 @@ echo "$MINIKUBE_IP transform.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP transform.test.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP transform.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP transform.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
-echo "$MINIKUBE_IP federation.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP federation.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP federation.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP federation.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP federation.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP jupyter.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP terminology.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP portal.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
