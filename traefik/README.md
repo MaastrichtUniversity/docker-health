@@ -63,3 +63,11 @@ Update the configuration
 helm upgrade traefik traefik/traefik --namespace traefik --values values.yaml
 kubectl rollout restart deploy/traefik -n traefik
 ```
+
+### Port conflict between Ingress vs Traefik
+
+If you see the following error when setting up, either disable Ingress addon or remove Traefik service
+
+```
+0/1 nodes are available: 1 node(s) didn't have free ports for the requested pod ports. preemption: 0/1 nodes are available: 1 No preemption victims found for incoming pod.
+```
