@@ -4,11 +4,28 @@
 
 https://helm.sh/docs/intro/install
 
+## For Ubuntu
+
+### Via APT
 
 ```
+sudo apt-get install curl gpg apt-transport-https --yes
+curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/helm.gpg] https://packages.buildkite.com/helm-linux/helm-debian/any/ any main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
 sudo apt-get install helm
-# or
+```
+
+### Via Snap
+
+```
 sudo snap install helm --classic
+```
+
+### Verify installation
+
+```
+helm version
 ```
 
 # How to install Traefik
@@ -25,7 +42,7 @@ cd traefik
 # Install traefik
 helm repo add traefik https://traefik.github.io/charts
 helm repo update
-helm install traefik traefik/traefik --namespace traefik --create-namespace --values values.yaml 
+helm install traefik traefik/traefik --namespace traefik --create-namespace --values values.yaml
 
 # In your browser go to
 http://traefik.dashboard.local.dh.unimaas.nl/dashboard/
@@ -34,13 +51,15 @@ http://traefik.dashboard.local.dh.unimaas.nl/dashboard/
 # Troubleshooting
 
 Clean-up
+
 ```
 helm uninstall traefik -n traefik
 kubectl delete ns traefik
 ```
 
 Update the configuration
+
 ```
-helm upgrade traefik traefik/traefik --namespace traefik --values values.yaml 
+helm upgrade traefik traefik/traefik --namespace traefik --values values.yaml
 kubectl rollout restart deploy/traefik -n traefik
 ```
