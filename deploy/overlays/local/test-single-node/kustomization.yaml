@@ -2,43 +2,37 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- job.yaml
-- ../../../base/common
-- ../../../base/terminology-server-proxy
-## TEST-node
-- ../../../base/openehr-nodes/test/ehrbase
-- ../../../base/openehr-nodes/test/ehrdb
-- ../../../base/openehr-nodes/test/etl-config
-- ../../../base/openehr-nodes/test/transform-rest
+  - job.yaml
+  # TEST-node
+  - ../../../base/openehr-nodes/test/ehrbase
+  - ../../../base/openehr-nodes/test/ehrdb
+  - ../../../base/openehr-nodes/test/etl-zib/etl-config
+  - ../../../base/openehr-nodes/test/transform-rest
 
 components:
-  - ../ingress/terminology-server-proxy/
-  # TODO: only ehrbase and transform-rest ingresses are required:
-  - ../ingress/openehr-nodes/test/
+  # TEST-node
+  - ../node-test/components/ehrbase-ingress
+  - ../node-test/components/transform-rest-ingress
+  - ../node-test/components/secrets
 
 patches:
-# imagePullPolicy patches
-- target:
-    kind: Deployment
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/containers/0/imagePullPolicy
-      value: Never
-- target:
-    kind: Job
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/containers/0/imagePullPolicy
-      value: Never
-# Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
+  # imagePullPolicy patches
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Never
+  - target:
+      kind: Job
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Never
+
 configMapGenerator:
-- name: test-ehrbase-config
-  namespace: dh-health
-  behavior: merge
-  literals:
-    - ADMIN_API_ACTIVE=true
-- name: test-etl-config
-  namespace: dh-health
-  behavior: merge
-  literals:
-    - EHRBASE_ADMIN_BASE_URL=http://test-ehrbase.dh-health:8080/ehrbase/rest/admin
+  - name: test-etl-config
+    namespace: dh-health
+    behavior: merge
+    literals:
+      - EHRBASE_ADMIN_BASE_URL=http://test-ehrbase.dh-health:8080/ehrbase/rest/admin

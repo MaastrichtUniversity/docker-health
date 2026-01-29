@@ -42,10 +42,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: timezone-config
-            - configMapRef:
-                name: federation-rest-config
           env:
-            # Envida-node
+            # ENVIDA-node
             - name: ENVIDA__NODENAME
               valueFrom:
                 configMapKeyRef:
@@ -129,11 +127,3 @@ spec:
                 configMapKeyRef:
                   name: zio-federation-rest-config
                   key: FEDERATION_SERVER_URL
-          volumeMounts:
-            - name: logs
-              mountPath: /code/logs/federation-rest
-              subPath: test-federation
-      volumes:
-        - name: logs
-          persistentVolumeClaim:
-            claimName: log-pvc

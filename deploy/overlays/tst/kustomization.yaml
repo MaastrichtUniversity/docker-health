@@ -4,21 +4,21 @@ namespace: dh-health
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
-  newTag: '2024.1.7'
+  newTag: '2024.1.8'
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-test
-  newTag: '2024.1.7'
+  newTag: '2024.1.8'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
-  newTag: '2024.1.7'
+  newTag: '2024.1.8'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
-  newTag: '2024.1.7'
+  newTag: '2024.1.8'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
-  newTag: '2024.1.7'
+  newTag: '2024.1.8'
 - name: registry.prod.dh.unimaas.nl/docker-health/portal
-  newTag: '2024.1.7'
+  newTag: '2024.1.8'
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-  newTag: '2024.1.7'
+  newTag: '2024.1.8'
 - name: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib
-  newTag: '2024.1.7'
+  newTag: '2024.1.8'
 
 resources:
 # NEW vault secret operator
@@ -26,17 +26,19 @@ resources:
 # Base resources
 - ../../base/common
 - ../../base/federation-rest
-- ../../base/transform-rest
 - ../../base/jupyter-zib
-- ../../base/terminology-server-proxy
-# Envida-node
+# EHR-nodes
 - ../../base/openehr-nodes/envida
-# MUMC-node
 - ../../base/openehr-nodes/mumc
-# VITALA-node
 - ../../base/openehr-nodes/vitala
-# ZIO-node
 - ../../base/openehr-nodes/zio
+# Gateway resources
+- patches/gateway/common/federation.yaml
+- patches/gateway/common/jupyter.yaml
+- patches/gateway/envida/portal.yaml
+- patches/gateway/mumc/portal.yaml
+- patches/gateway/vitala/portal.yaml
+- patches/gateway/zio/portal.yaml
 
 patches:
 # 'Global' patches that apply to all of one sort
@@ -75,56 +77,24 @@ patches:
     - op: add
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: IfNotPresent
+      value: IfNotPresent
 - target:
     kind: Job
   patch: |-
     - op: add
       path: /spec/template/spec/containers/0/imagePullPolicy
       value: IfNotPresent
+      value: IfNotPresent
 # Proxy patches
 - target:
     kind: Deployment
   patch: |-
     - op: add
-      path: "/spec/template/spec/containers/0/env/-"
+      path: "/spec/template/spec/containers/0/envFrom/-"
       value:
-        name: http_proxy
-        value: "http://proxy.unimaas.nl:3128"
-    - op: add
-      path: "/spec/template/spec/containers/0/env/-"
-      value:
-        name: https_proxy
-        value: "http://proxy.unimaas.nl:3128"
-    - op: add
-      path: "/spec/template/spec/containers/0/env/-"
-      value:
-        name: no_proxy
-        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/12,10.43.0.1,10.43.0.10"
+        configMapRef:
+          name: proxy-config
 
-
-# Ingress patches
-## Transform
-- path: patches/ingress/common/transform.yaml
-## Federation
-- path: patches/ingress/common/federation.yaml
-## Jupyter
-- path: patches/ingress/common/jupyter.yaml
-## Envida-node
-- path: patches/ingress/envida/ehrbase.yaml
-- path: patches/ingress/envida/etl-zib-rest.yaml
-- path: patches/ingress/envida/portal.yaml
-## MUMC-node
-- path: patches/ingress/mumc/ehrbase.yaml
-- path: patches/ingress/mumc/etl-zib-rest.yaml
-- path: patches/ingress/mumc/portal.yaml
-## VITALA-node
-- path: patches/ingress/vitala/ehrbase.yaml
-- path: patches/ingress/vitala/etl-zib-rest.yaml
-- path: patches/ingress/vitala/portal.yaml
-## ZIO-node
-- path: patches/ingress/zio/ehrbase.yaml
-- path: patches/ingress/zio/etl-zib-rest.yaml
-- path: patches/ingress/zio/portal.yaml
 
 # Patch the data mounts to use the GIT PVC
 - path: patches/job/envida-etl-zib-delete-demo-data.yaml
@@ -151,6 +121,16 @@ patches:
       - name: dockerhub-registry-credentials
 
 configMapGenerator:
+- name: proxy-config
+  namespace: dh-health
+  literals:
+    - HTTP_PROXY=http://proxy.unimaas.nl:3128
+    - http_proxy=http://proxy.unimaas.nl:3128
+    - HTTPS_PROXY=http://proxy.unimaas.nl:3128
+    - https_proxy=http://proxy.unimaas.nl:3128
+    - NO_PROXY=localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1
+    - no_proxy=localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1
+
 - name: portal-common-config
   namespace: dh-health
   behavior: merge

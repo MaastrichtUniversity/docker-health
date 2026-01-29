@@ -48,7 +48,7 @@ spec:
               secretKeyRef:
                 name: jupyter-zib-creds
                 key: SERVER_APP_TOKEN
-          # Envida-node
+          # ENVIDA-node
           - name: ENVIDA__EHRBASE_USERNAME
             valueFrom:
               secretKeyRef:
@@ -235,53 +235,6 @@ spec:
             valueFrom:
               configMapKeyRef:
                 name: zio-etl-config
-                key: TRANSFORM_SPRING_BASE_URL
-          # Test-node
-          - name: TEST__EHRBASE_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: test-ehrbase-creds
-                key: username
-          - name: TEST__EHRBASE_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: test-ehrbase-creds
-                key: password
-          - name: TEST__EHRBASE_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: test-etl-config
-                key: EHRBASE_BASE_URL
-          - name: TEST__DATASET_FOLDER_NAME
-            valueFrom:
-              configMapKeyRef:
-                name: test-etl-config
-                key: DATASET_FOLDER_NAME
-          - name: TEST__SOURCE_SYSTEM_ID
-            valueFrom:
-              configMapKeyRef:
-                name: test-etl-config
-                key: SOURCE_SYSTEM_ID
-          - name: TEST__LOGGER_FILENAME
-            valueFrom:
-              configMapKeyRef:
-                name: test-etl-config
-                key: LOGGER_FILENAME
-          - name: TEST__TRANSFORM_SPRING_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: test-transform-creds
-                key: username
-          - name: TEST__TRANSFORM_SPRING_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: test-transform-creds
-                key:
-                  password
-          - name: TEST__TRANSFORM_SPRING_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: test-etl-config
                 key: TRANSFORM_SPRING_BASE_URL
         envFrom:
           - configMapRef:
