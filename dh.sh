@@ -271,7 +271,7 @@ EOF
     # Apply the modified hosts file without our entries
     sudo cp "$temp_file" /etc/hosts
     rm "$temp_file"
-    TUNNEL_IP=$(kubectl get svc traefik -n traefik -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
     # Now add the hosts with current Minikube IP
     echo -e "${YELLOW}Adding host entries with current Minikube IP (${minikube_ip})...${NC}"
 
