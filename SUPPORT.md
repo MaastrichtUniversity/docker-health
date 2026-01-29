@@ -134,13 +134,13 @@ After all that, the following seems to work:
 
 ```bash
 minikube start --driver=docker
-minikube addons enable ingress
+# in a different terminal tab; sudo is required
+sudo minikube tunnel
+# back in initial terminal
 ./dh.sh setup
 ./dh.sh pull
 ./dh.sh build
-# in a different terminal; sudo is required
-sudo minikube tunnel
-./dh.sh apply
+./dh.sh apply -s
 ```
 
 ### Troubleshooting SEBP/ELK on MacOS
@@ -149,7 +149,9 @@ using in the repository uses `AMD64` architecture and will not work on MacOS. Th
 instead, but it requires a few additional steps. The initial process remains the same:
 ```bash
 minikube start --driver=docker
-minikube addons enable ingress
+# in different terminal tab
+sudo minikube tunnel
+# back in initial terminal tab
 ./dh.sh setup # remember to change the etc/host/ ip values here, see above
 ./dh.sh pull
 ```
