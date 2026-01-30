@@ -2,7 +2,7 @@ BSN,ETEN,EET_BEPERKINGEN,DATE_TIME,TEST_COMMENTS
 001645201,In staat om zelfstandig te eten,,2021-02-19T15:50:14.321,PASS-Test duplication check
 001645201,Niet in staat zelf te eten,Moeite met hanteren van eetgerei bij zelfstandig eten,2024-02-19T15:50:14.321,PASS-Test duplication check
 001645201,In staat om zelfstandig te eten,,2021-02-19T15:50:14.321,FAIL-Test duplication check
-083197102,Niet in staat zelf te eten,Moeite met in stukken snijden van voedsel,2005-01-19T09:43:13.174,PASS-Test data max
+083197102,Niet in staat zelf te eten,"Moeite met in stukken snijden van voedsel,Moeite met naar mond brengen van voedsel,WrongValue",2005-01-19T09:43:13.174,PASS-Test data max
 339055303,In staat om zelfstandig te eten,,2008-07-13T05:38:29.395,PASS-Test data min
 389370204,,,,FAIL-Test data none
 683754105,,,2023-12-31T23:59:59.871,FAIL-Test data empty
