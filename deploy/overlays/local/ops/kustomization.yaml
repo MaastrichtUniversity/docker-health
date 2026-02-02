@@ -4,7 +4,7 @@ namespace: dh-health-ops
 
 resources:
 - namespace.yaml
-- elk-ingress.yaml
+- elk-gateway.yaml
 - ../../../base-ops
 
 patches:

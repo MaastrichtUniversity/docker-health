@@ -129,8 +129,6 @@ check_minikube() {
     if ! minikube status &>/dev/null; then
         echo -e "${YELLOW}Minikube is not running. Starting Minikube...${NC}"
         minikube start --cpus 4 --memory 8192 --disk-size=30g --driver=docker
-        minikube addons enable ingress
-        minikube addons enable ingress-dns
     fi
 
     # Set docker environment to minikube's docker
@@ -205,7 +203,7 @@ check_job_execution(){
 }
 
 
-# Setup ingress host entries using existing localhost.sh script
+# Setup localhost entries using existing localhost.sh script
 setup_hosts() {
     # Get the current Minikube IP
     local minikube_ip=$(minikube ip)
@@ -251,6 +249,7 @@ echo "$MINIKUBE_IP etl.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP etl.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP etl.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP etl.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP traefik.dashboard.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 EOF
         chmod +x ./localhost.sh
     fi
@@ -272,9 +271,10 @@ EOF
     # Apply the modified hosts file without our entries
     sudo cp "$temp_file" /etc/hosts
     rm "$temp_file"
-    
+
     # Now add the hosts with current Minikube IP
     echo -e "${YELLOW}Adding host entries with current Minikube IP (${minikube_ip})...${NC}"
+
     for host in $hosts; do
         echo "$minikube_ip $host" | sudo tee -a /etc/hosts > /dev/null
     done

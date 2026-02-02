@@ -35,24 +35,24 @@ resources:
 
 components:
   # ENVIDA-node
-  - ../node-envida/components/ehrbase-ingress
-  - ../node-envida/components/federation-rest-ingress
-  - ../node-envida/components/transform-rest-ingress
+  - ../node-envida/components/ehrbase-gateway
+  - ../node-envida/components/federation-rest-gateway
+  - ../node-envida/components/transform-rest-gateway
   - ../node-envida/components/secrets
   # MUMC-node
-  - ../node-mumc/components/ehrbase-ingress
-  - ../node-mumc/components/federation-rest-ingress
-  - ../node-mumc/components/transform-rest-ingress
+  - ../node-mumc/components/ehrbase-gateway
+  - ../node-mumc/components/federation-rest-gateway
+  - ../node-mumc/components/transform-rest-gateway
   - ../node-mumc/components/secrets
   # VITALA-node
-  - ../node-vitala/components/ehrbase-ingress
-  - ../node-vitala/components/federation-rest-ingress
-  - ../node-vitala/components/transform-rest-ingress
+  - ../node-vitala/components/ehrbase-gateway
+  - ../node-vitala/components/federation-rest-gateway
+  - ../node-vitala/components/transform-rest-gateway
   - ../node-vitala/components/secrets
   # ZIO-node
-  - ../node-zio/components/ehrbase-ingress
-  - ../node-zio/components/federation-rest-ingress
-  - ../node-zio/components/transform-rest-ingress
+  - ../node-zio/components/ehrbase-gateway
+  - ../node-zio/components/federation-rest-gateway
+  - ../node-zio/components/transform-rest-gateway
   - ../node-zio/components/secrets
 
 patches:
