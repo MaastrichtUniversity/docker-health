@@ -2,7 +2,7 @@ BSN,DRINKEN,DRINK_BEPERKINGEN,DATE_TIME,TEST_COMMENTS
 001645201,Niet in staat te drinken,Moeite met bereiden van drank,2021-02-19T15:50:14.321,PASS-Test duplication check
 001645201,Hulp nodig bij drinken,Moeite met vastpakken van drank,2024-02-19T15:50:14.321,PASS-Test duplication check
 001645201,Niet in staat te drinken,Moeite met bereiden van drank,2021-02-19T15:50:14.321,FAIL-Test duplication check
-083197102,Hulp nodig bij drinken,Moeite met naar mond brengen van drank,2005-01-19T09:43:13.174,PASS-Test data max
+083197102,Hulp nodig bij drinken,"WrongValue,Moeite met naar mond brengen van drank,Moeite met vastpakken van drank",2005-01-19T09:43:13.174,PASS-Test data max
 339055303,In staat om zelfstandig te drinken,,2008-07-13T05:38:29.395,PASS-Test data min
 389370204,,,,FAIL-Test data none
 683754105,,,2023-12-31T23:59:59.871,FAIL-Test data empty

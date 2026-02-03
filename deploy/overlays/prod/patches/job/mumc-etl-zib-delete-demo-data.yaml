@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mumc-etl-zib-pipeline
+  namespace: dh-health
+spec:
+  template:
+    spec:
+      containers:
+        - name: mumc-etl-zib-pipeline
+          volumeMounts:
+            - name: data
+              mountPath: /code/data/mumc-demo-data
+              $patch: delete
+      volumes:
+        - name: data
+          $patch: delete
