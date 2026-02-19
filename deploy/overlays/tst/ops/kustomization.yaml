@@ -4,7 +4,7 @@ namespace: dh-health-ops
 
 resources:
 - namespace.yaml
-- registry-credentials.yaml
+- secrets.yaml
 - elk-gateway.yaml
 - ../../../base-ops
 
