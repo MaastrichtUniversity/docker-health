@@ -17,7 +17,7 @@ images:
   newTag: '2024.1.7'
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
   newTag: '2024.1.7'
-- name: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib
+- name: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib-prd
   newTag: '2024.1.7'
 
 resources:
@@ -100,5 +100,6 @@ patches:
 - path: patches/job/zio-etl-zib-add-demo-data.yaml
 - path: patches/deployment/jupyter-delete-demo-data.yaml
 - path: patches/deployment/jupyter-add-demo-data.yaml
+- path: patches/deployment/jupyter-change-image.yaml
 # Delete TEST node configs
 - path: patches/deployment/jupyter-delete-test-config.yaml
