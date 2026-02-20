@@ -25,7 +25,6 @@ resources:
 - ./vault-operator
 # Base resources
 - ../../base/common
-- ../../base/federation-rest
 - ../../base/jupyter-zib
 # EHR-nodes
 - ../../base/openehr-nodes/envida
