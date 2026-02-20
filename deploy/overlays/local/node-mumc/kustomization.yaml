@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../../base/openehr-nodes/mumc
+  - mtls-poc/secrets.yaml
 
 components:
   - components

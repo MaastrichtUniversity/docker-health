@@ -44,3 +44,17 @@ spec:
         envFrom:
         - configMapRef:
             name: mumc-portal-config
+        volumeMounts:
+        - name: mumc-mtls-portal
+          mountPath: /etc/mtls/portal
+          readOnly: true
+        - name: mumc-mtls-ca
+          mountPath: /etc/mtls/ca
+          readOnly: true
+      volumes:
+      - name: mumc-mtls-portal
+        secret:
+          secretName: mumc-mtls-portal
+      - name: mumc-mtls-ca
+        secret:
+          secretName: mumc-mtls-ca

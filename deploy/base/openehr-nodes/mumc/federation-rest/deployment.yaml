@@ -67,7 +67,19 @@ spec:
             - name: logs
               mountPath: /code/logs/mumc
               subPath: mumc/federation-rest
+            - name: mumc-mtls-federation
+              mountPath: /etc/mtls/federation
+              readOnly: true
+            - name: mumc-mtls-ca
+              mountPath: /etc/mtls/ca
+              readOnly: true
       volumes:
         - name: logs
           persistentVolumeClaim:
             claimName: log-pvc
+        - name: mumc-mtls-federation
+          secret:
+            secretName: mumc-mtls-federation
+        - name: mumc-mtls-ca
+          secret:
+            secretName: mumc-mtls-ca
