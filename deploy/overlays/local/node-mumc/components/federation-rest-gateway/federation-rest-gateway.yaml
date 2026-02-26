@@ -10,15 +10,55 @@ spec:
       port: 80
       protocol: HTTP
       hostname: federation.mumc.local.dh.unimaas.nl
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      port: 8443
+      protocol: HTTPS
+      hostname: federation.mumc.local.dh.unimaas.nl
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: mumc-mtls-federation
+        options:
+          clientValidation:
+            caCertificateRefs:
+              - kind: Secret
+                name: mumc-mtls-ca
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: mumc-federation-rest-route
+  name: mumc-federation-rest-route-http
   namespace: dh-health
 spec:
   parentRefs:
     - name: mumc-federation-rest-gateway
+      sectionName: http
+  hostnames:
+    - federation.mumc.local.dh.unimaas.nl
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
+      matches:
+        - path:
+            type: PathPrefix
+            value: /
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: mumc-federation-rest-route-https
+  namespace: dh-health
+spec:
+  parentRefs:
+    - name: mumc-federation-rest-gateway
+      sectionName: https
   hostnames:
     - federation.mumc.local.dh.unimaas.nl
   rules:
