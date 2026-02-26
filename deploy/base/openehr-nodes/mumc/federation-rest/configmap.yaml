@@ -5,4 +5,4 @@ metadata:
   namespace: dh-health
 data:
   FEDERATION_LOGGER_FILENAME: "logs/mumc/federation-rest.log"
-  FEDERATION_SERVER_URL: http://mumc-federation-rest.dh-health:8000
+  FEDERATION_SERVER_URL: https://federation.mumc.local.dh.unimaas.nl:8443
