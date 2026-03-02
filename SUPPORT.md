@@ -143,10 +143,25 @@ sudo minikube tunnel
 ./dh.sh apply -s
 ```
 
+## ElasticSearch vmap issue
+
+We need to upate sysctl vmap count for ElasticSearch to work.
+SSH to the host node and run this command:
+
+```bash
+sudo nano /etc/sysctl.conf
+```
+
+Add this line to the bottom of the file:
+
+`vm.max_map_count=262144`
+
 ### Troubleshooting SEBP/ELK on MacOS
+
 MacOS requires the `sebp/elk:9.1.5` image to be built in `ARM64` architecture to function. The image we are currently
 using in the repository uses `AMD64` architecture and will not work on MacOS. The solution is to build the image in `ARM64`
 instead, but it requires a few additional steps. The initial process remains the same:
+
 ```bash
 minikube start --driver=docker
 # in different terminal tab
@@ -155,8 +170,10 @@ sudo minikube tunnel
 ./dh.sh setup # remember to change the etc/host/ ip values here, see above
 ./dh.sh pull
 ```
+
 Then, **before** using `./dh.sh build`, first do the following to build the `sebp/elk:9.1.5`image in `ARM64` inside the
 Minikube container:
+
 ```bash
 minikube ssh # go inside the minikube container
 git clone https://github.com/spujadas/elk-docker.git
@@ -165,9 +182,12 @@ git checkout 9.1.5 # the specific version you want to use
 docker build --platform=linux/arm64 --build-arg ARCH=aarch64 -t sebp/elk:9.1.5 . # build & tag the image with 'sebp/elk:9.1.5'
 exit
 ```
+
 Then, outside the Minikube container, resume the usual process:
+
 ```bash
 ./dh.sh build
 ./dh.sh apply local/ops
 ```
+
 ELK should now be up and running and its UI can be access through http://elk.local.dh.unimaas.nl/.
