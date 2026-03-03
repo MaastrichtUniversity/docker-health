@@ -32,7 +32,6 @@ resources:
 - ../../base/openehr-nodes/vitala
 - ../../base/openehr-nodes/zio
 # Gateway resources
-- patches/gateway/common/federation.yaml
 - patches/gateway/common/jupyter.yaml
 - patches/gateway/envida/portal.yaml
 - patches/gateway/mumc/portal.yaml
