@@ -10,7 +10,7 @@ resources:
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/elk
-  newTag: '2024.1.8'
+  newTag: '2024.1.10'
 
 secretGenerator:
 # Filebeat

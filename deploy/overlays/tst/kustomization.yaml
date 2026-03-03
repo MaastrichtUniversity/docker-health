@@ -4,21 +4,21 @@ namespace: dh-health
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
-  newTag: '2024.1.8'
+  newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-test
-  newTag: '2024.1.8'
+  newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
-  newTag: '2024.1.8'
+  newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
-  newTag: '2024.1.8'
+  newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
-  newTag: '2024.1.8'
+  newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/portal
-  newTag: '2024.1.8'
+  newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-  newTag: '2024.1.8'
+  newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib
-  newTag: '2024.1.8'
+  newTag: '2024.1.10'
 
 resources:
 # NEW vault secret operator
@@ -37,6 +37,10 @@ resources:
 - patches/gateway/mumc/portal.yaml
 - patches/gateway/vitala/portal.yaml
 - patches/gateway/zio/portal.yaml
+
+components:
+# Federation service role
+- ./roles
 
 patches:
 # 'Global' patches that apply to all of one sort
@@ -93,6 +97,34 @@ patches:
         configMapRef:
           name: proxy-config
 
+# federation-rest pods connect to the internal Kubernetes API (10.43.0.1) and
+# other in-cluster services only. Explicitly unset the proxy env vars via `env`
+# (which takes precedence over envFrom) so Python's requests/urllib3 does not
+# route internal traffic through the proxy regardless of no_proxy matching quirks.
+- target:
+    kind: Deployment
+    name: .*-federation-rest
+  patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: HTTP_PROXY
+        value: ""
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: http_proxy
+        value: ""
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: HTTPS_PROXY
+        value: ""
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: https_proxy
+        value: ""
 
 # Patch the data mounts to use the GIT PVC
 - path: patches/job/envida-etl-zib-delete-demo-data.yaml

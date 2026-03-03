@@ -17,11 +17,11 @@ resources:
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
-  newTag: '2024.1.8'
+  newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-  newTag: '2024.1.8'
+  newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
-  newTag: '2024.1.8'
+  newTag: '2024.1.10'
 
 patches:
 # imagePullPolicy patches
