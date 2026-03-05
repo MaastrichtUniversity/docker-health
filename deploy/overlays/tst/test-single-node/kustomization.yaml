@@ -10,9 +10,9 @@ resources:
 - ../../../base/common
 - ../../../base/terminology-server-proxy
 ## TEST-node
-- ../../../base/openehr-nodes/test/ehrdb
 - ../../../base/openehr-nodes/test/ehrbase
-- ../../../base/openehr-nodes/test/etl-config
+- ../../../base/openehr-nodes/test/ehrdb
+- ../../../base/openehr-nodes/test/etl-zib/etl-config
 - ../../../base/openehr-nodes/test/transform-rest
 
 images:
