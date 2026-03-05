@@ -19,6 +19,8 @@ images:
   newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib
   newTag: '2024.1.10'
+- name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
+  newTag: '2024.1.10'
 
 resources:
 # NEW vault secret operator
@@ -26,6 +28,7 @@ resources:
 # Base resources
 - ../../base/common
 - ../../base/jupyter-zib
+- ../../base/terminology-server-proxy
 # EHR-nodes
 - ../../base/openehr-nodes/envida
 - ../../base/openehr-nodes/mumc
@@ -104,6 +107,30 @@ patches:
 - target:
     kind: Deployment
     name: .*-federation-rest
+  patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: HTTP_PROXY
+        value: ""
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: http_proxy
+        value: ""
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: HTTPS_PROXY
+        value: ""
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: https_proxy
+        value: ""
+- target:
+    kind: Deployment
+    name: .*-portal
   patch: |-
     - op: add
       path: "/spec/template/spec/containers/0/env/-"
