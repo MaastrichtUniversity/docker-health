@@ -77,6 +77,9 @@ target "test-single-node" {
 
 target "jupyter-zib" {
   inherits = ["_hdp_templates", "_src_etl"]
+  args = {
+    MAVEN_VERSION = "${MAVEN_VERSION}"
+  }
   dockerfile = "Dockerfile"
   tags = ["${ENV_REGISTRY_HOST}/docker-health/jupyter-zib:${ENV_TAG}"]
   context = "./externals/dh-hdp-notebooks"
