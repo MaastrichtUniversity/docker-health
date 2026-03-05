@@ -129,8 +129,6 @@ check_minikube() {
     if ! minikube status &>/dev/null; then
         echo -e "${YELLOW}Minikube is not running. Starting Minikube...${NC}"
         minikube start --cpus 4 --memory 8192 --disk-size=30g --driver=docker
-        minikube addons enable ingress
-        minikube addons enable ingress-dns
     fi
 
     # Set docker environment to minikube's docker
@@ -173,6 +171,16 @@ apply_manifests() {
     echo -e "${GREEN}Successfully applied manifests${NC}"
 }
 
+# Delete kubernetes manifests
+delete_manifests() {
+    local overlay=${1:-local}
+
+    echo -e "${YELLOW}Deleting Kubernetes manifests using kustomize overlay: $overlay${NC}"
+    kubectl delete -k deploy/overlays/$overlay | awk '/deleted/ {print "\033[1;34m" $0 "\033[0m"; next} {print}'
+
+    echo -e "${GREEN}Successfully deleted manifests${NC}"
+}
+
 # Check a job execution status
 check_job_execution(){
   echo "Waiting for job $job to complete..."
@@ -195,7 +203,7 @@ check_job_execution(){
 }
 
 
-# Setup ingress host entries using existing localhost.sh script
+# Setup localhost entries using existing localhost.sh script
 setup_hosts() {
     # Get the current Minikube IP
     local minikube_ip=$(minikube ip)
@@ -211,20 +219,37 @@ setup_hosts() {
 #!/bin/bash
 MINIKUBE_IP=$(minikube ip)
 
-echo "$MINIKUBE_IP transform.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
-echo "$MINIKUBE_IP federation.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP elk.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.test.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP federation.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP federation.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP federation.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP federation.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP jupyter.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP terminology.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP portal.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP portal.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP portal.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP portal.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP openehrtool.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP openehrtool.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP openehrtool.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP openehrtool.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP openehrtool.test.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP ehrbase.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP ehrbase.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP ehrbase.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP ehrbase.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 echo "$MINIKUBE_IP ehrbase.test.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP traefik.dashboard.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
 EOF
         chmod +x ./localhost.sh
     fi
@@ -246,9 +271,10 @@ EOF
     # Apply the modified hosts file without our entries
     sudo cp "$temp_file" /etc/hosts
     rm "$temp_file"
-    
+
     # Now add the hosts with current Minikube IP
     echo -e "${YELLOW}Adding host entries with current Minikube IP (${minikube_ip})...${NC}"
+
     for host in $hosts; do
         echo "$minikube_ip $host" | sudo tee -a /etc/hosts > /dev/null
     done
@@ -318,8 +344,8 @@ print_usage() {
     echo "  pull                                      Pull external images"
     echo "  build       <subcommand>                  Build service images"
     echo "  externals   <subcommand>                  Manage external repositories"
-    echo "  apply       <subcommand>                  Apply Kubernetes manifests (default overlay: local)"
-    echo "  delete      <subcommand>                  Delete Kubernetes manifests (default overlay: local)"
+    echo "  apply       <option>      <subcommand>    Apply Kubernetes manifests (default overlay: local) (-s also apply the shared overlay)"
+    echo "  delete      <option>      <subcommand>    Delete Kubernetes manifests (default overlay: local) (-s also delete the shared overlay)"
     echo "  status      <subcommand>                  Show status of all pods"
     echo "  rollout     <subcommand>                  Manage the rollout to restart one or many resources (default all)"
     echo "  up          <subcommand>                  Apply a subset of deployments"
@@ -332,17 +358,17 @@ print_usage() {
     echo "  $0 start                        Start Kubernetes environment"
     echo "  $0 build                        Build all Docker images"
     echo "  $0 apply                        Apply Kubernetes manifests with local overlay"
+    echo "  $0 apply -s local/node-mumc     Apply Kubernetes manifests with local + shared overlays for the MUMC node"
+    echo "  $0 apply local/ops              Apply Kubernetes manifests with local/ops overlay  (ELK, Filbeat)"
     echo "  $0 apply tst                    Apply Kubernetes manifests with tst overlay"
     echo "  $0 delete                       Delete Kubernetes manifests with local overlay"
+    echo "  $0 delete -s                    Delete Kubernetes manifests with local + shared overlays"
+    echo "  $0 delete local/ops             Delete Kubernetes manifests with local/ops overlay (ELK, Filbeat)"
     echo "  $0 delete tst                   Delete Kubernetes manifests with tst overlay"
     echo "  $0 status                       Print the pods status"
     echo "  $0 status -w                    Print and follow the pods status"
     echo "  $0 rollout                      Rollout a restart of all the deployments"
     echo "  $0 rollout jupyter-zib          Rollout a restart of the jupyter-zib deployment"
-    echo "  $0 up test-node                 Apply Kubernetes manifests with local overlay & the label test-node"
-    echo "  $0 up others                    Apply Kubernetes manifests with local overlay & without the labels test-node"
-    echo "  $0 down test-node               Delete Kubernetes manifests with local overlay & the label test-node"
-    echo "  $0 down others                  Delete Kubernetes manifests with local overlay & without the labels test-node"
     echo "  $0 run local test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status"
     echo "  $0 run local test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status"
 }
@@ -352,15 +378,14 @@ main() {
     local command=$1
     shift || true
 
-    TEST_NODE_LABELS="ehrnode in (test-node, all)"
-    OTHERS_LABELS="ehrnode notin (test-node)"
-    
     case $command in
         setup)
             check_minikube
             clone_externals
             setup_hosts
             setup_mounts
+            # ELK configuration
+            minikube ssh "sudo sysctl -w vm.max_map_count=262144"
             ;;
 
         pull)
@@ -382,13 +407,36 @@ main() {
             ;;
 
         apply)
-            local overlay=${1:-local}
-            apply_manifests $overlay
+            case $1 in
+              -s)
+                local overlay=${2:-local}
+                if [[ "${overlay}" = *"/"* ]]; then
+                  apply_manifests "${overlay}/../shared"
+                else
+                  apply_manifests "${overlay}/shared"
+                fi
+                apply_manifests "${overlay}"
+              ;;
+              *)
+                local overlay=${1:-local}
+                apply_manifests "${overlay}"
+              ;;
+            esac
             ;;
 
         delete)
-            local overlay=${1:-local}
-            kubectl delete -k "deploy/overlays/${overlay}"
+            case $1 in
+              -s)
+              # Deleting the shared overlay removes all resources and volumes in "dh-health" namespace
+              # so no need to delete other overlays after that
+                local overlay=${2:-local}
+                delete_manifests "${overlay}/shared"
+              ;;
+              *)
+                local overlay=${1:-local}
+                delete_manifests "${overlay}"
+              ;;
+            esac
             ;;
 
         headlamp)
@@ -404,32 +452,11 @@ main() {
         run)
             local overlay=$1
             local job=$2
+            apply_manifests "${overlay}/shared"
             apply_manifests "$overlay/$job"
             check_job_execution "$overlay" "$job"
             ;;
 
-        up)
-            case $1 in
-              test-node)
-                kubectl apply -k deploy/overlays/local -l "${TEST_NODE_LABELS}"
-                ;;
-              others)
-                kubectl apply -k deploy/overlays/local -l "${OTHERS_LABELS}"
-                ;;
-            esac
-            ;;
-
-        down)
-            case $1 in
-              test-node)
-                kubectl delete -k deploy/overlays/local -l "${TEST_NODE_LABELS}"
-                ;;
-              others)
-                kubectl delete -k deploy/overlays/local -l "${OTHERS_LABELS}"
-                ;;
-            esac
-            ;;
-            
         *)
             echo -e "${RED}Unknown command: $command${NC}"
             print_usage

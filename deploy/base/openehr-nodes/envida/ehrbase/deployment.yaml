@@ -15,6 +15,20 @@ spec:
       labels:
         app: envida-ehrbase
     spec:
+      initContainers:
+        # WORKAROUND to give ownership of the volume-mount log file to the "ehrbase" user
+        # The EHRbase container runs as a non-root user "ehrbase"
+        # The files in a volume-mount are owned by root
+        - name: init-log-dir
+          image: busybox:1.28
+          command: [ "/bin/sh", "-c" ]
+          args:
+            # uid=100(ehrbase) gid=101(ehrbase) groups=101(ehrbase)
+            - mkdir -p /var/log/ehrbase && chown 100:101 /var/log/ehrbase
+          volumeMounts:
+            - name: ehrbase-logs
+              mountPath: /var/log/ehrbase
+              subPath: envida/ehrbase
       containers:
       - name: envida-ehrbase
         image: ehrbase/ehrbase:2.6.0
@@ -25,7 +39,7 @@ spec:
         args:
           - "-jar"
           - "-Dspring.profiles.active=docker"
-          - "-Dlogging.file.name=/tmp/ehrbaselog/ehrbase.log"
+          - "-Dlogging.file.name=/var/log/ehrbase/ehrbase.log"
           - "ehrbase.jar"
         env:
           - name: SECURITY_AUTHUSER
@@ -89,3 +103,11 @@ spec:
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 10
+        volumeMounts:
+          - name: ehrbase-logs
+            mountPath: /var/log/ehrbase
+            subPath: envida/ehrbase
+      volumes:
+        - name: ehrbase-logs
+          persistentVolumeClaim:
+            claimName: log-pvc

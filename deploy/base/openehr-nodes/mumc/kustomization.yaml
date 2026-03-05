@@ -5,10 +5,10 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- etl-config
 - ehrbase
 - ehrdb
-- etl-zib-pipeline
-- etl-zib-rest
+- etl-zib
+- federation-rest
 - openehrtool
 - portal
+- transform-rest

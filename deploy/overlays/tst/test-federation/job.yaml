@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: test-federation
+  namespace: dh-health
 spec:
   backoffLimit: 0
   template:
@@ -10,7 +11,7 @@ spec:
       initContainers:
         - name: wait-etl-jobs
           image: bitnamilegacy/kubectl:1.33.4 # TODO: Try not to use a third-party docker image
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Never
           command:
             - sh
             - -c
@@ -41,10 +42,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: timezone-config
-            - configMapRef:
-                name: federation-rest-config
           env:
-            # Envida-node
+            # ENVIDA-node
             - name: ENVIDA__NODENAME
               valueFrom:
                 configMapKeyRef:
@@ -60,21 +59,11 @@ spec:
                 secretKeyRef:
                   name: envida-federation-break-the-glass-key
                   key: key
-            - name: ENVIDA__EHRBASE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: envida-ehrbase-creds
-                  key: username
-            - name: ENVIDA__EHRBASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: envida-ehrbase-creds
-                  key: password
-            - name: ENVIDA__EHRBASE_BASE_URL
+            - name: ENVIDA__FEDERATION_BASE_URL
               valueFrom:
                 configMapKeyRef:
-                  name: envida-etl-config
-                  key: EHRBASE_BASE_URL
+                  name: envida-federation-rest-config
+                  key: FEDERATION_SERVER_URL
             # MUMC-node
             - name: MUMC__NODENAME
               valueFrom:
@@ -91,21 +80,11 @@ spec:
                 secretKeyRef:
                   name: mumc-federation-break-the-glass-key
                   key: key
-            - name: MUMC__EHRBASE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: mumc-ehrbase-creds
-                  key: username
-            - name: MUMC__EHRBASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mumc-ehrbase-creds
-                  key: password
-            - name: MUMC__EHRBASE_BASE_URL
+            - name: MUMC__FEDERATION_BASE_URL
               valueFrom:
                 configMapKeyRef:
-                  name: mumc-etl-config
-                  key: EHRBASE_BASE_URL
+                  name: mumc-federation-rest-config
+                  key: FEDERATION_SERVER_URL
             # VITALA-node
             - name: VITALA__NODENAME
               valueFrom:
@@ -122,21 +101,11 @@ spec:
                 secretKeyRef:
                   name: vitala-federation-break-the-glass-key
                   key: key
-            - name: VITALA__EHRBASE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: vitala-ehrbase-creds
-                  key: username
-            - name: VITALA__EHRBASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: vitala-ehrbase-creds
-                  key: password
-            - name: VITALA__EHRBASE_BASE_URL
+            - name: VITALA__FEDERATION_BASE_URL
               valueFrom:
                 configMapKeyRef:
-                  name: vitala-etl-config
-                  key: EHRBASE_BASE_URL
+                  name: vitala-federation-rest-config
+                  key: FEDERATION_SERVER_URL
             # ZIO-node
             - name: ZIO__NODENAME
               valueFrom:
@@ -153,27 +122,8 @@ spec:
                 secretKeyRef:
                   name: zio-federation-break-the-glass-key
                   key: key
-            - name: ZIO__EHRBASE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: zio-ehrbase-creds
-                  key: username
-            - name: ZIO__EHRBASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: zio-ehrbase-creds
-                  key: password
-            - name: ZIO__EHRBASE_BASE_URL
+            - name: ZIO__FEDERATION_BASE_URL
               valueFrom:
                 configMapKeyRef:
-                  name: zio-etl-config
-                  key: EHRBASE_BASE_URL
-
-          volumeMounts:
-            - name: logs
-              mountPath: /code/logs/federation-rest
-              subPath: test-federation
-      volumes:
-        - name: logs
-          persistentVolumeClaim:
-            claimName: log-pvc
+                  name: zio-federation-rest-config
+                  key: FEDERATION_SERVER_URL

@@ -22,12 +22,11 @@ spec:
         envFrom:
           - configMapRef:
               name: terminology-server-proxy-config
+          - configMapRef:
+              name: dry-run-config
+          - configMapRef:
+              name: timezone-config
         env:
-          - name: DRY_RUN
-            valueFrom:
-              configMapKeyRef:
-                name: zib-templates-config
-                key: DRY_RUN
           - name: TERMINOLOGY_USERNAME
             valueFrom:
               secretKeyRef:
@@ -38,3 +37,11 @@ spec:
               secretKeyRef:
                 name: terminology-server-proxy-creds
                 key: password
+        volumeMounts:
+          - name: logs
+            mountPath: /opt/app/logs/terminology
+            subPath: terminology
+      volumes:
+        - name: logs
+          persistentVolumeClaim:
+            claimName: log-pvc

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vitala-transform-rest-config
+  namespace: dh-health
+data:
+  LOGGER_FILENAME: /var/log/vitala/transform-rest.log

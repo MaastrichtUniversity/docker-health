@@ -3,43 +3,59 @@ kind: Kustomization
 namespace: dh-health
 
 resources:
-- secrets.yaml
+- ../vault-operator/secrets
 - job.yaml
 - role.yaml
 - ../../../base/common
-- ../../../base/federation-rest
-- ../../../base/transform-rest
 - ../../../base/terminology-server-proxy
-# Envida-node
+# ENVIDA-node
 - ../../../base/openehr-nodes/envida/ehrbase
 - ../../../base/openehr-nodes/envida/ehrdb
-- ../../../base/openehr-nodes/envida/etl-config
-- ../../../base/openehr-nodes/envida/etl-zib-pipeline
+- ../../../base/openehr-nodes/envida/etl-zib/etl-config
+- ../../../base/openehr-nodes/envida/etl-zib/etl-zib-pipeline
+- ../../../base/openehr-nodes/envida/federation-rest
+- ../../../base/openehr-nodes/envida/transform-rest
 # MUMC-node
 - ../../../base/openehr-nodes/mumc/ehrbase
 - ../../../base/openehr-nodes/mumc/ehrdb
-- ../../../base/openehr-nodes/mumc/etl-config
-- ../../../base/openehr-nodes/mumc/etl-zib-pipeline
+- ../../../base/openehr-nodes/mumc/etl-zib/etl-config
+- ../../../base/openehr-nodes/mumc/etl-zib/etl-zib-pipeline
+- ../../../base/openehr-nodes/mumc/federation-rest
+- ../../../base/openehr-nodes/mumc/transform-rest
 # VITALA-node
 - ../../../base/openehr-nodes/vitala/ehrbase
 - ../../../base/openehr-nodes/vitala/ehrdb
-- ../../../base/openehr-nodes/vitala/etl-config
-- ../../../base/openehr-nodes/vitala/etl-zib-pipeline
+- ../../../base/openehr-nodes/vitala/etl-zib/etl-config
+- ../../../base/openehr-nodes/vitala/etl-zib/etl-zib-pipeline
+- ../../../base/openehr-nodes/vitala/federation-rest
+- ../../../base/openehr-nodes/vitala/transform-rest
 # ZIO-node
 - ../../../base/openehr-nodes/zio/ehrbase
 - ../../../base/openehr-nodes/zio/ehrdb
-- ../../../base/openehr-nodes/zio/etl-config
-- ../../../base/openehr-nodes/zio/etl-zib-pipeline
+- ../../../base/openehr-nodes/zio/etl-zib/etl-config
+- ../../../base/openehr-nodes/zio/etl-zib/etl-zib-pipeline
+- ../../../base/openehr-nodes/zio/federation-rest
+- ../../../base/openehr-nodes/zio/transform-rest
+
+components:
+# Federation service role
+- ../roles
 
 images:
+- name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
+  newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-test
-  newTag: '2024.1.3'
+  newTag: '2024.1.10'
+- name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
+  newTag: '2024.1.10'
+- name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
+  newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
-  newTag: '2024.1.3'
+  newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-  newTag: '2024.1.3'
+  newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
-  newTag: '2024.1.3'
+  newTag: '2024.1.10'
 
 patches:
 # imagePullPolicy patches
@@ -104,21 +120,31 @@ patches:
       path: "/spec/template/spec/containers/0/env/-"
       value:
         name: no_proxy
-        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/16,10.43.0.1,10.43.0.10"
-
-# Ingress patches
-## Transform
-- path: patches/ingress/common/transform.yaml
-## Federation
-- path: patches/ingress/common/federation.yaml
-## Envida-node
-- path: patches/ingress/envida/ehrbase.yaml
-## MUMC-node
-- path: patches/ingress/mumc/ehrbase.yaml
-## VITALA-node
-- path: patches/ingress/vitala/ehrbase.yaml
-## ZIO-node
-- path: patches/ingress/zio/ehrbase.yaml
+        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/12,10.43.0.1,10.43.0.10"
+- target:
+    kind: Deployment
+    name: .*-federation-rest
+  patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: HTTP_PROXY
+        value: ""
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: http_proxy
+        value: ""
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: HTTPS_PROXY
+        value: ""
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: https_proxy
+        value: ""
 
 # Patch the data mounts to use the GIT PVC
 - path: patches/job/envida-etl-zib-delete-demo-data.yaml

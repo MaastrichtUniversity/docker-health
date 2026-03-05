@@ -22,12 +22,12 @@ minikube addons enable storage-provisioner
 kubectl get pvc -n dh-health
 ```
 
-## Ingress Not Working
+## Gateways not working
 
-Check if the ingress controller is properly installed:
+Check if traefik is properly installed:
 
 ```bash
-kubectl get pods -n ingress-nginx
+kubectl get pods -n traefik
 ```
 
 ## Troubleshooting MacOS specifically
@@ -92,11 +92,15 @@ These changes take effect after restarting minikube and should persist across se
 127.0.0.1 ehrbase.test.local.dh.unimaas.nl
 127.0.0.1 ehrbase.zio.local.dh.unimaas.nl
 127.0.0.1 ehrbase.vitala.local.dh.unimaas.nl
+127.0.0.1 elk.local.dh.unimaas.nl
 127.0.0.1 etl.envida.local.dh.unimaas.nl
 127.0.0.1 etl.mumc.local.dh.unimaas.nl
 127.0.0.1 etl.zio.local.dh.unimaas.nl
 127.0.0.1 etl.vitala.local.dh.unimaas.nl
-127.0.0.1 federation.local.dh.unimaas.nl
+127.0.0.1 federation.mumc.local.dh.unimaas.nl
+127.0.0.1 federation.zio.local.dh.unimaas.nl
+127.0.0.1 federation.envida.local.dh.unimaas.nl
+127.0.0.1 federation.vitala.local.dh.unimaas.nl
 127.0.0.1 jupyter.local.dh.unimaas.nl
 127.0.0.1 openehrtool.envida.local.dh.unimaas.nl
 127.0.0.1 openehrtool.mumc.local.dh.unimaas.nl
@@ -107,7 +111,13 @@ These changes take effect after restarting minikube and should persist across se
 127.0.0.1 portal.mumc.local.dh.unimaas.nl
 127.0.0.1 portal.zio.local.dh.unimaas.nl
 127.0.0.1 portal.vitala.local.dh.unimaas.nl
-127.0.0.1 transform.local.dh.unimaas.nl
+127.0.0.1 terminology.local.dh.unimaas.nl
+127.0.0.1 transform.envida.local.dh.unimaas.nl
+127.0.0.1 transform.mumc.local.dh.unimaas.nl
+127.0.0.1 transform.test.local.dh.unimaas.nl
+127.0.0.1 transform.vitala.local.dh.unimaas.nl
+127.0.0.1 transform.zio.local.dh.unimaas.nl
+127.0.0.1 traefik.dashboard.local.dh.unimaas.nl
 ```
 
 
@@ -124,11 +134,60 @@ After all that, the following seems to work:
 
 ```bash
 minikube start --driver=docker
-minikube addons enable ingress
+# in a different terminal tab; sudo is required
+sudo minikube tunnel
+# back in initial terminal
 ./dh.sh setup
 ./dh.sh pull
 ./dh.sh build
-# in a different terminal; sudo is required
-sudo minikube tunnel
-./dh.sh apply
+./dh.sh apply -s
 ```
+
+## ElasticSearch vmap issue
+
+We need to upate sysctl vmap count for ElasticSearch to work.
+SSH to the host node and run this command:
+
+```bash
+sudo nano /etc/sysctl.conf
+```
+
+Add this line to the bottom of the file:
+
+`vm.max_map_count=262144`
+
+### Troubleshooting SEBP/ELK on MacOS
+
+MacOS requires the `sebp/elk:9.1.5` image to be built in `ARM64` architecture to function. The image we are currently
+using in the repository uses `AMD64` architecture and will not work on MacOS. The solution is to build the image in `ARM64`
+instead, but it requires a few additional steps. The initial process remains the same:
+
+```bash
+minikube start --driver=docker
+# in different terminal tab
+sudo minikube tunnel
+# back in initial terminal tab
+./dh.sh setup # remember to change the etc/host/ ip values here, see above
+./dh.sh pull
+```
+
+Then, **before** using `./dh.sh build`, first do the following to build the `sebp/elk:9.1.5`image in `ARM64` inside the
+Minikube container:
+
+```bash
+minikube ssh # go inside the minikube container
+git clone https://github.com/spujadas/elk-docker.git
+cd elk-docker
+git checkout 9.1.5 # the specific version you want to use
+docker build --platform=linux/arm64 --build-arg ARCH=aarch64 -t sebp/elk:9.1.5 . # build & tag the image with 'sebp/elk:9.1.5'
+exit
+```
+
+Then, outside the Minikube container, resume the usual process:
+
+```bash
+./dh.sh build
+./dh.sh apply local/ops
+```
+
+ELK should now be up and running and its UI can be access through http://elk.local.dh.unimaas.nl/.

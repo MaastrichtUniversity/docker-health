@@ -46,17 +46,16 @@ The implementation relies on the following repositories:
 Credentials of the [Dutch terminology server](https://terminologieserver.nl/authorisation/auth/realms/nictiz/protocol/openid-connect/auth?client_id=account-console&redirect_uri=https%3A%2F%2Fterminologieserver.nl%2Fauthorisation%2Fauth%2Frealms%2Fnictiz%2Faccount%2F%23%2F&state=e082a979-038c-41ab-8096-d0396ac9820f&response_mode=fragment&response_type=code&scope=openid&nonce=30f31617-2935-48d1-ae46-6df5d20a96dd&code_challenge=0VDfFvHqmPTtvKmuJUF6rNMzRlSNwyZu9vPhV47VQn4&code_challenge_method=S256) need to be stored in secret files.
 
 Add the following file to the relevant overlays folders: local, local/test-single-node, local/test-federation, etc.
-e.g., `deploy/overlays/local/secrets.yaml`
+e.g., `deploy/overlays/{overlay}/shared/components/terminology-server-proxy/secrets.yaml`
 
 #### Secret file example (need to replace the values with your encoded credentials)
+
 ```
 apiVersion: v1
 kind: Secret
 metadata:
   name: terminology-server-proxy-creds
   namespace: dh-health
-  labels:
-    ehrnode: all
 data:
   username: SU5TRVJUX1lPVVJfUkVBTF9VU0VSTkFNRQ==
   password: SU5TRVJUX1lPVVJfUkVBTF9QQVNTV09SRA==
@@ -64,6 +63,7 @@ data:
 # Add auto-generated secret of internals services to the kustomization's secretGenerator.
 # Add more secrets to externals services here.
 ```
+
 #### Encode your credentials with base64
 
 ```shell
@@ -72,46 +72,28 @@ SU5TRVJUX1lPVVJfUkVBTF9VU0VSTkFNRQ==
 $ echo -n 'INSERT_YOUR_REAL_PASSWORD' | base64
 SU5TRVJUX1lPVVJfUkVBTF9QQVNTV09SRA==
 ```
+
 Replace the username & password values by the output of the commands.
 
 #### Troubleshooting
 
 The `terminology-server-proxy` pod is not running, because of:
- * Status: "CreateContainerConfigError"
- * Message: "secret "terminology-server-proxy-creds" not found"
+
+- Status: "CreateContainerConfigError"
+- Message: "secret "terminology-server-proxy-creds" not found"
 
 Check the `dh.sh apply` logs:
+
 ```
 Error from server (BadRequest): error when creating "deploy/overlays/local": Secret in version "v1" cannot be handled as a Secret: illegal base64 data at input byte 8
 ```
+
 If you see the line from above, it means that you didn't encode the variables.
 
+### Encryption between filebeat and elk
 
-### Encryption between filebeat and elk [UNUSED ATM!]
->
-> CA certificates need to be manually stored in folder `filebeat/certs`.
-> The present files are used for development-purposes.
->
-> Right now, we're not using encryption, but we've kept these configurations in case we decide to enable them in the
-> future, hence the commented configurations, for example:
->
-> In `docker-compose.yml` :
->
-> ```
-> #   - ./filebeat/certs:/etc/certs:ro
-> ```
->
-> In `filebeat/filebeat.yml` :
->
-> ```
-> #  ssl.certificate_authorities: ["/etc/certs/ca.crt"]
-> #  ssl.certificate: "/etc/certs/filebeat.dh.local.crt"
-> #  ssl.key: "/etc/certs/filebeat.dh.local.key"
-> ```
->
-> and others.
->
-> If encryption needs to be restored, uncomment the configurations and see `2025.1-ssl` branch of `docker-common`.
+CA certificates need to be manually stored in folders `overlays/.../ops/certs`.
+The present files are used for development-purposes.
 
 ## Quick start installation of the HDP local env
 
@@ -120,44 +102,58 @@ Deployment of the services to a Minikube environment using Kubernetes manifests.
 Check out [deploy/README.md](https://github.com/MaastrichtUniversity/docker-health/tree/2024.1/deploy#kubernetes-deployment)
 for more information on the Kubernetes architecture and deployed services.
 
-1. Setup the Kubernetes cluster and folders
+1. Set up the Kubernetes cluster and folders
 
-```bash
-./dh.sh setup
-```
+   ```bash
+   ./dh.sh setup
+   ```
 
-This will start Minikube with all needed addons, pull down the external repos, add log folders to the Minikube machine
-and set hostnames in /etc/hosts with the Minikube ip.
+   This will start Minikube with all needed addons, pull down the external repos, add log folders to the Minikube machine
+   and set hostnames in /etc/hosts with the Minikube ip.
 
-2. Pull default docker images from Dockerhub
+2. Install and set up traefik/gateway-api: instructions are located in `traefik/README.md`
 
-```bash
-./dh.sh pull
-```
+3. Pull default docker images from Dockerhub
 
-3. Build the docker images from externals
+   ```bash
+   ./dh.sh pull
+   ```
 
-```bash
-./dh.sh build
-```
+4. Build the docker images from externals
 
-Note: Build with a custom tag is supported (not needed for local development).
+   ```bash
+   ./dh.sh build
+   ```
 
-```bash
-./dh.sh build transform-rest 2.0.0
-```
+   Note: Build with a custom tag is supported (not needed for local development).
 
-4. Apply Kubernetes manifests on the `local` overlay
+   ```bash
+   ./dh.sh build transform-rest 2.0.0
+   ```
 
-```bash
-./dh.sh apply
-```
+5. Apply Kubernetes manifests on the `local` overlay
 
-5. Show status of all pods
+   **Note:** It is necessary to add the option `-s` in the command-line to apply the shared resources (terminology server, configmaps, etc.)
 
-```bash
-./dh.sh status
-```
+   1. Apply all node resources
+
+      ```bash
+      ./dh.sh apply -s local
+      ```
+
+   2. Apply specific node resources
+
+      ```bash
+      ./dh.sh apply -s local/node-{NODENAME}
+      ```
+
+      with `{NODENAME}` corresponding to either `envida`, `mumc`, `vitala`, `zio` or `test`.
+
+6. Show status of all pods
+
+   ```bash
+   ./dh.sh status
+   ```
 
 For a UI overview of the Minikube kubernetes stack and pods with logs checkout one of the following dashboard:
 
@@ -166,6 +162,24 @@ For a UI overview of the Minikube kubernetes stack and pods with logs checkout o
 - Freelens: https://github.com/freelensapp/freelens
 
 - Enable the default dashboard with `minikube dashboard`
+
+## How to start the OPS containers (ELK, Filebeat)
+
+The OPS (monitoring, logging etc...) containers are in a different namespace and sub-overlay than the application containers.
+
+1. Start the containers
+
+   ```bash
+   ./dh.sh apply local/ops
+   ```
+
+2. Check the ELK web interface - [Kibana](http://elk.local.dh.unimaas.nl) To see the logs, create a new Data View index pattern idx\*
+
+3. Remove the containers
+
+   ```bash
+   ./dh.sh delete local/ops
+   ```
 
 ## Development Workflow
 
@@ -177,18 +191,19 @@ Checkout existing functionality in the dh.sh. For examples:
 ./dh.sh setup                        Setup Kubernetes environment
 ./dh.sh start                        Start Kubernetes environment
 ./dh.sh build                        Build all Docker images
+./dh.sh apply -s                     Apply Kubernetes manifests with local + shared overlay
 ./dh.sh apply                        Apply Kubernetes manifests with local overlay
+./dh.sh apply -s local/node-mumc     Apply Kubernetes manifests for MUMC and shared overlays
+./dh.sh apply local/ops              Apply Kubernetes manifests with local/ops overlay  (ELK, Filbeat)
 ./dh.sh apply tst                    Apply Kubernetes manifests with tst overlay
 ./dh.sh delete                       Delete Kubernetes manifests with local overlay
+./dh.sh delete -s                    Delete Kubernetes manifests with local and shared overlay, including the namespace
+./dh.sh delete local/ops             Delete Kubernetes manifests with local/ops overlay (ELK, Filbeat)
 ./dh.sh delete tst                   Delete Kubernetes manifests with tst overlay
 ./dh.sh status                       Print the pods status
 ./dh.sh status -w                    Print and follow the pods status
 ./dh.sh rollout                      Rollout a restart of all the deployments
 ./dh.sh rollout jupyter-zib          Rollout a restart of the jupyter-zib deployment
-./dh.sh up test-node                 Apply Kubernetes manifests with local overlay & the label test-node
-./dh.sh up others                    Apply Kubernetes manifests with local overlay & without the labels test-node
-./dh.sh down test-node               Delete Kubernetes manifests with local overlay & the label test-nod
-./dh.sh down others                  Delete Kubernetes manifests with local overlay & without the labels test-node
 ./dh.sh run local test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status
 ./dh.sh run local test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status
 ```
@@ -216,44 +231,71 @@ Once deployed, you can access the services at their local dns name.
 
 Pre-requirement: Clean up existing overlays.
 
-To run tests on single node:
+#### Run single node tests
 
-```bash
-# 1. Run the test job
-./dh.sh apply local/test-single-node
-# Or Execute this command to wait & check the job execution
-./dh.sh run local test-single-node
+1. Run the test job
 
-# 2 Check the results when the job has finished 
-kubectl get jobs/test-single-node -n dh-health -o jsonpath='{.status.conditions[1].type}'
+   ```bash
+   ./dh.sh apply -s local/test-single-node
+   ```
 
+   Or Execute this command to wait & check the job execution
 
-# 2. Check the logs of test-single-node pod 
-kubectl logs -n dh-health jobs/test-single-node
-kubectl logs -n dh-health -f jobs/test-single-node  (Autorefresh)
+   ```bash
+   ./dh.sh run local test-single-node
+   ```
 
-# 3. Manually clean up the containers
-./dh.sh delete local/test-single-node
-```
+2. Check the results when the job has finished
 
-To run tests on federation:
+   ```bash
+   kubectl get jobs/test-single-node -n dh-health -o jsonpath='{.status.conditions[1].type}'
+   ```
 
-```bash
-# 1. Run the test job
-./dh.sh apply local/test-federation
-# Or Execute this command to wait & check the job execution
-./dh.sh run local test-federation 
+3. Check the logs of test-single-node pod
 
-# 2 Check the results when the job has finished 
-kubectl get jobs/test-federation -n dh-health -o jsonpath='{.status.conditions[1].type}'
+   ```bash
+   kubectl logs -n dh-health jobs/test-single-node
+   kubectl logs -n dh-health -f jobs/test-single-node  # Autorefresh
+   ```
 
-# 3. Check the logs of test-federation pod
-kubectl logs -n dh-health jobs/test-federation
-kubectl logs -n dh-health -f jobs/test-federation (Autorefresh)
+4. Manually clean up the containers
 
-# 3. Manually clean up the containers
-./dh.sh delete local/test-federation
-```
+   ```bash
+   ./dh.sh delete local/test-single-node
+   ```
+
+#### Run federation tests
+
+1. Run the test job
+
+   ```bash
+   ./dh.sh apply -s local/test-federation
+   ```
+
+   Or Execute this command to wait & check the job execution
+
+   ```bash
+   ./dh.sh run local test-federation
+   ```
+
+2. Check the results when the job has finished
+
+   ```bash
+   kubectl get jobs/test-federation -n dh-health -o jsonpath='{.status.conditions[1].type}'
+   ```
+
+3. Check the logs of test-federation pod
+
+   ```bash
+   kubectl logs -n dh-health jobs/test-federation
+   kubectl logs -n dh-health -f jobs/test-federation # Autorefresh
+   ```
+
+4. Manually clean up the containers
+
+   ```bash
+   ./dh.sh delete local/test-federation
+   ```
 
 ### Viewing Logs
 
@@ -285,52 +327,48 @@ Follow these manual steps to deploy the stack in your local Minikube manually:
 
 1. Start Minikube
 
-```bash
-minikube start --cpus 4 --memory 8192 --disk-size=30g --driver=docker
-```
+   ```bash
+   minikube start --cpus 4 --memory 8192 --disk-size=30g --driver=docker
+   ```
 
-2. Enable the Ingress Controller
+2. Set up Local DNS Entries
 
-```bash
-minikube addons enable ingress
-```
+   Add the local hostname entries to your `/etc/hosts` file:
 
-3. Set up Local DNS Entries
+   ```bash
+   ./localhost.sh
+   ```
 
-Add the local hostname entries to your `/etc/hosts` file:
-
-```bash
-./localhost.sh
-```
+3. Install and set up traefik: instructions are located in `traefik/README.md`
 
 4. Point to Minikube's Docker Daemon && set docker build vars
 
-```bash
-eval $(minikube -p minukube docker-env)
-export ENV_TAG=latest
-export MAVEN_VERSION=3.9.11
-```
+   ```bash
+   eval $(minikube -p minukube docker-env)
+   export ENV_TAG=latest
+   export MAVEN_VERSION=3.9.11
+   ```
 
-4a. Pull external images into Minikube's Docker daemon
+   1. Pull external images into Minikube's Docker daemon
 
-Some components use external images from Docker Hub. Pull them into Minikube's Docker daemon:
+      Some components use external images from Docker Hub. Pull them into Minikube's Docker daemon:
 
-```bash
-./pull-external-images.sh
-```
+      ```bash
+      ./pull-external-images.sh
+      ```
 
 5. Build Docker Images
 
-```bash
-docker buildx bake
-```
+   ```bash
+   docker buildx bake
+   ```
 
 6. Deploy to Minikube
 
-```bash
-kubectl create namespace dh-health
-```
+   ```bash
+   kubectl create namespace dh-health
+   ```
 
-```bash
-kubectl apply -k deploy/overlays/local
-```
+   ```bash
+   kubectl apply -k deploy/overlays/local
+   ```

@@ -1,0 +1,39 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: dh-health-ops
+
+resources:
+- namespace.yaml
+- elk-gateway.yaml
+- ../../../base-ops
+
+patches:
+# imagePullPolicy patches
+- target:
+    kind: Deployment
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Never
+
+secretGenerator:
+# Filebeat
+  - name: filebeat-certificate-authorities
+    files:
+        -  certs/ca.crt
+  - name: filebeat-certificate
+    files:
+        -  certs/filebeat.dh-health-ops.crt
+  - name: filebeat-key
+    files:
+        -  certs/filebeat.dh-health-ops.key
+# Logstash (ELK)
+  - name: logstash-certificate-authorities
+    files:
+        -  certs/ca.crt
+  - name: logstash-certificate
+    files:
+        -  certs/elk.dh-health-ops.crt
+  - name: logstash-key
+    files:
+        -  certs/elk.dh-health-ops.key

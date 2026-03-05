@@ -50,5 +50,16 @@ rit.sh
 .github/
 # VS Code
 .vscode/
+
+# secrets for local (dev)
+deploy/overlays/local/shared/components/terminology-server-proxy/secrets.yaml
+# secrets for tst, acc and prod
 deploy/overlays/*/registry-secret.yaml
 deploy/overlays/*/*/registry-secret.yaml
+
+# ELK
+build-elk-arm64.sh
+elk/GeoLite2-City.mmdb
+
+# etc/hosts/ MacOS specific setup
+dh-mac.sh
