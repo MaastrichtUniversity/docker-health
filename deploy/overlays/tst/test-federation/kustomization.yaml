@@ -37,6 +37,10 @@ resources:
 - ../../../base/openehr-nodes/zio/federation-rest
 - ../../../base/openehr-nodes/zio/transform-rest
 
+components:
+# Federation service role
+- ../roles
+
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
   newTag: '2024.1.10'
