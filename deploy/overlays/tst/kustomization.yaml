@@ -24,7 +24,8 @@ images:
 
 resources:
 # NEW vault secret operator
-- ./vault-operator
+- ./vault-operator/secrets
+- ./vault-operator/tls
 # Base resources
 - ../../base/common
 - ../../base/jupyter-zib

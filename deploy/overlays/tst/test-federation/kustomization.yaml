@@ -3,11 +3,10 @@ kind: Kustomization
 namespace: dh-health
 
 resources:
-- secrets.yaml
+- ../vault-operator/secrets
 - job.yaml
 - role.yaml
 - ../../../base/common
-- ../../../base/federation-rest
 - ../../../base/terminology-server-proxy
 # Envida-node
 - ../../../base/openehr-nodes/envida
@@ -19,7 +18,13 @@ resources:
 - ../../../base/openehr-nodes/zio
 
 images:
+- name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
+  newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-test
+  newTag: '2024.1.10'
+- name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
+  newTag: '2024.1.10'
+- name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
   newTag: '2024.1.10'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
   newTag: '2024.1.10'
