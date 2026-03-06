@@ -63,3 +63,4 @@ elk/GeoLite2-City.mmdb
 
 # etc/hosts/ MacOS specific setup
 dh-mac.sh
+deploy/overlays/*/secrets.yaml
