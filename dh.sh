@@ -1,10 +1,45 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -e
 
-. ./lib-hdp.sh
-. ./.env
+# Colors for better readability
+GREEN="\033[0;32m"
+YELLOW="\033[0;33m"
+RED="\033[0;31m"
+NC="\033[0m" # No Color
 
+# Define logging constants and functions first
+# These should be defined at the top as they're used by other functions
+DBG=0
+INF=1
+WRN=2
+ERR=3
+LOGTRESHOLD=${LOGTRESHOLD:-$INF}
+
+# Logging function
+log() {
+    local level=$1
+    shift
+    if [[ $level -ge $LOGTRESHOLD ]]; then
+        if [[ $level -eq $DBG ]]; then
+            echo -e "\e[90m[DEBUG] $@\033[0m"
+        elif [[ $level -eq $INF ]]; then
+            echo -e "[INFO ] $@"
+        elif [[ $level -eq $WRN ]]; then
+            echo -e "\e[33m[WARN ] $@\033[0m"
+        elif [[ $level -eq $ERR ]]; then
+            echo -e "\e[31m[ERROR] $@\033[0m"
+        fi
+    fi
+}
+
+# Abort function
+abort() {
+    log $ERR "$@"
+    exit 1
+}
+
+# Process command line arguments
 ARGS="$@ "
 if [[ ${ARGS} = *"-vv "* ]]; then
    export LOGTRESHOLD=$DBG
@@ -15,12 +50,69 @@ elif [[ ${ARGS} = *"--verbose "* ]] || [[ ${ARGS} = *"-v "* ]]; then
    ARGS="${ARGS/-v /}"
 fi
 
-# set RIT_ENV if not set already
-env_selector
+# Define function for handling external repositories
+function run_repo_action {
+    log $DBG "${FUNCNAME[0]} $@"
 
-# Set the prefix for the project
-COMPOSE_PROJECT_NAME="dev-hdp"
-export COMPOSE_PROJECT_NAME
+    # validate number of params
+    if [[ $# -lt 2 ]]; then
+        abort "${FUNCNAME[0]}: illegal number of params"
+    fi
+
+    # split 'action' in (git)action and options
+    rra_action=${1/ */}               # remove all after first space
+    rra_options=${1/$rra_action/}     # remaining part is first part of options
+    shift
+    while [[ ${1:0:6} != "extern" ]] && [[ ${1:0:6} != "docker" ]]; do
+        rra_options="$rra_options $1"
+        shift
+    done
+    rra_options="$(echo -e "${rra_options}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"    #trim surrounding spaces
+    rra_externals=$1
+
+    # validate params
+    if [[ -z $rra_action ]]; then
+        abort "${FUNCNAME[0]}: missing parameter [action]"
+    fi
+    if [[ "$rra_externals" == "" ]]; then
+        log $INF "No externals provided, so action '$1' needs nothing to do"
+        return
+    fi
+
+    # determin current folder name
+    baserepo=$(basename $(pwd))
+
+    # processing
+    while read -r rra_external; do
+        rra_external=($rra_external)
+        echo -e "\e[32m=============== $baserepo/${rra_external[0]} ======================\033[0m"
+        # compose git command (depending on action this might differ)
+        if [[ $rra_action == "clone" ]]; then
+            cmd="git clone ${rra_external[1]} ${rra_external[0]}"
+        elif [[ $rra_action == "pull" ]]; then
+            cmd="git -C ${rra_external[0]} pull --rebase"
+        else
+            cmd="git -C ${rra_external[0]} $rra_action $rra_options"
+        fi
+        # execute the composed git command (and set errorcode in case it failed)
+        log $DBG "executing: $cmd"
+        retval=0
+        $cmd || retval=$?
+        log $DBG "command returned: $retval"
+        # show warning in case of error!
+        if [[ "$retval" -gt 0 ]]; then
+            log $WRN "Issue occurred while executing command '$cmd'"
+        fi
+    done <<< "$rra_externals"
+}
+
+# Set script directory
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$SCRIPT_DIR"
+
+# Default values
+K8S_NAMESPACE="dh-health"
+ENV_TAG="latest"
 
 # specify externals for this project
 externals="externals/dh-hdp-zib-templates https://github.com/um-datahub/dh-hdp-zib-templates.git
@@ -28,261 +120,362 @@ externals/dh-hdp-transform-rest https://github.com/MaastrichtUniversity/dh-hdp-t
 externals/dh-hdp-etl https://github.com/MaastrichtUniversity/dh-hdp-etl.git
 externals/dh-hdp-federation-api https://github.com/MaastrichtUniversity/dh-hdp-federation-api.git
 externals/dh-hdp-notebooks https://github.com/MaastrichtUniversity/dh-hdp-notebooks.git
-externals/dh-hdp-portal https://github.com/MaastrichtUniversity/dh-hdp-portal.git"
+externals/dh-hdp-portal https://github.com/MaastrichtUniversity/dh-hdp-portal.git
+externals/dh-hdp-etl-utils https://github.com/MaastrichtUniversity/dh-hdp-etl-utils.git
+externals/dh-hdp-terminology-server-proxy https://github.com/MaastrichtUniversity/dh-hdp-terminology-server-proxy.git"
 
-is_local(){
-    if [[ $RIT_ENV == "local" ]]; then
-      return 0;
+# Check if minikube is running
+check_minikube() {
+    if ! minikube status &>/dev/null; then
+        echo -e "${YELLOW}Minikube is not running. Starting Minikube...${NC}"
+        minikube start --cpus 4 --memory 8192 --disk-size=30g --driver=docker
     fi
-    return 1;
+
+    # Set docker environment to minikube's docker
+    echo -e "${YELLOW}Setting docker environment to Minikube's docker daemon${NC}"
+    eval $(minikube docker-env)
 }
 
-setup_requirements(){
-    echo -e "Update permissions of the ehrbase and ehrdb filebeat/logs/$1"
-    mkdir -p ./filebeat/logs/$1/ehrdb && chmod -R 777 ./filebeat/logs/$1/ehrdb
-    mkdir -p ./filebeat/logs/$1/ehrbase && chmod -R 777 ./filebeat/logs/$1/ehrbase
-}
-
-dev_setup_requirements(){
-    if is_local; then
-      setup_requirements $1
+# Build an image or all images
+build_images() {
+    local service_name=$1
+    local image_tag=${2:-latest}
+    
+    if [[ -z "$service_name" ]]; then
+        echo -e "${YELLOW}Building all services using docker-bake...${NC}"
+        docker buildx bake
+    else
+        echo -e "${YELLOW}Building service: $service_name using docker-bake...${NC}"
+        docker buildx bake $service_name --set=\*.tags=registry.prod.dh.unimaas.nl/docker-health/$service_name:$image_tag
+    fi
+    
+    if [[ $? -eq 0 ]]; then
+        if [[ -z "$service_name" ]]; then
+            echo -e "${GREEN}Successfully built all services with tag: $image_tag${NC}"
+        else
+            echo -e "${GREEN}Successfully built service: $service_name:$image_tag${NC}"
+        fi
+    else
+        echo -e "${RED}Error building service(s)${NC}"
+        return 1
     fi
 }
 
-check_argument(){
-  # Check if the second argument is empty or not "zio"/"mumc"/"envida"
-  if [[ -z "$1" || ( "$1" != "mumc" && "$1" != "zio" && "$1" != "envida" ) ]]; then
-    echo "Error: The second argument must be either 'mumc', 'zio' or 'envida'"
-    exit 1
-  fi
+# Apply kubernetes manifests
+apply_manifests() {
+    local overlay=${1:-local}
+    
+    echo -e "${YELLOW}Applying Kubernetes manifests using kustomize overlay: $overlay${NC}"
+    kubectl apply -k deploy/overlays/$overlay | awk '/created|configured/ {print "\033[1;34m" $0 "\033[0m"; next} {print}'
+
+    echo -e "${GREEN}Successfully applied manifests${NC}"
 }
 
-build_and_up_common_services() {
-    echo "Building common services: proxy, filebeat, transform-rest"
-    docker compose build proxy filebeat transform-rest
+# Delete kubernetes manifests
+delete_manifests() {
+    local overlay=${1:-local}
 
-    echo "Starting common services"
-    docker compose up -d proxy filebeat transform-rest
+    echo -e "${YELLOW}Deleting Kubernetes manifests using kustomize overlay: $overlay${NC}"
+    kubectl delete -k deploy/overlays/$overlay | awk '/deleted/ {print "\033[1;34m" $0 "\033[0m"; next} {print}'
+
+    echo -e "${GREEN}Successfully deleted manifests${NC}"
 }
 
-# do the required action in case of externals or exec
+# Check a job execution status
+check_job_execution(){
+  echo "Waiting for job $job to complete..."
+  while true; do
+    succeeded=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.succeeded}')
+    if [ "$succeeded" = "1" ]; then
+      echo -e "${GREEN}$job is complete.${NC}"
+      kubectl delete -f deploy/overlays/$overlay/$job/job.yaml
+      exit 0
+    fi
+
+    failed=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.failed}')
+    if [ "$failed" != "" ] && [ "$failed" -ge 1 ]; then
+      echo -e "${RED}❌ $job has failed. Exiting.${NC}"
+      exit 1
+    fi
+    echo "$job not completed yet, sleeping 5s..."
+    sleep 5
+  done
+}
+
+
+# Setup localhost entries using existing localhost.sh script
+setup_hosts() {
+    # Get the current Minikube IP
+    local minikube_ip=$(minikube ip)
+    if [ -z "$minikube_ip" ]; then
+        echo -e "${RED}Error: Could not get Minikube IP. Make sure Minikube is running correctly.${NC}"
+        return 1
+    fi
+
+    # First check if localhost.sh exists and is executable
+    if [ ! -f "./localhost.sh" ]; then
+        echo -e "${RED}localhost.sh not found. Creating a basic version...${NC}"
+        cat > ./localhost.sh << 'EOF'
+#!/bin/bash
+MINIKUBE_IP=$(minikube ip)
+
+echo "$MINIKUBE_IP elk.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.test.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP transform.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP federation.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP federation.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP federation.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP federation.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP jupyter.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP terminology.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP portal.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP portal.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP portal.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP portal.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP openehrtool.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP openehrtool.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP openehrtool.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP openehrtool.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP openehrtool.test.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP ehrbase.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP ehrbase.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP ehrbase.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP ehrbase.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP ehrbase.test.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.mumc.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.zio.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.envida.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP etl.vitala.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+echo "$MINIKUBE_IP traefik.dashboard.local.dh.unimaas.nl" | sudo tee -a /etc/hosts
+EOF
+        chmod +x ./localhost.sh
+    fi
+
+    # Extract hosts from localhost.sh
+    echo -e "${YELLOW}Updating host entries in /etc/hosts...${NC}"
+    hosts=$(grep -o '[a-z0-9.-]\+\.local\.dh\.unimaas\.nl' ./localhost.sh | sort | uniq)
+    
+    # Create a temporary file
+    temp_file=$(mktemp)
+    
+    # For each host in our list, remove its existing entry from /etc/hosts if present
+    cat /etc/hosts > "$temp_file"
+    for host in $hosts; do
+        # Remove any line containing this specific hostname
+        sed -i "/[[:space:]]$host\$/d" "$temp_file"
+    done
+    
+    # Apply the modified hosts file without our entries
+    sudo cp "$temp_file" /etc/hosts
+    rm "$temp_file"
+
+    # Now add the hosts with current Minikube IP
+    echo -e "${YELLOW}Adding host entries with current Minikube IP (${minikube_ip})...${NC}"
+
+    for host in $hosts; do
+        echo "$minikube_ip $host" | sudo tee -a /etc/hosts > /dev/null
+    done
+    
+    echo -e "${GREEN}Host entries updated using current Minikube IP${NC}"
+}
+
+# Mount local directories to minikube
+pull_docker_images() {
+    echo -e "${YELLOW}Pull external docker images${NC}"
+    ./pull-external-images.sh
+}
+
+# Mount local directories to minikube
+setup_mounts() {
+    echo -e "${YELLOW}Setting up directory mounts in Minikube${NC}"
+    if ! ls externals &>/dev/null; then
+        echo -e "${RED}Error: External repos are not pulled"
+        return 1
+    fi
+    ./mount.sh
+}
+
+# Helper functions for external repos
+clone_externals() {
+    # Check if externals directory exists and is not empty
+    if [ -d "externals" ] && [ "$(ls -A externals 2>/dev/null)" ]; then
+        echo $INF "External repositories already exist. Skipping clone."
+        return 0
+    fi
+    
+    # Create externals directory if it doesn't exist
+    mkdir -p externals
+    
+    # Proceed with cloning if directory is empty
+    run_repo_action "clone" "${externals}"
+}
+
+checkout_externals() {
+    local branch=${1:-2024.1}
+    # Check if any externals exist first
+    if [ ! -d "externals" ] || [ -z "$(ls -A externals 2>/dev/null)" ]; then
+        log $INF "External repositories don't exist yet. Cloning first..."
+        clone_externals
+    fi
+
+    # dh-hdp-etl-utils is on main branch instead of 2024.1
+    etl_utils_repo="externals/dh-hdp-etl-utils https://github.com/MaastrichtUniversity/dh-hdp-etl-utils.git"
+
+    while IFS= read -r repo_path; do
+    repo_path=$(echo "$repo_path" | xargs)  # Trim leading/trailing whitespace
+    if [[ "$repo_path" == "$etl_utils_repo" ]]; then
+        run_repo_action "checkout main" "$repo_path"
+    else
+        run_repo_action "checkout $branch" "$repo_path"
+    fi
+done <<< "$externals"
+}
+
+# Print usage
+print_usage() {
+    echo "Usage: $0 <command> [options]"
+    echo
+    echo "Commands:"
+    echo "  setup                                     Initialize Minikube Kubernetes environment with docker engine"
+    echo "  start                                     Start an already initialized Minikube Kubernetes environment with docker engine"
+    echo "  pull                                      Pull external images"
+    echo "  build       <subcommand>                  Build service images"
+    echo "  externals   <subcommand>                  Manage external repositories"
+    echo "  apply       <option>      <subcommand>    Apply Kubernetes manifests (default overlay: local) (-s also apply the shared overlay)"
+    echo "  delete      <option>      <subcommand>    Delete Kubernetes manifests (default overlay: local) (-s also delete the shared overlay)"
+    echo "  status      <subcommand>                  Show status of all pods"
+    echo "  rollout     <subcommand>                  Manage the rollout to restart one or many resources (default all)"
+    echo "  up          <subcommand>                  Apply a subset of deployments"
+    echo "  down        <subcommand>                  Delete a subset of deployments"
+    echo "  run         <subcommand>  <subcommand>    Apply Kubernetes manifests and wait & check the job (with the same name) execution"
+    echo "  headlamp                                  Enable the addons headlamp, start the service and create a temporary token"
+    echo
+    echo "Examples:"
+    echo "  $0 setup                        Setup Kubernetes environment"
+    echo "  $0 start                        Start Kubernetes environment"
+    echo "  $0 build                        Build all Docker images"
+    echo "  $0 apply                        Apply Kubernetes manifests with local overlay"
+    echo "  $0 apply -s local/node-mumc     Apply Kubernetes manifests with local + shared overlays for the MUMC node"
+    echo "  $0 apply local/ops              Apply Kubernetes manifests with local/ops overlay  (ELK, Filbeat)"
+    echo "  $0 apply tst                    Apply Kubernetes manifests with tst overlay"
+    echo "  $0 delete                       Delete Kubernetes manifests with local overlay"
+    echo "  $0 delete -s                    Delete Kubernetes manifests with local + shared overlays"
+    echo "  $0 delete local/ops             Delete Kubernetes manifests with local/ops overlay (ELK, Filbeat)"
+    echo "  $0 delete tst                   Delete Kubernetes manifests with tst overlay"
+    echo "  $0 status                       Print the pods status"
+    echo "  $0 status -w                    Print and follow the pods status"
+    echo "  $0 rollout                      Rollout a restart of all the deployments"
+    echo "  $0 rollout jupyter-zib          Rollout a restart of the jupyter-zib deployment"
+    echo "  $0 run local test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status"
+    echo "  $0 run local test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status"
+}
+
+# Main command handler
+main() {
+    local command=$1
+    shift || true
+
+    case $command in
+        setup)
+            check_minikube
+            clone_externals
+            setup_hosts
+            setup_mounts
+            # ELK configuration
+            minikube ssh "sudo sysctl -w vm.max_map_count=262144"
+            ;;
+
+        pull)
+            check_minikube
+            pull_docker_images
+            ;;
+            
+        build)
+            check_minikube
+            build_images "$@"
+            ;;
+
+        start)
+            check_minikube
+            ;;
+
+        rollout)
+            kubectl rollout restart deployment "$@" -n dh-health
+            ;;
+
+        apply)
+            case $1 in
+              -s)
+                local overlay=${2:-local}
+                if [[ "${overlay}" = *"/"* ]]; then
+                  apply_manifests "${overlay}/../shared"
+                else
+                  apply_manifests "${overlay}/shared"
+                fi
+                apply_manifests "${overlay}"
+              ;;
+              *)
+                local overlay=${1:-local}
+                apply_manifests "${overlay}"
+              ;;
+            esac
+            ;;
+
+        delete)
+            case $1 in
+              -s)
+              # Deleting the shared overlay removes all resources and volumes in "dh-health" namespace
+              # so no need to delete other overlays after that
+                local overlay=${2:-local}
+                delete_manifests "${overlay}/shared"
+              ;;
+              *)
+                local overlay=${1:-local}
+                delete_manifests "${overlay}"
+              ;;
+            esac
+            ;;
+
+        headlamp)
+            minikube addons enable headlamp
+            minikube service headlamp -n headlamp
+            kubectl create token headlamp --duration 24h -n headlamp
+            ;;
+
+        status)
+            kubectl get pods -n $K8S_NAMESPACE "$@"
+            ;;
+
+        run)
+            local overlay=$1
+            local job=$2
+            apply_manifests "${overlay}/shared"
+            apply_manifests "$overlay/$job"
+            check_job_execution "$overlay" "$job"
+            ;;
+
+        *)
+            echo -e "${RED}Unknown command: $command${NC}"
+            print_usage
+            exit 1
+            ;;
+    esac
+}
+
+# Special case for externals command (keep original behavior)
 if [[ $1 == "externals" ]]; then
     action=${ARGS/$1/}
     run_repo_action ${action} "${externals}"
     exit 0
 fi
 
-if [[ $1 == "setup" ]]; then
-    setup_requirements "mumc"
-    setup_requirements "zio"
-    setup_requirements "envida"
-    setup_requirements "test"
-
-    echo -e "\nExit dh.sh"
+# Run the script
+if [ $# -eq 0 ]; then
+    print_usage
     exit 0
 fi
 
-if [[ $1 == "transform" ]]; then
-    echo -e "\nStart Spring boot Rest API"
-    if is_local; then docker compose build transform-rest filebeat; fi
-    docker compose up -d transform-rest
-
-    echo -e "\nExit dh.sh"
-    exit 0
-fi
-
-if [[ $1 == "federation" ]]; then
-    dev_setup_requirements "mumc"
-    dev_setup_requirements "zio"
-    dev_setup_requirements "envida"
-    if is_local; then build_and_up_common_services; fi
-
-    echo -e "\nStart FastAPI"
-    if is_local; then docker compose build federation-api; fi
-    docker compose up -d federation-api
-
-    echo -e "\nExit dh.sh"
-    exit 0
-fi
-
-run_etl_zib(){
-    dev_setup_requirements $1
-    if is_local; then build_and_up_common_services; docker compose build $1-etl-zib; fi
-
-    echo -e "\nRunning $1-etl-zib"
-    docker compose up -d $1-etl-zib
-    # Add a safe guard against infinite loop during a CI execution
-    SAFE_GUARD=0
-    until docker compose logs --tail 15 $1-etl-zib 2>&1 | grep -q "Print all EHR ids available on the server";
-    do
-      if [[ $SAFE_GUARD -eq 15  ]]; then
-        echo -e "STOP waiting for $1-etl-zib"
-        break
-      fi
-      ((SAFE_GUARD++))
-      echo -e "Waiting for $1-etl-zib"
-      sleep 5
-    done
-
-    if [[ $SAFE_GUARD -ne 15  ]]; then
-      echo -e "\nPrint logs for $1-etl-zib"
-      docker compose logs $1-etl-zib
-      echo -e "\nExit dh.sh"
-      return 0
-    else
-      echo -e "\nFailed to run $1-etl-zib"
-      return 1
-    fi
-}
-
-if [[ $1 == "etl" ]]; then
-    if [[ -z "$2" ]]; then
-        run_etl_zib "test"
-        exit_code=$?
-
-        # Clean up
-        if [[ $RIT_ENV != "local" ]]; then
-          docker compose rm -s -f test-ehrbase test-ehrdb test-etl-zib
-        fi
-
-        exit $exit_code
-    else
-        check_argument "$2"
-        run_etl_zib "$2"
-        exit $?
-    fi
-fi
-
-run_backend(){
-    dev_setup_requirements $1
-    docker compose up -d $1-ehrbase
-    until docker container inspect --format "{{json .State.Health.Status }}" dev-hdp-$1-ehrbase-1 2>&1 | grep -q "healthy";
-    do
-      echo -e "Waiting for EHRbase ($1 node)"
-      sleep 10
-    done
-    echo -e "\nEHRbase ($1 node) up and running"
-}
-
-if [[ $1 == "backend" ]]; then
-    if [[ -z "$2" ]]; then
-        run_backend "test"
-    else
-        check_argument "$2"
-        run_backend "$2"
-    fi
-
-    echo -e "\nExit dh.sh"
-    exit 0
-fi
-
-if [[ $1 == "jupyter" ]]; then
-    dev_setup_requirements "mumc"
-    dev_setup_requirements "zio"
-    dev_setup_requirements "envida"
-
-    echo -e "\nExplore zib dataset"
-    if is_local; then docker compose build jupyter-zib transform-rest; fi
-    # Start the proxy first to create all the networks, workaround to avoid orchestration issues.
-    docker compose up -d proxy
-    docker compose up -d jupyter-zib
-    exit_code=$?
-
-    echo -e "\nExit dh.sh with status code $exit_code"
-    exit $exit_code
-fi
-
-run_openehrtool(){
-    docker compose up -d $1-openehrtool
-    echo -e "\nOpenEHRtool on $1 node up and running"
-}
-
-if [[ $1 == "openehrtool" ]]; then
-    if [[ -z "$2" ]]; then
-      run_openehrtool "test"
-    else
-      check_argument "$2"
-      run_openehrtool "$2"
-    fi
-
-    echo -e "\nExit dh.sh"
-    exit 0
-fi
-
-run_portal(){
-    if is_local; then docker compose build $1-portal; fi
-    docker compose up -d $1-portal
-    exit_code=$?
-    if [ $exit_code -ne 0 ]; then
-      echo -e "\nExit dh.sh with status code $exit_code"
-      exit 1
-    fi
-    echo -e "\nNode userinterface on $1 node up and running"
-}
-
-if [[ $1 == "portal" ]]; then
-    dev_setup_requirements "mumc"
-    dev_setup_requirements "zio"
-    dev_setup_requirements "envida"
-    if is_local; then build_and_up_common_services; docker compose build federation-api; fi
-
-    if [[ -z "$2" ]]; then
-      run_portal "mumc"
-      run_portal "zio"
-      run_portal "envida"
-    else
-      check_argument "$2"
-      run_portal "$2"
-    fi
-
-    echo -e "\nExit dh.sh"
-    exit 0
-fi
-
-
-
-run_single_node_tests(){
-    dev_setup_requirements "test"
-    if is_local; then build_and_up_common_services; docker compose build test-etl-zib; fi
-
-    echo -e "\nStart single node tests on test-etl-zib"
-    docker compose run --rm --entrypoint pytest test-etl-zib --verbose --verbosity=5
-#    docker compose run --rm --entrypoint pytest test-etl-zib -s
-#    docker compose run --rm --entrypoint pytest test-etl-zib -o log_cli=true --log-cli-level=INFO
-    exit_code=$?
-
-    # Clean up
-    if [[ $RIT_ENV != "local" ]]; then
-      docker compose rm -s -f test-ehrbase test-ehrdb
-    fi
-    exit $exit_code
-}
-
-run_federation_tests(){
-    dev_setup_requirements "mumc"
-    dev_setup_requirements "zio"
-    dev_setup_requirements "envida"
-    if is_local; then build_and_up_common_services; docker compose build federation-api; fi
-
-    echo -e "\nStart federation tests"
-    docker compose run --rm --entrypoint pytest federation-api -s --verbose --verbosity=5
-}
-
-if [[ $1 == "test" ]]; then
-    if [[ $2 == "single-node" ]]; then
-        run_single_node_tests
-    elif [[ $2 == "federation" ]]; then
-        run_federation_tests
-    fi
-
-    if [ $? -eq 0 ]; then
-      echo -e "\nExit dh.sh"
-      exit 0
-    else
-      echo -e "\nFailed to run $2 tests"
-      exit 1
-    fi
-fi
-
-
-docker compose $ARGS
+main "$@"

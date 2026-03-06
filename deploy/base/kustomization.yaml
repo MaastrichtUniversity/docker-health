@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- common
+- jupyter-zib
+- openehr-nodes
+- terminology-server-proxy

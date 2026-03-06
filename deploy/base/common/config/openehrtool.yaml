@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openehrtool-config
+  namespace: dh-health
+data:
+  EHRBASESERVER_port: "8080"
+  FLASK_APP: app.py
+  FLASK_ENV: development
+  SEND_FILE_MAX_AGE_DEFAULT: "0"

@@ -1,0 +1,109 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: dh-health
+
+images:
+- name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
+  newTag: '2024.1.7'
+- name: registry.prod.dh.unimaas.nl/docker-health/federation-test
+  newTag: '2024.1.7'
+- name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
+  newTag: '2024.1.7'
+- name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
+  newTag: '2024.1.7'
+- name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
+  newTag: '2024.1.7'
+- name: registry.prod.dh.unimaas.nl/docker-health/portal
+  newTag: '2024.1.7'
+- name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
+  newTag: '2024.1.7'
+- name: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib
+  newTag: '2024.1.7'
+
+resources:
+- ./secrets.yaml
+# Base resources
+- ../../base/common
+- ../../base/federation-rest
+- ../../base/transform-rest
+- ../../base/jupyter-zib
+- ../../base/terminology-server-proxy
+# Envida-node
+- ../../base/openehr-nodes/envida
+# MUMC-node
+- ../../base/openehr-nodes/mumc
+# VITALA-node
+- ../../base/openehr-nodes/vitala
+# ZIO-node
+- ../../base/openehr-nodes/zio
+# Gateway resources
+- patches/gateway/common/jupyter.yaml
+- patches/gateway/envida/portal.yaml
+- patches/gateway/mumc/portal.yaml
+- patches/gateway/vitala/portal.yaml
+- patches/gateway/zio/portal.yaml
+
+patches:
+# 'Global' patches that apply to all of one sort
+# Storage class patches
+- target:
+    kind: PersistentVolume
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-path
+- target:
+    kind: PersistentVolumeClaim
+  patch: |-
+    - op: replace
+      path: /spec/storageClassName
+      value: local-path
+# Image pull secret patches
+- target:
+    kind: Deployment
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/imagePullSecrets
+      value:
+      - name: registry-credentials
+- target:
+    kind: Job
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/imagePullSecrets
+      value:
+      - name: registry-credentials
+# imagePullPolicy patches
+- target:
+    kind: Deployment
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Always
+- target:
+    kind: Job
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Always  
+
+# Patch the data mounts to use the GIT PVC
+- path: patches/job/envida-etl-zib-delete-demo-data.yaml
+- path: patches/job/envida-etl-zib-add-demo-data.yaml
+- path: patches/job/vitala-etl-zib-delete-demo-data.yaml
+- path: patches/job/vitala-etl-zib-add-demo-data.yaml
+- path: patches/job/mumc-etl-zib-delete-demo-data.yaml
+- path: patches/job/mumc-etl-zib-add-demo-data.yaml
+- path: patches/job/zio-etl-zib-delete-demo-data.yaml
+- path: patches/job/zio-etl-zib-add-demo-data.yaml
+- path: patches/deployment/jupyter-delete-demo-data.yaml
+- path: patches/deployment/jupyter-add-demo-data.yaml
+# Delete TEST node configs
+- path: patches/deployment/jupyter-delete-test-config.yaml
+
+configMapGenerator:
+- name: portal-common-config
+  namespace: dh-health
+  behavior: merge
+  literals:
+    - NEXT_PUBLIC_FEDERATION_BASE_URL=https://federation.fehr.amumc.nl

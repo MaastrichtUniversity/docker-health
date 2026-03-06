@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vitala-ehrbase-config
+  namespace: dh-health
+data:
+  SERVER_NODENAME: vitala.server.dh.unimaas.nl
+  DB_URL: jdbc:postgresql://vitala-ehrdb.dh-health:5432/ehrbase
