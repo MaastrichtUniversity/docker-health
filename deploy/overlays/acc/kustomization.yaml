@@ -41,6 +41,10 @@ resources:
 - patches/gateway/vitala/portal.yaml
 - patches/gateway/zio/portal.yaml
 
+components:
+# Federation service role
+- ./roles
+
 patches:
 # 'Global' patches that apply to all of one sort
 # Storage class patches
