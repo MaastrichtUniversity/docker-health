@@ -79,13 +79,13 @@ patches:
   patch: |-
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
-      value: Always
+      value: IfNotPresent
 - target:
     kind: Job
   patch: |-
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
-      value: Always  
+      value: IfNotPresent  
 
 # Patch the data mounts to use the GIT PVC
 - path: patches/job/envida-etl-zib-delete-demo-data.yaml
