@@ -1,4 +1,4 @@
 BSN,MANCHET_TYPE,MEETMETHODE,SYSTOLISCHE_BLOEDDRUK (mmHg),DIASTOLISCHE_BLOEDDRUK (mmHg),GEMIDDELDE_BLOEDDRUK (mmHg),BLOEDDRUK_DATUM_TIJD,TOELICHTING,LOCATIE,LATERALITEIT,HOUDING,DIASTOLISCH_EINDPUNT,DATE_TIME,TEST_COMMENTS
-001645201,Groot,Bloeddrukmeting met gebruikmaking van manchet,110,65,68,2024-06-26T09:10:25.629,the health condition of the patient’s cardiovascular system.,Structuur van rechter bovenarm,Rechts,Liggende positie,Fase 5,2024-11-14T15:50:14.321,PASS-Test valid start_time
-339055303,,,108,73,,2021-07-04T21:03:56.351,,,,,,1983-03-16T15:34:59.427,PASS-Test data min
-316268306,Extra groot,Invasief meten van arteriële bloeddruk,108,73,53,2003-12-05T20:49:02.547,De arteriële bloeddruk,Structuur van bovenbeen,Links,Gekantelde positie,Fase 4,2007-12-04T12:09:45.581,PASS
+999999801,Groot,Bloeddrukmeting met gebruikmaking van manchet,110,65,68,2024-06-26T09:10:25.629,the health condition of the patient’s cardiovascular system.,Structuur van rechter bovenarm,Rechts,Liggende positie,Fase 5,2024-11-14T15:50:14.321,PASS-Test valid start_time
+999990603,,,108,73,,2021-07-04T21:03:56.351,,,,,,1983-03-16T15:34:59.427,PASS-Test data min
+999992806,Extra groot,Invasief meten van arteriële bloeddruk,108,73,53,2003-12-05T20:49:02.547,De arteriële bloeddruk,Structuur van bovenbeen,Links,Gekantelde positie,Fase 4,2007-12-04T12:09:45.581,PASS

@@ -12,7 +12,7 @@ data:
   TRANSFORM_SPRING_BASE_URL: http://mumc-transform-rest.dh-health:8080
   WRITE_COMPOSITION: "true"
   # Specify the SUBJECT_IDS for MUMC manually as a control.
-  SUBJECT_IDS: '["001645201","083197102","339055303"]'
+  SUBJECT_IDS: '["999999801","999990202","999990603"]'
   TEMPLATE_IDS: |
     [
       "DataHub-AlcoholGebruik-2024",
