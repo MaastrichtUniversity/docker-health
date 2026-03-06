@@ -1,0 +1,23 @@
+BSN;TESTS_COMMENTS;Observation_Timestamp;Status_Code;TAB_STATUS;STATUS_SNOMED;TABAKSOORT;TABAKSOORT_TEKST;TABAKSOORT_SNOMED;PackYears;TAB_STARTDATUM;TAB_HOEVEELHEID;TAB_STOPDATUM;TAB_TOELICHTING
+999999801;PASS-Test duplication check;2023-11-14T15:50:14.321;;Rookt dagelijks;449868002;;Rookt sigaretten;65568007;12;20111201;1 per per week;;Duplicate
+999999801;PASS-Test duplication check;2024-11-14T15:50:14.321;;Anders;OTH;;;;12;20111201;1 per per week;;New composition
+999999801;FAIL-Test duplication check;2023-11-14T15:50:14.321;;Rookt dagelijks;449868002;;Rookt sigaretten;65568007;12;20111201;1 per per week;;Duplicate
+999990202;PASS-Test data max;1985-08-03T00:08:52.165;;Rookt soms;428041000124106;;Rookt sigaren;59978006 ;420;19780418;1 per per week;202501;A lot
+999990603;PASS-Test data min;1975-10-02T18:52:39.622;;Rookt passief;43381005 ;;;;;;;;
+999991504;FAIL-Test data none;;;;;;;;;;;;
+999991905;FAIL-Test data empty;1992-07-18T19:28:41.085;;;;;;;;;;;
+999992806;PASS;2003-12-05T20:49:02.547;;Ex-roker;8517006 ;;Rookt shag;160619003;;20001031;1 per per dag;;
+999993707;PASS;2021-07-04T21:03:56.351;;Niet-roker, maar rookgedrag in verleden onbekend;405746006;;Rookt e-sigaret;722499006;2;20001031;2 per per week;;A comment
+999994608;FAIL-DATE_TIME is empty;;;Anders;OTH;;;;;20000101;2 per per month;;
+999995509;FAIL-DATE_TIME has a wrong datetime format;WrongValue;;Anders;OTH;;;;;20000101;4 per per week;;
+999990810;FAIL-TABAK_GEBRUIK_STATUS is missing;1982-03-05T05:20:33.907;;;;;;;;20240131;42 per per dag;20250131;
+999992211;FAIL-TABAK_GEBRUIK_STATUS is wrong;2024-06-26T09:10:25.629;;WrongValue;WrongValue;;;;;20240131;11 per per dag;20250131;
+999990512;PASS-START_DATUM has a wrong datetime format;1993-04-04T05:35:40.868;;Nooit gerookt;266919005;;Gebruikt kauwtabak;81703003;1;WrongValue;472 per per week;;
+999990913;PASS-SOORT_TABAK_GEBRUIK is wrong;1986-04-21T12:39:31.668;;Rookt dagelijks;449868002;;WrongValue;WrongValue;2;2011;22 per per week;;
+999990214;PASS-SOORT_TABAK_GEBRUIK is missing;1989-10-07T00:06:18.702;;Rookt soms;428041000124106;;;;3;;3 per per week;201112;
+999990615;PASS-HOEVEELHEID_VALUE == 0;1989-07-26T13:29:18.787;;Rookt passief;43381005 ;;Anders;OTH;4;;0 per per dag;;
+999991516;PASS-HOEVEELHEID_VALUE < 0;2000-08-14T23:52:24.356;;Ex-roker;8517006 ;;Rookt waterpijp;698289004 ;5;;-10000 per per dag;;
+999990317;PASS-HOEVEELHEID_VALUE is missing;1999-12-04T21:38:34.864;;Niet-roker, maar rookgedrag in verleden onbekend;405746006;;Gebruikt snuiftabak;228494002;6;;per per month;;
+999990718;PASS-HOEVEELHEID_UNIT is missing;1997-09-03T11:01:14.143;;Nooit gerookt;266919005;;Rookt e-sigaret;722499006;;;4;;
+999991619;PASS-HOEVEELHEID_VALUE is wrong;1999-08-07T16:06:29.404;;Anders;OTH;;Rookt pijp;82302008 ;;;WrongValue per per week;;
+999991620;PASS-HOEVEELHEID_UNIT is wrong;1978-06-02T19:50:59.662;;Rookt soms;428041000124106;;Anders;OTH;;;1 WrongValue;;
