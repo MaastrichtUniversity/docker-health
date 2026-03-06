@@ -9,7 +9,7 @@ spec:
     - name: http
       port: 80
       protocol: HTTP
-      hostname: portal.mumc.fehr.amumc.nl
+      hostname: portal.mumc.fehr.mumc.nl
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -20,7 +20,7 @@ spec:
   parentRefs:
     - name: mumc-portal-gateway
   hostnames:
-    - portal.mumc.fehr.amumc.nl
+    - portal.mumc.fehr.mumc.nl
   rules:
     - matches:
         - path:
