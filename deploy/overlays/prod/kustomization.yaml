@@ -139,10 +139,3 @@ patches:
 - path: patches/deployment/jupyter-add-demo-data.yaml
 # Delete TEST node configs
 - path: patches/deployment/jupyter-delete-test-config.yaml
-
-configMapGenerator:
-- name: portal-common-config
-  namespace: dh-health
-  behavior: merge
-  literals:
-    - NEXT_PUBLIC_FEDERATION_BASE_URL=https://federation.fehr.mumc.nl
