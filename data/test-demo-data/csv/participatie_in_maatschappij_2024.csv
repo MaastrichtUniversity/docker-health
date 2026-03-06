@@ -1,15 +1,15 @@
 BSN,SOCIAAL_NETWERK,VRIJETIJDSBESTEDING,ARBEIDSSITUATIE,TOELICHTING,DATE_TIME,TEST_COMMENTS
-001645201,Heeft een groot sociaal netwerk,Wandelen en lezen,Deeltijdwerk als vrijwilliger,Bezoekt wekelijks de ponyclub,2023-11-14T15:50:14.321,PASS-Test valid start_time
-001645201,Heeft geen sociaal netwerk,Wandelen en lezen,Deeltijdwerk als vrijwilliger,Bezoekt wekelijks de hobbyclub,2024-11-14T15:50:14.321,PASS-Test valid start_time
-001645201,Heeft een groot sociaal netwerk,Wandelen en lezen,Deeltijdwerk als vrijwilliger,Bezoekt wekelijks de ponyclub,2023-11-14T15:50:14.321,FAIL-Test valid start_time
-083197102,Beperkt sociaal netwerk,Fotograferen,Op zoek naar een baan,Geen,2024-11-14T15:50:14.321,PASS-Test data max
-339055303,Sociaal netwerk onbekend,,,,2023-12-31T23:59:59.871,PASS-Test data min
-389370204,,,,,,FAIL-Test data none
-683754105,,,,,2025-01-02T15:00:00.000,FAIL-Test data empty
-316268306,,Yoga,Freelance,,2025-06-03T10:00:00.000,PASS
-569973107,Heeft veel aanloop van buren,Nordic walking,,Bezoekt activiteitencentrum 2 maal per week,2025-06-03T10:00:00.000,PASS
-011168808,Heeft een groot sociaal netwerk,Muziek maken,,,,FAIL-DATE_TIME is empty
-363037809,Contact met familie en vrienden,Dansen,,,WrongValue,FAIL-DATE_TIME has a wrong datetime format
-315071710,,Reizen,Zelfstandige artiest,,2024-12-01T10:30:00.000,PASS
-362880311,,,Vrijwilliger,Organiseert maandelijks activiteit,2024-12-01T10:30:00.000,PASS
-525736712,,,Parttime baan,,2010-01-01T00:00:00.000,PASS
+999999801,Heeft een groot sociaal netwerk,Wandelen en lezen,Deeltijdwerk als vrijwilliger,Bezoekt wekelijks de ponyclub,2023-11-14T15:50:14.321,PASS-Test valid start_time
+999999801,Heeft geen sociaal netwerk,Wandelen en lezen,Deeltijdwerk als vrijwilliger,Bezoekt wekelijks de hobbyclub,2024-11-14T15:50:14.321,PASS-Test valid start_time
+999999801,Heeft een groot sociaal netwerk,Wandelen en lezen,Deeltijdwerk als vrijwilliger,Bezoekt wekelijks de ponyclub,2023-11-14T15:50:14.321,FAIL-Test valid start_time
+999990202,Beperkt sociaal netwerk,Fotograferen,Op zoek naar een baan,Geen,2024-11-14T15:50:14.321,PASS-Test data max
+999990603,Sociaal netwerk onbekend,,,,2023-12-31T23:59:59.871,PASS-Test data min
+999991504,,,,,,FAIL-Test data none
+999991905,,,,,2025-01-02T15:00:00.000,FAIL-Test data empty
+999992806,,Yoga,Freelance,,2025-06-03T10:00:00.000,PASS
+999993707,Heeft veel aanloop van buren,Nordic walking,,Bezoekt activiteitencentrum 2 maal per week,2025-06-03T10:00:00.000,PASS
+999994608,Heeft een groot sociaal netwerk,Muziek maken,,,,FAIL-DATE_TIME is empty
+999995509,Contact met familie en vrienden,Dansen,,,WrongValue,FAIL-DATE_TIME has a wrong datetime format
+999990810,,Reizen,Zelfstandige artiest,,2024-12-01T10:30:00.000,PASS
+999992211,,,Vrijwilliger,Organiseert maandelijks activiteit,2024-12-01T10:30:00.000,PASS
+999990512,,,Parttime baan,,2010-01-01T00:00:00.000,PASS

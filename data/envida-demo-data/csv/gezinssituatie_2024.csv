@@ -1,4 +1,4 @@
 BSN,BURGERLIJKE_STAAT,GEZINSSAMENSTELLING,AANTAL_KINDEREN,AANTAL_KINDEREN_INWONEND,ZORGTAAK,TOELICHTING_GEZINSSITUATIE,GEBOORTEDATUM_KIND,INWONEND_KIND,TOELICHTING_KIND,DATE_TIME
-001645201,Divorced,Woont alleen,0,0,geen active zorgtaak,,,False,,2006-12-12T09:52:48.359
-339055303,Married,Woont samen met levenspartner,1,1,zorgt voor zieke levenspartner,krijgen hulp bij zorg,1990-10-18,True,kind help met zorg voor levenspartner,2015-11-12T09:53:48.359
-316268306,Never Married,Inwonende minderjarige kinderen,3,2,zorgt voor kinderen,toelichting,2001-01-20,True,gezonde kinderen,2013-09-11T09:53:48.358
+999999801,Divorced,Woont alleen,0,0,geen active zorgtaak,,,False,,2006-12-12T09:52:48.359
+999990603,Married,Woont samen met levenspartner,1,1,zorgt voor zieke levenspartner,krijgen hulp bij zorg,1990-10-18,True,kind help met zorg voor levenspartner,2015-11-12T09:53:48.359
+999992806,Never Married,Inwonende minderjarige kinderen,3,2,zorgt voor kinderen,toelichting,2001-01-20,True,gezonde kinderen,2013-09-11T09:53:48.358
