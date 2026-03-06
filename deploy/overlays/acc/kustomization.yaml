@@ -24,8 +24,6 @@ resources:
 - ./secrets.yaml
 # Base resources
 - ../../base/common
-- ../../base/federation-rest
-- ../../base/transform-rest
 - ../../base/jupyter-zib
 - ../../base/terminology-server-proxy
 # Envida-node
