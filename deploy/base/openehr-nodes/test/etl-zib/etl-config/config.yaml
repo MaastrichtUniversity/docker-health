@@ -8,7 +8,7 @@ metadata:
 data:
   NODENAME: test
   DATASET_FOLDER_NAME: test-demo-data
-  SOURCE_SYSTEM_ID: SAP_ZIBDOCDATA
+  SOURCE_SYSTEM_ID: DEMO_DATA
   LOGGER_FILENAME: logs/test/etl-zib.log
   EHRBASE_BASE_URL: http://test-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
   TRANSFORM_SPRING_BASE_URL: http://test-transform-rest.dh-health:8080
