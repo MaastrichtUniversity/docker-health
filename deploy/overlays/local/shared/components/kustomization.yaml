@@ -5,3 +5,4 @@ components:
   - service-discovery
   - terminology-server-proxy
   - federation-secret
+  - data-encryption-secret
