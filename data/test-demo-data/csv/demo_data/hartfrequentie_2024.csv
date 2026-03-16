@@ -1,2 +1,18 @@
 BSN,HARTFREQUENTIE_WAARDE (/min),HARTFREQUENTIE_DATUM_TIJD,HARTSLAG_MEET_METHODE,TOELICHTING,HARTSLAG_REGELMATIGHEID,INTERPRETATIE_FREQUENTIE,DATE_TIME,TEST_COMMENTS
-999999801,126,2024-11-14T15:50:14.321,Auscultatie,Misschien bigeminie?,Regelmatige pulsaties,Bradycardie,2023-11-14T15:50:14.321,PASS-Test duplication check
+999999801,65,2024-11-14T15:50:14.321,Auscultatie,Healthy,Regelmatige pulsaties,Normale hartfrequentie,2023-11-14T15:50:14.321,PASS-Test duplication check
+999999801,70,2024-06-26T09:10:25.629,Auscultatie,Healthy,Onregelmatige hartslag,Normale hartfrequentie,2024-11-14T15:50:14.321,PASS-Test duplication check
+999999801,65,2024-11-14T15:50:14.321,Auscultatie,Healthy,Regelmatige pulsaties,Normale hartfrequentie,2023-11-14T15:50:14.321,FAIL-Test duplication check
+999990202,45,2023-11-14T15:50:14.321,ECG-bewaking,Max data,Onregelmatige hartslag,Bradycardie,2005-01-19T09:43:13.174,PASS-Test data max
+999990603,55,2021-07-04T21:03:56.351,,,,,2023-12-31T23:59:59.871,PASS-Test data min
+999991504,,,,,,,,FAIL-Test data none
+999991905,,,,,,,2024-10-10T10:10:10.410,FAIL-Test data empty
+999992806,110,2003-12-05T20:49:02.547,Other,Episode of tachycardie,Onregelmatige hartslag,Tachycardie,2016-10-02T06:30:00.046,PASS
+999993707,61,2000-08-14T23:52:24.356,,,Regelmatige pulsaties,,2024-10-10T10:10:10.410,PASS
+999994608,62,1999-12-04T21:38:34.864,Bewaking met hartmonitor,Sportvrouw,Regelmatige pulsaties,Normale hartfrequentie,,FAIL-DATE_TIME is empty
+999995509,63,1999-08-07T16:06:29.404,,Sportman,Onregelmatige hartslag,Other,1996-05-42T17:04:55.941,FAIL-DATE_TIME has a wrong datetime format (wrong day value)
+999990810,,1997-09-03T11:01:14.143,Other,missing value,,Other,2022-04-01T18:06:22.000,FAIL-MISSING HARTFREQUENTIE_WAARDE
+999992211,65,,Bewaking met hartmonitor,,,Normale hartfrequentie,2008-07-13T05:38:29.395,FAIL-MISSING HARTFREQUENTIE_DATUM_TIJD
+999990512,40,1989-10-07,,Ironman,,Bradycardie,2022-04-01T18:06:22.000,PASS-Correct HARTFREQUENTIE_DATUM_TIJD with only date
+999990913,70,2025-02-10T12:40:00.000,WrongValue,TEST: incorrect HARTSLAG_MEET_METHODE,Regelmatige pulsaties,Normale hartfrequentie,2025-02-10T12:40:00.000,PASS-HARTSLAG_MEET_METHODE is wrong
+999990214,66,2025-02-10T12:40:00.000,,TEST: incorrect HARTSLAG_REGELMATIGHEID,WrongValue,,2025-02-10T12:40:00.000,PASS-HARTSLAG_REGELMATIGHEID is wrong
+999990615,69,2025-02-10T12:40:00.000,Auscultatie,TEST: incorrect INTERPRETATIE_FREQUENTIE,Regelmatige pulsaties,WrongValue,2025-02-10T12:40:00.000,PASS-INTERPRETATIE_FREQUENTIE is wrong
