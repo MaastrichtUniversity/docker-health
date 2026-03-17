@@ -1,0 +1,16 @@
+BSN,ADEMFREQUENTIE_WAARDE (/min),ADEMHALING_DATUM_TIJD,RITME,DIEPTE,AFWIJKEND_ADEMHALINGSPATROON,TOELICHTING,GEEN_EXTRA_ZUURSTOF_TOEDIENING,FLOW_RATE_WAARDE,FLOW_RATE_UNIT,FIO2,PRODUCT_TYPE,DATE_TIME,TEST_COMMENTS
+999999801,50,2023-11-14T15:50:14.321,Normaal ademhalingsritme,Oppervlakkige ademhaling,Apneuse,Laura,True,,,,Venturi-masker,2023-11-14T15:50:14.321,PASS-Test duplication check
+999999801,60,2024-11-14T15:50:14.321,Abnormaal ademhalingsritme,Normale ademhalingsdiepte,Clusterademhaling,Laura,True,,,,Venturi-masker,2024-11-14T15:50:14.321,PASS-Test duplication check
+999999801,50,2023-11-14T15:50:14.321,Normaal ademhalingsritme,Oppervlakkige ademhaling,Apneuse,Laura,True,,,,Venturi-masker,2023-11-14T15:50:14.321,FAIL-Test duplication check
+999990202,70,2005-01-19T09:43:13.174,Other,Diepe ademhaling,Atactische ademhaling ,Max data,False,2,l/min,0.29,Neusbril,2005-01-19T09:43:13.174,PASS-Test data max
+999990603,,2023-12-31T23:59:59.871,,,,,,,,,,2023-12-31T23:59:59.871,PASS-Test data min
+999991504,,,,,,,,,,,,,FAIL-Test data none
+999991905,,,,,,,,,,,,2024-10-10T10:10:10.410,FAIL-Test data empty
+999992806,60,2016-10-02T06:30:00.046,Abnormaal ademhalingsritme,Variërende ademhalingsdiepte,Cheyne-Stokes-ademhaling,Bob,,,,,Non-rebreathing mask,2016-10-02T06:30:00.046,PASS
+999993707,61,2024-10-10T10:10:10.410,Other,Other,Other,,False,"1000,02",ml/min,,Other,2024-10-10T10:10:10.410,PASS
+999994608,62,2016-10-02T06:30:00.046,Normaal ademhalingsritme,,,Sportvrouw,,,,,,,FAIL-DATE_TIME is empty
+999995509,63,1996-05-42T17:04:55.941,Abnormaal ademhalingsritme,,,Sportman,,,,,,1996-05-42T17:04:55.941,FAIL-DATE_TIME has a wrong datetime format (wrong day value)
+999990810,15,,Other,,,,,,,,,2022-04-01T18:06:22.000,FAIL-MISSING ADEMHALING_DATUM_TIJD
+999992211,65,2008-07-13T05:38:29.395,Normaal ademhalingsritme,,,"Test:  If GeenExtraZuurstofToediening is True, Flow rate and FIO2 should not be recorded",True,123,ml/min,0.5,,2008-07-13T05:38:29.395,PASS-Test GeenExtraZuurstofToediening
+999990512,66,2005-09-28T22:40:32.518,WrongValue,,,"Test: Flow Rate >= 0 and <= 50.0 l/min ,  FiO2 between >= 0 and <= 1",False,60,l/min,20,,2005-09-28T22:40:32.518,PASS-Test incorrect range Flow Rate and FIO2
+999990913,201,2022-04-01T18:06:22.000,,,,"Test: Flow rate >= 0 and <= 50000.0 ml/min, Ademfrequentie >= 0 and <= 200",,6000,ml/min,"0,9",,2022-04-01T18:06:22.000,PASS-Test incorrect range Flow Rate abd Ademfrequentie
