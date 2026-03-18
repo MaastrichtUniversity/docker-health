@@ -2,7 +2,7 @@ BSN,ADEMFREQUENTIE (/min),ADEMHALING_DATUM_TIJD,RITME,DIEPTE,AFWIJKEND_ADEMHALIN
 999999801,50,2023-11-14T15:50:14.321,Normaal ademhalingsritme,Oppervlakkige ademhaling,Apneuse,Laura,True,,,,Venturi-masker,2023-11-14T15:50:14.321,PASS-Test duplication check
 999999801,60,2024-11-14T15:50:14.321,Abnormaal ademhalingsritme,Normale ademhalingsdiepte,Clusterademhaling,Laura,True,,,,Venturi-masker,2024-11-14T15:50:14.321,PASS-Test duplication check
 999999801,50,2023-11-14T15:50:14.321,Normaal ademhalingsritme,Oppervlakkige ademhaling,Apneuse,Laura,True,,,,Venturi-masker,2023-11-14T15:50:14.321,FAIL-Test duplication check
-999990202,70,2005-01-19T09:43:13.174,Other,Diepe ademhaling,Atactische ademhaling ,Max data,False,2,l/min,0.29,Neusbril,2005-01-19T09:43:13.174,PASS-Test data max
+999990202,70,2005-01-19T09:43:13.174,Other,Diepe ademhaling,Atactische ademhaling,Max data,False,2,l/min,0.29,Neusbril,2005-01-19T09:43:13.174,PASS-Test data max
 999990603,,2023-12-31T23:59:59.871,,,,,,,,,,2023-12-31T23:59:59.871,PASS-Test data min
 999991504,,,,,,,,,,,,,FAIL-Test data none
 999991905,,,,,,,,,,,,2024-10-10T10:10:10.410,FAIL-Test data empty
