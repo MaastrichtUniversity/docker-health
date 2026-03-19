@@ -19,18 +19,18 @@ Each node in the federated network represents a Dutch health organization. The c
 
 The implementation relies on the following repositories:
 
-- [dh-hdp-zib-templates](https://github.com/um-datahub/dh-hdp-zib-templates/tree/2024.1): OpenEHR templates matching the
+- [dh-hdp-zib-templates](https://github.com/um-datahub/dh-hdp-zib-templates/tree/2026.1): OpenEHR templates matching the
   ZIBs
-- [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2024.1): ETL workflow for loading data into a CDR
+- [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2026.1): ETL workflow for loading data into a CDR
 - [dh-hdp-etl-utils](https://github.com/MaastrichtUniversity/dh-hdp-etl-utils): A package to share ETL utils classes and
   functions between different code bases
-- [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest/tree/2024.1): REST api for data
+- [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest/tree/2026.1): REST api for data
   class transformation into openEHR compositions
-- [dh-hdp-terminology-server-proxy](https://github.com/MaastrichtUniversity/dh-hdp-terminology-server-proxy/tree/2024.1): Connection to the terminology server
-- [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api/tree/2024.1): REST api service
+- [dh-hdp-terminology-server-proxy](https://github.com/MaastrichtUniversity/dh-hdp-terminology-server-proxy/tree/2026.1): Connection to the terminology server
+- [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api/tree/2026.1): REST api service
   for querying across a federation of CDRs
-- [dh-hdp-portal](https://github.com/MaastrichtUniversity/dh-hdp-portal/tree/2024.1): Node User Interface service
-- [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2024.1): Jupyter notebooks for data
+- [dh-hdp-portal](https://github.com/MaastrichtUniversity/dh-hdp-portal/tree/2026.1): Node User Interface service
+- [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2026.1): Jupyter notebooks for data
   exploration
 
 ## Pre-requisites
@@ -346,7 +346,7 @@ Follow these manual steps to deploy the stack in your local Minikube manually:
    ```bash
    eval $(minikube -p minukube docker-env)
    export ENV_TAG=latest
-   export MAVEN_VERSION=3.9.11
+   export MAVEN_VERSION=3.9.14
    ```
 
    1. Pull external images into Minikube's Docker daemon
