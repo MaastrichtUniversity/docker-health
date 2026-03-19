@@ -21,13 +21,34 @@ spec:
           - sh
           - -c
           - |
-            for i in $(seq 1 20); do
-              echo "waiting"
-              sleep 10
+            N_ATTEMPTS_EHRBASE=20
+            N_SLEEP_EHRBASE=10
+            N_ATTEMPTS_TRANSFORM=10
+            N_SLEEP_TRANSFORM=5
+            
+            # Step 1: Wait for EHRbase
+            for i in $(seq 1 $N_ATTEMPTS_EHRBASE); do
+              echo "Waiting for EHRbase"
+              sleep $N_SLEEP_EHRBASE
               if wget -T5 -qO- -Y off test-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then
-                exit 0
+                echo "EHRbase is healthy!"
+            
+                # Step 2: Wait for Transform REST
+                for j in $(seq 1 $N_ATTEMPTS_TRANSFORM); do
+                  echo "Waiting for Transform REST"
+                  sleep $N_SLEEP_TRANSFORM
+                  if wget -T5 -qO- -Y off test-transform-rest.dh-health:8080/management/health | grep UP; then
+                    echo "Transform REST is healthy!"
+                    exit 0
+                  fi
+                done
+            
+                echo "Transform REST failed health check after $N_ATTEMPTS_TRANSFORM attempts"
+                exit 1
               fi
             done
+            
+            echo "EHRbase failed health check after $N_ATTEMPTS_EHRBASE attempts"
             exit 1
       containers:
       - name: test-etl-zib-pipeline
