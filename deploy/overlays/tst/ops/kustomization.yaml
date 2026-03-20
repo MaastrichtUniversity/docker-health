@@ -10,7 +10,7 @@ resources:
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/elk
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 
 secretGenerator:
 # Filebeat
@@ -61,22 +61,9 @@ patches:
         path: /spec/template/spec/imagePullSecrets
         value:
         - name: registry-credentials
-  - target:
-      kind: Job
-    patch: |-
-      - op: replace
-        path: /spec/template/spec/imagePullSecrets
-        value:
-        - name: registry-credentials
   # imagePullPolicy patches
   - target:
       kind: Deployment
-    patch: |-
-      - op: replace
-        path: /spec/template/spec/containers/0/imagePullPolicy
-        value: IfNotPresent
-  - target:
-      kind: Job
     patch: |-
       - op: replace
         path: /spec/template/spec/containers/0/imagePullPolicy
