@@ -57,6 +57,9 @@ images:
 - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
   newTag: '2026.1.1'
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 secretGenerator:
   - name: etl-data-encryption-passphrase
     namespace: dh-health
