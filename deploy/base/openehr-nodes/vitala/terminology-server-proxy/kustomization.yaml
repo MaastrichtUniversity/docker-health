@@ -5,9 +5,6 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- ehrbase
-- ehrdb
-- etl-zib
-- openehrtool
-- terminology-server-proxy
-- transform-rest
+  - deployment.yaml
+  - service.yaml
+  - configmap.yaml

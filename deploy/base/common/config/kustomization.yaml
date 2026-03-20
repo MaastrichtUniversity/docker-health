@@ -9,6 +9,7 @@ resources:
 - ehrbase.yaml
 - etl.yaml
 - openehrtool.yaml
+- terminology-server-proxy.yaml
 - timezone.yaml
 - transform.yaml
 - zib-templates.yaml
