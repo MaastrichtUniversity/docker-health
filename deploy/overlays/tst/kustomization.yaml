@@ -4,23 +4,23 @@ namespace: dh-health
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-test
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/portal
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 
 resources:
 # NEW vault secret operator
@@ -45,6 +45,15 @@ resources:
 components:
 # Federation service role
 - ./roles
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+secretGenerator:
+  - name: etl-data-encryption-passphrase
+    namespace: dh-health
+    literals:
+      - passphrase=foobar
 
 patches:
 # 'Global' patches that apply to all of one sort
@@ -167,16 +176,6 @@ patches:
 - path: patches/deployment/jupyter-add-demo-data.yaml
 # Delete TEST node configs
 - path: patches/deployment/jupyter-delete-test-config.yaml
-
-# Docker Hub official repository secret patch
-- target:
-    kind: Job
-    name: create-tls-secrets
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/imagePullSecrets
-      value:
-      - name: dockerhub-registry-credentials
 
 configMapGenerator:
 - name: proxy-config

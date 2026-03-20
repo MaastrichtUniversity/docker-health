@@ -65,6 +65,11 @@ spec:
         - configMapRef:
             name: mumc-etl-config
         env:
+        - name: DATA_ENCRYPTION_PASSPHRASE
+          valueFrom:
+            secretKeyRef:
+              name: etl-data-encryption-passphrase
+              key: passphrase
         - name: EHRBASE_USERNAME
           valueFrom:
             secretKeyRef:

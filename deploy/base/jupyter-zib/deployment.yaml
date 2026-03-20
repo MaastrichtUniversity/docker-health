@@ -48,6 +48,11 @@ spec:
               secretKeyRef:
                 name: jupyter-zib-creds
                 key: SERVER_APP_TOKEN
+          - name: DATA_ENCRYPTION_PASSPHRASE
+            valueFrom:
+              secretKeyRef:
+                name: etl-data-encryption-passphrase
+                key: passphrase
           # ENVIDA-node
           - name: ENVIDA__EHRBASE_USERNAME
             valueFrom:

@@ -6,13 +6,13 @@ metadata:
 data:
   NODENAME: mumc
   DATASET_FOLDER_NAME: mumc-demo-data
-  SOURCE_SYSTEM_ID: SAP
+  SOURCE_SYSTEM_ID: SAP_ZIBDOCDATA # SAP
   LOGGER_FILENAME: logs/mumc/etl-zib.log
   EHRBASE_BASE_URL: http://mumc-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
   TRANSFORM_SPRING_BASE_URL: http://mumc-transform-rest.dh-health:8080
   WRITE_COMPOSITION: "true"
   # Specify the SUBJECT_IDS for MUMC manually as a control.
-  SUBJECT_IDS: '["001645201","083197102","339055303"]'
+  SUBJECT_IDS: '["999999801","999990202","999990603"]'
   TEMPLATE_IDS: |
     [
       "DataHub-AlcoholGebruik-2024",
@@ -22,6 +22,7 @@ data:
       "DataHub-FunctieHoren-2024",
       "DataHub-FunctieZien-2024",
       "DataHub-Gezinssituatie-2024",
+      "DataHub-Hartfrequentie-2024",
       "DataHub-InformedConsent",
       "DataHub-Lichaamsgewicht-2024",
       "DataHub-Lichaamslengte-2024",

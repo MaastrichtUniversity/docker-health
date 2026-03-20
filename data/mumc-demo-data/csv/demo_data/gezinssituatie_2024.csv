@@ -1,0 +1,4 @@
+BSN,BURGERLIJKE_STAAT,GEZINSSAMENSTELLING,AANTAL_KINDEREN,AANTAL_KINDEREN_INWONEND,ZORGTAAK,TOELICHTING_GEZINSSITUATIE,GEBOORTEDATUM_KIND,INWONEND_KIND,TOELICHTING_KIND,DATE_TIME
+999999801,Unmarried,Inwonende meerderjarige kinderen,1,0,,kind uitwonend,1989-04-22,False,kind in buitenland,2007-08-29T09:52:48.359
+999990202,Domestic partner,Woont met ouders,0,0,zorgt voor ouder,krijgen hulp bij zorg,,False,,2017-08-29T09:52:48.693
+999990603,Widowed,Woont met gezin,2,0,normale zorg voor gezin,,2011-05-17,False,,2001-02-05T09:52:48.364

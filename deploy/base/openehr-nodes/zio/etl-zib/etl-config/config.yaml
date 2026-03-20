@@ -6,7 +6,7 @@ metadata:
 data:
   NODENAME: zio
   DATASET_FOLDER_NAME: zio-demo-data
-  SOURCE_SYSTEM_ID: Tetra
+  SOURCE_SYSTEM_ID: DEMO_DATA # Tetra
   LOGGER_FILENAME: logs/zio/etl-zib.log
   EHRBASE_BASE_URL: http://zio-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
   TRANSFORM_SPRING_BASE_URL: http://zio-transform-rest.dh-health:8080
@@ -23,6 +23,7 @@ data:
       "DataHub-FunctieHoren-2024",
       "DataHub-FunctieZien-2024",
       "DataHub-Gezinssituatie-2024",
+      "DataHub-Hartfrequentie-2024",
       "DataHub-InformedConsent",
       "DataHub-Lichaamsgewicht-2024",
       "DataHub-Lichaamslengte-2024",
