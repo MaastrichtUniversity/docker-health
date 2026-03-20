@@ -4,5 +4,6 @@ kind: Component
 components:
   - ehrbase-gateway
   - openehrtool-gateway
+  - terminology-server-proxy-gateway
   - transform-rest-gateway
   - secrets

@@ -3,13 +3,9 @@ kind: Kustomization
 
 resources:
   - ../../../base/common
-  - ../../../base/terminology-server-proxy
 
 components:
-  - components/service-discovery # For the service registry
-  - components/terminology-server-proxy
-  - components/federation-secret
-  - components/data-encryption-secret
+  - components
 
 patches:
   # imagePullPolicy patches
