@@ -34,7 +34,7 @@ spec:
         command:
           - "/wait-for-service.sh"
           - "http://terminology-server-proxy.dh-health:8080/management/health"
-          - "terminology-server-proxy"       
+          - "Terminology server proxy"       
       containers:
       - name: test-etl-zib-pipeline
         image: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline:latest

@@ -14,42 +14,27 @@ spec:
     spec:
       restartPolicy: Never
       initContainers:
-      - name: wait-mumc-ehrbase-healthy
-        image: busybox:1.28
+      - name: wait-ehrbase
+        image: registry.prod.dh.unimaas.nl/docker-health/init-container:latest
         imagePullPolicy: IfNotPresent
         command:
-          - sh
-          - -c
-          - |
-            N_ATTEMPTS_EHRBASE=20
-            N_SLEEP_EHRBASE=10
-            N_ATTEMPTS_TRANSFORM=10
-            N_SLEEP_TRANSFORM=5
-            
-            # Step 1: Wait for EHRbase
-            for i in $(seq 1 $N_ATTEMPTS_EHRBASE); do
-              echo "Waiting for EHRbase"
-              sleep $N_SLEEP_EHRBASE
-              if wget -T5 -qO- -Y off mumc-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then
-                echo "EHRbase is healthy!"
-              
-                # Step 2: Wait for Transform REST
-                for j in $(seq 1 $N_ATTEMPTS_TRANSFORM); do
-                  echo "Waiting for Transform REST"
-                  sleep $N_SLEEP_TRANSFORM
-                  if wget -T5 -qO- -Y off mumc-transform-rest.dh-health:8080/management/health | grep UP; then
-                    echo "Transform REST is healthy!"
-                    exit 0
-                  fi
-                done
-                
-                echo "Transform REST failed health check after $N_ATTEMPTS_TRANSFORM attempts"
-                exit 1
-              fi
-            done
-            
-            echo "EHRbase failed health check after $N_ATTEMPTS_EHRBASE attempts"
-            exit 1
+          - "/wait-for-service.sh"
+          - "http://mumc-ehrbase.dh-health:8080/ehrbase/management/health"
+          - "EHRbase"
+      - name: wait-transform-rest
+        image: registry.prod.dh.unimaas.nl/docker-health/init-container:latest
+        imagePullPolicy: IfNotPresent
+        command:
+          - "/wait-for-service.sh"
+          - "http://mumc-transform-rest.dh-health:8080/management/health"
+          - "Transform REST"    
+      - name: wait-terminology-proxy
+        image: registry.prod.dh.unimaas.nl/docker-health/init-container:latest
+        imagePullPolicy: IfNotPresent
+        command:
+          - "/wait-for-service.sh"
+          - "http://terminology-server-proxy.dh-health:8080/management/health"
+          - "Terminology server proxy"
       containers:
       - name: mumc-etl-zib-pipeline
         image: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline:latest
