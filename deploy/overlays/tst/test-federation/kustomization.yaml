@@ -43,19 +43,28 @@ components:
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-test
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
-  newTag: '2024.1.10'
+  newTag: '2026.1.1'
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+secretGenerator:
+  - name: etl-data-encryption-passphrase
+    namespace: dh-health
+    literals:
+      - passphrase=foobar
 
 patches:
 # imagePullPolicy patches
@@ -102,9 +111,10 @@ patches:
       path: /spec/storageClassName
       value: local-path
 
-# Proxy patches
+# Proxy patches (non-federation-rest deployments)
 - target:
     kind: Deployment
+    name: ehrbase|ehrdb|transform-rest|etl-zib|terminology-server
   patch: |-
     - op: add
       path: "/spec/template/spec/containers/0/env/-"
@@ -121,15 +131,11 @@ patches:
       value:
         name: no_proxy
         value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/12,10.43.0.1,10.43.0.10"
+# Proxy patches (federation-rest deployments - proxy disabled)
 - target:
     kind: Deployment
     name: .*-federation-rest
   patch: |-
-    - op: add
-      path: "/spec/template/spec/containers/0/env/-"
-      value:
-        name: HTTP_PROXY
-        value: ""
     - op: add
       path: "/spec/template/spec/containers/0/env/-"
       value:
@@ -138,12 +144,22 @@ patches:
     - op: add
       path: "/spec/template/spec/containers/0/env/-"
       value:
-        name: HTTPS_PROXY
+        name: https_proxy
         value: ""
     - op: add
       path: "/spec/template/spec/containers/0/env/-"
       value:
-        name: https_proxy
+        name: no_proxy
+        value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/12,10.43.0.1,10.43.0.10"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: HTTP_PROXY
+        value: ""
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: HTTPS_PROXY
         value: ""
 
 # Patch the data mounts to use the GIT PVC
