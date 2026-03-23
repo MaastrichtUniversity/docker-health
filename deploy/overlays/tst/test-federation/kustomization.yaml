@@ -114,7 +114,7 @@ patches:
 # Proxy patches (non-federation-rest deployments)
 - target:
     kind: Deployment
-    name: ehrbase|ehrdb|transform-rest|etl-zib|terminology-server
+    name: ehrbase|ehrdb|transform-rest|etl-zib|terminology-server-proxy
   patch: |-
     - op: add
       path: "/spec/template/spec/containers/0/env/-"

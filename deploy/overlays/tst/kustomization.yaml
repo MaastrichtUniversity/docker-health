@@ -176,6 +176,7 @@ patches:
 - path: patches/deployment/jupyter-add-demo-data.yaml
 # Delete TEST node configs
 - path: patches/deployment/jupyter-delete-test-config.yaml
+- path: patches/config/mumc-etl-config-patch.yaml
 
 configMapGenerator:
 - name: proxy-config
