@@ -42,21 +42,25 @@ components:
   - ../node-envida/components/ehrbase-gateway
   - ../node-envida/components/federation-rest-gateway
   - ../node-envida/components/transform-rest-gateway
+  - ../node-envida/components/terminology-server-proxy-gateway
   - ../node-envida/components/secrets
   # MUMC-node
   - ../node-mumc/components/ehrbase-gateway
   - ../node-mumc/components/federation-rest-gateway
   - ../node-mumc/components/transform-rest-gateway
+  - ../node-mumc/components/terminology-server-proxy-gateway
   - ../node-mumc/components/secrets
   # VITALA-node
   - ../node-vitala/components/ehrbase-gateway
   - ../node-vitala/components/federation-rest-gateway
   - ../node-vitala/components/transform-rest-gateway
+  - ../node-vitala/components/terminology-server-proxy-gateway
   - ../node-vitala/components/secrets
   # ZIO-node
   - ../node-zio/components/ehrbase-gateway
   - ../node-zio/components/federation-rest-gateway
   - ../node-zio/components/transform-rest-gateway
+  - ../node-zio/components/terminology-server-proxy-gateway
   - ../node-zio/components/secrets
 
 patches:

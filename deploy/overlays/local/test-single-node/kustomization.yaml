@@ -14,6 +14,7 @@ components:
   # TEST-node
   - ../node-test/components/ehrbase-gateway
   - ../node-test/components/transform-rest-gateway
+  - ../node-test/components/terminology-server-proxy-gateway
   - ../node-test/components/secrets
 
 patches:
