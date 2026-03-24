@@ -15,6 +15,7 @@ data:
   SUBJECT_IDS: '["999999801","999990202","999990603"]'
   TEMPLATE_IDS: |
     [
+      "DataHub-Ademhaling-2024",
       "DataHub-AlcoholGebruik-2024",
       "DataHub-Bloeddruk-2024",
       "DataHub-BurgerlijkeStaat-2024",

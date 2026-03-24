@@ -18,6 +18,7 @@ data:
     []
   TEMPLATE_IDS: |
     [
+      "DataHub-Ademhaling-2024",
       "DataHub-AlcoholGebruik-2024",
       "DataHub-Bloeddruk-2024",
       "DataHub-BurgerlijkeStaat-2024",
