@@ -101,5 +101,6 @@ target "terminology-server-proxy" {
 target "elk" {
   dockerfile = "Dockerfile"
   tags = ["${ENV_REGISTRY_HOST}/docker-health/elk:${ENV_TAG}"]
+  target = "development"
   context = "./elk"
 }

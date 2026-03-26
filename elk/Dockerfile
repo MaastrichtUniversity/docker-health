@@ -1,4 +1,4 @@
-FROM sebp/elk:9.1.5
+FROM sebp/elk:9.1.5 AS base
 
 ENV LOGSTASH_HOME=/opt/logstash
 
@@ -29,6 +29,7 @@ RUN rm -r /etc/logstash/conf.d/ && mkdir /etc/logstash/conf.d/
 
 ADD ./elasticsearch.node1.yml /etc/elasticsearch/elasticsearch.yml
 ADD ./logstash-config /etc/logstash/conf.d
+RUN rm "/etc/logstash/conf.d/99 - Output.dev.conf"
 
 ## Add customized logstash patterns
 ADD ./RIT.pattern ${LOGSTASH_HOME}/patterns/RIT
@@ -53,5 +54,14 @@ RUN chmod +x /etc/cron.monthly/retention.sh
 ### index templates
 ADD ./template.*.json /tmp/
 
+
+CMD [ "/usr/local/bin/start.sh" ]
+
+FROM base AS development
+
+ADD ./elasticsearch.node1.dev.yml /etc/elasticsearch/elasticsearch.yml
+RUN rm "/etc/logstash/conf.d/99 - Output.conf"
+ADD ["logstash-config/99 - Output.dev.conf", "/etc/logstash/conf.d/99 - Output.conf"]
+ADD ./start.dev.sh /usr/local/bin/start.sh
 
 CMD [ "/usr/local/bin/start.sh" ]
