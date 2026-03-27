@@ -4,6 +4,10 @@ metadata:
   name: zib-templates-config
   namespace: dh-health
 data:
+  TEMPLATES__ADEMHALING2024__ID: "DataHub-Ademhaling-2024"
+  TEMPLATES__ADEMHALING2024__SEM_VER: "0.1.0"
+  TEMPLATES__ADEMHALING2024__API_ROUTE: "zib/Ademhaling2024"
+  TEMPLATES__ADEMHALING2024__FILENAME: "data/templates/DataHub-Ademhaling-2024.opt"
   TEMPLATES__ALCOHOLGEBRUIK2024__ID: "DataHub-AlcoholGebruik-2024"
   TEMPLATES__ALCOHOLGEBRUIK2024__SEM_VER: "0.1.0"
   TEMPLATES__ALCOHOLGEBRUIK2024__API_ROUTE: "zib/AlcoholGebruik2024"
