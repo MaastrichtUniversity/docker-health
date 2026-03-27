@@ -9,25 +9,35 @@ spec:
     spec:
       restartPolicy: Never
       initContainers:
-      - name: wait-test-ehrbase-healthy
-        image: busybox:1.28
-        imagePullPolicy: Never
+      # The Terminology server proxy is a service dependency for both EHRbase and Transform-rest, so it is placed
+      # as the first init container.
+      # Note: It is an indirect check. If necessary, the service orchestration could be improved by placing
+      # the wait-terminology-proxy check directly in the deployment.yaml of EHRbase and Transform-rest.
+      - name: wait-terminology-proxy
+        image: registry.prod.dh.unimaas.nl/docker-health/init-container:latest
+        imagePullPolicy: IfNotPresent
         command:
-          - sh
-          - -c
-          - |
-            for i in $(seq 1 20); do
-              echo "waiting"
-              sleep 10
-              if wget -T5 -qO- -Y off test-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then
-                exit 0
-              fi
-            done
-            exit 1
+          - "/wait-for-service.sh"
+          - "http://test-terminology-server-proxy.dh-health:8080/management/health"
+          - "Terminology server proxy"
+      - name: wait-ehrbase
+        image: registry.prod.dh.unimaas.nl/docker-health/init-container:latest
+        imagePullPolicy: IfNotPresent
+        command:
+          - "/wait-for-service.sh"
+          - "http://test-ehrbase.dh-health:8080/ehrbase/management/health"
+          - "EHRbase"
+      - name: wait-transform-rest
+        image: registry.prod.dh.unimaas.nl/docker-health/init-container:latest
+        imagePullPolicy: IfNotPresent
+        command:
+          - "/wait-for-service.sh"
+          - "http://test-transform-rest.dh-health:8080/management/health"
+          - "Transform REST"
       containers:
       - name: test-single-node-runner
         image: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test:latest
-        # Uncomment the following lines to overwrite the Test Docker image command, and execute the test with different
+        # Uncomment and replace the following lines to overwrite the Test Docker image command, and execute the test with different
         # options of your choice and/or execute only one test file.
 #        command: ["pytest"]
 #        args:
@@ -36,7 +46,7 @@ spec:
 #          - log_cli=true
 #          - --log-cli-level=INFO
 #          - --verbose
-#          - /code/tests/test_vermogen_tot_zich_kleden.py
+#          - /code/tests/demo_data/test_vermogen_tot_zich_kleden.py
         envFrom:
         - configMapRef:
             name: dry-run-config
@@ -85,16 +95,16 @@ spec:
               name: test-transform-creds
               key: password
         volumeMounts:
-        - name: demo-data
+        - name: data
           mountPath: /code/data/test-demo-data
-          subPath: src/data/test-demo-data
         - name: etl-logs
           mountPath: /code/logs/test
           subPath: test/etl-test-single-node
       volumes:
-      - name: demo-data
-        persistentVolumeClaim:
-          claimName: git-repo-pvc
+      - name: data
+        hostPath:
+          path: /mnt/data/test-demo-data
+          type: Directory
       - name: etl-logs
         persistentVolumeClaim:
           claimName: log-pvc
