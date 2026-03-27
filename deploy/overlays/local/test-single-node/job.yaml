@@ -9,21 +9,31 @@ spec:
     spec:
       restartPolicy: Never
       initContainers:
-      - name: wait-test-ehrbase-healthy
-        image: busybox:1.28
-        imagePullPolicy: Never
+      # The Terminology server proxy is a service dependency for both EHRbase and Transform-rest, so it is placed
+      # as the first init container.
+      # Note: It is an indirect check. If necessary, the service orchestration could be improved by placing
+      # the wait-terminology-proxy check directly in the deployment.yaml of EHRbase and Transform-rest.
+      - name: wait-terminology-proxy
+        image: registry.prod.dh.unimaas.nl/docker-health/init-container:latest
+        imagePullPolicy: IfNotPresent
         command:
-          - sh
-          - -c
-          - |
-            for i in 1 2 3 4 5 6 7 8 9; do
-              echo "waiting"
-              sleep 10
-              if wget -T5 -qO- -Y off test-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then
-                exit 0
-              fi
-            done
-            exit 1
+          - "/wait-for-service.sh"
+          - "http://terminology-server-proxy.dh-health:8080/management/health"
+          - "Terminology server proxy"
+      - name: wait-ehrbase
+        image: registry.prod.dh.unimaas.nl/docker-health/init-container:latest
+        imagePullPolicy: IfNotPresent
+        command:
+          - "/wait-for-service.sh"
+          - "http://test-ehrbase.dh-health:8080/ehrbase/management/health"
+          - "EHRbase"
+      - name: wait-transform-rest
+        image: registry.prod.dh.unimaas.nl/docker-health/init-container:latest
+        imagePullPolicy: IfNotPresent
+        command:
+          - "/wait-for-service.sh"
+          - "http://test-transform-rest.dh-health:8080/management/health"
+          - "Transform REST"
       containers:
       - name: test-single-node-runner
         image: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test:latest
