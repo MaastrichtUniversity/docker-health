@@ -4,13 +4,11 @@ namespace: dh-health-ops
 
 resources:
 - namespace.yaml
-- secrets.yaml
-- elk-gateway.yaml
 - ../../../base-ops
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/elk
-  newTag: '2026.1.1'
+  newTag: '2024.1.10'
 
 secretGenerator:
 # Filebeat
@@ -61,6 +59,13 @@ patches:
         path: /spec/template/spec/imagePullSecrets
         value:
         - name: registry-credentials
+  - target:
+      kind: Job
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/imagePullSecrets
+        value:
+        - name: registry-credentials
   # imagePullPolicy patches
   - target:
       kind: Deployment
@@ -68,22 +73,9 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/imagePullPolicy
         value: IfNotPresent
-  # Proxy patches
   - target:
-      kind: Deployment
+      kind: Job
     patch: |-
-      - op: add
-        path: "/spec/template/spec/containers/0/envFrom/-"
-        value:
-          configMapRef:
-            name: proxy-config
-
-configMapGenerator:
-- name: proxy-config
-  literals:
-    - HTTP_PROXY=http://proxy.unimaas.nl:3128
-    - http_proxy=http://proxy.unimaas.nl:3128
-    - HTTPS_PROXY=http://proxy.unimaas.nl:3128
-    - https_proxy=http://proxy.unimaas.nl:3128
-    - NO_PROXY=localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1
-    - no_proxy=localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: IfNotPresent

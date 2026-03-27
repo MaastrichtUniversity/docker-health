@@ -24,38 +24,26 @@ resources:
 - ./secrets.yaml
 # Base resources
 - ../../base/common
-- ../../base/federation-rest
-- ../../base/transform-rest
 - ../../base/jupyter-zib
 - ../../base/terminology-server-proxy
 # Envida-node
-- ../../base/openehr-nodes/envida/ehrbase
-- ../../base/openehr-nodes/envida/ehrdb
-- ../../base/openehr-nodes/envida/etl-config
-- ../../base/openehr-nodes/envida/etl-zib-pipeline
-- ../../base/openehr-nodes/envida/etl-zib-rest
-- ../../base/openehr-nodes/envida/portal
+- ../../base/openehr-nodes/envida
 # MUMC-node
-- ../../base/openehr-nodes/mumc/ehrbase
-- ../../base/openehr-nodes/mumc/ehrdb
-- ../../base/openehr-nodes/mumc/etl-config
-- ../../base/openehr-nodes/mumc/etl-zib-pipeline
-- ../../base/openehr-nodes/mumc/etl-zib-rest
-- ../../base/openehr-nodes/mumc/portal
+- ../../base/openehr-nodes/mumc
 # VITALA-node
-- ../../base/openehr-nodes/vitala/ehrbase
-- ../../base/openehr-nodes/vitala/ehrdb
-- ../../base/openehr-nodes/vitala/etl-config
-- ../../base/openehr-nodes/vitala/etl-zib-pipeline
-- ../../base/openehr-nodes/vitala/etl-zib-rest
-- ../../base/openehr-nodes/vitala/portal
+- ../../base/openehr-nodes/vitala
 # ZIO-node
-- ../../base/openehr-nodes/zio/ehrbase
-- ../../base/openehr-nodes/zio/ehrdb
-- ../../base/openehr-nodes/zio/etl-config
-- ../../base/openehr-nodes/zio/etl-zib-pipeline
-- ../../base/openehr-nodes/zio/etl-zib-rest
-- ../../base/openehr-nodes/zio/portal
+- ../../base/openehr-nodes/zio
+# Gateway resources
+- patches/gateway/common/jupyter.yaml
+- patches/gateway/envida/portal.yaml
+- patches/gateway/mumc/portal.yaml
+- patches/gateway/vitala/portal.yaml
+- patches/gateway/zio/portal.yaml
+
+components:
+# Federation service role
+- ./roles
 
 patches:
 # 'Global' patches that apply to all of one sort
@@ -93,38 +81,13 @@ patches:
   patch: |-
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
-      value: Always
+      value: IfNotPresent
 - target:
     kind: Job
   patch: |-
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
-      value: Always  
-
-
-# Ingress patches
-## Transform
-- path: patches/ingress/common/transform.yaml
-## Federation
-- path: patches/ingress/common/federation.yaml
-## Jupyter
-- path: patches/ingress/common/jupyter.yaml
-## Envida-node
-- path: patches/ingress/envida/ehrbase.yaml
-- path: patches/ingress/envida/etl-zib-rest.yaml
-- path: patches/ingress/envida/portal.yaml
-## MUMC-node
-- path: patches/ingress/mumc/ehrbase.yaml
-- path: patches/ingress/mumc/etl-zib-rest.yaml
-- path: patches/ingress/mumc/portal.yaml
-## VITALA-node
-- path: patches/ingress/vitala/ehrbase.yaml
-- path: patches/ingress/vitala/etl-zib-rest.yaml
-- path: patches/ingress/vitala/portal.yaml
-## ZIO-node
-- path: patches/ingress/zio/ehrbase.yaml
-- path: patches/ingress/zio/etl-zib-rest.yaml
-- path: patches/ingress/zio/portal.yaml
+      value: IfNotPresent  
 
 # Patch the data mounts to use the GIT PVC
 - path: patches/job/envida-etl-zib-delete-demo-data.yaml
@@ -139,10 +102,3 @@ patches:
 - path: patches/deployment/jupyter-add-demo-data.yaml
 # Delete TEST node configs
 - path: patches/deployment/jupyter-delete-test-config.yaml
-
-configMapGenerator:
-- name: portal-common-config
-  namespace: dh-health
-  behavior: merge
-  literals:
-    - NEXT_PUBLIC_FEDERATION_BASE_URL=https://federation.fehr.mumc.nl
