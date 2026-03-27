@@ -24,8 +24,6 @@ resources:
 - ./secrets.yaml
 # Base resources
 - ../../base/common
-- ../../base/federation-rest
-- ../../base/transform-rest
 - ../../base/jupyter-zib
 - ../../base/terminology-server-proxy
 # Envida-node
@@ -42,6 +40,10 @@ resources:
 - patches/gateway/mumc/portal.yaml
 - patches/gateway/vitala/portal.yaml
 - patches/gateway/zio/portal.yaml
+
+components:
+# Federation service role
+- ./roles
 
 patches:
 # 'Global' patches that apply to all of one sort
@@ -100,10 +102,3 @@ patches:
 - path: patches/deployment/jupyter-add-demo-data.yaml
 # Delete TEST node configs
 - path: patches/deployment/jupyter-delete-test-config.yaml
-
-configMapGenerator:
-- name: portal-common-config
-  namespace: dh-health
-  behavior: merge
-  literals:
-    - NEXT_PUBLIC_FEDERATION_BASE_URL=https://federation.fehr.amumc.nl
