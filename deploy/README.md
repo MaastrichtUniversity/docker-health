@@ -9,8 +9,7 @@ deploy/
 ├── base                         # Contains base Kubernetes resources for all environments
 │   ├── common                   # Common resources shared across services
 │   ├── jupyter-zib              # jupyter-zib service
-│   ├── openehr-nodes            # All existing openEHR node services
-│   └── terminology-server-proxy # terminology-server-proxy service
+│   └── openehr-nodes            # All existing openEHR node services
 ├── base-ops                     # Contains base Kubernetes resources for log monitoring
 │   ├── elk                      # elk service
 │   └── filebeat                 # filebeat service
@@ -31,7 +30,7 @@ deploy/
     - **node-{NODENAME}**: Overlay to deploy a specific node
     - **ops**: Overlay for elk log monitoring services
     - **shared**: Overlay for shared resources and components
-      (e.g. terminology server, federation secrets)
+      (e.g. federation secret, data-encryption secret)
   - Includes the following test overlays:
     - **test-single-node**: Job for running single-node tests
     - **test-federation**: Job for running federation tests
@@ -58,6 +57,8 @@ deploy/
   - Hosts available at: http://etl.{NODENAME}.{ENV}.dh.unimaas.nl
 - **transform-rest**: Performs transformation of data to openEHR composition via a REST api
   - Host available at: http://transform.{NODENAME}.{ENV}.dh.unimaas.nl
+- **terminology-server-proxy**: Proxy for connecting to the Dutch national terminology server
+  - Host available at: http://terminology.{NODENAME}.{ENV}.dh.unimaas.nl
 - **federation-rest**: Provides a federation REST api for querying data from multiple nodes
   - Host available at: http://federation.{NODENAME}.{ENV}.dh.unimaas.nl
 - **openehrtool**: Development tool for openEHR
@@ -67,7 +68,6 @@ deploy/
 
 ### Other services
 
-- **terminology-server-proxy**: Connection to the terminology server
 - **jupyter-zib**: Jupyter notebook for data analysis and visualization
   - Host available at: http://jupyter.{ENV}.dh.unimaas.nl
 

@@ -7,12 +7,14 @@ resources:
   - ../../../base/openehr-nodes/test/ehrbase
   - ../../../base/openehr-nodes/test/ehrdb
   - ../../../base/openehr-nodes/test/etl-zib/etl-config
+  - ../../../base/openehr-nodes/test/terminology-server-proxy
   - ../../../base/openehr-nodes/test/transform-rest
 
 components:
   # TEST-node
   - ../node-test/components/ehrbase-gateway
   - ../node-test/components/transform-rest-gateway
+  - ../node-test/components/terminology-server-proxy-gateway
   - ../node-test/components/secrets
 
 patches:

@@ -11,4 +11,5 @@ resources:
 - federation-rest
 - openehrtool
 - portal
+- terminology-server-proxy
 - transform-rest
