@@ -6,3 +6,4 @@ metadata:
 data:
   SERVER_NODENAME: vitala.server.dh.unimaas.nl
   DB_URL: jdbc:postgresql://vitala-ehrdb.dh-health:5432/ehrbase
+  VALIDATION_EXTERNALTERMINOLOGY_PROVIDER_FHIRTERMINOLOGYSERVER_URL: http://vitala-terminology-server-proxy.dh-health:8080/fhir

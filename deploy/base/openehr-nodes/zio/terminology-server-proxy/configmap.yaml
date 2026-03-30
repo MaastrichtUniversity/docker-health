@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zio-terminology-server-proxy-config
+  namespace: dh-health
+data:
+  TERMINOLOGY_LOGGER_FILENAME: "logs/zio/terminology-proxy.log"

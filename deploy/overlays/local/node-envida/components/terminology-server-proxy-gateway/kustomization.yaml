@@ -3,4 +3,3 @@ kind: Component
 
 resources:
   - terminology-gateway.yaml
-  - secrets.yaml

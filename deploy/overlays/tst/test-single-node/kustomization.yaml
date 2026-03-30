@@ -14,6 +14,7 @@ resources:
 - ../../../base/openehr-nodes/test/ehrdb
 - ../../../base/openehr-nodes/test/etl-zib/etl-config
 - ../../../base/openehr-nodes/test/transform-rest
+- ../../../base/openehr-nodes/test/terminology-server-proxy
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
@@ -21,6 +22,8 @@ images:
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
   newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
+  newTag: '2026.1.1'
+- name: registry.prod.dh.unimaas.nl/docker-health/init-containers
   newTag: '2026.1.1'
 
 patches:

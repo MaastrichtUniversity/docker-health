@@ -1,25 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: terminology-server-proxy
+  name: vitala-terminology-server-proxy
   namespace: dh-health
   labels:
-    app: terminology-server-proxy
+    app: vitala-terminology-server-proxy
 spec:
   selector:
     matchLabels:
-      app: terminology-server-proxy
+      app: vitala-terminology-server-proxy
   template:
     metadata:
       labels:
-        app: terminology-server-proxy
+        app: vitala-terminology-server-proxy
     spec:
       containers:
-      - name: terminology-server-proxy
+      - name: vitala-terminology-server-proxy
         image: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy:latest
         ports:
         - containerPort: 8080
         envFrom:
+          - configMapRef:
+              name: vitala-terminology-server-proxy-config
           - configMapRef:
               name: terminology-server-proxy-config
           - configMapRef:
@@ -38,10 +40,10 @@ spec:
                 name: terminology-server-proxy-creds
                 key: password
         volumeMounts:
-          - name: logs
-            mountPath: /opt/app/logs/terminology
-            subPath: terminology
+          - name: terminology-logs
+            mountPath: /opt/app/logs/vitala
+            subPath: vitala/terminology
       volumes:
-        - name: logs
+        - name: terminology-logs
           persistentVolumeClaim:
             claimName: log-pvc

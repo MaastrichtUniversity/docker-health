@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: envida-terminology-server-proxy-config
+  namespace: dh-health
+data:
+  TERMINOLOGY_LOGGER_FILENAME: "logs/envida/terminology-proxy.log"
