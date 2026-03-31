@@ -31,7 +31,6 @@ resources:
 # Base resources
 - ../../base/common
 - ../../base/jupyter-zib
-- ../../base/terminology-server-proxy
 # EHR-nodes
 - ../../base/openehr-nodes/envida
 - ../../base/openehr-nodes/mumc

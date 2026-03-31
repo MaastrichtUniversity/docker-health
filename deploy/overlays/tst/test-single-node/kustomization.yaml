@@ -8,7 +8,6 @@ resources:
 - job.yaml
 #- registry-secret.yaml
 - ../../../base/common
-- ../../../base/terminology-server-proxy
 ## TEST-node
 - ../../../base/openehr-nodes/test/ehrbase
 - ../../../base/openehr-nodes/test/ehrdb
