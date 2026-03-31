@@ -22,7 +22,7 @@ images:
   newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
   newTag: '2026.1.1'
-- name: registry.prod.dh.unimaas.nl/docker-health/init-containers
+- name: registry.prod.dh.unimaas.nl/docker-health/init-container
   newTag: '2026.1.1'
 
 patches:
