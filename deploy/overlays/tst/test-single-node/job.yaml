@@ -95,16 +95,16 @@ spec:
               name: test-transform-creds
               key: password
         volumeMounts:
-        - name: data
+        - name: demo-data
           mountPath: /code/data/test-demo-data
+          subPath: src/data/test-demo-data
         - name: etl-logs
           mountPath: /code/logs/test
           subPath: test/etl-test-single-node
       volumes:
-      - name: data
-        hostPath:
-          path: /mnt/data/test-demo-data
-          type: Directory
+      - name: demo-data
+        persistentVolumeClaim:
+          claimName: git-repo-pvc
       - name: etl-logs
         persistentVolumeClaim:
           claimName: log-pvc
