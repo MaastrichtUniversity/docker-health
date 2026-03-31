@@ -46,21 +46,21 @@ components:
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-test
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
 - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
 - name: registry.prod.dh.unimaas.nl/docker-health/init-container
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
 
 generatorOptions:
   disableNameSuffixHash: true
@@ -119,7 +119,7 @@ patches:
 # Proxy patches (non-federation-rest deployments)
 - target:
     kind: Deployment
-    name: ehrbase|ehrdb|transform-rest|etl-zib|terminology-server-proxy
+    name: .*-ehrbase|.*-ehrdb|.*-transform-rest|.*-etl-zib|.*-terminology-server-proxy
   patch: |-
     - op: add
       path: "/spec/template/spec/containers/0/env/-"
