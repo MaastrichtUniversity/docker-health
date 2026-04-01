@@ -1,0 +1,20 @@
+BSN,START_DATUM,STOP_DATUM,HOEVEELHEID,TOELICHTING,DRUGS_OF_GENEESMIDDEL_SOORT,DRUGS_GEBRUIK_STATUS,TOEDIENINGSWEG,DATE_TIME,TEST_COMMENTS
+999999801,2011-12-01,,1 g per dag,dagelijks drugs gebruiken,Cannabis,Huidige drugsgebruiker,,2023-11-14T15:50:14.321,PASS-Test duplication check
+999999801,2011-12-01,,1 g per dag,dagelijks drugs gebruiken,Cannabis,Huidige drugsgebruiker,,2024-11-14T15:50:14.321,PASS-Test duplication check
+999999801,2011-12-01,,1 g per dag,dagelijks drugs gebruiken,Cannabis,Huidige drugsgebruiker,,2023-11-14T15:50:14.321,FAIL-Test duplication check
+999990202,2000-01-01,2020-10,20–100 mg per dose,De patiënt gebruikte gedurende 20 jaar intensief drugs.,Heroïne,Ex-gebruiker van drugs,INTRAVENEUS,2024-11-14T15:50:14.321,PASS-Test data max
+999990603,,,,,,Heeft nooit drugs gebruikt,,2023-12-31T23:59:59.871,PASS-Test data min
+999991504,,,,,,,,,FAIL-Test data none
+999991905,,,,,,,,2025-01-02T15:00:00.000,FAIL-Test data empty
+999992806,,,10 mg per week,the patient has depression,Opioïdreceptoragonist,Huidige drugsgebruiker,,2026-02-01T10:00:00.000,PASS
+999993707,2015-02-20,,3x per week,take drugs during social events,Cannabis,Huidige drugsgebruiker,INHALATIE,2025-06-03T10:00:00.000,PASS
+999994608,2024-09-30,,,,,Huidige drugsgebruiker,,,FAIL-DATE_TIME is empty
+999995509,2024-09-30,,,,,Huidige drugsgebruiker,,WrongValue,FAIL-DATE_TIME has a wrong datetime format
+999990810,WrongValue,,,,,Gebruikt geen drugs,,2010-01-01T00:00:00.000,PASS-START_DATE has a wrong datetime format
+999992211,2011,2024-01-01,,,,Gebruikt geen drugs,,2010-01-01T00:00:00.000,PASS-START_DATE with year only
+999990512,,2011-12,,,,Ex-gebruiker van drugs,,2010-01-01T00:00:00.000,PASS-STOP_DATE with year+month only
+999990913,,,,,WrongValue,Huidige drugsgebruiker,,2016-10-02T06:30:00.046,PASS-DRUGS_OF_GENEESMIDDEL_SOORT is wrong
+999990214,2024-01-31,2025-01-31,,,,,INHALATIE,2024-12-01T10:30:00.000,FAIL-DRUGS_GEBRUIK_STATUS is missing
+999990615,2024-01-31,2025-01-31,,,Crack,WrongValue,,2024-12-01T10:30:00.000,FAIL-DRUGS_GEBRUIK_STATUS is wrong
+999991516,,,,,,Other,WrongValue,1989-01-01T00:00:00.253,PASS-TOEDIENINGSWEG is wrong
+999990317,2025-04-01,,weekly,,Cocaïne,Huidige drugsgebruiker,"INHALATIE,INTRAVENEUS",2010-01-01T00:00:00.000,PASS-Test multiple TOEDIENINGSWEG values
