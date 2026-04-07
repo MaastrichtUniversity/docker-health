@@ -27,7 +27,7 @@ RUN npm install -g elasticdump@${VER_ELASTICDUMP}
 RUN rm -r /etc/logstash/conf.d/ && mkdir /etc/logstash/conf.d/
 
 
-ADD ./elasticsearch.node1.yml /etc/elasticsearch/elasticsearch.yml
+ADD ./elasticsearch.node1.yml /opt/elasticsearch/config/elasticsearch.yml
 ADD ./logstash-config /etc/logstash/conf.d
 RUN rm "/etc/logstash/conf.d/99 - Output.dev.conf"
 

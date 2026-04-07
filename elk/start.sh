@@ -143,16 +143,10 @@ else
 
   # The following changes are necessary to run the automatic security setup
   # Copy default Elasticsearch users & roles configuration files to the $ES_PATH_CONF path
-  cp /opt/elasticsearch/config/users /etc/elasticsearch/
-  cp /opt/elasticsearch/config/users_roles /etc/elasticsearch/
-  cp /opt/elasticsearch/config/roles.yml /etc/elasticsearch/
-  cp /opt/elasticsearch/config/role_mapping.yml /etc/elasticsearch/
+  cp  -r /opt/elasticsearch/config/* /etc/elasticsearch
 
   # Give to the 'elasticsearch' user ownership and access to the users & roles configuration files
-  chown elasticsearch:elasticsearch /etc/elasticsearch/users
-  chown elasticsearch:elasticsearch /etc/elasticsearch/users_roles
-  chown elasticsearch:elasticsearch /etc/elasticsearch/roles.yml
-  chown elasticsearch:elasticsearch /etc/elasticsearch/role_mapping.yml
+  chown -R elasticsearch:elasticsearch /etc/elasticsearch
 
   # Give to the 'kibana' user ownership and access to the kibana configuration file
   chown kibana:kibana   /opt/kibana/config/kibana.yml
@@ -278,6 +272,12 @@ else
   fi
 
   service kibana start
+
+  # Enroll Kibana using the detached mode
+  ENROLLMENT_TOKEN=$(/opt/elasticsearch/bin/elasticsearch-create-enrollment-token --scope kibana)
+  /opt/kibana/bin/kibana-setup --enrollment-token "$ENROLLMENT_TOKEN"
+  service kibana restart
+
   OUTPUT_LOGFILES+="/var/log/kibana/kibana5.log "
 fi
 
@@ -402,11 +402,6 @@ echo "kibana: set default index patterns in kibana"
 
 # add logfile for retention script to OUTPUT_LOGFILES and crontab
 OUTPUT_LOGFILES+="/var/log/retention.log /var/log/crontab.log"
-
-echo "===================================="
-echo "Print kibana-verification-code"
-/opt/kibana/bin/kibana-verification-code
-echo "===================================="
 
 
 touch $OUTPUT_LOGFILES
