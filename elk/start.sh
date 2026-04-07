@@ -374,32 +374,6 @@ if [[ ! *"$KIBANA_STATUS"* =~ "OK" ]]; then
     exit 1
 fi
 
-## Aliases are added when creating an index (few lines above) from the index template
-# add aliases for indexes
-#echo "
-#elasticsearch: adding aliasses for indexes"
-#curl -H 'Content-Type: application/json' -XPOST 'http://localhost:9200/_aliases' -d '{ "actions" : [ { "add" : { "index" : ".*", "alias" : "config" } } ] }'
-curl -H 'Content-Type: application/json' -XPOST 'http://localhost:9200/_aliases' -d '{ "actions" : [ { "add" : { "index" : "idx-*", "alias" : "all" } } ] }'
-#curl -H 'Content-Type: application/json' -XPOST 'http://localhost:9200/_aliases' -d '{ "actions" : [ { "add" : { "index" : "idx-*", "alias" : "core", "filter": { "term": { "category" : "core" } } } } ] }'
-#curl -H 'Content-Type: application/json' -XPOST 'http://localhost:9200/_aliases' -d '{ "actions" : [ { "add" : { "index" : "idx-*", "alias" : "aux", "filter": { "term": { "category" : "aux" } } } } ] }'
-#curl -H 'Content-Type: application/json' -XPOST 'http://localhost:9200/_aliases' -d '{ "actions" : [ { "add" : { "index" : "idx-*", "alias" : "sys", "filter": { "term": { "category" : "sys" } } } } ] }'
-
-
-# import index patterns in kibana
-echo ""
-echo "kibana: import index patterns"
-curl -H "Content-Type: application/json" -H "kbn-xsrf: reporting" -XPOST 'http://localhost:5601/api/saved_objects/index-pattern/all'  -d '{ "attributes":{ "title":"all", "timeFieldName" : "@timestamp"} }'
-curl -H "Content-Type: application/json" -H "kbn-xsrf: reporting" -XPOST 'http://localhost:5601/api/saved_objects/index-pattern/core' -d '{ "attributes":{ "title":"core", "timeFieldName" : "@timestamp"} }'
-curl -H "Content-Type: application/json" -H "kbn-xsrf: reporting" -XPOST 'http://localhost:5601/api/saved_objects/index-pattern/aux'  -d '{ "attributes":{ "title":"aux", "timeFieldName" : "@timestamp"} }'
-curl -H "Content-Type: application/json" -H "kbn-xsrf: reporting" -XPOST 'http://localhost:5601/api/saved_objects/index-pattern/sys'  -d '{ "attributes":{ "title":"sys", "timeFieldName" : "@timestamp"} }'
-
-
-# set default pattern in kibana
-echo "kibana: set default index patterns in kibana"
-#ToDo: not found out yet how to set the default pattern...
-#curl -H 'Content-Type: application/json' -XPUT http://localhost:9200/.kibana/config/5.3.1 -d '{"defaultIndex" : "core", "discover:sampleSize:" : "10000" }'
-
-
 # add logfile for retention script to OUTPUT_LOGFILES and crontab
 OUTPUT_LOGFILES+="/var/log/retention.log /var/log/crontab.log"
 
