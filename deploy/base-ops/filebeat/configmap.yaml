@@ -37,6 +37,13 @@ data:
          - /usr/share/logs/envida/ehrbase/ehrbase.log
       tags: ["ENVIDA","EHRBASE"]
     - type: filestream
+      id: envida-terminology-proxy-logs
+      paths:
+        - /usr/share/logs/envida/terminology/terminology-proxy.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["ENVIDA","TERMINOLOGY_PROXY"]
+    - type: filestream
       id: envida-transform-rest-logs
       paths:
         - /usr/share/logs/envida/transform-rest/transform-rest.log
@@ -75,6 +82,13 @@ data:
       paths:
          - /usr/share/logs/mumc/ehrbase/ehrbase.log
       tags: ["MUMC","EHRBASE"]
+    - type: filestream
+      id: mumc-terminology-proxy-logs
+      paths:
+        - /usr/share/logs/mumc/terminology/terminology-proxy.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["MUMC","TERMINOLOGY_PROXY"]
     - type: filestream
       id: mumc-transform-rest-logs
       paths:
@@ -115,6 +129,13 @@ data:
          - /usr/share/logs/vitala/ehrbase/ehrbase.log
       tags: ["VITALA","EHRBASE"]
     - type: filestream
+      id: vitala-terminology-proxy-logs
+      paths:
+        - /usr/share/logs/vitala/terminology/terminology-proxy.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["VITALA","TERMINOLOGY_PROXY"]
+    - type: filestream
       id: vitala-transform-rest-logs
       paths:
         - /usr/share/logs/vitala/transform-rest/transform-rest.log
@@ -153,6 +174,13 @@ data:
       paths:
          - /usr/share/logs/zio/ehrbase/ehrbase.log
       tags: ["ZIO","EHRBASE"]
+    - type: filestream
+      id: zio-terminology-proxy-logs
+      paths:
+        - /usr/share/logs/zio/terminology/terminology-proxy.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["ZIO","TERMINOLOGY_PROXY"]
     - type: filestream
       id: zio-transform-rest-logs
       paths:
@@ -193,20 +221,19 @@ data:
         - /usr/share/logs/test/ehrbase/ehrbase.log
       tags: ["TEST","EHRBASE"]
     - type: filestream
+      id: test-terminology-proxy-logs
+      paths:
+        - /usr/share/logs/test/terminology/terminology-proxy.log
+      parsers:
+        - multiline: *multiline_parser
+      tags: ["TEST","TERMINOLOGY_PROXY"]
+    - type: filestream
       id: test-transform-rest-logs
       paths:
         - /usr/share/logs/test/transform-rest/transform-rest.log
       parsers:
         - multiline: *multiline_parser
       tags: ["TEST","TRANSFORM_REST"]
-    # Terminology Server Proxy
-    - type: filestream
-      id: terminology-proxy-logs
-      paths:
-        - /usr/share/logs/terminology/terminology-proxy.log
-      parsers:
-        - multiline: *multiline_parser
-      tags: ["TERMINOLOGY_PROXY"]
     # Jupyter
     - type: filestream
       id: jupyter-zib-logs

@@ -46,7 +46,7 @@ The implementation relies on the following repositories:
 Credentials of the [Dutch terminology server](https://terminologieserver.nl/authorisation/auth/realms/nictiz/protocol/openid-connect/auth?client_id=account-console&redirect_uri=https%3A%2F%2Fterminologieserver.nl%2Fauthorisation%2Fauth%2Frealms%2Fnictiz%2Faccount%2F%23%2F&state=e082a979-038c-41ab-8096-d0396ac9820f&response_mode=fragment&response_type=code&scope=openid&nonce=30f31617-2935-48d1-ae46-6df5d20a96dd&code_challenge=0VDfFvHqmPTtvKmuJUF6rNMzRlSNwyZu9vPhV47VQn4&code_challenge_method=S256) need to be stored in secret files.
 
 Add the following file to the relevant overlays folders: local, local/test-single-node, local/test-federation, etc.
-e.g., `deploy/overlays/{overlay}/shared/components/terminology-server-proxy/secrets.yaml`
+e.g., `deploy/overlays/{overlay}/shared/components/terminology-server-proxy-secret/secrets.yaml`
 
 #### Secret file example (need to replace the values with your encoded credentials)
 
@@ -77,7 +77,7 @@ Replace the username & password values by the output of the commands.
 
 #### Troubleshooting
 
-The `terminology-server-proxy` pod is not running, because of:
+The `{NODENAME}-terminology-server-proxy` pod is not running, because of:
 
 - Status: "CreateContainerConfigError"
 - Message: "secret "terminology-server-proxy-creds" not found"
@@ -133,7 +133,7 @@ for more information on the Kubernetes architecture and deployed services.
 
 5. Apply Kubernetes manifests on the `local` overlay
 
-   **Note:** It is necessary to add the option `-s` in the command-line to apply the shared resources (terminology server, configmaps, etc.)
+   **Note:** It is necessary to add the option `-s` in the command-line to apply the shared resources
 
    1. Apply all node resources
 

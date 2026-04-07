@@ -21,6 +21,8 @@ images:
   newTag: '2026.1.1'
 - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
   newTag: '2026.1.1'
+- name: registry.prod.dh.unimaas.nl/docker-health/init-container
+  newTag: '2026.1.1'
 
 resources:
 # NEW vault secret operator
@@ -29,7 +31,6 @@ resources:
 # Base resources
 - ../../base/common
 - ../../base/jupyter-zib
-- ../../base/terminology-server-proxy
 # EHR-nodes
 - ../../base/openehr-nodes/envida
 - ../../base/openehr-nodes/mumc

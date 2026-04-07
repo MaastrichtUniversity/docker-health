@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vitala-terminology-server-proxy-config
+  namespace: dh-health
+data:
+  TERMINOLOGY_LOGGER_FILENAME: "logs/vitala/terminology-proxy.log"

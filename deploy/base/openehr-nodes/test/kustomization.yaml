@@ -9,4 +9,5 @@ resources:
 - ehrdb
 - etl-zib
 - openehrtool
+- terminology-server-proxy
 - transform-rest

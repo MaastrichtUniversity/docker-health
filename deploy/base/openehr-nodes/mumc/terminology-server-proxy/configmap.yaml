@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mumc-terminology-server-proxy-config
+  namespace: dh-health
+data:
+  TERMINOLOGY_LOGGER_FILENAME: "logs/mumc/terminology-proxy.log"

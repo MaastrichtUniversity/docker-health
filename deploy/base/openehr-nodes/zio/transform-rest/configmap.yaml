@@ -4,4 +4,5 @@ metadata:
   name: zio-transform-rest-config
   namespace: dh-health
 data:
+  TERMINOLOGY_BASE_URL: http://zio-terminology-server-proxy.dh-health:8080
   LOGGER_FILENAME: /var/log/zio/transform-rest.log

@@ -7,7 +7,6 @@ resources:
 - job.yaml
 - role.yaml
 - ../../../base/common
-- ../../../base/terminology-server-proxy
 # ENVIDA-node
 - ../../../base/openehr-nodes/envida/ehrbase
 - ../../../base/openehr-nodes/envida/ehrdb
@@ -15,6 +14,7 @@ resources:
 - ../../../base/openehr-nodes/envida/etl-zib/etl-zib-pipeline
 - ../../../base/openehr-nodes/envida/federation-rest
 - ../../../base/openehr-nodes/envida/transform-rest
+- ../../../base/openehr-nodes/envida/terminology-server-proxy
 # MUMC-node
 - ../../../base/openehr-nodes/mumc/ehrbase
 - ../../../base/openehr-nodes/mumc/ehrdb
@@ -22,6 +22,7 @@ resources:
 - ../../../base/openehr-nodes/mumc/etl-zib/etl-zib-pipeline
 - ../../../base/openehr-nodes/mumc/federation-rest
 - ../../../base/openehr-nodes/mumc/transform-rest
+- ../../../base/openehr-nodes/mumc/terminology-server-proxy
 # VITALA-node
 - ../../../base/openehr-nodes/vitala/ehrbase
 - ../../../base/openehr-nodes/vitala/ehrdb
@@ -29,6 +30,7 @@ resources:
 - ../../../base/openehr-nodes/vitala/etl-zib/etl-zib-pipeline
 - ../../../base/openehr-nodes/vitala/federation-rest
 - ../../../base/openehr-nodes/vitala/transform-rest
+- ../../../base/openehr-nodes/vitala/terminology-server-proxy
 # ZIO-node
 - ../../../base/openehr-nodes/zio/ehrbase
 - ../../../base/openehr-nodes/zio/ehrdb
@@ -36,6 +38,7 @@ resources:
 - ../../../base/openehr-nodes/zio/etl-zib/etl-zib-pipeline
 - ../../../base/openehr-nodes/zio/federation-rest
 - ../../../base/openehr-nodes/zio/transform-rest
+- ../../../base/openehr-nodes/zio/terminology-server-proxy
 
 components:
 # Federation service role
@@ -43,19 +46,21 @@ components:
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-test
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
 - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
-  newTag: '2026.1.1'
+  newTag: '2026.1.2'
+- name: registry.prod.dh.unimaas.nl/docker-health/init-container
+  newTag: '2026.1.2'
 
 generatorOptions:
   disableNameSuffixHash: true
@@ -114,7 +119,7 @@ patches:
 # Proxy patches (non-federation-rest deployments)
 - target:
     kind: Deployment
-    name: ehrbase|ehrdb|transform-rest|etl-zib|terminology-server-proxy
+    name: .*-ehrbase|.*-ehrdb|.*-transform-rest|.*-etl-zib|.*-terminology-server-proxy
   patch: |-
     - op: add
       path: "/spec/template/spec/containers/0/env/-"

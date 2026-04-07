@@ -4,4 +4,5 @@ metadata:
   name: envida-transform-rest-config
   namespace: dh-health
 data:
+  TERMINOLOGY_BASE_URL: http://envida-terminology-server-proxy.dh-health:8080
   LOGGER_FILENAME: /var/log/envida/transform-rest.log
