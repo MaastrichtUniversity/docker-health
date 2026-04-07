@@ -274,6 +274,7 @@ else
   service kibana start
 
   # Enroll Kibana using the detached mode
+  echo "Enroll Kibana using the detached mode..."
   ENROLLMENT_TOKEN=$(/opt/elasticsearch/bin/elasticsearch-create-enrollment-token --scope kibana)
   /opt/kibana/bin/kibana-setup --enrollment-token "$ENROLLMENT_TOKEN"
   service kibana restart
@@ -336,22 +337,6 @@ if [ -x /usr/local/bin/elk-post-hooks.sh ]; then
 fi
 
 ### Configuration of ElasticSearch and Kibana
-
-cd /tmp
-##SKIP## elasticdump --input=kibana-exported.json --output=http://localhost:9200/.kibana --type=data
-
-# import index templates in elastic
-echo "
-elasticsearch: importing index templates to"
-curl -H 'Content-Type: application/json' -XPUT 'http://localhost:9200/_template/idx' -d@/tmp/template.index.json
-
-
-# create dummy indexes (to avoid issues when ceating aliases)
-echo "
-elasticsearch: create indexes in case they don't exist (will cause ignorable error if index already exist)"
-curl -XPUT "http://localhost:9200/idx-$(date +'%Y.%m')"
-
-
 # wait for Kibana to be up (responding to api)
 
 if ! [[ $KIBANA_CONNECT_RETRY =~ $re_is_numeric ]] ; then
