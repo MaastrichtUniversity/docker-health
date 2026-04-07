@@ -1,0 +1,18 @@
+BSN;GewichtWaarde;Eenheid;Toelichting;GewichtDatum;Kleding;KledingCode;TEST_COMMENTS
+999999801;72;KG;Linker been geamputeerd boven de knie;2024-06-04 20:51:14.000;Volledig gekleed met schoenen;220131000146107;PASS-Test duplication check
+999999801;103;KG;Linker been geamputeerd boven de knie;2021-04-21 15:18:29.000;Volledig gekleed met schoenen;220131000146107;PASS-Test duplication check
+999999801;72;KG;Linker been geamputeerd boven de knie;2024-06-04 20:51:14.000;Volledig gekleed met schoenen;220131000146107;FAIL-Test duplication check
+999990202;68;KG;Patiënt nuchter gewogen;2001-03-19 10:43:13.174;Minimale kleding;220121000146105;PASS-Test data max
+999990603;85;KG;;2002-01-19 09:43:13.174;;;PASS-Test data min
+999991504;;;;;;;FAIL-Test data none
+999991905;;;;2002-01-19 09:43:13.174;;;FAIL-Test data empty
+999992806;4680;G;Gewicht in gram vanwege leeftijd onder 1 jaar;2022-11-08 09:53:04.000 ;Op blote voeten;1156252001;PASS-Test data with units in grams
+999993707;72;KG;;2021-03-12 14:29:34.000;Ontkleed;248160001;PASS
+999994608;72;KG;Linker been geamputeerd boven de knie;;Volledig gekleed met schoenen;220131000146107;FAIL-GewichtDatum is empty
+999995509;72;KG;Linker been geamputeerd boven de knie;000-01-19 09:43:13.174;Volledig gekleed met schoenen;220131000146107;FAIL-GewichtDatum has a wrong datetime format (wrong year value)
+999990810;101;KG;;2002-01-19 09:43:13.174;Luier;;PASS-Luier is not from SNOMED CT
+999992211;99;;;2002-01-19 09:43:13.174;Volledig gekleed met schoenen;220131000146107;FAIL- Eenheid is missing
+999990512;72;KG;Linker been geamputeerd boven de knie;2024-03-21 10:48:45.000;WrongValue;;PASS- Kleding is wrong but not mandatory
+999990913;;KG;;2002-01-19 09:43:13.111;Ontkleed;248160001;FAIL- GewichtWaarde is missing
+999990214;WrongValue;KG;;2002-01-19 09:43:13.222;Volledig gekleed met schoenen;220131000146107;FAIL- GewichtWaarde is invalid
+999990615;1111;WrongValue;;2002-01-19 09:43:13.333;Volledig gekleed met schoenen;220131000146107;FAIL- Eenheid is invalid
