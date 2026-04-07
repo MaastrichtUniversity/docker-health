@@ -36,43 +36,6 @@ rm -f /var/run/elasticsearch/elasticsearch.pid /var/run/logstash.pid \
   /var/run/kibana5.pid
 
 ####################################
-### APACHE REVERSE PROXY SECTION ###
-####################################
-# The reverse proxy will require .htpasswd authentication on port 80/443 for client usage.
-# Log-sending applications communicate with elastic on port 9200 (via logstash ports 5000 and 5044) which does not
-# require authentication. This is fine, as long as ports 5000, 5044 and 9200 are not exposed outside of the Docker network
-# OR if access to those ports is regulated by iptables, thereby only allowing trusted log-sending services.
-
-#Create htpassword file
-htpasswd -c -b /opt/.htpasswd elastic $ELASTIC_PASSWORD
-
-##Make apache owner of the htpasswd file
-chown www-data:www-data /opt/.htpasswd
-
-### Add or replace servername to apache2 config to avoid warning about FQDN at startup of apache
-if [ -z $VIRTUAL_HOST ]; then VIRTUAL_HOST=localhost; fi
-if [ $(grep ServerName /etc/apache2/apache2.conf 2>/dev/null | wc -l) -eq 0 ]; then
-  echo "Adding 'ServerName $VIRTUAL_HOST' to /etc/apache2/apache2.conf"
-  echo "ServerName $VIRTUAL_HOST" >>/etc/apache2/apache2.conf
-else
-  echo "Replacing Servername to 'Servername $VIRTUAL_HOST' in /etc/apache2/apache2.conf"
-  sed -i 's/ServerName .*/ServerName $VIRTUAL_HOST/g' /etc/apache2/apache2.conf
-fi
-
-### apache2 modules enable and server restart
-a2enmod proxy
-a2enmod proxy_http
-a2enmod proxy_ajp
-a2enmod rewrite
-a2enmod deflate
-a2enmod headers
-a2enmod proxy_balancer
-a2enmod proxy_connect
-a2enmod proxy_html
-
-service apache2 restart
-
-####################################
 
 ## initialise list of log files to stream in console (initially empty)
 OUTPUT_LOGFILES=""
