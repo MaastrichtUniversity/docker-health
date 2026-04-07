@@ -26,10 +26,8 @@ RUN npm install -g elasticdump@${VER_ELASTICDUMP}
 ## Remove existing config files
 RUN rm -r /etc/logstash/conf.d/ && mkdir /etc/logstash/conf.d/
 
-
 ADD ./elasticsearch.node1.yml /opt/elasticsearch/config/elasticsearch.yml
 ADD ./logstash-config /etc/logstash/conf.d
-RUN rm "/etc/logstash/conf.d/99 - Output.dev.conf"
 
 ## Add customized logstash patterns
 ADD ./RIT.pattern ${LOGSTASH_HOME}/patterns/RIT
@@ -45,14 +43,5 @@ ADD ./retention.sh /etc/cron.monthly/retention.sh
 ADD ./cron_retention /etc/cron.d/cron_retention
 RUN chmod +x /etc/cron.monthly/retention.sh
 
-
-CMD [ "/usr/local/bin/start.sh" ]
-
-FROM base AS development
-
-ADD ./elasticsearch.node1.dev.yml /etc/elasticsearch/elasticsearch.yml
-RUN rm "/etc/logstash/conf.d/99 - Output.conf"
-ADD ["logstash-config/99 - Output.dev.conf", "/etc/logstash/conf.d/99 - Output.conf"]
-ADD ./start.dev.sh /usr/local/bin/start.sh
 
 CMD [ "/usr/local/bin/start.sh" ]
