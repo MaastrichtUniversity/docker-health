@@ -16,6 +16,7 @@ data:
   TEMPLATE_IDS: |
     [
       "DataHub-InformedConsent",
+      "DataHub-Lichaamslengte-2024",
       "DataHub-TabakGebruik-2024"
     ]
 #  TEMPLATE_IDS: |
