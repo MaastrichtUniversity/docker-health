@@ -1,4 +1,4 @@
-FROM sebp/elk:9.1.5 AS base
+FROM sebp/elk:9.1.5
 
 ENV LOGSTASH_HOME=/opt/logstash
 
