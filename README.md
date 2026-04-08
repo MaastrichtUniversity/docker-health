@@ -173,7 +173,7 @@ The OPS (monitoring, logging etc...) containers are in a different namespace and
    ./dh.sh apply local/ops
    ```
 
-2. Check the ELK web interface - [Kibana](http://elk.local.dh.unimaas.nl) To see the logs, create a new Data View index pattern idx\*
+2. Check the ELK web interface - [Kibana](http://elk.local.dh.unimaas.nl) The logs are now available via the default data view (logs-_-_, logs-_, filebeat-_)\*
 
 3. Remove the containers
 
