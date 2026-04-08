@@ -6,7 +6,7 @@ BSN;GewichtWaarde;Eenheid;Toelichting;GewichtDatum;Kleding;KledingCode;TEST_COMM
 999990603;85;KG;;2002-01-19 09:43:13.174;;;PASS-Test data min
 999991504;;;;;;;FAIL-Test data none
 999991905;;;;2002-01-19 09:43:13.174;;;FAIL-Test data empty
-999992806;4680;G;Gewicht in gram vanwege leeftijd onder 1 jaar;2022-11-08 09:53:04.000 ;Op blote voeten;1156252001;PASS-Test data with units in grams
+999992806;4680;G;Gewicht in gram vanwege leeftijd onder 1 jaar;2022-11-08 09:53:04.000;Op blote voeten;1156252001;PASS-Test data with units in grams
 999993707;72;KG;;2021-03-12 14:29:34.000;Ontkleed;248160001;PASS
 999994608;72;KG;Linker been geamputeerd boven de knie;;Volledig gekleed met schoenen;220131000146107;FAIL-GewichtDatum is empty
 999995509;72;KG;Linker been geamputeerd boven de knie;000-01-19 09:43:13.174;Volledig gekleed met schoenen;220131000146107;FAIL-GewichtDatum has a wrong datetime format (wrong year value)
