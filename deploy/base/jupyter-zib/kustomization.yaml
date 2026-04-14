@@ -5,8 +5,5 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- deployment.yaml
-- service.yaml
-- volume.yaml
-
-
+  - deployment.yaml
+  - service.yaml

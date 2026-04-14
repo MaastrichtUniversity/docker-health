@@ -6,11 +6,11 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- pvc.yaml
-- job.yaml
+  - pvc.yaml
+  - job.yaml
 
 configMapGenerator:
-- name: git-config
-  namespace: dh-health
-  literals:
-    - GIT_BRANCH=PLACEHOLDER
+  - name: git-config
+    namespace: dh-health
+    literals:
+      - GIT_BRANCH=2026.1.3
