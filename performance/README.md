@@ -16,11 +16,13 @@ docker run --name run_generate_synthetic_data -it generate_synthetic-data bash
 3. Generate synthetic datasets
 
 Run the command-line python script with the following options:
-- `n_rows`: the number of row to generate
 - `template_id`: identifies the template used to generate the data.\
-Currently supported templates are: `woonsituatie_2024`
+Currently supported templates are: `woonsituatie_2024`, `polsfrequentie_2024`
+- `n_patient`: the number of patients (bsn number) to generate
+- `n_rows_per_patient`: the number of row to generate per patient
+
 ```bash
-python generate_synthetic_data.py --template_id="woonsituatie_2024" --n_rows=1000
+python generate_synthetic_data.py --template_id="woonsituatie_2024" --n_patients=1000 --n_rows_per_patient=10
 ```
 
 4. Exit the container: `Ctrl+D`

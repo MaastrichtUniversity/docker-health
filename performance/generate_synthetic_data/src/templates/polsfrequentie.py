@@ -11,12 +11,12 @@ POLS_REGELMATIGHEID_CODED_LIST = [
     "Onregelmatige pulsaties",
 ]
 
-def generate_synthetic_polsfrequentie(bsn):
+def generate_synthetic_polsfrequentie(bsn, date_time):
     return {
         "BSN": bsn,
         "POLSFREQUENTIE_WAARDE (/min)": generate_random_integer(0, 999),
         "POLSFREQUENTIE_DATUM_TIJD": generate_random_full_date(),
         "TOELICHTING": optional(generate_random_string(), p=0.5),
         "POLS_REGELMATIGHEID": optional(generate_random_coded_value(POLS_REGELMATIGHEID_CODED_LIST), p=0.7),
-        "DATE_TIME": generate_random_full_date(),
+        "DATE_TIME": date_time,
     }
