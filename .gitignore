@@ -40,6 +40,9 @@ externals/*
 # ETL input/output data
 outputs/
 
+# Synthetic datasets for performance
+performance/generate_synthetic_data/synthetic_dataset
+
 # Jupyter notebooks
 notebooks/.ipynb_checkpoints
 
