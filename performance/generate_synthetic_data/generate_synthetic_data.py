@@ -2,6 +2,7 @@ import os
 import click
 import pandas as pd
 
+from src.templates.polsfrequentie import generate_synthetic_polsfrequentie
 from src.templates.woonsituatie import generate_synthetic_woonsituatie
 from src.utils import InputTemplateID, generate_bsn
 
@@ -10,8 +11,11 @@ from src.utils import InputTemplateID, generate_bsn
 @click.option("--template_id", required=True, type=InputTemplateID)
 @click.option("--n_rows", default=1, type=int)
 def main(template_id: InputTemplateID, n_rows: int):
+
     if template_id == InputTemplateID.WOONSITUATIE_2024:
         generator = generate_synthetic_woonsituatie
+    elif template_id == InputTemplateID.POLSFREQUENTIE_2024:
+        generator = generate_synthetic_polsfrequentie
 
     used_bsn = []
     rows = []

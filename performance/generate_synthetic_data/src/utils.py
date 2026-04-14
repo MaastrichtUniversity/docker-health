@@ -11,6 +11,7 @@ FAKE = Faker("nl_NL")
 
 class InputTemplateID(StrEnum):
     WOONSITUATIE_2024 = "woonsituatie_2024"
+    POLSFREQUENTIE_2024 = "polsfrequentie_2024"
 
 
 def generate_bsn(used_bsn):
@@ -50,6 +51,10 @@ def generate_random_string(min_len=5, max_len=50):
     length = randint(min_len, max_len + 1)
     random_chars = choice(chars, size=length)
     return "".join(random_chars)
+
+
+def generate_random_integer(min_value, max_value):
+    return randint(min_value, max_value)
 
 
 def generate_random_coded_value(coded_list):
