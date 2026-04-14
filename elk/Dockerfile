@@ -4,9 +4,6 @@ ENV LOGSTASH_HOME=/opt/logstash
 
 ARG VER_ELK=9.1.5
 #note: elk version must correspond to the version of the docker-image of sebp/elk!
-ARG VER_ELASTICDUMP=6.124.1
-#note: commands below install always latest version of patterns-core, variable is
-#      used for path lateron in the dockerfile. So the ver should correspond to latest version on
 
 WORKDIR ${LOGSTASH_HOME}
 RUN gosu logstash bin/logstash-plugin install logstash-patterns-core
@@ -14,14 +11,6 @@ RUN gosu logstash bin/logstash-plugin update logstash-patterns-core
 RUN gosu logstash bin/logstash-plugin install logstash-input-beats
 
 ADD GeoLite2-City.mmdb /etc/logstash/GeoLite2-City.mmdb
-
-RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    npm \
-    apache2 \
-    nano
-
-RUN npm install -g elasticdump@${VER_ELASTICDUMP}
 
 ## Remove existing config files
 RUN rm -r /etc/logstash/conf.d/ && mkdir /etc/logstash/conf.d/
