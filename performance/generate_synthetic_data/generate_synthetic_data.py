@@ -1,6 +1,8 @@
 import os
 import click
 import pandas as pd
+from faker import Faker
+from numpy.random import seed
 from datetime import datetime, timedelta
 
 from src.templates.polsfrequentie import generate_synthetic_polsfrequentie
@@ -12,7 +14,12 @@ from src.utils import InputTemplateID, generate_bsn, generate_random_full_date
 @click.option("--template_id", required=True, type=InputTemplateID)
 @click.option("--n_patients", default=1, type=int)
 @click.option("--n_rows_per_patient", default=1, type=int)
-def main(template_id: InputTemplateID, n_patients: int, n_rows_per_patient: int):
+@click.option("--random_seed", type=int)
+def main(template_id: InputTemplateID, n_patients: int, n_rows_per_patient: int, random_seed: int):
+
+    if random_seed:
+        seed(random_seed)
+        Faker.seed(random_seed)
 
     global generator
     if template_id == InputTemplateID.WOONSITUATIE_2024:

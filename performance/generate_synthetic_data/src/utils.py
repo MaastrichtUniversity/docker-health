@@ -1,11 +1,9 @@
 import string
 from enum import StrEnum
 from datetime import datetime, timedelta
+from numpy.random import randint, choice
 from faker import Faker
-from numpy.random import seed, randint, choice
 
-seed(42)
-Faker.seed(42)
 FAKE = Faker("nl_NL")
 
 

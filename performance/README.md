@@ -20,9 +20,10 @@ Run the command-line python script with the following options:
 Currently supported templates are: `woonsituatie_2024`, `polsfrequentie_2024`
 - `n_patient`: the number of patients (bsn number) to generate
 - `n_rows_per_patient`: the number of row to generate per patient
+- `random_seed`: If provided, sets the seed for random value generation to ensure reproducibility
 
 ```bash
-python generate_synthetic_data.py --template_id="woonsituatie_2024" --n_patients=1000 --n_rows_per_patient=10
+python generate_synthetic_data.py --template_id="woonsituatie_2024" --n_patients=1000 --n_rows_per_patient=1 --random_seed=42
 ```
 
 4. Exit the container: `Ctrl+D`
