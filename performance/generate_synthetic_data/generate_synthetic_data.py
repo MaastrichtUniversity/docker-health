@@ -20,6 +20,8 @@ def main(template_id: InputTemplateID, n_patients: int, n_rows_per_patient: int,
 
     execution_start_time = time.perf_counter()
 
+    print(f"Generate dataset for: template_id={template_id}, n_patients={n_patients}, n_rows_per_patient={n_rows_per_patient}, random_seed={random_seed}")
+
     if random_seed:
         seed(random_seed)
         Faker.seed(random_seed)
@@ -52,7 +54,7 @@ def main(template_id: InputTemplateID, n_patients: int, n_rows_per_patient: int,
     outdir = "synthetic_dataset"
     if not os.path.exists(outdir):
         os.mkdir(outdir)
-    filename = os.path.join(outdir, f"{template_id}_synthetic_p={n_patients}_n={n_rows_per_patient}.csv")
+    filename = os.path.join(outdir, f"{template_id}_synthetic_p={n_patients}_n={n_rows_per_patient}_s={random_seed}.csv")
     df.to_csv(filename, index=False)
 
     print(df.tail())
