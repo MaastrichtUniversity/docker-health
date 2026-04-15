@@ -1,4 +1,5 @@
 import os
+import time
 import click
 import pandas as pd
 from faker import Faker
@@ -16,6 +17,8 @@ from src.utils import InputTemplateID, generate_bsn, generate_random_full_date
 @click.option("--n_rows_per_patient", default=1, type=int)
 @click.option("--random_seed", type=int)
 def main(template_id: InputTemplateID, n_patients: int, n_rows_per_patient: int, random_seed: int):
+
+    execution_start_time = time.perf_counter()
 
     if random_seed:
         seed(random_seed)
@@ -53,6 +56,9 @@ def main(template_id: InputTemplateID, n_patients: int, n_rows_per_patient: int,
     df.to_csv(filename, index=False)
 
     print(df.tail())
+
+    execution_end_time = time.perf_counter()
+    print(f"\nTotal execution time: {execution_end_time - execution_start_time:.4f} seconds\n\n")
 
 
 if __name__ == "__main__":
