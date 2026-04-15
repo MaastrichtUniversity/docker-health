@@ -25,5 +25,32 @@ Prometheus monitors, collects the metrics and stores them over time which then G
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 
-helm install monitoring prometheus-community/kube-prometheus-stack -n performance --create-namespace
+helm install monitoring prometheus-community/kube-prometheus-stack -n performance
 ```
+
+If you want to verify that Prometheus is working or test your queries straight in Prometheus , forward the port
+
+`kubectl port-forward svc/monitoring-kube-prometheus-prometheus 9090:9090 -n performance`
+
+Now you can access Prometheus on http://localhost:9090/query
+
+## Create dashboard in Grafana
+
+### Configure the connetion between Grafana and Prometheus
+
+1. Add Prometheus as a data source http://grafana.local.dh.unimaas.nl/connections/datasources/new
+2. Configure server URL http://monitoring-kube-prometheus-prometheus:9090
+3. Save and test the connection
+
+### Create a panel
+
+1. http://grafana.local.dh.unimaas.nl/dashboards
+2. Create new dashboard -> Edit -> Panel -> Configure visualization
+3. Here you define your metrics and queries . Select Prometheus as a data source. Then either build a query by selecting some metrics in "Builder" or use "Code" where you can enter a PromQL query
+4. Example query - CPU per pod over time
+
+```
+sum by (pod) (rate(container_cpu_usage_seconds_total{namespace="dh-health"}[5m]))
+```
+
+5. Save and you should now be able to see some graphs!
