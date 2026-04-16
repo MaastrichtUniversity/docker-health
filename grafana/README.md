@@ -34,7 +34,7 @@ If you want to verify that Prometheus is working or test your queries straight i
 
 Now you can access Prometheus on http://localhost:9090/query
 
-## Create dashboard in Grafana
+## Create dashboard in Grafana manually
 
 ### Configure the connetion between Grafana and Prometheus
 
@@ -62,3 +62,7 @@ sum by (pod) (
 ```
 
 6. Save and you should now be able to see some graphs!
+
+### Alternative option
+
+You can also import a pre-made dashboard, for example, https://grafana.com/grafana/dashboards/10219-dash/ by downloading the JSON file and importing in Dashboards -> New -> Import. However, you still might need to configure/edit the queries to make it work
