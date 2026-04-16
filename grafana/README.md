@@ -2,7 +2,7 @@
 
 ## Deploy Grafana
 
-Grafana is the interface that can visualise (similar to Kibana of ELK) the queries and uses Prometheus as source
+Grafana is the interface that can visualize (similar to Kibana of ELK) the queries and uses Prometheus as source
 
 ```
 # Make sure minikube is running
@@ -47,10 +47,18 @@ Now you can access Prometheus on http://localhost:9090/query
 1. http://grafana.local.dh.unimaas.nl/dashboards
 2. Create new dashboard -> Edit -> Panel -> Configure visualization
 3. Here you define your metrics and queries . Select Prometheus as a data source. Then either build a query by selecting some metrics in "Builder" or use "Code" where you can enter a PromQL query
-4. Example query - CPU per pod over time
+4. Query - CPU per pod over time
 
 ```
 sum by (pod) (rate(container_cpu_usage_seconds_total{namespace="dh-health"}[5m]))
 ```
 
-5. Save and you should now be able to see some graphs!
+5. Query - memory usage per pod
+
+```
+sum by (pod) (
+  container_memory_working_set_bytes{namespace="dh-health"}
+)
+```
+
+6. Save and you should now be able to see some graphs!
