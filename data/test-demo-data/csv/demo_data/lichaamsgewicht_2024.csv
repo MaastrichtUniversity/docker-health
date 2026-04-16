@@ -1,0 +1,18 @@
+BSN,GEWICHT_WAARDE,GEWICHT_EENHEID,TOELICHTING,GEWICHT_DATUM_TIJD,KLEDING,DATE_TIME,TEST_COMMENTS
+999999801,72,kg,Linker been geamputeerd boven de knie,2002-01-19T09:43:13.174,Volledig gekleed met schoenen,2002-01-19T09:45:12.174,PASS-Test duplication check
+999999801,103,kg,Linker been geamputeerd boven de knie,2018-01-19T09:43:13.174,Volledig gekleed met schoenen,2018-01-19T09:45:12.174,PASS-Test duplication check
+999999801,72,kg,Linker been geamputeerd boven de knie,2002-01-19T09:43:13.174,Volledig gekleed met schoenen,2002-01-19T09:45:12.174,FAIL-Test duplication check
+999990202,68,kg,Patiënt nuchter gewogen,2001-03-19T10:43:13.174,Minimale kleding,2001-03-19T11:43:13.174,PASS-Test data max
+999990603,85,kg,,2002-01-19T09:43:13.174,,2002-01-19T09:43:13.174,PASS-Test data min
+999991504,,,,,,,FAIL-Test data none
+999991905,,,,,,2016-03-19T09:43:13.174,FAIL-Test data empty
+999992806,4680,g,Gewicht in gram vanwege leeftijd onder 1 jaar,2018-02-19T09:43:13.174,Op blote voeten,2018-02-19T09:55:13.174,PASS-Test data with units in grams
+999993707,72,kg,,2021-02-14,Volledig gekleed met schoenen,2021-02-14T09:43:13.174,PASS-Partial date
+999994608,72,kg,Linker been geamputeerd boven de knie,2002-01-19T09:43:13.174,Volledig gekleed met schoenen,,FAIL-DATE_TIME is empty
+999995509,72,kg,Linker been geamputeerd boven de knie,2002-01-19T09:43:13.174,Volledig gekleed met schoenen,000-01-19T09:43:13.174,FAIL-DATE_TIME has a wrong datetime format (wrong year value)
+999990810,101,kg,,2002-01-19T09:43:13.174,Luier,2002-01-19T09:43:13.174,PASS-Luier is not from SNOMED CT
+999992211,99,,,2002-01-19T09:43:13.174,Volledig gekleed met schoenen,2002-01-19T09:43:13.174,FAIL- GEWICHT_EENHEID is missing
+999990512,72,kg,Linker been geamputeerd boven de knie,2002-01-19T09:43:13.174,WrongValue,2002-01-19T09:43:13.174,PASS- Kleding is wrong but not mandatory
+999990913,,g,,2002-01-19T09:43:13.111,Volledig gekleed met schoenen,2002-01-19T09:43:13.174,FAIL- GEWICHT_WAARDE is missing
+999990214,WrongValue,g,,2002-01-19T09:43:13.222,Volledig gekleed met schoenen,2002-01-19T09:43:13.174,FAIL- GEWICHT_WAARDE is invalid
+999990615,1111,WrongValue,,2002-01-19T09:43:13.333,Volledig gekleed met schoenen,2002-01-19T09:43:13.174,FAIL- GEWICHT_EENHEID is invalid

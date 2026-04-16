@@ -1,0 +1,19 @@
+BSN,TEMPERATUUR_WAARDE (Cel),TOELICHTING,TEMPERATUUR_DATUM_TIJD,TEMPERATUUR_TYPE,DATE_TIME,TEST_COMMENTS
+999999801,35,Normale temperatuur,2017-01-19T09:43:13.174,Rectale temperatuur,2017-01-19T09:45:12.174,PASS-Test duplication check
+999999801,38.6,Normale temperatuur,2018-01-19T09:43:13.174,Rectale temperatuur,2018-01-19T09:45:12.174,PASS-Test duplication check
+999999801,35,Normale temperatuur,2017-01-19T09:43:13.174,Rectale temperatuur,2017-01-19T09:45:12.174,FAIL-Test duplication check
+999990202,39.1,Correcte meting,2001-03-19T10:43:13.174,Geschatte kerntemperatuur gemeten onder tong,2001-03-19T11:43:13.174,PASS-Test data max
+999990603,39.7,,2002-01-19T09:43:13.174,,2002-01-19T09:43:13.174,PASS-Test data min
+999991504,,,,,,FAIL-Test data none
+999991905,,,,,2016-03-19T09:43:13.174,FAIL-Test data empty
+999992806,40.1,Hoge temperatuur,2018-02-19T09:43:13.174,,2018-02-19T09:55:13.174,PASS
+999993707,37,,2021-02-14T09:43:13.174,Geschatte kerntemperatuur gemeten in okselregio,2021-02-14T09:43:13.174,PASS
+999994608,36.9,Recente meting,2002-01-19T09:43:13.174,Geschatte kerntemperatuur gemeten in liesregio,,FAIL-DATE_TIME is empty
+999995509,33,Onderkoeld,2002-01-19T09:43:13.174,Tympanische temperatuur,000-01-19T09:43:13.174,FAIL-DATE_TIME has a wrong datetime format (wrong year value)
+999990810,,Onbekend,2002-01-19T09:43:13.174,Temporale temperatuur,2002-01-19T09:43:13.174,FAIL-TEMPERATUUR_WAARDE is missing
+999992211,WrongValue,Geen toelichting,2002-01-19T09:43:13.174,Vaginale temperatuur,2002-01-19T09:43:13.174,FAIL-TEMPERATUUR_WAARDE is not a number
+999990512,-1,Negatief,2002-01-19T09:43:13.174,Kerntemperatuur gemeten in blaas,2002-01-19T09:43:13.174,FAIL-TEMPERATUUR_WAARDE is a negative number
+999990913,38.4,Inconsistent,2002-01-19,Rectale temperatuur,2002-01-19T09:43:13.174,PASS-Partial TEMPERATUUR_DATUM_TIJD
+999990214,39.2,Datum onbekend,WrongValue,Geschatte kerntemperatuur gemeten onder tong,2002-01-19T09:43:13.174,FAIL-TEMPERATUUR_DATUM_TIJD is WrongValue
+999990615,37.6,Incomplete data,,Geschatte kerntemperatuur gemeten in okselregio,2002-01-19T09:43:13.174,FAIL-TEMPERATUUR_DATUM_TIJD is missing
+999991516,36.6,Type onbekend,2002-01-19T09:43:13.111,WrongValue,2002-01-19T09:43:13.174,PASS-Optional TEMPERATUUR_TYPE is WrongValue

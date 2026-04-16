@@ -19,18 +19,18 @@ Each node in the federated network represents a Dutch health organization. The c
 
 The implementation relies on the following repositories:
 
-- [dh-hdp-zib-templates](https://github.com/um-datahub/dh-hdp-zib-templates/tree/2024.1): OpenEHR templates matching the
+- [dh-hdp-zib-templates](https://github.com/um-datahub/dh-hdp-zib-templates/tree/2026.1): OpenEHR templates matching the
   ZIBs
-- [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2024.1): ETL workflow for loading data into a CDR
+- [dh-hdp-etl](https://github.com/MaastrichtUniversity/dh-hdp-etl/tree/2026.1): ETL workflow for loading data into a CDR
 - [dh-hdp-etl-utils](https://github.com/MaastrichtUniversity/dh-hdp-etl-utils): A package to share ETL utils classes and
   functions between different code bases
-- [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest/tree/2024.1): REST api for data
+- [dh-hdp-transform-rest](https://github.com/MaastrichtUniversity/dh-hdp-transform-rest/tree/2026.1): REST api for data
   class transformation into openEHR compositions
-- [dh-hdp-terminology-server-proxy](https://github.com/MaastrichtUniversity/dh-hdp-terminology-server-proxy/tree/2024.1): Connection to the terminology server
-- [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api/tree/2024.1): REST api service
+- [dh-hdp-terminology-server-proxy](https://github.com/MaastrichtUniversity/dh-hdp-terminology-server-proxy/tree/2026.1): Connection to the terminology server
+- [dh-hdp-federation-api](https://github.com/MaastrichtUniversity/dh-hdp-federation-api/tree/2026.1): REST api service
   for querying across a federation of CDRs
-- [dh-hdp-portal](https://github.com/MaastrichtUniversity/dh-hdp-portal/tree/2024.1): Node User Interface service
-- [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2024.1): Jupyter notebooks for data
+- [dh-hdp-portal](https://github.com/MaastrichtUniversity/dh-hdp-portal/tree/2026.1): Node User Interface service
+- [dh-hdp-notebooks](https://github.com/MaastrichtUniversity/dh-hdp-notebooks/tree/2026.1): Jupyter notebooks for data
   exploration
 
 ## Pre-requisites
@@ -46,7 +46,7 @@ The implementation relies on the following repositories:
 Credentials of the [Dutch terminology server](https://terminologieserver.nl/authorisation/auth/realms/nictiz/protocol/openid-connect/auth?client_id=account-console&redirect_uri=https%3A%2F%2Fterminologieserver.nl%2Fauthorisation%2Fauth%2Frealms%2Fnictiz%2Faccount%2F%23%2F&state=e082a979-038c-41ab-8096-d0396ac9820f&response_mode=fragment&response_type=code&scope=openid&nonce=30f31617-2935-48d1-ae46-6df5d20a96dd&code_challenge=0VDfFvHqmPTtvKmuJUF6rNMzRlSNwyZu9vPhV47VQn4&code_challenge_method=S256) need to be stored in secret files.
 
 Add the following file to the relevant overlays folders: local, local/test-single-node, local/test-federation, etc.
-e.g., `deploy/overlays/{overlay}/shared/components/terminology-server-proxy/secrets.yaml`
+e.g., `deploy/overlays/{overlay}/shared/components/terminology-server-proxy-secret/secrets.yaml`
 
 #### Secret file example (need to replace the values with your encoded credentials)
 
@@ -77,7 +77,7 @@ Replace the username & password values by the output of the commands.
 
 #### Troubleshooting
 
-The `terminology-server-proxy` pod is not running, because of:
+The `{NODENAME}-terminology-server-proxy` pod is not running, because of:
 
 - Status: "CreateContainerConfigError"
 - Message: "secret "terminology-server-proxy-creds" not found"
@@ -133,7 +133,7 @@ for more information on the Kubernetes architecture and deployed services.
 
 5. Apply Kubernetes manifests on the `local` overlay
 
-   **Note:** It is necessary to add the option `-s` in the command-line to apply the shared resources (terminology server, configmaps, etc.)
+   **Note:** It is necessary to add the option `-s` in the command-line to apply the shared resources
 
    1. Apply all node resources
 
@@ -346,7 +346,7 @@ Follow these manual steps to deploy the stack in your local Minikube manually:
    ```bash
    eval $(minikube -p minukube docker-env)
    export ENV_TAG=latest
-   export MAVEN_VERSION=3.9.11
+   export MAVEN_VERSION=3.9.14
    ```
 
    1. Pull external images into Minikube's Docker daemon
