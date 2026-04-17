@@ -18,5 +18,6 @@ data:
     []
   TEMPLATE_IDS: |
     [
+      "DataHub-Polsfrequentie-2024",
       "DataHub-Woonsituatie-2024"
     ]
