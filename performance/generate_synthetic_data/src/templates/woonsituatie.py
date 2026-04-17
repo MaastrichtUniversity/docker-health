@@ -50,8 +50,8 @@ def generate_synthetic_woonsituatie(bsn, date_time):
     return {
         "BSN": bsn,
         "DATUM": optional(generate_random_date(p_partial=[0.2, 0.5, 0.3]), p=0.7),
-        # optional variable but set its probability p=1 to avoid empty row:
-        "WONING_TYPE": optional(generate_random_coded_value(WONING_TYPE_CODED_LIST), p=1),
+        # WONING_TYPE is an optional variable in template, but always generated here to avoid empty rows:
+        "WONING_TYPE": generate_random_coded_value(WONING_TYPE_CODED_LIST),
         "WONING_AANPASSING": optional(generate_random_coded_value(WONING_AANPASSING_CODED_LIST), p=0.6),
         "WOON_OMSTANDIGHEID": optional(generate_random_coded_value(WOON_OMSTANDIGHEID_CODED_LIST), p=0.6),
         "TOELICHTING": optional(generate_random_string(), p=0.4),
