@@ -6,6 +6,8 @@ resources:
   - secrets.yaml
   - test-secrets.yaml
   - job.yaml
+  # Longhorn & NFS volumes
+  - ../patches/volumes.yaml
   #- registry-secret.yaml
   - ../../../base/common/config
   ## TEST-node

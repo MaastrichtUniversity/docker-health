@@ -7,7 +7,7 @@ resources:
   - job.yaml
   - role.yaml
   - ../../../base/common/config
-  # Longhorn volumes
+  # Longhorn & NFS volumes
   - ../patches/volumes.yaml
   # ENVIDA-node
   - ../../../base/openehr-nodes/envida/ehrbase
