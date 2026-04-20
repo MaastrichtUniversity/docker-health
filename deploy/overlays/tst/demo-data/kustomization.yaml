@@ -13,4 +13,4 @@ configMapGenerator:
   - name: git-config
     namespace: dh-health
     literals:
-      - GIT_BRANCH=2026.1.3
+      - GIT_BRANCH=PLACEHOLDER
