@@ -7,5 +7,6 @@ components:
   - federation-rest-gateway
   - openehrtool-gateway
   - portal-gateway
+  - terminology-server-proxy-gateway
   - transform-rest-gateway
   - secrets

@@ -8,7 +8,7 @@ metadata:
 data:
   NODENAME: test
   DATASET_FOLDER_NAME: test-demo-data
-  SOURCE_SYSTEM_ID: test
+  SOURCE_SYSTEM_ID: DEMO_DATA
   LOGGER_FILENAME: logs/test/etl-zib.log
   EHRBASE_BASE_URL: http://test-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
   TRANSFORM_SPRING_BASE_URL: http://test-transform-rest.dh-health:8080
@@ -18,18 +18,22 @@ data:
     []
   TEMPLATE_IDS: |
     [
+      "DataHub-Ademhaling-2024",
       "DataHub-AlcoholGebruik-2024",
       "DataHub-Bloeddruk-2024",
       "DataHub-BurgerlijkeStaat-2024",
       "DataHub-Contactpersoon-2024",
+      "DataHub-DrugsGebruik-2024",
       "DataHub-FunctieHoren-2024",
       "DataHub-FunctieZien-2024",
       "DataHub-Gezinssituatie-2024",
+      "DataHub-Hartfrequentie-2024",
       "DataHub-InformedConsent",
       "DataHub-Lichaamsgewicht-2024",
       "DataHub-Lichaamslengte-2024",
       "DataHub-Lichaamstemperatuur-2024",
       "DataHub-Mobiliteit-2024",
+      "DataHub-O2Saturatie-2024",
       "DataHub-ParticipatieInMaatschappij-2024",
       "DataHub-Patient-2024",
       "DataHub-Polsfrequentie-2024",

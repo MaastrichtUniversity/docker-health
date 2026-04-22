@@ -14,21 +14,27 @@ spec:
     spec:
       restartPolicy: Never
       initContainers:
-      - name: wait-mumc-ehrbase-healthy
-        image: busybox:1.28
+      - name: wait-terminology-proxy
+        image: registry.prod.dh.unimaas.nl/docker-health/init-container:latest
         imagePullPolicy: IfNotPresent
         command:
-          - sh
-          - -c
-          - |
-            for i in $(seq 1 20); do
-              echo "waiting"
-              sleep 10
-              if wget -T5 -qO- -Y off mumc-ehrbase.dh-health:8080/ehrbase/management/health | grep UP; then
-                exit 0
-              fi
-            done
-            exit 1
+          - "/wait-for-service.sh"
+          - "http://mumc-terminology-server-proxy.dh-health:8080/management/health"
+          - "Terminology server proxy"
+      - name: wait-ehrbase
+        image: registry.prod.dh.unimaas.nl/docker-health/init-container:latest
+        imagePullPolicy: IfNotPresent
+        command:
+          - "/wait-for-service.sh"
+          - "http://mumc-ehrbase.dh-health:8080/ehrbase/management/health"
+          - "EHRbase"
+      - name: wait-transform-rest
+        image: registry.prod.dh.unimaas.nl/docker-health/init-container:latest
+        imagePullPolicy: IfNotPresent
+        command:
+          - "/wait-for-service.sh"
+          - "http://mumc-transform-rest.dh-health:8080/management/health"
+          - "Transform REST"
       containers:
       - name: mumc-etl-zib-pipeline
         image: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline:latest
@@ -44,6 +50,11 @@ spec:
         - configMapRef:
             name: mumc-etl-config
         env:
+        - name: DATA_ENCRYPTION_PASSPHRASE
+          valueFrom:
+            secretKeyRef:
+              name: etl-data-encryption-passphrase
+              key: passphrase
         - name: EHRBASE_USERNAME
           valueFrom:
             secretKeyRef:

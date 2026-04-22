@@ -1,0 +1,21 @@
+BSN,BURGERLIJKE_STAAT,GEZINSSAMENSTELLING,AANTAL_KINDEREN,AANTAL_KINDEREN_INWONEND,ZORGTAAK,TOELICHTING_GEZINSSITUATIE,GEBOORTEDATUM_KIND,INWONEND_KIND,TOELICHTING_KIND,DATE_TIME,TEST_COMMENTS
+999999801,Divorced,Woont alleen,1,0,geen zorgtaak,kind uitwonend,2014-11-28,False,uitwonend,2003-11-25T03:33:14.321,PASS-Test duplication check
+999999801,Widowed,Woont met ouders,2,1,"zorg voor kind,zorg voor ouders",ouders helpen,2015-12-29,True,woont thuis,2004-11-25T03:33:14.321,PASS-Test duplication check
+999999801,Divorced,Woont alleen,1,0,geen zorgtaak,kind uitwonend,2014-11-28,False,uitwonend,2003-11-25T03:33:14.321,FAIL-Test duplication check
+999990202,Married,Woont samen met levenspartner,3,1,"zorgt voor partner,heeft zorg voor vader die in huis woont,zorg voor kind",met partner,2022-03-14,True,twee kinderen in buitenland,1998-03-13T03:33:14.512,PASS-Test data max
+999990603,,,,,,met vrienden,,,,1999-03-23T03:33:14.512,PASS-Test data min
+999991504,,,,,,,,,,,FAIL-Test data none
+999991905,,,,,,,,,,2014-06-11T03:33:14.613,FAIL-Test data empty
+999992806,Unmarried,,1,0,"zorg voor ouders,zorgt voor partner,normale zorg voor kinderen",kind woont bij grootouders,,False,,2011-09-12T03:33:14.823,PASS
+999993707,Other,Woont samen met vrienden,0,0,niets,met vrienden,,,,2008-09-14T03:33:14.211,PASS
+999994608,Never Married,Inwonende meerderjarige kinderen,4,1,zorg voor ouders,kinderen wonen thuis,1997-06-15,True,wil verhuizen,,FAIL-DATE_TIME is empty
+999995509,Domestic partner,Woont met gezin,2,2,normale zorg voor kinderen,geen bijzonderheden,2009-03-22,True,geadopteerd,WrongValue,FAIL-DATE_TIME has a wrong datetime format
+999990810,WrongValue,,,,,,,,,2006-08-05,FAIL-Test noneCheckValidator.validate
+999992211,WrongValue,,,,,gezin met vier kinderen,,,,2006-08-05T03:33:14.352,PASS-Optional BURGERLIJKE_STAAT WrongValue converts to None
+999990512,,WrongValue,,,,geen familie in de buurt,,,,2014-09-23T03:33:14.913,PASS-Optional GEZINSSAMENSTELLING WrongValue converts to None
+999990913,,Inwonende minderjarige kinderen,WrongValue,,,kinderen wonen thuis,,,,2025-09-23T03:33:14.416,PASS-Optional AANTAL_KINDEREN WrongValue converts to None
+999990214,,,-1,,heeft zorg voor vader die in huis woont,,,,,2012-02-05T03:33:14.613,PASS-Optional AANTAL_KINDEREN < 0 converts to None
+999990615,,,,WrongValue,heeft zorg voor moeder die in huis woont,,,,,2009-01-01T03:33:14.716,PASS-Optional AANTAL_KINDEREN_INWONEND WrongValue converts to None
+999991516,,,,-1,geen,,,,,2001-01-01T03:33:14.111,PASS-Optional AANTAL_KINDEREN_INWONEND < 0 and converts to None
+999990317,,,,,geen,,WrongValue,,,1989-09-02T03:33:14.619,PASS-Optional GEBOORTEDATUM WrongValue converts to None
+999990718,,,,,zorg voor ouders,,,WrongValue,,1970-01-05T03:33:14.601,PASS-Optional INWONEND WrongValue converts to None

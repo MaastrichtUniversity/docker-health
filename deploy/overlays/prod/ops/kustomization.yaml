@@ -1,0 +1,81 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: dh-health-ops
+
+resources:
+- namespace.yaml
+- ../../../base-ops
+
+images:
+- name: registry.prod.dh.unimaas.nl/docker-health/elk
+  newTag: '2024.1.10'
+
+secretGenerator:
+# Filebeat
+  - name: filebeat-certificate-authorities
+    files:
+        -  certs/ca.crt
+  - name: filebeat-certificate
+    files:
+        -  certs/filebeat.dh-health-ops.crt
+  - name: filebeat-key
+    files:
+        -  certs/filebeat.dh-health-ops.key
+# Logstash (ELK)
+  - name: logstash-certificate-authorities
+    files:
+        -  certs/ca.crt
+  - name: logstash-certificate
+    files:
+        -  certs/elk.dh-health-ops.crt
+  - name: logstash-key
+    files:
+        -  certs/elk.dh-health-ops.key
+
+patches:
+  - path: filebeat-configmap-patch.yaml
+    target:
+      kind: ConfigMap
+      name: filebeat-config
+  # 'Global' patches that apply to all of one sort
+  # Storage class patches
+  - target:
+      kind: PersistentVolume
+    patch: |-
+      - op: replace
+        path: /spec/storageClassName
+        value: local-path
+  - target:
+      kind: PersistentVolumeClaim
+    patch: |-
+      - op: replace
+        path: /spec/storageClassName
+        value: local-path
+  # Image pull secret patches
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/imagePullSecrets
+        value:
+        - name: registry-credentials
+  - target:
+      kind: Job
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/imagePullSecrets
+        value:
+        - name: registry-credentials
+  # imagePullPolicy patches
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: IfNotPresent
+  - target:
+      kind: Job
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: IfNotPresent

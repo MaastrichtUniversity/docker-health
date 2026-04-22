@@ -4,7 +4,7 @@ variable "ENV_TAG" {
 }
 
 variable "MAVEN_VERSION" {
-  default = "3.9.12"
+  default = "3.9.14"
 }
 
 variable "ENV_REGISTRY_HOST" {
@@ -12,7 +12,7 @@ variable "ENV_REGISTRY_HOST" {
 }
 
 group "default" {
-  targets = ["transform-rest", "federation-rest", "test-federation-rest", "etl-zib-pipeline", "etl-zib-rest", "test-single-node", "jupyter-zib", "portal", "terminology-server-proxy", "elk"]
+  targets = ["transform-rest", "federation-rest", "test-federation-rest", "etl-zib-pipeline", "etl-zib-rest", "test-single-node", "jupyter-zib", "jupyter-zib-prd", "portal", "terminology-server-proxy", "elk", "init-container"]
 }
 
 target "_src_etl" {
@@ -80,8 +80,20 @@ target "jupyter-zib" {
   args = {
     MAVEN_VERSION = "${MAVEN_VERSION}"
   }
+  target = "development"
   dockerfile = "Dockerfile"
   tags = ["${ENV_REGISTRY_HOST}/docker-health/jupyter-zib:${ENV_TAG}"]
+  context = "./externals/dh-hdp-notebooks"
+}
+
+target "jupyter-zib-prd" {
+  inherits = ["_hdp_templates", "_src_etl"]
+  args = {
+    MAVEN_VERSION = "${MAVEN_VERSION}"
+  }
+  target = "production"
+  dockerfile = "Dockerfile"
+  tags = ["${ENV_REGISTRY_HOST}/docker-health/jupyter-zib-prd:${ENV_TAG}"]
   context = "./externals/dh-hdp-notebooks"
 }
 
@@ -102,4 +114,10 @@ target "elk" {
   dockerfile = "Dockerfile"
   tags = ["${ENV_REGISTRY_HOST}/docker-health/elk:${ENV_TAG}"]
   context = "./elk"
+}
+
+target "init-container" {
+  dockerfile = "Dockerfile"
+  tags = ["${ENV_REGISTRY_HOST}/docker-health/init-container:${ENV_TAG}"]
+  context = "./init-container"
 }

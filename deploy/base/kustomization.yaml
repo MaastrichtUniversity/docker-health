@@ -5,4 +5,3 @@ resources:
 - common
 - jupyter-zib
 - openehr-nodes
-- terminology-server-proxy

@@ -38,7 +38,6 @@ dmypy.json
 externals/*
 
 # ETL input/output data
-data/synthea-demo-data
 outputs/
 
 # Jupyter notebooks
@@ -52,7 +51,7 @@ rit.sh
 .vscode/
 
 # secrets for local (dev)
-deploy/overlays/local/shared/components/terminology-server-proxy/secrets.yaml
+deploy/overlays/local/shared/components/terminology-server-proxy-secret/secrets.yaml
 # secrets for tst, acc and prod
 deploy/overlays/*/registry-secret.yaml
 deploy/overlays/*/*/registry-secret.yaml
@@ -63,3 +62,7 @@ elk/GeoLite2-City.mmdb
 
 # etc/hosts/ MacOS specific setup
 dh-mac.sh
+# Ignore secret files
+deploy/overlays/*/secrets.yaml
+# Ignore opencode.json
+opencode.json

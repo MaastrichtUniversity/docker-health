@@ -4,4 +4,5 @@ metadata:
   name: mumc-transform-rest-config
   namespace: dh-health
 data:
+  TERMINOLOGY_BASE_URL: http://mumc-terminology-server-proxy.dh-health:8080
   LOGGER_FILENAME: /var/log/mumc/transform-rest.log

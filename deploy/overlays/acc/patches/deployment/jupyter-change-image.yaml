@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyter-zib
+  namespace: dh-health
+spec:
+  selector:
+    matchLabels:
+      app: jupyter-zib
+  template:
+    spec:
+      containers:
+        - name: jupyter-zib
+          image: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib-prd:latest

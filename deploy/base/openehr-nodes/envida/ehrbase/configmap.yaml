@@ -6,3 +6,4 @@ metadata:
 data:
   SERVER_NODENAME: envida.server.dh.unimaas.nl
   DB_URL: jdbc:postgresql://envida-ehrdb.dh-health:5432/ehrbase
+  VALIDATION_EXTERNALTERMINOLOGY_PROVIDER_FHIRTERMINOLOGYSERVER_URL: http://envida-terminology-server-proxy.dh-health:8080/fhir
