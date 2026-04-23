@@ -2,8 +2,8 @@ BSN,TABAK_GEBRUIK_STATUS,SOORT_TABAK_GEBRUIK,START_DATUM,STOP_DATUM,HOEVEELHEID_
 999999801,Rookt dagelijks tabak,Rookt sigaretten,2011-12-01,,1,1/mo,12,Duplicate,2023-11-14T15:50:14.321,PASS-Test duplication check
 999999801,Other,,2011-12-01,,1,1/mo,12,New composition,2024-11-14T15:50:14.321,PASS-Test duplication check
 999999801,Rookt dagelijks tabak,Rookt sigaretten,2011-12-01,,1,1/mo,12,Duplicate,2023-11-14T15:50:14.321,FAIL-Test duplication check
-999990202,Rookt soms tabak,Rookt sigaren,1978-04-18,2025-01,1,1/d,420,A lot,1985-08-03T00:08:52.165,PASS-Test data max
-999990603,Rookt passief tabak,,,,,,,,1975-10-02T18:52:39.622,PASS-Test data min
+999990202,Rookt soms tabak,Rookt sigaren,1978-04-18,2025-01,1,1/d,500,A lot,1985-08-03T00:08:52.165,PASS-Test data max
+999990603,Heeft nooit gerookt,,,,,,,,1975-10-02T18:52:39.622,PASS-Test data min
 999991504,,,,,,,,,,FAIL-Test data none
 999991905,,,,,,,,,1992-07-18T19:28:41.085,FAIL-Test data empty
 999992806,Rookte vroeger,Rookt shag,2000-10-31,,0.5,1/d,,,2003-12-05T20:49:02.547,PASS
