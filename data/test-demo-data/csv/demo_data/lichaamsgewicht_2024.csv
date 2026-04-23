@@ -2,8 +2,8 @@ BSN,GEWICHT_WAARDE,GEWICHT_EENHEID,TOELICHTING,GEWICHT_DATUM_TIJD,KLEDING,DATE_T
 999999801,72,kg,Linker been geamputeerd boven de knie,2002-01-19T09:43:13.174,Volledig gekleed met schoenen,2002-01-19T09:45:12.174,PASS-Test duplication check
 999999801,103,kg,Linker been geamputeerd boven de knie,2018-01-19T09:43:13.174,Volledig gekleed met schoenen,2018-01-19T09:45:12.174,PASS-Test duplication check
 999999801,72,kg,Linker been geamputeerd boven de knie,2002-01-19T09:43:13.174,Volledig gekleed met schoenen,2002-01-19T09:45:12.174,FAIL-Test duplication check
-999990202,68,kg,Patiënt nuchter gewogen,2001-03-19T10:43:13.174,Minimale kleding,2001-03-19T11:43:13.174,PASS-Test data max
-999990603,85,kg,,2002-01-19T09:43:13.174,,2002-01-19T09:43:13.174,PASS-Test data min
+999990202,50,kg,Patiënt nuchter gewogen,2001-03-19T10:43:13.174,Minimale kleding,2001-03-19T11:43:13.174,PASS-Test data max
+999990603,90,kg,,2002-01-19T09:43:13.174,,2002-01-19T09:43:13.174,PASS-Test data min
 999991504,,,,,,,FAIL-Test data none
 999991905,,,,,,2016-03-19T09:43:13.174,FAIL-Test data empty
 999992806,4680,g,Gewicht in gram vanwege leeftijd onder 1 jaar,2018-02-19T09:43:13.174,Op blote voeten,2018-02-19T09:55:13.174,PASS-Test data with units in grams
