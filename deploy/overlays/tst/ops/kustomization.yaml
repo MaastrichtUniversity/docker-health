@@ -3,56 +3,55 @@ kind: Kustomization
 namespace: dh-health-ops
 
 resources:
-- namespace.yaml
-- secrets.yaml
-- elk-gateway.yaml
-- ../../../base-ops
+  - namespace.yaml
+  - secrets.yaml
+  - elk-gateway.yaml
+  - volumes/filebeat-log-pv.yaml
+  - volumes/filebeat-log-pvc.yaml
+  - ../../../base-ops
 
 images:
-- name: registry.prod.dh.unimaas.nl/docker-health/elk
-  newTag: '2026.1.1'
+  - name: registry.prod.dh.unimaas.nl/docker-health/elk
+    newTag: "2026.1.1"
 
 secretGenerator:
-# Filebeat
+  # Filebeat
   - name: filebeat-certificate-authorities
     files:
-        -  certs/ca.crt
+      - certs/ca.crt
   - name: filebeat-certificate
     files:
-        -  certs/filebeat.dh-health-ops.crt
+      - certs/filebeat.dh-health-ops.crt
   - name: filebeat-key
     files:
-        -  certs/filebeat.dh-health-ops.key
-# Logstash (ELK)
+      - certs/filebeat.dh-health-ops.key
+  # Logstash (ELK)
   - name: logstash-certificate-authorities
     files:
-        -  certs/ca.crt
+      - certs/ca.crt
   - name: logstash-certificate
     files:
-        -  certs/elk.dh-health-ops.crt
+      - certs/elk.dh-health-ops.crt
   - name: logstash-key
     files:
-        -  certs/elk.dh-health-ops.key
+      - certs/elk.dh-health-ops.key
 
 patches:
-  - path: filebeat-configmap-patch.yaml
+  - path: patches/filebeat-configmap-patch.yaml
     target:
       kind: ConfigMap
       name: filebeat-config
+  - target:
+      kind: DaemonSet
+      name: filebeat
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/volumes/2
+        value:
+          name: usrlog
+          persistentVolumeClaim:
+            claimName: filebeat-log-pvc
   # 'Global' patches that apply to all of one sort
-  # Storage class patches
-  - target:
-      kind: PersistentVolume
-    patch: |-
-      - op: replace
-        path: /spec/storageClassName
-        value: local-path
-  - target:
-      kind: PersistentVolumeClaim
-    patch: |-
-      - op: replace
-        path: /spec/storageClassName
-        value: local-path
   # Image pull secret patches
   - target:
       kind: Deployment
@@ -79,11 +78,11 @@ patches:
             name: proxy-config
 
 configMapGenerator:
-- name: proxy-config
-  literals:
-    - HTTP_PROXY=http://proxy.unimaas.nl:3128
-    - http_proxy=http://proxy.unimaas.nl:3128
-    - HTTPS_PROXY=http://proxy.unimaas.nl:3128
-    - https_proxy=http://proxy.unimaas.nl:3128
-    - NO_PROXY=localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1
-    - no_proxy=localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1
+  - name: proxy-config
+    literals:
+      - HTTP_PROXY=http://proxy.unimaas.nl:3128
+      - http_proxy=http://proxy.unimaas.nl:3128
+      - HTTPS_PROXY=http://proxy.unimaas.nl:3128
+      - https_proxy=http://proxy.unimaas.nl:3128
+      - NO_PROXY=localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1
+      - no_proxy=localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1
