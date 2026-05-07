@@ -29,6 +29,17 @@ spec:
           limits:
             cpu: 1000m
             memory: 4Gi
+        env:
+          - name: ELASTIC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: elastic-password
+                key: password
+          - name: KIBANA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: kibana-password
+                key: password
         envFrom:
         - configMapRef:
             name: elk-config
