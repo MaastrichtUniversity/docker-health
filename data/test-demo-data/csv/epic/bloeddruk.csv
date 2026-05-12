@@ -1,18 +1,18 @@
-BSN;BloeddrukDatumTijd;Hartslag;MeetLocatie;Bloeddruk;Houding;TEST_COMMENTS
-999999801;2024-06-04 20:51:14.000;71;linkerarm;120/75;staande positie;PASS-Test duplication check
-999999801;2021-04-21 15:18:29.000;68;rechterarm;110/65;liggende positie;PASS-Test duplication check
-999999801;2024-06-04 20:51:14.000;71;linkerarm;120/75;staande positie;FAIL-Test duplication check
-999990202;2001-03-19 10:43:13.174;100;linkerarm;125/66;zittende positie;PASS-Test data max
-999990603;2002-01-19 09:43:13.174;;;99/71;;PASS-Test data min
-999991504;;;;;;FAIL-Test data none
-999991905;2002-01-19 09:43:13.174;;;;;FAIL-Test data empty
-999992806;2022-11-08 09:53:04.000;51;linkerarm;101/71;achteroverleunende positie;PASS
-999993707;2021-03-12 14:29:34.000;52;rechterbeen;102/72;;PASS
-999994608;2002-01-19 09:43:13.174;65;WrongValue;105/75;;PASS-MeetLocatie has a wrong value
-999995509;2002-01-19 09:43:13.174;56;linkerarm;-1/76;achteroverleunende positie;FAIL-SYSTOLISCHE_BLOEDDRUK is negative
-999990810;2024-03-21 10:48:45.000;57;linkerarm;1001/77;;FAIL-SYSTOLISCHE_BLOEDDRUK is above 1000
-999992211;2002-01-19 09:43:13.111;58;linkerarm;/78;staande positie;FAIL-SYSTOLISCHE_BLOEDDRUK is empty
-999990512;2002-01-19 09:43:13.222;59;linkerarm;106/-2;;FAIL-DIASTOLISCHE_BLOEDDRUK is negative
-999990913;2002-01-19 09:43:13.333;60;linkerarm;107/1002;;FAIL-DIASTOLISCHE_BLOEDDRUK is above 1000
-999990214;2002-01-19 09:43:13.174;;linkerarm;108/;staande positie;FAIL-DIASTOLISCHE_BLOEDDRUK is empty
-999990615;2025-01-15 08:40:00.000;;;105/75;WrongValue;PASS-Houding has a wrong value
+BSN;RECORDED_TIME;R MUMC KD IP RR LOCATIE;Bloeddruk;R MUMC RR HOUDING POSITIE (ZIB);TEST_COMMENTS
+999999801;2024-06-04 20:51:14.000;linkerarm;120/75;staande positie;PASS-Test duplication check
+999999801;2021-04-21 15:18:29.000;rechterarm;110/65;liggende positie;PASS-Test duplication check
+999999801;2024-06-04 20:51:14.000;linkerarm;120/75;staande positie;FAIL-Test duplication check
+999990202;2001-03-19 10:43:13.174;linkerarm;125/66;zittende positie;PASS-Test data max
+999990603;2002-01-19 09:43:13.174;;99/71;;PASS-Test data min
+999991504;;;;;FAIL-Test data none
+999991905;2002-01-19 09:43:13.174;;;;FAIL-Test data empty
+999992806;2022-11-08 09:53:04.000;linkerarm;101/71;achteroverleunende positie;PASS
+999993707;2021-03-12 14:29:34.000;rechterbeen;102/72;;PASS
+999994608;2002-01-19 09:43:13.174;WrongValue;105/75;;PASS-LOCATIE has a wrong value
+999995509;2002-01-19 09:43:13.174;linkerarm;-1/76;achteroverleunende positie;FAIL-SYSTOLISCHE_BLOEDDRUK is negative
+999990810;2024-03-21 10:48:45.000;linkerarm;1001/77;;FAIL-SYSTOLISCHE_BLOEDDRUK is above 1000
+999992211;2002-01-19 09:43:13.111;linkerarm;/78;staande positie;FAIL-SYSTOLISCHE_BLOEDDRUK is empty
+999990512;2002-01-19 09:43:13.222;linkerarm;106/-2;;FAIL-DIASTOLISCHE_BLOEDDRUK is negative
+999990913;2002-01-19 09:43:13.333;linkerarm;107/1002;;FAIL-DIASTOLISCHE_BLOEDDRUK is above 1000
+999990214;2002-01-19 09:43:13.174;linkerarm;108/;staande positie;FAIL-DIASTOLISCHE_BLOEDDRUK is empty
+999990615;2025-01-15 08:40:00.000;;105/75;WrongValue;PASS-HOUDING has a wrong value

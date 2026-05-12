@@ -1,4 +1,4 @@
-BSN;BloeddrukDatumTijd;Hartslag;MeetLocatie;Bloeddruk;Houding;TEST_COMMENTS
-999999801;2024-06-04 20:51:14.000;75;linkerarm;120/75;staande positie;PASS
-999990202;2021-04-21 15:18:29.000;68;rechterarm;130/60;liggende positie;PASS
-999990603;2024-06-04 20:51:14.000;80;linkerarm;109/75;achteroverleunende positie;PASS
+BSN;RECORDED_TIME;R MUMC KD IP RR LOCATIE;Bloeddruk;R MUMC RR HOUDING POSITIE (ZIB);TEST_COMMENTS
+999999801;2024-06-04 20:51:14.000;linkerarm;120/75;staande positie;PASS
+999990202;2021-04-21 15:18:29.000;rechterarm;130/60;liggende positie;PASS
+999990603;2024-06-04 20:51:14.000;linkerarm;109/75;achteroverleunende positie;PASS
