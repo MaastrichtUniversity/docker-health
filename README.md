@@ -346,7 +346,7 @@ Follow these manual steps to deploy the stack in your local Minikube manually:
    ```bash
    eval $(minikube -p minukube docker-env)
    export ENV_TAG=latest
-   export MAVEN_VERSION=3.9.14
+   export MAVEN_VERSION=3.9.15
    ```
 
    1. Pull external images into Minikube's Docker daemon
