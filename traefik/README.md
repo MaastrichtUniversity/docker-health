@@ -39,6 +39,9 @@ Make sure your minikube cluster is running
 
 cd traefik
 
+# Install Gateway API
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/standard-install.yaml
+
 # Install traefik
 helm repo add traefik https://traefik.github.io/charts
 helm repo update
