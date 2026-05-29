@@ -1,0 +1,31 @@
+BSN;omschrijving;datum;uitslag;eenheid;TESTS_COMMENTS
+999999801;gewicht patiënt;20210106;80;kg;PASS-Test duplication check
+999999801;gewicht patiënt;20210106;81;kg;PASS-Test duplication check
+999999801;gewicht patiënt;20210106;80;kg;FAIL-Test duplication check
+999990202;gewicht patiënt;20211105;73;kg;PASS-Test data max
+999990603;gewicht patiënt;20250101;74;kg;PASS-Test data min
+999991504;gewicht patiënt;;;;FAIL-Test data none
+999991905;gewicht patiënt;20241231;;;FAIL-Test data empty
+999992806;gewicht patiënt;20241231;6600;g;PASS-Test data with units in grams
+999993707;gewicht patiënt;20230211;85;kg;PASS
+999994608;gewicht patiënt;;86;kg;FAIL-datum is empty
+999995509;gewicht patiënt;0220101;87;kg;FAIL-datum has a wrong datetime format (wrong year value)
+999990810;gewicht patiënt;20210531;88;;FAIL-eenheid is missing
+999992211;gewicht patiënt;20210530;88;WrongValue;FAIL-eenheid is invalid
+999990512;gewicht patiënt;20200331;;kg;FAIL-uitslag is missing
+999990913;gewicht patiënt;20200330;WrongValue;kg;FAIL-uitslag is invalid
+999999801;lengte patiënt;20210106;1.12;m;PASS-Test duplication check
+999999801;lengte patiënt;20210106;1.35;m;PASS-Test duplication check
+999999801;lengte patiënt;20210106;1.12;m;FAIL-Test duplication check
+999990202;lengte patiënt;20211105;1.75;m;PASS-Test data max
+999990603;lengte patiënt;20250101;1.81;m;PASS-Test data min
+999991504;lengte patiënt;;;;FAIL-Test data none
+999991905;lengte patiënt;20241231;;;FAIL-Test data empty
+999992806;lengte patiënt;20241231;171;cm;PASS-Test data with units in cm
+999993707;lengte patiënt;20230211;1.65;m;PASS
+999994608;lengte patiënt;;1.66;m;FAIL-datum is empty
+999995509;lengte patiënt;0220101;1.67;m;FAIL-datum has a wrong datetime format (wrong year value)
+999990810;lengte patiënt;20210531;1.68;;FAIL-eenheid is missing
+999992211;lengte patiënt;20210530;1.68;WrongValue;FAIL-eenheid is invalid
+999990512;lengte patiënt;20200331;;m;FAIL-uitslag is missing
+999990913;lengte patiënt;20200330;WrongValue;m;FAIL-uitslag is invalid
