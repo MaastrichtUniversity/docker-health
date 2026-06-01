@@ -2,7 +2,7 @@ BSN;R MUMC KL EETBEPERKINGEN (ZIB);R MUMC KL ETEN (ZIB);RECORDED_TIME;TEMPLATE_N
 999999801;Eetgerei hanteren;Onafhankelijk;2025-03-05 15:30:00.000;T MUMC KL ASSESSMENT (OUDE VERSIE);IPRN;PASS-Test duplication check
 999999801;Eetgerei hanteren;Hulp nodig;2026-03-05 15:30:00.000;T MUMC KL ASSESSMENT (OUDE VERSIE);IPRN;PASS-Test duplication check
 999999801;Eetgerei hanteren;Onafhankelijk;2025-03-05 15:30:00.000;T MUMC KL ASSESSMENT (OUDE VERSIE);IPRN;FAIL-Test duplication check
-999990202;Snijden/openen;Volledig afhankelijk;2026-03-19 11:00:00.000;T MUMC KL IP ADL EN ZORG;1691;PASS-Test data max
+999990202;Snijden/openen,Eetgerei hanteren,WrongValue;Volledig afhankelijk;2026-03-19 11:00:00.000;T MUMC KL IP ADL EN ZORG;1691;PASS-Test data max
 999990603;;Onafhankelijk;2024-10-08 11:00:00.000;;;PASS-Test data min
 999991504;;;;;;FAIL-Test data none
 999991905;;;2026-03-19 10:00:00.000;;;FAIL-Test data empty
