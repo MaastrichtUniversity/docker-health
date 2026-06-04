@@ -1,0 +1,7 @@
+BSN;bepaling_id;datum;nhgnummer;uitslag;uitslag_tekst;uitslag_type;contact_id;journaal_id;episode_id;omschrijving;afwijkende_uitslag;memo_mat_byz;eenheid;opmerking;originele_medewerker_id;DATAHUB_TEST_COMMENTS
+999990603;10323;20180811;1744;139;;N;10054;10020;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;;10000;PASS
+999990603;10324;20180811;1744;85;;N;10054;10020;10017;diastolische bloeddruk;1;RRSY/KA/;mmHg;;10000;
+999991504;10325;20220202;1740;151;;N;10056;10068;10020;systolische bloeddruk;1;RRDI/KA/;mmHg;;10000;PASS
+999991504;10326;20220202;1740;93;;N;10056;10068;10020;diastolische bloeddruk;1;RRDI/KA/;mmHg;;10000;
+999991905;10327;20250106;1744;120;;N;10057;10085;10021;systolische bloeddruk;1;RRSY/KA/;mmHg;;10000;PASS
+999991905;10328;20250106;1744;66;;N;10057;10085;10021;diastolische bloeddruk;1;RRSY/KA/;mmHg;;10000;

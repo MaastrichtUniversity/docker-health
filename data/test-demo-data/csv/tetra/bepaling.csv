@@ -1,0 +1,26 @@
+BSN;bepaling_id;datum;nhgnummer;uitslag;uitslag_tekst;uitslag_type;contact_id;journaal_id;episode_id;omschrijving;afwijkende_uitslag;memo_mat_byz;eenheid;opmerking;originele_medewerker_id;DATAHUB_TEST_COMMENTS
+999999801;10323;20210106;1744;139;;N;10054;10068;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;;10000;PASS-Test duplication check
+999999801;10325;20210106;1740;90;;N;10054;10068;10017;diastolische bloeddruk;1;RRDI/KA/;mmHg;;10000;
+999999801;10326;20210106;1744;120;;N;10055;10069;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;;10000;PASS-Test duplication check
+999999801;10327;20210106;1740;80;;N;10055;10069;10017;diastolische bloeddruk;1;RRDI/KA/;mmHg;;10000;
+999999801;10323;20210106;1744;139;;N;10054;10068;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;;10000;FAIL-Test duplication check
+999999801;10325;20210106;1740;90;;N;10054;10068;10017;diastolische bloeddruk;1;RRDI/KA/;mmHg;;10000;
+999990202;10328;20190612;1744;120;;N;10056;10070;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;Measured early in the morning;10000;PASS-Test data max
+999990202;10329;20190612;1740;98;;N;10056;10070;10017;diastolische bloeddruk;1;RRDI/KA/;mmHg;;10000;
+999990603;;20250502;;190;;;;;;systolische bloeddruk;;;;;;PASS-Test data min
+999990603;;20250502;;60;;;;;;diastolische bloeddruk;;;;;;
+999991504;;;;;;;;;;;;;;;;FAIL-Test data none
+999991504;;;;;;;;;;;;;;;;
+999991905;;20020110;;;;;;;;;;;;;;FAIL-Test data empty
+999991905;;20020110;;;;;;;;;;;;;;
+999992806;10325;20210106;1740;66;;N;10054;10071;10017;diastolische bloeddruk;1;RRDI/KA/;mmHg;;10005;
+999992806;10323;20210106;1744;170;;N;10054;10071;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;;10005;PASS-switched order
+999993707;10323;20210106;1744;142;;N;10054;10068;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;;10012;PASS-some other measurment is in the dataframe
+999993707;10325;20210106;1740;50;;N;10054;10068;10017;diastolische bloeddruk;1;RRDI/KA/;mmHg;;10000;
+999993707;10325;20210322;134;4;;N;10106;10120;10017;bezinking (BSE);1;BSE/B/1U;;;10000
+999994608;10323;20210106;1744;155;;N;10054;10068;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;;10000;PASS
+999994608;10325;20210106;1740;55;;N;10054;10068;10017;diastolische bloeddruk;1;RRDI/KA/;mmHg;;10045;
+999995509;10323;20210106;1744;;;N;10054;10068;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;;10000;FAIL-systolische bloeddruk is missing
+999995509;10325;20210106;1740;90;;N;10054;10068;10017;diastolische bloeddruk;1;RRDI/KA/;mmHg;;10000;
+999990810;10323;20210106;1744;121;;N;10054;10068;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;;10034;FAIL-diastolische bloeddruk is missing
+999990810;10325;20210106;1740;;;N;10054;10068;10017;diastolische bloeddruk;1;RRDI/KA/;mmHg;;10000;
