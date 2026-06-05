@@ -17,5 +17,7 @@ data:
   TEMPLATE_IDS: |
     [
       "DataHub-InformedConsent",
+      "DataHub-Lichaamsgewicht-2024",
+      "DataHub-Lichaamslengte-2024",
       "DataHub-Patient-2024"
     ]

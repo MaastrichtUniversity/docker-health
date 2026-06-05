@@ -1,4 +1,34 @@
-BSN;bepaling_id;datum;nhgnummer;uitslag;uitslag_tekst;uitslag_type;contact_id;journaal_id;episode_id;omschrijving;afwijkende_uitslag;memo_mat_byz;eenheid;opmerking;originele_medewerker_id;DATAHUB_TEST_COMMENTS
+BSN;bepaling_id;datum;nhgnummer;uitslag;uitslag_tekst;uitslag_type;contact_id;journaal_id;episode_id;omschrijving;afwijkende_uitslag;memo_mat_byz;eenheid;opmerking;originele_medewerker_id;TESTS_COMMENTS
+999999801;00001;20210106;111;80;;N;10000;10004;10005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;PASS-Test duplication check
+999999801;00002;20210106;111;81;;N;20000;20004;20005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;PASS-Test duplication check
+999999801;00003;20210106;111;80;;N;30000;30004;30005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;FAIL-Test duplication check
+999990202;00004;20211105;222;73;;N;40000;40004;40005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;PASS-Test data max
+999990603;00005;20250101;333;74;;N;50000;50004;50005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;PASS-Test data min
+999991504;00006;;444;;;N;60000;60004;60005.0;gewicht patiënt;1;GEW/AO/;;;10000;FAIL-Test data none
+999991905;00007;20241231;555;;;N;70000;70004;70005.0;gewicht patiënt;1;GEW/AO/;;;10000;FAIL-Test data empty
+999992806;00008;20241231;666;6600;;N;80000;80004;80005.0;gewicht patiënt;1;GEW/AO/;g;;10000;PASS-Test data with units in grams
+999993707;00009;20230211;777;85;;N;90000;90004;90005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;PASS
+999994608;00010;;888;86;;N;10000;10004;10005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;FAIL-datum is empty
+999995509;00011;0220101;999;87;;N;11000;11004;11005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;FAIL-datum has a wrong datetime format (wrong year value)
+999990810;00012;20210531;100;88;;N;12000;12004;12005.0;gewicht patiënt;1;GEW/AO/;;;10000;FAIL-eenheid is missing
+999992211;00013;20210530;110;88;;N;13000;13004;13005.0;gewicht patiënt;1;GEW/AO/;WrongValue;;10000;FAIL-eenheid is invalid
+999990512;00014;20200331;120;;;N;14000;14004;14005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;FAIL-uitslag is missing
+999990913;00015;20200330;130;WrongValue;;N;15000;15004;15005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;FAIL-uitslag is invalid
+999999801;00016;20210106;111;1.12;;N;16000;16004;16005.0;lengte patiënt;1;GEW/AO/;m;;10000;PASS-Test duplication check
+999999801;00017;20210106;111;1.35;;N;17000;17004;17005.0;lengte patiënt;1;GEW/AO/;m;;10000;PASS-Test duplication check
+999999801;00018;20210106;111;1.12;;N;18000;18004;18005.0;lengte patiënt;1;GEW/AO/;m;;10000;FAIL-Test duplication check
+999990202;00019;20211105;222;1.75;;N;19000;19004;19005.0;lengte patiënt;1;GEW/AO/;m;;10000;PASS-Test data max
+999990603;00020;20250101;333;1.81;;N;20000;20004;20005.0;lengte patiënt;1;GEW/AO/;m;;10000;PASS-Test data min
+999991504;00021;;444;;;N;21000;21004;21005.0;lengte patiënt;1;GEW/AO/;;;10000;FAIL-Test data none
+999991905;00022;20241231;555;;;N;22000;22004;22005.0;lengte patiënt;1;GEW/AO/;;;10000;FAIL-Test data empty
+999992806;00023;20241231;666;171;;N;23000;23004;23005.0;lengte patiënt;1;GEW/AO/;cm;;10000;PASS-Test data with units in cm
+999993707;00024;20230211;777;1.65;;N;24000;24004;24005.0;lengte patiënt;1;GEW/AO/;m;;10000;PASS
+999994608;00025;;888;1.66;;N;25000;25004;25005.0;lengte patiënt;1;GEW/AO/;m;;10000;FAIL-datum is empty
+999995509;00026;0220101;999;1.67;;N;26000;26004;26005.0;lengte patiënt;1;GEW/AO/;m;;10000;FAIL-datum has a wrong datetime format (wrong year value)
+999990810;00027;20210531;100;1.68;;N;27000;27004;27005.0;lengte patiënt;1;GEW/AO/;;;10000;FAIL-eenheid is missing
+999992211;00028;20210530;110;1.68;;N;28000;28004;28005.0;lengte patiënt;1;GEW/AO/;WrongValue;;10000;FAIL-eenheid is invalid
+999990512;00029;20200331;120;;;N;29000;29004;29005.0;lengte patiënt;1;GEW/AO/;m;;10000;FAIL-uitslag is missing
+999990913;00030;20200330;130;WrongValue;;N;30000;30004;30005.0;lengte patiënt;1;GEW/AO/;m;;10000;FAIL-uitslag is invalid
 999999801;10323;20210106;1744;139;;N;10054;10068;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;;10000;PASS-Test duplication check
 999999801;10325;20210106;1740;90;;N;10054;10068;10017;diastolische bloeddruk;1;RRDI/KA/;mmHg;;10000;
 999999801;10326;20210106;1744;120;;N;10055;10069;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;;10000;PASS-Test duplication check

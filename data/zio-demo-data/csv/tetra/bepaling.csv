@@ -1,4 +1,10 @@
 BSN;bepaling_id;datum;nhgnummer;uitslag;uitslag_tekst;uitslag_type;contact_id;journaal_id;episode_id;omschrijving;afwijkende_uitslag;memo_mat_byz;eenheid;opmerking;originele_medewerker_id;DATAHUB_TEST_COMMENTS
+999990603;00001;20250101;111;74;;N;10000;10004;10005.0;gewicht patiënt;1;GEW/AO/;kg;;10000
+999991504;00002;20230331;222;43;;N;20000;20004;20005.0;gewicht patiënt;1;GEW/AO/;kg;;10000
+999991905;00003;20241231;333;89;;N;30000;30004;30005.0;gewicht patiënt;1;GEW/AO/;kg;;10000
+999990603;00004;20250101;111;1.81;;N;40004;40004;40005.0;lengte patiënt;1;GEW/AO/;m;;10000
+999991504;00005;20230331;222;1.21;;N;50004;50004;50005.0;lengte patiënt;1;GEW/AO/;m;;10000
+999991905;00006;20241231;333;1.70;;N;60004;60004;60005.0;lengte patiënt;1;GEW/AO/;m;;10000
 999990603;10323;20180811;1744;139;;N;10054;10020;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;;10000;PASS
 999990603;10324;20180811;1744;85;;N;10054;10020;10017;diastolische bloeddruk;1;RRSY/KA/;mmHg;;10000;
 999991504;10325;20220202;1740;151;;N;10056;10068;10020;systolische bloeddruk;1;RRDI/KA/;mmHg;;10000;PASS
