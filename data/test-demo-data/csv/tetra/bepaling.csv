@@ -6,7 +6,7 @@ BSN;bepaling_id;datum;nhgnummer;uitslag;uitslag_tekst;uitslag_type;contact_id;jo
 999999801;10323;20210106;1744;139;;N;10054;10068;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;;10000;FAIL-Test duplication check
 999999801;10325;20210106;1740;90;;N;10054;10068;10017;diastolische bloeddruk;1;RRDI/KA/;mmHg;;10000;
 999990202;10328;20190612;1744;120;;N;10056;10070;10017;systolische bloeddruk;1;RRSY/KA/;mmHg;Measured early in the morning;10000;PASS-Test data max
-999990202;10329;20190612;1740;98;;N;10056;10070;10017;diastolische bloeddruk;1;RRDI/KA/;mmHg;;10000;
+999990202;10329;20190612;1740;98;;N;10056;10070;10017;diastolische bloeddruk;1;RRDI/KA/;mmHg;Measured early in the morning;10000;
 999990603;;20250502;;190;;;;;;systolische bloeddruk;;;;;;PASS-Test data min
 999990603;;20250502;;60;;;;;;diastolische bloeddruk;;;;;;
 999991504;;;;;;;;;;;;;;;;FAIL-Test data none
