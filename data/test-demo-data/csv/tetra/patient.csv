@@ -6,7 +6,7 @@ BSN;patientnummer;bsn;categorie;geboortedatum;geboorteplaats;geslacht;achternaam
 999990603;10009;;V;19850718;;UN;Donders;;;;;;;;;;;;;;;;;;;;;;;;;PASS-Test data min
 999991504;10010;;V;20120817;;;Jansen;;;;;Storm;Biltstraat;26;;3511AJ;Utrecht;;;10000;Draaisma;01999986;VERVALLEN Apotheek Amsterdam;10000;;;;-1;;;;FAIL-Test data nonechecksum
 999991905;10011;;V;19850916;;;Jansen;;;;;Annie;Biltstraat;26;;3511AJ;Utrecht;;;10000;Draaisma;01999986;VERVALLEN Apotheek Amsterdam;10000;;;;-1;;;;FAIL-Test data empty
-999992806;10012;;V;19790326;;M;Jansen;;;;;Hendrik;Biltstraat;26;;3511AJ;Utrecht;;rohaportaal@tetra.nl;10000;Draaisma;01999986;VERVALLEN Apotheek Amsterdam;10000;;;;-1;;;;PASS-Test Geboortedatum is a partial date (YYYY-MM)
+999992806;10012;;V;197903;;M;Jansen;;;;;Hendrik;Biltstraat;26;;3511AJ;Utrecht;;rohaportaal@tetra.nl;10000;Draaisma;01999986;VERVALLEN Apotheek Amsterdam;10000;;;;-1;;;;PASS-Test Geboortedatum is a partial date (YYYYMM)
 999993707;10013;;V;19481114;;M;Pietersen;;;;;Harrie;Neude;6;;3511VV;Utrecht;;;10000;Draaisma;01999986;VERVALLEN Apotheek Amsterdam;10000;;;;-1;;;;PASS
 999994608;10014;;V;19481213;;V;Pietersen;;;;;Maria;Neude;6;;3511VV;Utrecht;;;10000;Draaisma;01999986;VERVALLEN Apotheek Amsterdam;10000;;;;-1;;;;PASS
 999995509;10015;;V;19880112;;V;Patient;;;;;Grote;Neude;6;;3511VV;Utrecht;;;10000;Draaisma;01999986;VERVALLEN Apotheek Amsterdam;10000;;;;-1;;;;PASS
