@@ -1,4 +1,4 @@
-BSN;bepaling_id;datum;nhgnummer;uitslag;uitslag_tekst;uitslag_type;contact_id;journaal_id;episode_id;omschrijving;afwijkende_uitslag;memo_mat_byz;eenheid;opmerking;originele_medewerker_id;TESTS_COMMENTS
+BSN;bepaling_id;datum;nhgnummer;uitslag;uitslag_tekst;uitslag_type;contact_id;journaal_id;episode_id;omschrijving;afwijkende_uitslag;memo_mat_byz;eenheid;opmerking;originele_medewerker_id;DATAHUB_TEST_COMMENTS
 999999801;00001;20210106;111;80;;N;10000;10004;10005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;PASS-Test duplication check
 999999801;00002;20210106;111;81;;N;20000;20004;20005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;PASS-Test duplication check
 999999801;00003;20210106;111;80;;N;30000;30004;30005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;FAIL-Test duplication check
