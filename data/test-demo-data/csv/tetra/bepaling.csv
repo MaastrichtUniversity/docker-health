@@ -2,7 +2,7 @@ BSN;bepaling_id;datum;nhgnummer;uitslag;uitslag_tekst;uitslag_type;contact_id;jo
 999999801;00001;20210106;111;80;;N;10000;10004;10005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;PASS-Test duplication check
 999999801;00002;20210106;111;81;;N;20000;20004;20005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;PASS-Test duplication check
 999999801;00003;20210106;111;80;;N;30000;30004;30005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;FAIL-Test duplication check
-999990202;00004;20211105;222;73;;N;40000;40004;40005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;PASS-Test data max
+999990202;00004;20211105;222;73;;N;40000;40004;40005.0;gewicht patiënt;1;GEW/AO/;kg;data max toelichting;10000;PASS-Test data max
 999990603;00005;20250101;333;74;;N;50000;50004;50005.0;gewicht patiënt;1;GEW/AO/;kg;;10000;PASS-Test data min
 999991504;00006;;444;;;N;60000;60004;60005.0;gewicht patiënt;1;GEW/AO/;;;10000;FAIL-Test data none
 999991905;00007;20241231;555;;;N;70000;70004;70005.0;gewicht patiënt;1;GEW/AO/;;;10000;FAIL-Test data empty
@@ -17,7 +17,7 @@ BSN;bepaling_id;datum;nhgnummer;uitslag;uitslag_tekst;uitslag_type;contact_id;jo
 999999801;00016;20210106;111;1.12;;N;16000;16004;16005.0;lengte patiënt;1;GEW/AO/;m;;10000;PASS-Test duplication check
 999999801;00017;20210106;111;1.35;;N;17000;17004;17005.0;lengte patiënt;1;GEW/AO/;m;;10000;PASS-Test duplication check
 999999801;00018;20210106;111;1.12;;N;18000;18004;18005.0;lengte patiënt;1;GEW/AO/;m;;10000;FAIL-Test duplication check
-999990202;00019;20211105;222;1.75;;N;19000;19004;19005.0;lengte patiënt;1;GEW/AO/;m;;10000;PASS-Test data max
+999990202;00019;20211105;222;1.75;;N;19000;19004;19005.0;lengte patiënt;1;GEW/AO/;m;data max toelichting;10000;PASS-Test data max
 999990603;00020;20250101;333;1.81;;N;20000;20004;20005.0;lengte patiënt;1;GEW/AO/;m;;10000;PASS-Test data min
 999991504;00021;;444;;;N;21000;21004;21005.0;lengte patiënt;1;GEW/AO/;;;10000;FAIL-Test data none
 999991905;00022;20241231;555;;;N;22000;22004;22005.0;lengte patiënt;1;GEW/AO/;;;10000;FAIL-Test data empty
