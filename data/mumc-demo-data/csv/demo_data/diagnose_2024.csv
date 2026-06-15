@@ -1,0 +1,4 @@
+BSN,DiagnoseDatum,StartDatum,EindDatum,DiagnoseNaam,NadereSpecificatieDiagnoseNaam,Toelichting,AnatomischeLocatie::Locatie,AnatomischeLocatie::Lateraliteit,DiagnoseSteller::zorgverlener_2024.csv,DATE_TIME
+999999801,2025-04-01,2025,,A04.1,,,,,Zorgverlener_2,2023-11-14T15:50:14.321
+999990202,2022-01-10,2022-01-10,2022-03-01,S47.2,Injury of left shoulder and clavicula,Car accident,16982005,Links,Zorgverlener_1,2022-01-10T10:30:00.000
+999990603,2022-02,2026,,T68,,,,,,2022-02-01T10:30:00.000
