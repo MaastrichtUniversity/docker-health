@@ -1,4 +1,4 @@
-BSN,DiagnoseDatum,StartDatum,EindDatum,DiagnoseNaam,NadereSpecificatieDiagnoseNaam,Toelichting,AnatomischeLocatie::Locatie,AnatomischeLocatie::Lateraliteit,DiagnoseSteller::zorgverlener_2024.csv,DATE_TIME
+BSN,DiagnoseDatum,StartDatum,EindDatum,DiagnoseNaam,NadereSpecificatieDiagnoseNaam,Toelichting,LOCATIE,LATERALITEIT,DiagnoseSteller::zorgverlener_2024.csv,DATE_TIME
 999999801,2025-04-01,2025,,A04.1,,,,,Zorgverlener_2,2023-11-14T15:50:14.321
 999990603,2022-02,2026,,T68,,,,,,2022-02-01T10:30:00.000
 999992806,2020-03-10,2020-03-10,2020-04-20,U07.1,COVID-19 infection,,,,,2020-03-10T00:00:00.000
