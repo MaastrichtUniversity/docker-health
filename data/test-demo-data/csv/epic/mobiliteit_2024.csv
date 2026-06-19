@@ -1,0 +1,15 @@
+BSN;R MUMC KL ASSESSMENT MOBILITEIT;R MUMC KL HOUDING HANDHAVEN (ZIB);R MUMC KL HOUDING VERANDEREN (ZIB);R MUMC KL LOPEN (ZIB);R MUMC KL TOELICHTING MOBILITEIT (ZIB);R MUMC KL TRAPLOPEN (ZIB);R MUMC KL UITVOEREN TRANSFER (ZIB);RECORDED_TIME;TEMPLATE_NAME;ENTRY_USER_ID;TEST_COMMENTS
+999999801;niet zelfstandig;onafhankelijk;volledig afhankelijk;Hulp nodig;test;onafhankelijk;volledig afhankelijk;2025-03-05 15:30:00.000;T MUMC KL ASSESSMENT (OUDE VERSIE);IMMD;PASS-Test duplication check
+999999801;niet zelfstandig;hulp nodig;volledig afhankelijk;Hulp nodig;test;onafhankelijk;volledig afhankelijk;2026-03-05 15:30:00.000;T MUMC KL ASSESSMENT (OUDE VERSIE);IMMD;PASS-Test duplication check
+999999801;niet zelfstandig;onafhankelijk;volledig afhankelijk;Hulp nodig;test;onafhankelijk;volledig afhankelijk;2025-03-05 15:30:00.000;T MUMC KL ASSESSMENT (OUDE VERSIE);IMMD;FAIL-Test duplication check
+999990202;zelfstandig;Onafhankelijk;hulp nodig;Hulp nodig;kracht links verminderd;hulp nodig;onafhankelijk;2025-06-18 10:40:00.000;T MUMC KL IP ADL EN ZORG;944;PASS-Test data max
+999990603;;;;;comment to avoid empty dataframe;;;2024-10-14 11:14:00.000;;;PASS-Test data min
+999991504;;;;;;;;;;;FAIL-Test data none
+999991905;;;;;;;;2026-02-26 09:00:00.000;;;FAIL-Test data empty
+999992806;niet zelfstandig;hulp nodig;;Hulp nodig;;Onafhankelijk;;2026-03-19 10:00:00.000;T MUMC KL PICU/KIND ASSESSMENT;ICUMD;PASS
+999993707;zelfstandig;;volledig afhankelijk;;comment;;Hulp nodig;2025-09-16 11:35:00.000;T_MUMC_KL_VPK ANAMNESE DEEL 2;IMRN;PASS
+999994608;niet zelfstandig;WrongValue;hulp nodig;Onafhankelijk;This is not the comment you are looking for;hulp nodig;volledig afhankelijk;2025-10-13 08:39:00.000;T MUMC KL IP ADL EN ZORG;IMMD;PASS-R MUMC KL HOUDING HANDHAVEN (ZIB) has WrongValue
+999995509;zelfstandig;hulp nodig;WrongValue;onafhankelijk;bob;volledig afhankelijk;onafhankelijk;2026-03-05 15:30:00.000;T MUMC IP ASSESSMENT NIEUW;944;PASS-R MUMC KL HOUDING VERANDEREN (ZIB) has WrongValue
+999990810;niet zelfstandig;niet zelfstandig;Onafhankelijk;WrongValue;random comment;volledig afhankelijk;Onafhankelijk;2025-02-12 14:42:00.000;T MUMC KL ASSESSMENT (OUDE VERSIE);IPRN;PASS-R MUMC KL LOPEN (ZIB) has WrongValue
+999992211;niet zelfstandig;volledig afhankelijk;volledig afhankelijk;Hulp nodig;geen mobiliteit;WrongValue;hulp nodig;2024-11-07 15:37:00.000;T MUMC KL IP ADL EN ZORG;1691;PASS-R MUMC KL TRAPLOPEN (ZIB) has WrongValue
+999990512;zelfstandig;Onafhankelijk;onafhankelijk;onafhankelijk;test comment 123;onafhankelijk;Onafhankelijk;2024-11-07 15:37:00.000;T MUMC KL PICU/KIND ASSESSMENT;IMRN;PASS-R MUMC KL UITVOEREN TRANSFER (ZIB) has WrongValue
