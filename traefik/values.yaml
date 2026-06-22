@@ -30,8 +30,8 @@ gateway:
       port: 80
       protocol: HTTP
 
-logs:
-  general:
-    level: INFO
-  access:
-    enabled: true
+log:
+  level: INFO
+
+accessLog:
+  enabled: true
