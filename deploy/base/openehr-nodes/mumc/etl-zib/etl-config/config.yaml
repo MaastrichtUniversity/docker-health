@@ -17,12 +17,13 @@ data:
     [
       "DataHub-Bloeddruk-2024",
       "DataHub-InformedConsent",
-      "DataHub-Mobiliteit-2024",
       "DataHub-Lichaamsgewicht-2024",
       "DataHub-Lichaamslengte-2024",
+      "DataHub-Mobiliteit-2024",
       "DataHub-Patient-2024",
       "DataHub-VermogenTotEten-2024",
-      "DataHub-VermogenTotToiletgang-2024"
+      "DataHub-VermogenTotToiletgang-2024",
+      "DataHub-VermogenTotUiterlijkeVerzorging-2024"
     ]
 #  TEMPLATE_IDS: |
 #    [
