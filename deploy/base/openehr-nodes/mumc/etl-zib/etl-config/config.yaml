@@ -6,7 +6,7 @@ metadata:
 data:
   NODENAME: mumc
   DATASET_FOLDER_NAME: mumc-demo-data
-  SOURCE_SYSTEM_ID: SAP_ZIBDOCDATA # SAP
+  SOURCE_SYSTEM_ID: EPIC
   LOGGER_FILENAME: logs/mumc/etl-zib.log
   EHRBASE_BASE_URL: http://mumc-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
   TRANSFORM_SPRING_BASE_URL: http://mumc-transform-rest.dh-health:8080
@@ -15,10 +15,15 @@ data:
   SUBJECT_IDS: '["999999801","999990202","999990603"]'
   TEMPLATE_IDS: |
     [
+      "DataHub-Bloeddruk-2024",
       "DataHub-InformedConsent",
       "DataHub-Lichaamsgewicht-2024",
       "DataHub-Lichaamslengte-2024",
-      "DataHub-TabakGebruik-2024"
+      "DataHub-Mobiliteit-2024",
+      "DataHub-Patient-2024",
+      "DataHub-VermogenTotEten-2024",
+      "DataHub-VermogenTotToiletgang-2024",
+      "DataHub-VermogenTotUiterlijkeVerzorging-2024"
     ]
 #  TEMPLATE_IDS: |
 #    [

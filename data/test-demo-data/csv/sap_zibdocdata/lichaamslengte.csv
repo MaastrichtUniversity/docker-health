@@ -11,7 +11,7 @@ BSN;LengteWaarde;Eenheid;Toelichting;LengteDatum;PositieText;PositieCode;TEST_CO
 999994608;172;CM;Zonder schoenen;;Liggende positie;102538003;FAIL-LengteDatum is empty
 999995509;172;CM;Zonder schoenen;000-01-19 09:43:13.174;Volledig gekleed met schoenen;220131000146107;FAIL-LengteDatum has a wrong datetime format (wrong year value)
 999990810;101;CM;;2002-01-19 09:43:13.174;;;PASS
-999992211;99;;;2002-01-19 09:43:13.174;Volledig gekleed met schoenen;220131000146107;PASS
+999992211;99;;;2002-01-19 09:43:13.174;Volledig gekleed met schoenen;220131000146107;FAIL-Eenheid is missing
 999990512;72;CM;Gemeten tijdens controle;2024-03-21 10:48:45.000;WrongValue;123;PASS- Positie is wrong but not mandatory
 999990913;;CM;;2002-01-19 09:43:13.111;Ontkleed;248160001;FAIL- LengteWaarde is missing
 999990214;WrongValue;CM;;2002-01-19 09:43:13.222;Volledig gekleed met schoenen;220131000146107;FAIL- LengteWaarde is invalid
