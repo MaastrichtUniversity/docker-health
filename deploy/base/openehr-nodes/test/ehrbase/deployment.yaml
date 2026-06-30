@@ -31,12 +31,13 @@ spec:
             subPath: test/ehrbase
       containers:
       - name: test-ehrbase
-        image: ehrbase/ehrbase:2.6.0
+        image: ehrbase/ehrbase:2.33.0
         ports:
         - containerPort: 8080
         command:
           - "java"
         args:
+          - "-Dspring.http.codec.max-in-memory-size=10MB"
           - "-jar"
           - "-Dspring.profiles.active=docker"
           - "-Dlogging.file.name=/var/log/ehrbase/ehrbase.log"
