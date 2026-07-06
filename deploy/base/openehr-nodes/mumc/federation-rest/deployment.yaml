@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mumc-federation-rest
-  namespace: dh-health
   labels:
     app: mumc-federation-rest
 spec:

@@ -2,8 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mumc-ehrbase-config
-  namespace: dh-health
 data:
   SERVER_NODENAME: mumc.server.dh.unimaas.nl
-  DB_URL: jdbc:postgresql://mumc-ehrdb.dh-health:5432/ehrbase
-  VALIDATION_EXTERNALTERMINOLOGY_PROVIDER_FHIRTERMINOLOGYSERVER_URL: http://mumc-terminology-server-proxy.dh-health:8080/fhir
+  DB_URL: jdbc:postgresql://mumc-ehrdb.dh-health-mumc:5432/ehrbase
+  VALIDATION_EXTERNALTERMINOLOGY_PROVIDER_FHIRTERMINOLOGYSERVER_URL: http://mumc-terminology-server-proxy.dh-health-mumc:8080/fhir

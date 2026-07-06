@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mumc-terminology-server-proxy
-  namespace: dh-health
   labels:
     app: mumc-terminology-server-proxy
 spec:
