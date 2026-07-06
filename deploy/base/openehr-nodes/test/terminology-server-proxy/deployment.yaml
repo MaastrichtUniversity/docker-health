@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: test-terminology-server-proxy
-  namespace: dh-health
   labels:
     app: test-terminology-server-proxy
 spec:
