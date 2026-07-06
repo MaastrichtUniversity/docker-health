@@ -5,6 +5,7 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
+- volumes.yaml
 - ehrbase
 - ehrdb
 - etl-zib
