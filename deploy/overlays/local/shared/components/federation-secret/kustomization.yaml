@@ -6,6 +6,5 @@ generatorOptions:
 
 secretGenerator:
   - name: federation-service-creds
-    namespace: dh-health
     literals:
       - key=serviceKey

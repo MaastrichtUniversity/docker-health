@@ -6,6 +6,5 @@ generatorOptions:
 
 secretGenerator:
   - name: etl-data-encryption-passphrase
-    namespace: dh-health
     literals:
       - passphrase=foobar

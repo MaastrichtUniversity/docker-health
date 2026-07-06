@@ -14,12 +14,12 @@ patches:
     patch: |-
       - op: replace
         path: /spec/template/spec/containers/0/imagePullPolicy
-        value: Never
+        value: Never    
 
+# TODO why is this a separete setting and not just in the main ehrbase config
 configMapGenerator:
   # Set ADMIN_API_ACTIVE: "true" in all nodes for development purposes for openEHRtool ADMIN methods.
   - name: ehrbase-config
-    namespace: dh-health
     behavior: merge
     literals:
       - ADMIN_API_ACTIVE=true
