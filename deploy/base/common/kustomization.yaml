@@ -6,3 +6,4 @@ generatorOptions:
 
 resources:
 - config
+- stateless-service.yaml

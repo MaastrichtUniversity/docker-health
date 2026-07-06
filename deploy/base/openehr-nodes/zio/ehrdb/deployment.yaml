@@ -1,10 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: zio-ehrdb
   labels:
     app: zio-ehrdb
 spec:
+  serviceName: "nginx"
   replicas: 1
   selector:
     matchLabels:

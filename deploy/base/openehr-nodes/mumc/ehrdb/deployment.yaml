@@ -1,10 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: mumc-ehrdb
   labels:
     app: mumc-ehrdb
 spec:
+  serviceName: "nginx"
   replicas: 1
   selector:
     matchLabels:
