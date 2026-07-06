@@ -1,0 +1,86 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: log-pv-zio
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+     name: log-pvc-zio
+ 
+  hostPath:
+    path: /usr/share/logs/zio
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: log-pvc-zio
+spec:
+  accessModes:
+    - ReadWriteOnce
+ 
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: output-pv-zio
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+     name: output-pvc-zio
+ 
+  hostPath:
+    path: /usr/share/outputs/zio
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: output-pvc-zio
+spec:
+  accessModes:
+    - ReadWriteOnce
+ 
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgresql-data-pv-zio
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+     name: postgresql-data-pvc-zio
+ 
+  hostPath:
+    path: /usr/share/postgresql_data/zio
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-data-pvc-zio
+spec:
+  accessModes:
+    - ReadWriteOnce
+ 
+  resources:
+    requests:
+      storage: 10Gi

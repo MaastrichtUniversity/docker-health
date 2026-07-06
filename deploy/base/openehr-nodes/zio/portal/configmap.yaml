@@ -5,5 +5,5 @@ metadata:
   namespace: dh-health
 data:
   NEXT_PUBLIC_NODE_NAME: zio
-  ETL_SERVER_URL: http://zio-etl-zib-rest.dh-health:8040
-  FEDERATION_SERVER_URL: http://zio-federation-rest.dh-health:8000
+  ETL_SERVER_URL: http://zio-etl-zib-rest.dh-health-zio:8040
+  FEDERATION_SERVER_URL: http://zio-federation-rest.dh-health-zio:8000

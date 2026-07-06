@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: zio-ehrbase
-  namespace: dh-health
   labels:
     app: zio-ehrbase
 spec:
@@ -111,4 +110,4 @@ spec:
       volumes:
         - name: ehrbase-logs
           persistentVolumeClaim:
-            claimName: log-pvc
+            claimName: log-pvc-zio

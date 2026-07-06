@@ -2,8 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: zio-ehrbase-config
-  namespace: dh-health
 data:
   SERVER_NODENAME: zio.server.dh.unimaas.nl
-  DB_URL: jdbc:postgresql://zio-ehrdb.dh-health:5432/ehrbase
-  VALIDATION_EXTERNALTERMINOLOGY_PROVIDER_FHIRTERMINOLOGYSERVER_URL: http://zio-terminology-server-proxy.dh-health:8080/fhir
+  DB_URL: jdbc:postgresql://zio-ehrdb.dh-health-zio:5432/ehrbase
+  VALIDATION_EXTERNALTERMINOLOGY_PROVIDER_FHIRTERMINOLOGYSERVER_URL: http://zio-terminology-server-proxy.dh-health-zio:8080/fhir
