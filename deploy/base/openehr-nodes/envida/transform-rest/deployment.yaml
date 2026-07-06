@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: envida-transform-rest
-  namespace: dh-health
   labels:
     app: envida-transform-rest
 spec:
@@ -46,4 +45,4 @@ spec:
       volumes:
       - name: transform-rest-logs
         persistentVolumeClaim:
-          claimName: log-pvc
+          claimName: log-pvc-envida

@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: envida-terminology-server-proxy
-  namespace: dh-health
   labels:
     app: envida-terminology-server-proxy
 spec:
@@ -46,4 +45,4 @@ spec:
       volumes:
         - name: terminology-logs
           persistentVolumeClaim:
-            claimName: log-pvc
+            claimName: log-pvc-envida

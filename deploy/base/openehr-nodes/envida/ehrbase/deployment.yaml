@@ -1,8 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: envida-ehrbase
-  namespace: dh-health
+  name: envida-ehrbase 
   labels:
     app: envida-ehrbase
 spec:
@@ -111,4 +110,4 @@ spec:
       volumes:
         - name: ehrbase-logs
           persistentVolumeClaim:
-            claimName: log-pvc
+            claimName: log-pvc-envida

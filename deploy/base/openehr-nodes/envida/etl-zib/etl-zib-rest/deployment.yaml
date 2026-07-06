@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: envida-etl-zib-rest
-  namespace: dh-health
   labels:
     app: envida-etl-zib-rest
 spec:
@@ -60,7 +59,7 @@ spec:
       volumes:
       - name: outputs
         persistentVolumeClaim:
-          claimName: output-pvc
+          claimName: output-pvc-envida
       - name: etl-logs
         persistentVolumeClaim:
-          claimName: log-pvc
+          claimName: log-pvc-envida

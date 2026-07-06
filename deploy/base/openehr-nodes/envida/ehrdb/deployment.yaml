@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: envida-ehrdb
-  namespace: dh-health
   labels:
     app: envida-ehrdb
 spec:
@@ -95,4 +94,4 @@ spec:
       volumes:
       - name: postgres-logs
         persistentVolumeClaim:
-          claimName: log-pvc
+          claimName: log-pvc-envida

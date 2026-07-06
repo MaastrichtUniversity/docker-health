@@ -13,3 +13,4 @@ resources:
 - portal
 - terminology-server-proxy
 - transform-rest
+- volumes.yaml
