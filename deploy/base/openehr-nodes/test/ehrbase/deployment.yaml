@@ -110,4 +110,4 @@ spec:
       volumes:
       - name: ehrbase-logs
         persistentVolumeClaim:
-          claimName: log-pvc
+          claimName: log-pvc-test

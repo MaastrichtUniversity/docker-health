@@ -45,4 +45,4 @@ spec:
       volumes:
       - name: transform-rest-logs
         persistentVolumeClaim:
-          claimName: log-pvc
+          claimName: log-pvc-test

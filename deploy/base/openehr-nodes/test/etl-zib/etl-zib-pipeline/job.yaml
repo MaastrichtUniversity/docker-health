@@ -86,12 +86,12 @@ spec:
       volumes:
       - name: outputs
         persistentVolumeClaim:
-            claimName: output-pvc
+            claimName: output-pvc-test
       - name: data
         hostPath:
           path: /mnt/data/test-demo-data
           type: Directory
       - name: etl-logs
         persistentVolumeClaim:
-          claimName: log-pvc
+          claimName: log-pvc-test
   

@@ -94,4 +94,4 @@ spec:
       volumes:
       - name: postgres-logs
         persistentVolumeClaim:
-          claimName: log-pvc
+          claimName: log-pvc-mumc

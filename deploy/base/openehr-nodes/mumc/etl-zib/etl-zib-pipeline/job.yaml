@@ -86,11 +86,11 @@ spec:
       volumes:
       - name: outputs
         persistentVolumeClaim:
-          claimName: output-pvc
+          claimName: output-pvc-mumc
       - name: data
         hostPath:
           path: /mnt/data/mumc-demo-data
           type: Directory
       - name: etl-logs
         persistentVolumeClaim:
-          claimName: log-pvc
+          claimName: log-pvc-mumc

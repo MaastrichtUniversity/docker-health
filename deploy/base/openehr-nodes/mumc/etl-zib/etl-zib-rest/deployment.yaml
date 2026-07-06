@@ -64,7 +64,7 @@ spec:
       volumes:
       - name: outputs
         persistentVolumeClaim:
-          claimName: output-pvc
+          claimName: output-pvc-mumc
       - name: etl-logs
         persistentVolumeClaim:
-          claimName: log-pvc
+          claimName: log-pvc-mumc

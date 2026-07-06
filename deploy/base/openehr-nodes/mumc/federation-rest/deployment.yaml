@@ -69,4 +69,4 @@ spec:
       volumes:
         - name: logs
           persistentVolumeClaim:
-            claimName: log-pvc
+            claimName: log-pvc-mumc
