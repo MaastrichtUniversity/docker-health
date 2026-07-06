@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vitala-federation-rest
-  namespace: dh-health
   labels:
     app: vitala-federation-rest
 spec:
@@ -70,4 +69,4 @@ spec:
       volumes:
         - name: logs
           persistentVolumeClaim:
-            claimName: log-pvc
+            claimName: log-pvc-vitala

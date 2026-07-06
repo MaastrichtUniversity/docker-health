@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vitala-etl-zib-rest
-  namespace: dh-health
+  namespace: dh-health-vitala
   labels:
     app: vitala-etl-zib-rest
 spec:
@@ -60,7 +60,7 @@ spec:
       volumes:
       - name: outputs
         persistentVolumeClaim:
-          claimName: output-pvc
+          claimName: output-pvc-vitala
       - name: etl-logs
         persistentVolumeClaim:
-          claimName: log-pvc
+          claimName: log-pvc-vitala
