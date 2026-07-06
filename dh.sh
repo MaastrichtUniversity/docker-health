@@ -362,11 +362,9 @@ print_usage() {
     echo "  $0 start                        Start Kubernetes environment"
     echo "  $0 build                        Build all Docker images"
     echo "  $0 apply                        Apply Kubernetes manifests with local overlay"
-    echo "  $0 apply -s local/node-mumc     Apply Kubernetes manifests with local + shared overlays for the MUMC node"
     echo "  $0 apply local/ops              Apply Kubernetes manifests with local/ops overlay  (ELK, Filbeat)"
     echo "  $0 apply tst                    Apply Kubernetes manifests with tst overlay"
     echo "  $0 delete                       Delete Kubernetes manifests with local overlay"
-    echo "  $0 delete -s                    Delete Kubernetes manifests with local + shared overlays"
     echo "  $0 delete local/ops             Delete Kubernetes manifests with local/ops overlay (ELK, Filbeat)"
     echo "  $0 delete tst                   Delete Kubernetes manifests with tst overlay"
     echo "  $0 status                       Print the pods status"
@@ -411,36 +409,14 @@ main() {
             ;;
 
         apply)
-            case $1 in
-              -s)
-                local overlay=${2:-local}
-                if [[ "${overlay}" = *"/"* ]]; then
-                  apply_manifests "${overlay}/../shared"
-                else
-                  apply_manifests "${overlay}/shared"
-                fi
-                apply_manifests "${overlay}"
-              ;;
-              *)
-                local overlay=${1:-local}
-                apply_manifests "${overlay}"
-              ;;
-            esac
+            local overlay=${1:-local}
+            apply_manifests "${overlay}"
             ;;
 
         delete)
-            case $1 in
-              -s)
-              # Deleting the shared overlay removes all resources and volumes in "dh-health" namespace
-              # so no need to delete other overlays after that
-                local overlay=${2:-local}
-                delete_manifests "${overlay}/shared"
-              ;;
-              *)
-                local overlay=${1:-local}
-                delete_manifests "${overlay}"
-              ;;
-            esac
+            echo "Deleting overlay: ${1:-local}"
+            local overlay=${1:-local}
+            delete_manifests "${overlay}"
             ;;
 
         headlamp)
