@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-ehrdb
+  name: ehrdb
 spec:
   selector:
-    app: test-ehrdb
+    app: ehrdb
   ports:
   - port: 5432
     targetPort: 5432
