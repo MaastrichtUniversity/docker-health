@@ -1,8 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: openehrtool-config
+  name: openehrtool-config-base
 data:
+  EHRBASESERVER_hostname: ehrbase
   EHRBASESERVER_port: "8080"
   FLASK_APP: app.py
   FLASK_ENV: development

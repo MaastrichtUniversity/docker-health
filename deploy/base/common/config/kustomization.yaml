@@ -8,7 +8,6 @@ resources:
 - dry-run.yaml
 - ehrbase.yaml
 - etl.yaml
-- openehrtool.yaml
 - terminology-server-proxy.yaml
 - timezone.yaml
 - zib-templates.yaml
