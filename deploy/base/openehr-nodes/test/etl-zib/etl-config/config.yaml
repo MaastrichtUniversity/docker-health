@@ -9,8 +9,6 @@ data:
   DATASET_FOLDER_NAME: test-demo-data
   SOURCE_SYSTEM_ID: DEMO_DATA
   LOGGER_FILENAME: logs/test/etl-zib.log
-  EHRBASE_BASE_URL: http://ehrbase:8080/ehrbase/rest/openehr/v1
-  TRANSFORM_SPRING_BASE_URL: http://transform-rest:8080
   DRY_RUN: "False"
   WRITE_COMPOSITION: "False"
   # If SUBJECT_IDS is empty, extract subject_ids from dataset:

@@ -5,3 +5,5 @@ metadata:
 data:
   ETL_PROJECT_NAME: "zib"
   SUBJECT_NAMESPACE: "bsn"
+  EHRBASE_BASE_URL: http://ehrbase:8080/ehrbase/rest/openehr/v1
+  TRANSFORM_SPRING_BASE_URL: http://transform-rest:8080
