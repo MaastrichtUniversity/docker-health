@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: etl-config
+  name: etl-config-base
 data:
   ETL_PROJECT_NAME: "zib"
   SUBJECT_NAMESPACE: "bsn"
