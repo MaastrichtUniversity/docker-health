@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-transform-rest
+  name: transform-rest
   labels:
-    app: test-transform-rest
+    app: transform-rest
 spec:
   selector:
     matchLabels:
-      app: test-transform-rest
+      app: transform-rest
   template:
     metadata:
       labels:
-        app: test-transform-rest
+        app: transform-rest
     spec:
       containers:
-      - name: test-transform-rest
+      - name: transform-rest
         image: registry.prod.dh.unimaas.nl/docker-health/transform-rest:latest
         ports:
         - containerPort: 8080
@@ -22,12 +22,12 @@ spec:
           - name: TRANSFORM_SPRING_USERNAME
             valueFrom:
               secretKeyRef:
-                name: test-transform-creds
+                name: transform-creds
                 key: username
           - name: TRANSFORM_SPRING_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: test-transform-creds
+                name: transform-creds
                 key: password
         envFrom:
         - configMapRef:
@@ -35,14 +35,8 @@ spec:
         - configMapRef:
             name: timezone-config
         - configMapRef:
-            name: test-transform-rest-config
+            name: terminology-server-proxy-config-base
+        - configMapRef:
+            name: transform-rest-config-node
         - configMapRef:
             name: zib-templates-config
-        volumeMounts:
-        - name: transform-rest-logs
-          mountPath: /var/log/test
-          subPath: test/transform-rest
-      volumes:
-      - name: transform-rest-logs
-        persistentVolumeClaim:
-          claimName: log-pvc-test
