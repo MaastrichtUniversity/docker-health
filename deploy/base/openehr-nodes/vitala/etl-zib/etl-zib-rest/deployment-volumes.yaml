@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etl-zib-rest   # exact name used in the base deployment
+spec:
+  template:
+    spec:
+      # ---- volume definitions ----
+      volumes:
+        - name: outputs
+          persistentVolumeClaim:
+            claimName: output-pvc-vitala
+        - name: etl-logs
+          persistentVolumeClaim:
+            claimName: log-pvc-vitala
+      # ---- mount points ----
+      containers:
+        - name: etl-zib-rest
+          volumeMounts:
+            - name: outputs
+              mountPath: /code/outputs
+              subPath: vitala/etl-rest
+            - name: etl-logs
+              mountPath: /code/logs/vitala
+              subPath: vitala/etl-rest
+

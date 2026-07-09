@@ -1,14 +1,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: vitala-etl-config
+  name: etl-config-node
 data:
   NODENAME: vitala
   DATASET_FOLDER_NAME: vitala-demo-data
   SOURCE_SYSTEM_ID: DEMO_DATA # "Nedap Ons"
   LOGGER_FILENAME: logs/vitala/etl-zib.log
-  EHRBASE_BASE_URL: http://vitala-ehrbase.dh-health-vitala:8080/ehrbase/rest/openehr/v1
-  TRANSFORM_SPRING_BASE_URL: http://vitala-transform-rest.dh-health-vitala:8080
   WRITE_COMPOSITION: "true"
   # If SUBJECT_IDS is empty, extract subject_ids from dataset:
   SUBJECT_IDS: |

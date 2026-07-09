@@ -25,5 +25,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: vitala-openehrtool
+        - name: openehrtool
           port: 9000

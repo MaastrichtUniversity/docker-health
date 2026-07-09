@@ -1,8 +1,6 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: vitala-portal-config
+  name: portal-config-node
 data:
   NEXT_PUBLIC_NODE_NAME: vitala
-  ETL_SERVER_URL: http://vitala-etl-zib-rest.dh-health-vitala:8040
-  FEDERATION_SERVER_URL: http://vitala-federation-rest.dh-health-vitala:8000
