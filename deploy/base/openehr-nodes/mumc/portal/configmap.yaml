@@ -5,4 +5,4 @@ metadata:
 data:
   NEXT_PUBLIC_NODE_NAME: mumc
   ETL_SERVER_URL: http://mumc-etl-zib-rest.dh-health-mumc:8040
-  FEDERATION_SERVER_URL: http://mumc-federation-rest.dh-health-mumc:8000
+  FEDERATION_SERVER_URL: http://federation-rest:8000

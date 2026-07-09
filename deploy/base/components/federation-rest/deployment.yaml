@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mumc-federation-rest
+  name: federation-rest
   labels:
-    app: mumc-federation-rest
+    app: federation-rest
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mumc-federation-rest
+      app: federation-rest
   template:
     metadata:
       labels:
-        app: mumc-federation-rest
+        app: federation-rest
     spec:
       containers:
-        - name: mumc-federation-rest
+        - name: federation-rest
           image: registry.prod.dh.unimaas.nl/docker-health/federation-rest:latest
           ports:
             - containerPort: 8000
@@ -61,12 +61,4 @@ spec:
             - configMapRef:
                 name: timezone-config
             - configMapRef:
-                name: mumc-federation-rest-config
-          volumeMounts:
-            - name: logs
-              mountPath: /code/logs/mumc
-              subPath: mumc/federation-rest
-      volumes:
-        - name: logs
-          persistentVolumeClaim:
-            claimName: log-pvc-mumc
+                name: federation-rest-config-node
