@@ -12,3 +12,4 @@ resources:
 
 patches:
 - path: etl-zib-pipeline/job-volumes.yaml
+- path: etl-zib-rest/deployment-volumes.yaml

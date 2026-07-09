@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mumc-etl-zib-rest
+  name: etl-zib-rest
   labels:
-    app: mumc-etl-zib-rest
+    app: etl-zib-rest
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mumc-etl-zib-rest
+      app: etl-zib-rest
   template:
     metadata:
       labels:
-        app: mumc-etl-zib-rest
+        app: etl-zib-rest
     spec:
       containers:
-      - name: mumc-etl-zib-rest
+      - name: etl-zib-rest
         image: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest:latest
         envFrom:
         - configMapRef:
@@ -25,9 +25,9 @@ spec:
         - configMapRef:
             name: zib-templates-config
         - configMapRef:
-            name: etl-config
+            name: etl-config-base
         - configMapRef:
-            name: mumc-etl-config
+            name: etl-config-node
         env:
         - name: DATA_ENCRYPTION_PASSPHRASE
           valueFrom:
@@ -37,34 +37,20 @@ spec:
         - name: EHRBASE_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mumc-ehrbase-creds
+              name: ehrbase-creds
               key: username
         - name: EHRBASE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mumc-ehrbase-creds
+              name: ehrbase-creds
               key: password
         - name: TRANSFORM_SPRING_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mumc-transform-creds
+              name: transform-creds
               key: username
         - name: TRANSFORM_SPRING_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mumc-transform-creds
+              name: transform-creds
               key: password
-        volumeMounts:
-        - name: outputs
-          mountPath: /code/outputs
-          subPath: mumc/etl-rest
-        - name: etl-logs
-          mountPath: /code/logs/mumc
-          subPath: mumc/etl-rest
-      volumes:
-      - name: outputs
-        persistentVolumeClaim:
-          claimName: output-pvc-mumc
-      - name: etl-logs
-        persistentVolumeClaim:
-          claimName: log-pvc-mumc

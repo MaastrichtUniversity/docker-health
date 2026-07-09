@@ -6,3 +6,4 @@ generatorOptions:
 
 resources:
 - etl-zib-pipeline
+- etl-zib-rest
