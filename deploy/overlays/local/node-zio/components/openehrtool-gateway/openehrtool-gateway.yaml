@@ -25,5 +25,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: zio-openehrtool
+        - name: openehrtool
           port: 9000

@@ -25,5 +25,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: zio-transform-rest
+        - name: transform-rest
           port: 8080

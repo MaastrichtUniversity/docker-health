@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ehrdb
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: init-log-dir
+          volumeMounts:
+            - name: postgres-logs
+              mountPath: /var/log/postgresql
+              subPath: zio/ehrdb
+      containers:
+        - name: ehrdb
+          volumeMounts:
+            - name: postgres-logs
+              mountPath: /var/log/postgresql
+              subPath: zio/ehrdb
+      volumes:
+        - name: postgres-logs
+          persistentVolumeClaim:
+            claimName: log-pvc-zio

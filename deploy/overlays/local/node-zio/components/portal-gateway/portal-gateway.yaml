@@ -25,5 +25,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: zio-portal
+        - name: portal
           port: 3000

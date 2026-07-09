@@ -25,5 +25,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: zio-terminology-server-proxy
+        - name: terminology-server-proxy
           port: 8080

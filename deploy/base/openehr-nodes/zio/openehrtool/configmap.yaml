@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: zio-openehrtool-config
-data:
-  EHRBASESERVER_hostname: zio-ehrbase.dh-health-zio
-  EHRBASESERVER_nodename: zio.server.dh.unimaas.nl

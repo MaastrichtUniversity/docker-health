@@ -25,5 +25,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: zio-federation-rest
+        - name: federation-rest
           port: 8000
