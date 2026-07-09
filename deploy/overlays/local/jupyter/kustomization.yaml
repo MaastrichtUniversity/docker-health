@@ -8,14 +8,13 @@ resources:
   - jupyter-zib-gateway.yaml
   - ../../../base/jupyter-zib
   - ../shared
-  - ../../../base/openehr-nodes/envida/etl-zib/etl-config
+  - node-envida
   - node-mumc
   - ../../../base/openehr-nodes/vitala/etl-zib/etl-config
   - ../../../base/openehr-nodes/zio/etl-zib/etl-config
 
 
 components:
-  - ../node-envida/components/secrets
   - ../node-vitala/components/secrets
   - ../node-zio/components/secrets
 

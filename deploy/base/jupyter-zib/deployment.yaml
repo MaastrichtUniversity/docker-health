@@ -64,24 +64,21 @@ spec:
                 name: envida-ehrbase-creds
                 key: password
           - name: ENVIDA__EHRBASE_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: envida-etl-config
-                key: EHRBASE_BASE_URL
+            value: "http://ehrbase.dh-health-envida:8080/ehrbase/rest/openehr/v1"
           - name: ENVIDA__DATASET_FOLDER_NAME
             valueFrom:
               configMapKeyRef:
-                name: envida-etl-config
+                name: envida-etl-config-node
                 key: DATASET_FOLDER_NAME
           - name: ENVIDA__SOURCE_SYSTEM_ID
             valueFrom:
               configMapKeyRef:
-                name: envida-etl-config
+                name: envida-etl-config-node
                 key: SOURCE_SYSTEM_ID
           - name: ENVIDA__LOGGER_FILENAME
             valueFrom:
               configMapKeyRef:
-                name: envida-etl-config
+                name: envida-etl-config-node
                 key: LOGGER_FILENAME
           - name: ENVIDA__TRANSFORM_SPRING_USERNAME
             valueFrom:
@@ -95,10 +92,7 @@ spec:
                 key:
                   password
           - name: ENVIDA__TRANSFORM_SPRING_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: envida-etl-config
-                key: TRANSFORM_SPRING_BASE_URL
+            value: "http://ehrbase.dh-health-envida:8080/ehrbase/rest/openehr/v1"
           # MUMC-node
           - name: MUMC__EHRBASE_USERNAME
             valueFrom:
