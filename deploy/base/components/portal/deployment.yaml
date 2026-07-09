@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mumc-portal
+  name: portal
   labels:
-    app: mumc-portal
+    app: portal
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mumc-portal
+      app: portal
   template:
     metadata:
       labels:
-        app: mumc-portal
+        app: portal
     spec:
       containers:
-      - name: mumc-portal
+      - name: portal
         image: registry.prod.dh.unimaas.nl/docker-health/portal:latest
         ports:
         - containerPort: 3000
@@ -42,4 +42,6 @@ spec:
                 key: key
         envFrom:
         - configMapRef:
-            name: mumc-portal-config
+            name: portal-config-base
+        - configMapRef:
+            name: portal-config-node
