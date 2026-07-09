@@ -25,5 +25,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: envida-ehrbase
+        - name: ehrbase
           port: 8080

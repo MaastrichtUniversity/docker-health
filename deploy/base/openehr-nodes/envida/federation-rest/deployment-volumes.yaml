@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: federation-rest
+spec:
+  template:
+    spec:
+      # ── Container‑level volume mounts ───────────────────────────────────────
+      containers:
+        - name: federation-rest
+          volumeMounts:
+            - name: logs
+              mountPath: /code/logs/envida
+              subPath: envida/federation-rest
+      # ── Pod‑level volume definitions ───────────────────────────────────────
+      volumes:
+        - name: logs
+          persistentVolumeClaim:
+            claimName: log-pvc-envida
