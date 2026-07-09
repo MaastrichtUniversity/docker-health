@@ -9,14 +9,13 @@ resources:
   - ../../../base/jupyter-zib
   - ../shared
   - ../../../base/openehr-nodes/envida/etl-zib/etl-config
-  - ../../../base/openehr-nodes/mumc/etl-zib/etl-config
+  - node-mumc
   - ../../../base/openehr-nodes/vitala/etl-zib/etl-config
   - ../../../base/openehr-nodes/zio/etl-zib/etl-config
 
 
 components:
   - ../node-envida/components/secrets
-  - ../node-mumc/components/secrets
   - ../node-vitala/components/secrets
   - ../node-zio/components/secrets
 

@@ -111,24 +111,21 @@ spec:
                 name: mumc-ehrbase-creds
                 key: password
           - name: MUMC__EHRBASE_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: mumc-etl-config
-                key: EHRBASE_BASE_URL
+            value: "http://ehrbase.dh-health-mumc:8080/ehrbase/rest/openehr/v1"
           - name: MUMC__DATASET_FOLDER_NAME
             valueFrom:
               configMapKeyRef:
-                name: mumc-etl-config
+                name: mumc-etl-config-node
                 key: DATASET_FOLDER_NAME
           - name: MUMC__SOURCE_SYSTEM_ID
             valueFrom:
               configMapKeyRef:
-                name: mumc-etl-config
+                name: mumc-etl-config-node
                 key: SOURCE_SYSTEM_ID
           - name: MUMC__LOGGER_FILENAME
             valueFrom:
               configMapKeyRef:
-                name: mumc-etl-config
+                name: mumc-etl-config-node
                 key: LOGGER_FILENAME
           - name: MUMC__TRANSFORM_SPRING_USERNAME
             valueFrom:
@@ -142,10 +139,7 @@ spec:
                 key:
                   password
           - name: MUMC__TRANSFORM_SPRING_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: mumc-etl-config
-                key: TRANSFORM_SPRING_BASE_URL
+            value: "http://transform-rest.dh-health-mumc:8080"
           # VITALA-node
           - name: VITALA__EHRBASE_USERNAME
             valueFrom:
@@ -248,7 +242,7 @@ spec:
           - configMapRef:
               name: zib-templates-config
           - configMapRef:
-              name: etl-config
+              name: etl-config-base
         volumeMounts:
           - name: demo-data
             mountPath: /home/jovyan/data
