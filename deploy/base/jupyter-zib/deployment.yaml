@@ -147,23 +147,21 @@ spec:
                 key: password
           - name: VITALA__EHRBASE_BASE_URL
             valueFrom:
-              configMapKeyRef:
-                name: vitala-etl-config
-                key: EHRBASE_BASE_URL
+            value: "http://ehrbase.dh-health-vitala:8080/ehrbase/rest/openehr/v1"
           - name: VITALA__DATASET_FOLDER_NAME
             valueFrom:
               configMapKeyRef:
-                name: vitala-etl-config
+                name: vitala-etl-config-node
                 key: DATASET_FOLDER_NAME
           - name: VITALA__SOURCE_SYSTEM_ID
             valueFrom:
               configMapKeyRef:
-                name: vitala-etl-config
+                name: vitala-etl-config-node
                 key: SOURCE_SYSTEM_ID
           - name: VITALA__LOGGER_FILENAME
             valueFrom:
               configMapKeyRef:
-                name: vitala-etl-config
+                name: vitala-etl-config-node
                 key: LOGGER_FILENAME
           - name: VITALA__TRANSFORM_SPRING_USERNAME
             valueFrom:
@@ -177,10 +175,7 @@ spec:
                 key:
                   password
           - name: VITALA__TRANSFORM_SPRING_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: vitala-etl-config
-                key: TRANSFORM_SPRING_BASE_URL
+            value: "http://ehrbase.dh-health-vitala:8080/ehrbase/rest/openehr/v1"
           # ZIO-node
           - name: ZIO__EHRBASE_USERNAME
             valueFrom:
