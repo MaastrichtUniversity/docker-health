@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dh-health-jupyter
+
+resources:
+  - namespace.yaml
+  - jupyter-zib-gateway.yaml
+  - ../../../base/jupyter-zib
+  - ../shared
+  - ../../../base/openehr-nodes/envida/etl-zib/etl-config
+  - ../../../base/openehr-nodes/mumc/etl-zib/etl-config
+  - ../../../base/openehr-nodes/vitala/etl-zib/etl-config
+  - ../../../base/openehr-nodes/zio/etl-zib/etl-config
+
+
+components:
+  - ../node-envida/components/secrets
+  - ../node-mumc/components/secrets
+  - ../node-vitala/components/secrets
+  - ../node-zio/components/secrets
+
+patches:
+  # imagePullPolicy patches
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Never
+
+
+secretGenerator:
+  - name: jupyter-zib-creds
+    literals:
+      - SERVER_APP_TOKEN=aa3ca297f81ed69a3fcab71ff886d5cf3207be09960f6de7

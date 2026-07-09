@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jupyter-zib
-  namespace: dh-health
   labels:
     app: jupyter-zib
 spec:
@@ -268,5 +267,5 @@ spec:
               claimName: notebooks-pvc
         - name: jupyter-logs
           persistentVolumeClaim:
-            claimName: log-pvc
+            claimName: log-pvc-jupyter
             
