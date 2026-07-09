@@ -4,7 +4,11 @@ kind: Kustomization
 generatorOptions:
   disableNameSuffixHash: true
 
+components:
+- ../../../components/ehrbase
+
 resources:
-- deployment.yaml
-- service.yaml
 - configmap.yaml
+
+patches:
+- path: deployment-volumes.yaml

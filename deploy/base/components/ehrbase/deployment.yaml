@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-ehrbase
+  name: ehrbase
   labels:
-    app: test-ehrbase
+    app: ehrbase
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: test-ehrbase
+      app: ehrbase
   template:
     metadata:
       labels:
-        app: test-ehrbase
+        app: ehrbase
     spec:
       initContainers:
       # WORKAROUND to give ownership of the volume-mount log file to the "ehrbase" user
@@ -24,12 +24,8 @@ spec:
         args:
           # uid=100(ehrbase) gid=101(ehrbase) groups=101(ehrbase)
           - mkdir -p /var/log/ehrbase && chown 100:101 /var/log/ehrbase
-        volumeMounts:
-          - name: ehrbase-logs
-            mountPath: /var/log/ehrbase
-            subPath: test/ehrbase
       containers:
-      - name: test-ehrbase
+      - name: ehrbase
         image: ehrbase/ehrbase:2.33.0
         ports:
         - containerPort: 8080
@@ -45,50 +41,50 @@ spec:
           - name: SECURITY_AUTHUSER
             valueFrom:
               secretKeyRef:
-                name: test-ehrbase-creds
+                name: ehrbase-creds
                 key: username
           - name: SECURITY_AUTHPASSWORD
             valueFrom:
               secretKeyRef:
-                name: test-ehrbase-creds
+                name: ehrbase-creds
                 key: password
           - name: SECURITY_AUTHADMINUSER
             valueFrom:
               secretKeyRef:
-                name: test-ehrbase-admin-creds
+                name: ehrbase-admin-creds
                 key: username
           - name: SECURITY_AUTHADMINPASSWORD
             valueFrom:
               secretKeyRef:
-                name: test-ehrbase-admin-creds
+                name: ehrbase-admin-creds
                 key: password
           - name: DB_USER_ADMIN
             valueFrom:
               secretKeyRef:
-                name: test-ehrbase-db-admin-creds
+                name: ehrbase-db-admin-creds
                 key: username
           - name: DB_PASS_ADMIN
             valueFrom:
               secretKeyRef:
-                name: test-ehrbase-db-admin-creds
+                name: ehrbase-db-admin-creds
                 key: password
           - name: DB_USER
             valueFrom:
               secretKeyRef:
-                name: test-ehrbase-db-creds
+                name: ehrbase-db-creds
                 key: username
           - name: DB_PASS
             valueFrom:
               secretKeyRef:
-                name: test-ehrbase-db-creds
+                name: ehrbase-db-creds
                 key: password
         envFrom:
         - configMapRef:
             name: timezone-config
         - configMapRef:
-            name: test-ehrbase-config
+            name: ehrbase-config-base
         - configMapRef:
-            name: ehrbase-config
+            name: ehrbase-config-node
         livenessProbe:
           httpGet:
             path: /ehrbase/management/health
@@ -103,11 +99,3 @@ spec:
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 10
-        volumeMounts:
-          - name: ehrbase-logs
-            mountPath: /var/log/ehrbase
-            subPath: test/ehrbase
-      volumes:
-      - name: ehrbase-logs
-        persistentVolumeClaim:
-          claimName: log-pvc-test

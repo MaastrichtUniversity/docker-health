@@ -3,14 +3,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: test-etl-config
+  name: etl-config-node
 data:
   NODENAME: test
   DATASET_FOLDER_NAME: test-demo-data
   SOURCE_SYSTEM_ID: DEMO_DATA
   LOGGER_FILENAME: logs/test/etl-zib.log
-  EHRBASE_BASE_URL: http://test-ehrbase.dh-health-test:8080/ehrbase/rest/openehr/v1
-  TRANSFORM_SPRING_BASE_URL: http://test-transform-rest.dh-health-test:8080
   DRY_RUN: "False"
   WRITE_COMPOSITION: "False"
   # If SUBJECT_IDS is empty, extract subject_ids from dataset:
@@ -23,7 +21,6 @@ data:
       "DataHub-Bloeddruk-2024",
       "DataHub-BurgerlijkeStaat-2024",
       "DataHub-Contactpersoon-2024",
-      "DataHub-Diagnose-2024",
       "DataHub-DrugsGebruik-2024",
       "DataHub-FunctieHoren-2024",
       "DataHub-FunctieZien-2024",

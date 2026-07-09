@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: test-ehrdb
+  name: ehrdb
   labels:
-    app: test-ehrdb
+    app: ehrdb
 spec:
   serviceName: "nginx"
   replicas: 1
   selector:
     matchLabels:
-      app: test-ehrdb
+      app: ehrdb
   template:
     metadata:
       labels:
-        app: test-ehrdb
+        app: ehrdb
     spec:
       initContainers:
       - name: init-log-dir
@@ -21,12 +21,8 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - mkdir -p /var/log/postgresql && chown 70:70 /var/log/postgresql
-        volumeMounts:
-          - name: postgres-logs
-            mountPath: /var/log/postgresql
-            subPath: test/ehrdb
       containers:
-      - name: test-ehrdb
+      - name: ehrdb
         image: ehrbase/ehrbase-v2-postgres:16.2
         ports:
         - containerPort: 5432
@@ -34,32 +30,32 @@ spec:
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
-              name: test-ehrbase-db-postgres-creds
+              name: ehrbase-db-postgres-creds
               key: username
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: test-ehrbase-db-postgres-creds
+              name: ehrbase-db-postgres-creds
               key: password
         - name: EHRBASE_USER_ADMIN
           valueFrom:
             secretKeyRef:
-              name: test-ehrbase-db-admin-creds
+              name: ehrbase-db-admin-creds
               key: username
         - name: EHRBASE_PASSWORD_ADMIN
           valueFrom:
             secretKeyRef:
-              name: test-ehrbase-db-admin-creds
+              name: ehrbase-db-admin-creds
               key: password
         - name: EHRBASE_USER
           valueFrom:
             secretKeyRef:
-              name: test-ehrbase-db-creds
+              name: ehrbase-db-creds
               key: username
         - name: EHRBASE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: test-ehrbase-db-creds
+              name: ehrbase-db-creds
               key: password
         args:
         - postgres
@@ -88,11 +84,3 @@ spec:
             - "pg_isready -U $$POSTGRES_USER"
           initialDelaySeconds: 30
           periodSeconds: 10
-        volumeMounts:
-        - name: postgres-logs
-          mountPath: /var/log/postgresql
-          subPath: test/ehrdb
-      volumes:
-      - name: postgres-logs
-        persistentVolumeClaim:
-          claimName: log-pvc-test

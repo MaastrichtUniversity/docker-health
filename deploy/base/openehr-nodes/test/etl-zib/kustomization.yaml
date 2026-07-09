@@ -4,6 +4,11 @@ kind: Kustomization
 generatorOptions:
   disableNameSuffixHash: true
 
+components:
+- ../../../components/etl-zib
+
 resources:
 - etl-config
-- etl-zib-pipeline
+
+patches:
+- path: etl-zib-pipeline/job-volumes.yaml

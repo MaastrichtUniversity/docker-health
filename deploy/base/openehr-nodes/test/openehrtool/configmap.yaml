@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: test-openehrtool-config
-data:
-  EHRBASESERVER_hostname: test-ehrbase.dh-health-test
-  EHRBASESERVER_nodename: test.server.dh.unimaas.nl
-  

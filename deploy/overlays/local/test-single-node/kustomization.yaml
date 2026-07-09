@@ -40,7 +40,7 @@ patches:
         value: Never
 
 configMapGenerator:
-  - name: test-etl-config
+  - name: etl-config-node
     behavior: merge
     literals:
-      - EHRBASE_ADMIN_BASE_URL=http://test-ehrbase.dh-health-test:8080/ehrbase/rest/admin
+      - EHRBASE_ADMIN_BASE_URL=http://ehrbase:8080/ehrbase/rest/admin
