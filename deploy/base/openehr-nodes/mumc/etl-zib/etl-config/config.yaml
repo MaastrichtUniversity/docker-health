@@ -1,14 +1,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mumc-etl-config
+  name: etl-config-node
 data:
   NODENAME: mumc
   DATASET_FOLDER_NAME: mumc-demo-data
   SOURCE_SYSTEM_ID: EPIC
   LOGGER_FILENAME: logs/mumc/etl-zib.log
-  EHRBASE_BASE_URL: http://mumc-ehrbase.dh-health-mumc:8080/ehrbase/rest/openehr/v1
-  TRANSFORM_SPRING_BASE_URL: http://mumc-transform-rest.dh-health-mumc:8080
   WRITE_COMPOSITION: "true"
   # Specify the SUBJECT_IDS for MUMC manually as a control.
   SUBJECT_IDS: '["999999801","999990202","999990603"]'

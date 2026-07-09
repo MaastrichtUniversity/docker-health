@@ -23,22 +23,22 @@ spec:
           - name: AUTH_USER
             valueFrom:
               secretKeyRef:
-                name: mumc-portal-creds
+                name: portal-creds
                 key: username
           - name: AUTH_PASS
             valueFrom:
               secretKeyRef:
-                name: mumc-portal-creds
+                name: portal-creds
                 key: password
           - name: FEDERATION_API_KEY
             valueFrom:
               secretKeyRef:
-                name: mumc-federation-key
+                name: federation-key
                 key: key
           - name: FEDERATION_BTG_API_KEY
             valueFrom:
               secretKeyRef:
-                name: mumc-federation-break-the-glass-key
+                name: federation-break-the-glass-key
                 key: key
         envFrom:
         - configMapRef:
