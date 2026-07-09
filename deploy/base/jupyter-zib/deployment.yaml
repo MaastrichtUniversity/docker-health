@@ -194,23 +194,21 @@ spec:
                 key: password
           - name: ZIO__EHRBASE_BASE_URL
             valueFrom:
-              configMapKeyRef:
-                name: zio-etl-config
-                key: EHRBASE_BASE_URL
+            value: "http://ehrbase.dh-health-zio:8080/ehrbase/rest/openehr/v1"
           - name: ZIO__DATASET_FOLDER_NAME
             valueFrom:
               configMapKeyRef:
-                name: zio-etl-config
+                name: zio-etl-config-node
                 key: DATASET_FOLDER_NAME
           - name: ZIO__SOURCE_SYSTEM_ID
             valueFrom:
               configMapKeyRef:
-                name: zio-etl-config
+                name: zio-etl-config-node
                 key: SOURCE_SYSTEM_ID
           - name: ZIO__LOGGER_FILENAME
             valueFrom:
               configMapKeyRef:
-                name: zio-etl-config
+                name: zio-etl-config-node
                 key: LOGGER_FILENAME
           - name: ZIO__TRANSFORM_SPRING_USERNAME
             valueFrom:
@@ -221,13 +219,10 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: zio-transform-creds
-                key:
-                  password
+                key: password
           - name: ZIO__TRANSFORM_SPRING_BASE_URL
             valueFrom:
-              configMapKeyRef:
-                name: zio-etl-config
-                key: TRANSFORM_SPRING_BASE_URL
+            value: "http://ehrbase.dh-health-zio:8080/ehrbase/rest/openehr/v1"
         envFrom:
           - configMapRef:
               name: dry-run-config

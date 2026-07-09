@@ -11,12 +11,11 @@ resources:
   - node-envida
   - node-mumc
   - ../../../base/openehr-nodes/vitala/etl-zib/etl-config
-  - ../../../base/openehr-nodes/zio/etl-zib/etl-config
+  - node-zio
 
 
 components:
   - ../node-vitala/components/secrets
-  - ../node-zio/components/secrets
 
 patches:
   # imagePullPolicy patches
