@@ -8,10 +8,10 @@ resources:
   - jupyter-zib-gateway.yaml
   - ../../../base/jupyter-zib
   - ../shared
-  - node-envida
-  - node-mumc
-  - node-vitala
-  - node-zio
+  - ../node-envida/prefix
+  - ../node-mumc/prefix
+  - ../node-vitala/prefix
+  - ../node-zio/prefix
 
 
 patches:
