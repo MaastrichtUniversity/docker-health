@@ -6,9 +6,8 @@ namespace: dh-health-envida
 resources:
   - ../../../base/openehr-nodes/envida
   - ../shared
-  - namespace.yaml
+  - config
   - service-discovery
-  - services-list-role-binding.yaml
 
 components:
   - components

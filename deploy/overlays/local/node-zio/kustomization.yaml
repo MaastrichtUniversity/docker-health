@@ -6,10 +6,8 @@ namespace: dh-health-zio
 resources:
   - ../../../base/openehr-nodes/zio
   - ../shared
-  - namespace.yaml
+  - config
   - service-discovery
-  - services-list-role-binding.yaml
-
 components:
   - components
 

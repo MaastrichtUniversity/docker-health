@@ -6,9 +6,8 @@ namespace: dh-health-mumc
 resources:
   - ../../../base/openehr-nodes/mumc
   - ../shared
-  - namespace.yaml
+  - config
   - service-discovery
-  - services-list-role-binding.yaml
 
 components:
   - components

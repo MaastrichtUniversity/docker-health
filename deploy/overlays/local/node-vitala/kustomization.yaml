@@ -6,10 +6,8 @@ namespace: dh-health-vitala
 resources:
   - ../../../base/openehr-nodes/vitala
   - ../shared
-  - namespace.yaml
+  - config
   - service-discovery
-  - services-list-role-binding.yaml
-
 components:
   - components
 
