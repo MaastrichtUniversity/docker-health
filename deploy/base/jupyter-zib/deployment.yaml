@@ -92,7 +92,7 @@ spec:
                 key:
                   password
           - name: ENVIDA__TRANSFORM_SPRING_BASE_URL
-            value: "http://ehrbase.dh-health-envida:8080/ehrbase/rest/openehr/v1"
+            value: "http://transform-rest.dh-health-envida:8080"
           # MUMC-node
           - name: MUMC__EHRBASE_USERNAME
             valueFrom:
@@ -146,7 +146,6 @@ spec:
                 name: vitala-ehrbase-creds
                 key: password
           - name: VITALA__EHRBASE_BASE_URL
-            valueFrom:
             value: "http://ehrbase.dh-health-vitala:8080/ehrbase/rest/openehr/v1"
           - name: VITALA__DATASET_FOLDER_NAME
             valueFrom:
@@ -175,7 +174,7 @@ spec:
                 key:
                   password
           - name: VITALA__TRANSFORM_SPRING_BASE_URL
-            value: "http://ehrbase.dh-health-vitala:8080/ehrbase/rest/openehr/v1"
+            value: "http://transform-rest.dh-health-vitala:8080"
           # ZIO-node
           - name: ZIO__EHRBASE_USERNAME
             valueFrom:
@@ -188,7 +187,6 @@ spec:
                 name: zio-ehrbase-creds
                 key: password
           - name: ZIO__EHRBASE_BASE_URL
-            valueFrom:
             value: "http://ehrbase.dh-health-zio:8080/ehrbase/rest/openehr/v1"
           - name: ZIO__DATASET_FOLDER_NAME
             valueFrom:
@@ -216,8 +214,7 @@ spec:
                 name: zio-transform-creds
                 key: password
           - name: ZIO__TRANSFORM_SPRING_BASE_URL
-            valueFrom:
-            value: "http://ehrbase.dh-health-zio:8080/ehrbase/rest/openehr/v1"
+            value: "http://transform-rest.dh-health-zio:8080"
         envFrom:
           - configMapRef:
               name: dry-run-config
