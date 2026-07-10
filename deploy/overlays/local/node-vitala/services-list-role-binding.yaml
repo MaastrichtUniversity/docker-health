@@ -7,5 +7,5 @@ subjects:
   name: default
 roleRef:
   kind: ClusterRole
-  name: services-list
+  name: services-list-vitala
   apiGroup: rbac.authorization.k8s.io

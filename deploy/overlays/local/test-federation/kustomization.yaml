@@ -46,7 +46,8 @@ resources:
 #  - ../../../base/openehr-nodes/zio/terminology-server-proxy
 #  - ../../../base/openehr-nodes/zio/transform-rest
 
-#components:
+components:
+  - ../shared/components/service-discovery
 #  # ENVIDA-node
 #  - ../node-envida/components/ehrbase-gateway
 #  - ../node-envida/components/federation-rest-gateway

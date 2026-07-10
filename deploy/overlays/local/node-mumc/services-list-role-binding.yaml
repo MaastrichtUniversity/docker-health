@@ -7,5 +7,5 @@ subjects:
   name: default
 roleRef:
   kind: ClusterRole
-  name: services-list
+  name: services-list-mumc
   apiGroup: rbac.authorization.k8s.io

@@ -2,18 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../base/jupyter-zib
-  - ../../base/openehr-nodes/envida
-  - ../../base/openehr-nodes/mumc
-  - ../../base/openehr-nodes/vitala
-  - ../../base/openehr-nodes/zio
-
-components:
-  - jupyter-zib-config
-  - node-envida/components
-  - node-mumc/components
-  - node-vitala/components
-  - node-zio/components
+  - jupyter
+  - node-envida
+  - node-mumc
+  - node-vitala
+  - node-zio
 
 patches:
   # imagePullPolicy patches
