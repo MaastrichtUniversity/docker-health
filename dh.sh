@@ -183,16 +183,22 @@ delete_manifests() {
 
 # Check a job execution status
 check_job_execution(){
+  path=$1
+  # Split on '/' using Bash's built‑in string manipulation
+  IFS='/' read -r overlay job <<< "$path"
+  echo "overlay = $overlay"
+  echo "job = $job"
+
   echo "Waiting for job $job to complete..."
   while true; do
-    succeeded=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.succeeded}')
+    succeeded=$(kubectl get job "$job" -n "dh-health-$job" -o jsonpath='{.status.succeeded}')
     if [ "$succeeded" = "1" ]; then
       echo -e "${GREEN}$job is complete.${NC}"
-      kubectl delete -f deploy/overlays/$overlay/$job/job.yaml
+      kubectl delete -n "dh-health-$job" job $job
       exit 0
     fi
 
-    failed=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.failed}')
+    failed=$(kubectl get job "$job" -n "dh-health-$job" -o jsonpath='{.status.failed}')
     if [ "$failed" != "" ] && [ "$failed" -ge 1 ]; then
       echo -e "${RED}❌ $job has failed. Exiting.${NC}"
       exit 1
@@ -348,13 +354,13 @@ print_usage() {
     echo "  pull                                      Pull external images"
     echo "  build       <subcommand>                  Build service images"
     echo "  externals   <subcommand>                  Manage external repositories"
-    echo "  apply       <option>      <subcommand>    Apply Kubernetes manifests (default overlay: local) (-s also apply the shared overlay)"
-    echo "  delete      <option>      <subcommand>    Delete Kubernetes manifests (default overlay: local) (-s also delete the shared overlay)"
+    echo "  apply       <subcommand>                  Apply Kubernetes manifests (default overlay: local) (-s also apply the shared overlay)"
+    echo "  delete      <subcommand>                  Delete Kubernetes manifests (default overlay: local) (-s also delete the shared overlay)"
     echo "  status      <subcommand>                  Show status of all pods"
     echo "  rollout     <subcommand>                  Manage the rollout to restart one or many resources (default all)"
     echo "  up          <subcommand>                  Apply a subset of deployments"
     echo "  down        <subcommand>                  Delete a subset of deployments"
-    echo "  run         <subcommand>  <subcommand>    Apply Kubernetes manifests and wait & check the job (with the same name) execution"
+    echo "  run         <subcommand>                  Apply Kubernetes manifests and wait & check the job (with the same name) execution"
     echo "  headlamp                                  Enable the addons headlamp, start the service and create a temporary token"
     echo
     echo "Examples:"
@@ -371,8 +377,8 @@ print_usage() {
     echo "  $0 status -w                    Print and follow the pods status"
     echo "  $0 rollout                      Rollout a restart of all the deployments"
     echo "  $0 rollout jupyter-zib          Rollout a restart of the jupyter-zib deployment"
-    echo "  $0 run local test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status"
-    echo "  $0 run local test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status"
+    echo "  $0 run local/test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status"
+    echo "  $0 run local/test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status"
 }
 
 # Main command handler
@@ -414,7 +420,6 @@ main() {
             ;;
 
         delete)
-            echo "Deleting overlay: ${1:-local}"
             local overlay=${1:-local}
             delete_manifests "${overlay}"
             ;;
@@ -431,10 +436,8 @@ main() {
 
         run)
             local overlay=$1
-            local job=$2
-            apply_manifests "${overlay}/shared"
-            apply_manifests "$overlay/$job"
-            check_job_execution "$overlay" "$job"
+            apply_manifests "$overlay"
+            check_job_execution "$overlay"
             ;;
 
         *)
