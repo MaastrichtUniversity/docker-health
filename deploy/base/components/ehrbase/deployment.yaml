@@ -24,6 +24,10 @@ spec:
         args:
           # uid=100(ehrbase) gid=101(ehrbase) groups=101(ehrbase)
           - mkdir -p /var/log/ehrbase && chown 100:101 /var/log/ehrbase
+        volumeMounts:
+          - name: ehrbase-logs
+            mountPath: /var/log/ehrbase
+            subPath: ehrbase
       containers:
       - name: ehrbase
         image: ehrbase/ehrbase:2.33.0
@@ -99,3 +103,7 @@ spec:
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 10
+        volumeMounts:
+          - name: ehrbase-logs
+            mountPath: /var/log/ehrbase
+            subPath: ehrbase

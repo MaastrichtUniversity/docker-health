@@ -9,14 +9,11 @@ spec:
       containers:
         - name: etl-zib-pipeline
           volumeMounts:
-            - name: outputs
-              mountPath: /code/outputs
-              subPath: test/pipeline
             - name: data
               mountPath: /code/data/test-demo-data
             - name: etl-logs
               mountPath: /code/logs/test
-              subPath: test/pipeline
+              subPath: pipeline
       # ── volume definitions ──
       volumes:
         - name: outputs

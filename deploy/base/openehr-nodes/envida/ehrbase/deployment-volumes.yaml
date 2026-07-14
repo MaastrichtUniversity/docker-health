@@ -5,22 +5,6 @@ metadata:
 spec:
   template:
     spec:
-      # ── init container ──
-      initContainers:
-        - name: init-log-dir
-          volumeMounts:
-            - name: ehrbase-logs
-              mountPath: /var/log/ehrbase
-              subPath: envida/ehrbase
-
-      # ── main container ──
-      containers:
-        - name: ehrbase
-          volumeMounts:
-            - name: ehrbase-logs
-              mountPath: /var/log/ehrbase
-              subPath: envida/ehrbase
-
       # ── PVC definition ──
       volumes:
         - name: ehrbase-logs

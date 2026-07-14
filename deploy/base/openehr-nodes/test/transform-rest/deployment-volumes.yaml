@@ -16,5 +16,5 @@ spec:
           volumeMounts:
             - name: transform-rest-logs
               mountPath: /var/log/test
-              subPath: test/transform-rest
+              subPath: transform-rest
 

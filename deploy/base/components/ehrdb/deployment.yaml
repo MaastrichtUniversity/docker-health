@@ -21,6 +21,10 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - mkdir -p /var/log/postgresql && chown 70:70 /var/log/postgresql
+        volumeMounts:
+          - name: postgres-logs
+            mountPath: /var/log/postgresql
+            subPath: ehrdb
       containers:
       - name: ehrdb
         image: ehrbase/ehrbase-v2-postgres:16.2
@@ -84,3 +88,7 @@ spec:
             - "pg_isready -U $$POSTGRES_USER"
           initialDelaySeconds: 30
           periodSeconds: 10
+        volumeMounts:
+          - name: postgres-logs
+            mountPath: /var/log/postgresql
+            subPath: ehrdb
