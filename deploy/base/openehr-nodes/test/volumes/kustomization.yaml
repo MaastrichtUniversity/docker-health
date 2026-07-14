@@ -5,10 +5,4 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- ehrbase
-- ehrdb
-- etl-zib
-- openehrtool
-- terminology-server-proxy
-- transform-rest
-- volumes
+- volumes.yaml
