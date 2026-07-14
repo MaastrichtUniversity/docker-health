@@ -111,7 +111,6 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
 # Default values
-K8S_NAMESPACE="dh-health"
 ENV_TAG="latest"
 
 # specify externals for this project
@@ -431,7 +430,7 @@ main() {
             ;;
 
         status)
-            kubectl get pods -n $K8S_NAMESPACE "$@"
+            kubectl get pods --all-namespaces "$@"
             ;;
 
         run)
