@@ -16,5 +16,5 @@ spec:
           volumeMounts:
             - name: transform-rest-logs
               mountPath: /var/log/mumc
-              subPath: mumc/transform-rest
+              subPath: transform-rest
 

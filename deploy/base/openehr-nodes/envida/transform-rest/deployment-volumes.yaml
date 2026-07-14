@@ -16,5 +16,5 @@ spec:
           volumeMounts:
             - name: transform-rest-logs
               mountPath: /var/log/envida
-              subPath: envida/transform-rest
+              subPath: transform-rest
 

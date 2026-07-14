@@ -19,8 +19,8 @@ spec:
           volumeMounts:
             - name: outputs
               mountPath: /code/outputs
-              subPath: vitala/etl-rest
+              subPath: etl-rest
             - name: etl-logs
               mountPath: /code/logs/vitala
-              subPath: vitala/etl-rest
+              subPath: etl-rest
 

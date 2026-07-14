@@ -11,7 +11,7 @@ spec:
           volumeMounts:
             - name: logs
               mountPath: /code/logs/vitala
-              subPath: vitala/federation-rest
+              subPath: federation-rest
       # ── Pod‑level volume definitions ───────────────────────────────────────
       volumes:
         - name: logs

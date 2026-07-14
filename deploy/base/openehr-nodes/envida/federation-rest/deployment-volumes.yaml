@@ -11,7 +11,7 @@ spec:
           volumeMounts:
             - name: logs
               mountPath: /code/logs/envida
-              subPath: envida/federation-rest
+              subPath: federation-rest
       # ── Pod‑level volume definitions ───────────────────────────────────────
       volumes:
         - name: logs
