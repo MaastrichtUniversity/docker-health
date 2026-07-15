@@ -7,3 +7,4 @@ generatorOptions:
 resources:
 - deployment.yaml
 - service.yaml
+- stateless-service.yaml
