@@ -231,7 +231,6 @@ spec:
             mountPath: /home/jovyan/work
           - name: jupyter-logs
             mountPath: /var/log/jupyter
-            subPath: jupyter
       volumes:
         - name: demo-data
           hostPath:
