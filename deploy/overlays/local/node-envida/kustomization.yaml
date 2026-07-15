@@ -6,6 +6,7 @@ resources:
 
 components:
   - components
+  - certs
 
 patches:
   # imagePullPolicy patches
@@ -21,3 +22,8 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/imagePullPolicy
         value: Never
+secretGenerator:
+  - name: nedap-cert
+    namespace: dh-health
+    files:
+        - certs/envida_dabs-TE1002-development.pfx

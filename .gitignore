@@ -52,6 +52,8 @@ rit.sh
 
 # secrets for local (dev)
 deploy/overlays/local/shared/components/terminology-server-proxy-secret/secrets.yaml
+deploy/overlays/local/node-envida/certs/envida_dabs-TE1002-development.pfx
+deploy/overlays/local/node-envida/certs/secrets.yaml
 # secrets for tst, acc and prod
 deploy/overlays/*/registry-secret.yaml
 deploy/overlays/*/*/registry-secret.yaml

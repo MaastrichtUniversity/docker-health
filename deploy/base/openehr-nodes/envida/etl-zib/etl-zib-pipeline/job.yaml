@@ -70,6 +70,11 @@ spec:
             secretKeyRef:
               name: envida-transform-creds
               key: password
+        - name: NEDAP_CERT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nedap-cert-pass
+              key: password      
         volumeMounts:
         - name: outputs
           mountPath: /code/outputs
@@ -79,6 +84,9 @@ spec:
         - name: etl-logs
           mountPath: /code/logs/envida # logs/envida/etl-zib.log
           subPath: envida/pipeline
+        - name: nedap-cert
+          mountPath: /etc/nedap
+          readOnly: true  
       volumes:
       - name: outputs
         persistentVolumeClaim:
@@ -90,3 +98,7 @@ spec:
       - name: etl-logs
         persistentVolumeClaim:
           claimName: log-pvc
+      - name: nedap-cert
+        secret:
+          secretName: nedap-cert    
+          
