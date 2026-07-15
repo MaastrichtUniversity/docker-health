@@ -5,3 +5,6 @@ resources:
 - base-config
 - jupyter-zib
 - openehr-nodes
+
+components:
+- components
