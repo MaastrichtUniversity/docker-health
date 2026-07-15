@@ -9,7 +9,6 @@ data:
   DATASET_FOLDER_NAME: test-demo-data
   SOURCE_SYSTEM_ID: DEMO_DATA
   LOGGER_FILENAME: logs/test/etl-zib.log
-  DRY_RUN: "False"
   WRITE_COMPOSITION: "False"
   # If SUBJECT_IDS is empty, extract subject_ids from dataset:
   SUBJECT_IDS: |
