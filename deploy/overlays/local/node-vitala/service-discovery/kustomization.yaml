@@ -4,4 +4,4 @@ kind: Kustomization
 nameSuffix: -vitala
 
 components:
-  - ../../shared/components/service-discovery
+  - ../../shared-components/service-discovery

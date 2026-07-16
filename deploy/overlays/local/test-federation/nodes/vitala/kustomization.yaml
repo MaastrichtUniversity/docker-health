@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: dh-health-vitala
 
 resources:
-  - ../../../shared
   # VITALA-node
   - ../../../../../base/openehr-nodes/vitala/ehrbase
   - ../../../../../base/openehr-nodes/vitala/ehrdb
@@ -17,6 +16,7 @@ resources:
   - ../../../node-vitala/config
 
 components:
+  - ../../../shared-components
   # VITALA-node
   - ../../../node-vitala/components/ehrbase-gateway
   - ../../../node-vitala/components/federation-rest-gateway

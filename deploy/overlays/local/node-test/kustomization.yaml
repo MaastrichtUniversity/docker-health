@@ -5,11 +5,11 @@ namespace: dh-health-test
 
 resources:
   - ../../../base/openehr-nodes/test
-  - ../shared
   - namespace.yaml
 
 components:
   - components
+  - ../shared-components
 
 patches:
   # imagePullPolicy patches

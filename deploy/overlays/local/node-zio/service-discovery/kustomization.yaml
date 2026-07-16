@@ -4,4 +4,4 @@ kind: Kustomization
 nameSuffix: -zio
 
 components:
-  - ../../shared/components/service-discovery
+  - ../../shared-components/service-discovery

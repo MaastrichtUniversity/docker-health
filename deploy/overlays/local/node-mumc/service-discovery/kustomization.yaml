@@ -4,4 +4,4 @@ kind: Kustomization
 nameSuffix: -mumc
 
 components:
-  - ../../shared/components/service-discovery
+  - ../../shared-components/service-discovery

@@ -13,11 +13,9 @@ resources:
   - ../../../base/openehr-nodes/test/etl-zib/etl-config
   - ../../../base/openehr-nodes/test/terminology-server-proxy
   - ../../../base/openehr-nodes/test/transform-rest
-  # Shared configs
-  - ../shared
-
 
 components:
+  - ../shared-components
   # TEST-node
   - ../node-test/components/ehrbase-gateway
   - ../node-test/components/transform-rest-gateway

@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: dh-health-mumc
 
 resources:
-  - ../../../shared
   # MUMC-node
   - ../../../../../base/openehr-nodes/mumc/ehrbase
   - ../../../../../base/openehr-nodes/mumc/ehrdb
@@ -17,6 +16,7 @@ resources:
   - ../../../node-mumc/config
 
 components:
+  - ../../../shared-components
   # MUMC-node
   - ../../../node-mumc/components/ehrbase-gateway
   - ../../../node-mumc/components/federation-rest-gateway

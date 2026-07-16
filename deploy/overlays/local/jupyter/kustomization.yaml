@@ -7,11 +7,13 @@ resources:
   - namespace.yaml
   - jupyter-zib-gateway.yaml
   - ../../../base/jupyter-zib
-  - ../shared
   - ../node-envida/prefix
   - ../node-mumc/prefix
   - ../node-vitala/prefix
   - ../node-zio/prefix
+
+components:
+  - ../shared-components
 
 
 patches:

@@ -5,12 +5,12 @@ namespace: dh-health-mumc
 
 resources:
   - ../../../base/openehr-nodes/mumc
-  - ../shared
   - config
   - service-discovery
 
 components:
   - components
+  - ../shared-components
 
 patches:
   # imagePullPolicy patches

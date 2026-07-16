@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: dh-health-envida
 
 resources:
-  - ../../../shared
  # ENVIDA-node
   - ../../../../../base/openehr-nodes/envida/ehrbase
   - ../../../../../base/openehr-nodes/envida/ehrdb
@@ -17,6 +16,7 @@ resources:
   - ../../../node-envida/config
 
 components:
+  - ../../../shared-components
   # ENVIDA-node
   - ../../../node-envida/components/ehrbase-gateway
   - ../../../node-envida/components/federation-rest-gateway

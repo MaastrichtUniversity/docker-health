@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: dh-health-zio
 
 resources:
-  - ../../../shared
   # ZIO-node
   - ../../../../../base/openehr-nodes/zio/ehrbase
   - ../../../../../base/openehr-nodes/zio/ehrdb
@@ -17,6 +16,7 @@ resources:
   - ../../../node-zio/config
 
 components:
+  - ../../../shared-components
   # ZIO-node
   - ../../../node-zio/components/ehrbase-gateway
   - ../../../node-zio/components/federation-rest-gateway

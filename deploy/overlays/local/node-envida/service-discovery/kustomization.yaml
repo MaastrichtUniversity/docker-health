@@ -4,4 +4,4 @@ kind: Kustomization
 nameSuffix: -envida
 
 components:
-  - ../../shared/components/service-discovery
+  - ../../shared-components/service-discovery
