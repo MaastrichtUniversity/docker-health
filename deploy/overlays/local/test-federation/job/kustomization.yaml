@@ -8,10 +8,10 @@ resources:
   - ../../../../base/base-config
   - job.yaml
   - job-reader-role.yaml
-  - ../../node-envida/prefix
-  - ../../node-mumc/prefix
-  - ../../node-vitala/prefix
-  - ../../node-zio/prefix
+  - ../../node-envida/etl-config_secrets
+  - ../../node-mumc/etl-config_secrets
+  - ../../node-vitala/etl-config_secrets
+  - ../../node-zio/etl-config_secrets
 
 patches:
   # imagePullPolicy patches

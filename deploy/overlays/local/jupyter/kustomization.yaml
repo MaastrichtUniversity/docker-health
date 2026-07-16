@@ -7,10 +7,10 @@ resources:
   - namespace.yaml
   - jupyter-zib-gateway.yaml
   - ../../../base/jupyter-zib
-  - ../node-envida/prefix
-  - ../node-mumc/prefix
-  - ../node-vitala/prefix
-  - ../node-zio/prefix
+  - ../node-envida/etl-config_secrets
+  - ../node-mumc/etl-config_secrets
+  - ../node-vitala/etl-config_secrets
+  - ../node-zio/etl-config_secrets
 
 components:
   - ../shared-components
