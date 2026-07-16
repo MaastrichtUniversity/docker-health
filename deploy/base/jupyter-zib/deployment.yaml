@@ -29,7 +29,6 @@ spec:
           volumeMounts:
             - name: jupyter-logs
               mountPath: /var/log/jupyter
-              subPath: jupyter
       containers:
       - name: jupyter-zib
         image: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib:latest
