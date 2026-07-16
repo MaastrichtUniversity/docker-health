@@ -7,6 +7,7 @@ data:
   NODENAME: zio
   DATASET_FOLDER_NAME: zio-demo-data
   SOURCE_SYSTEM_ID: Tetra
+  INPUT_FORMAT: csv
   LOGGER_FILENAME: logs/zio/etl-zib.log
   EHRBASE_BASE_URL: http://zio-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
   TRANSFORM_SPRING_BASE_URL: http://zio-transform-rest.dh-health:8080
