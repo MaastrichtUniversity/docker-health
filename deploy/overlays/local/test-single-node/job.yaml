@@ -39,14 +39,17 @@ spec:
         image: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test:latest
         # Uncomment and replace the following lines to overwrite the Test Docker image command, and execute the test with different
         # options of your choice and/or execute only one test file.
-#        command: ["pytest"]
-#        args:
-#          - -s
+        command: ["pytest"]
+        args:
+          - -s
 #          - -o
 #          - log_cli=true
 #          - --log-cli-level=INFO
-#          - --verbose
+          - --verbose
 #          - /code/tests/demo_data/test_vermogen_tot_zich_kleden.py
+#          - /code/tests/demo_data
+#          - /code/tests/tetra
+          - /code/tests/nedap_ons/test_patient.py
         envFrom:
         - configMapRef:
             name: dry-run-config
@@ -94,12 +97,20 @@ spec:
             secretKeyRef:
               name: test-transform-creds
               key: password
+        - name: NEDAP_CERT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nedap-cert-pass
+              key: password
         volumeMounts:
         - name: data
           mountPath: /code/data/test-demo-data
         - name: etl-logs
           mountPath: /code/logs/test
           subPath: test/etl-test-single-node
+        - name: nedap-cert
+          mountPath: /etc/nedap
+          readOnly: true
       volumes:
       - name: data
         hostPath:
@@ -108,3 +119,8 @@ spec:
       - name: etl-logs
         persistentVolumeClaim:
           claimName: log-pvc
+      - name: nedap-cert
+        secret:
+          secretName: nedap-cert
+
+

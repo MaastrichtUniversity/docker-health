@@ -16,6 +16,7 @@ components:
   - ../node-test/components/transform-rest-gateway
   - ../node-test/components/terminology-server-proxy-gateway
   - ../node-test/components/secrets
+  - certs
 
 patches:
   # imagePullPolicy patches
@@ -38,3 +39,9 @@ configMapGenerator:
     behavior: merge
     literals:
       - EHRBASE_ADMIN_BASE_URL=http://test-ehrbase.dh-health:8080/ehrbase/rest/admin
+
+secretGenerator:
+  - name: nedap-cert
+    namespace: dh-health
+    files:
+        - certs/envida_dabs-TE1002-development.pfx
