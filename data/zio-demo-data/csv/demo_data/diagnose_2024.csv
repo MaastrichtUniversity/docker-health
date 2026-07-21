@@ -1,0 +1,4 @@
+BSN,DiagnoseDatum,StartDatum,EindDatum,DiagnoseNaam,NadereSpecificatieDiagnoseNaam,Toelichting,LOCATIE,LATERALITEIT,DiagnoseSteller::zorgverlener_2024,DATE_TIME
+999990603,2022-02,2026,,T68,,,,,Zorgverlener_2,2022-02-01T10:30:00.000
+999991504,2024-01-31,2024-01-10,,U07.1,,,,Bilateraal,Zorgverlener_1,2024-01-31T10:00:00.111
+999991905,2024-02-31,2024-02-10,2025,U07.1,,,WrongValue,Bilateraal,Zorgverlener_2,2024-02-31T10:00:00.111
