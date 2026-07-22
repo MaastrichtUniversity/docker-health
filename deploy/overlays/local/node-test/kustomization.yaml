@@ -1,11 +1,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: dh-health-test
+
 resources:
   - ../../../base/openehr-nodes/test
+  - namespace.yaml
 
 components:
   - components
+  - ../shared-components
 
 patches:
   # imagePullPolicy patches

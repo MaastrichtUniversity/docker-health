@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: etl-zib-pipeline          # must match the Job name in job.yaml
+spec:
+  template:
+    spec:
+      # ── container volume mounts ──
+      containers:
+        - name: etl-zib-pipeline
+          volumeMounts:
+            - name: outputs
+              mountPath: /code/outputs
+              subPath: envida/pipeline
+            - name: data
+              mountPath: /code/data/envida-demo-data
+            - name: etl-logs
+              mountPath: /code/logs/envida
+              subPath: envida/pipeline
+      # ── volume definitions ──
+      volumes:
+        - name: outputs
+          persistentVolumeClaim:
+            claimName: output-pvc-envida
+        - name: data
+          hostPath:
+            path: /mnt/data/envida-demo-data
+            type: Directory
+        - name: etl-logs
+          persistentVolumeClaim:
+            claimName: log-pvc-envida
+                                                             

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: portal-config-base
+data:
+  ETL_SERVER_URL: http://etl-zib-rest:8040
+  FEDERATION_SERVER_URL: http://federation-rest:8000

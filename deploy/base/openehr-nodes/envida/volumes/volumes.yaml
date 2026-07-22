@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: log-pv-envida
+  namespace: dh-health-envida
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    name: log-pvc-envida
+    namespace: dh-health-envida
+  hostPath:
+    path: /usr/share/logs/envida
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: log-pvc-envida
+  namespace: dh-health-envida
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: output-pv-envida
+  namespace: dh-health-envida
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    name: output-pvc-envida
+    namespace: dh-health-envida
+  hostPath:
+    path: /usr/share/outputs/envida
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: output-pvc-envida
+  namespace: dh-health-envida
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgresql-data-pv-envida
+  namespace: dh-health-envida
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    name: postgresql-data-pvc-envida
+    namespace: dh-health-envida
+  hostPath:
+    path: /usr/share/postgresql_data/envida
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-data-pvc-envida
+  namespace: dh-health-envida
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

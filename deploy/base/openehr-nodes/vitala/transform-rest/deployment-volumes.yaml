@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transform-rest   # exact name used in the base deployment
+spec:
+  template:
+    spec:
+      # ---- volume definitions ----
+      volumes:
+        - name: transform-rest-logs
+          persistentVolumeClaim:
+            claimName: log-pvc-vitala
+      # ---- mount points ----
+      containers:
+        - name: transform-rest
+          volumeMounts:
+            - name: transform-rest-logs
+              mountPath: /var/log/vitala
+              subPath: transform-rest
+

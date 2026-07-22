@@ -1,8 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: dh-health-test-single-node
+
 resources:
   - job.yaml
+  - volumes.yaml
+  - namespace.yaml
   # TEST-node
   - ../../../base/openehr-nodes/test/ehrbase
   - ../../../base/openehr-nodes/test/ehrdb
@@ -11,6 +15,7 @@ resources:
   - ../../../base/openehr-nodes/test/transform-rest
 
 components:
+  - ../shared-components
   # TEST-node
   - ../node-test/components/ehrbase-gateway
   - ../node-test/components/transform-rest-gateway
@@ -34,11 +39,10 @@ patches:
         value: Never
 
 configMapGenerator:
-  - name: test-etl-config
-    namespace: dh-health
+  - name: etl-config-node
     behavior: merge
     literals:
-      - EHRBASE_ADMIN_BASE_URL=http://test-ehrbase.dh-health:8080/ehrbase/rest/admin
+      - EHRBASE_ADMIN_BASE_URL=http://ehrbase:8080/ehrbase/rest/admin
 
 secretGenerator:
   - name: nedap-cert

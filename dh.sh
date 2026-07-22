@@ -111,7 +111,6 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
 # Default values
-K8S_NAMESPACE="dh-health"
 ENV_TAG="latest"
 
 # specify externals for this project
@@ -183,16 +182,22 @@ delete_manifests() {
 
 # Check a job execution status
 check_job_execution(){
+  path=$1
+  # Split on '/' using Bash's built‑in string manipulation
+  IFS='/' read -r overlay job <<< "$path"
+  echo "overlay = $overlay"
+  echo "job = $job"
+
   echo "Waiting for job $job to complete..."
   while true; do
-    succeeded=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.succeeded}')
+    succeeded=$(kubectl get job "$job" -n "dh-health-$job" -o jsonpath='{.status.succeeded}')
     if [ "$succeeded" = "1" ]; then
       echo -e "${GREEN}$job is complete.${NC}"
-      kubectl delete -f deploy/overlays/$overlay/$job/job.yaml
+      kubectl delete -n "dh-health-$job" job $job
       exit 0
     fi
 
-    failed=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.failed}')
+    failed=$(kubectl get job "$job" -n "dh-health-$job" -o jsonpath='{.status.failed}')
     if [ "$failed" != "" ] && [ "$failed" -ge 1 ]; then
       echo -e "${RED}❌ $job has failed. Exiting.${NC}"
       exit 1
@@ -348,13 +353,13 @@ print_usage() {
     echo "  pull                                      Pull external images"
     echo "  build       <subcommand>                  Build service images"
     echo "  externals   <subcommand>                  Manage external repositories"
-    echo "  apply       <option>      <subcommand>    Apply Kubernetes manifests (default overlay: local) (-s also apply the shared overlay)"
-    echo "  delete      <option>      <subcommand>    Delete Kubernetes manifests (default overlay: local) (-s also delete the shared overlay)"
+    echo "  apply       <subcommand>                  Apply Kubernetes manifests (default overlay: local) (-s also apply the shared overlay)"
+    echo "  delete      <subcommand>                  Delete Kubernetes manifests (default overlay: local) (-s also delete the shared overlay)"
     echo "  status      <subcommand>                  Show status of all pods"
     echo "  rollout     <subcommand>                  Manage the rollout to restart one or many resources (default all)"
     echo "  up          <subcommand>                  Apply a subset of deployments"
     echo "  down        <subcommand>                  Delete a subset of deployments"
-    echo "  run         <subcommand>  <subcommand>    Apply Kubernetes manifests and wait & check the job (with the same name) execution"
+    echo "  run         <subcommand>                  Apply Kubernetes manifests and wait & check the job (with the same name) execution"
     echo "  headlamp                                  Enable the addons headlamp, start the service and create a temporary token"
     echo
     echo "Examples:"
@@ -362,19 +367,17 @@ print_usage() {
     echo "  $0 start                        Start Kubernetes environment"
     echo "  $0 build                        Build all Docker images"
     echo "  $0 apply                        Apply Kubernetes manifests with local overlay"
-    echo "  $0 apply -s local/node-mumc     Apply Kubernetes manifests with local + shared overlays for the MUMC node"
     echo "  $0 apply local/ops              Apply Kubernetes manifests with local/ops overlay  (ELK, Filbeat)"
     echo "  $0 apply tst                    Apply Kubernetes manifests with tst overlay"
     echo "  $0 delete                       Delete Kubernetes manifests with local overlay"
-    echo "  $0 delete -s                    Delete Kubernetes manifests with local + shared overlays"
     echo "  $0 delete local/ops             Delete Kubernetes manifests with local/ops overlay (ELK, Filbeat)"
     echo "  $0 delete tst                   Delete Kubernetes manifests with tst overlay"
     echo "  $0 status                       Print the pods status"
     echo "  $0 status -w                    Print and follow the pods status"
     echo "  $0 rollout                      Rollout a restart of all the deployments"
     echo "  $0 rollout jupyter-zib          Rollout a restart of the jupyter-zib deployment"
-    echo "  $0 run local test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status"
-    echo "  $0 run local test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status"
+    echo "  $0 run local/test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status"
+    echo "  $0 run local/test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status"
 }
 
 # Main command handler
@@ -411,36 +414,13 @@ main() {
             ;;
 
         apply)
-            case $1 in
-              -s)
-                local overlay=${2:-local}
-                if [[ "${overlay}" = *"/"* ]]; then
-                  apply_manifests "${overlay}/../shared"
-                else
-                  apply_manifests "${overlay}/shared"
-                fi
-                apply_manifests "${overlay}"
-              ;;
-              *)
-                local overlay=${1:-local}
-                apply_manifests "${overlay}"
-              ;;
-            esac
+            local overlay=${1:-local}
+            apply_manifests "${overlay}"
             ;;
 
         delete)
-            case $1 in
-              -s)
-              # Deleting the shared overlay removes all resources and volumes in "dh-health" namespace
-              # so no need to delete other overlays after that
-                local overlay=${2:-local}
-                delete_manifests "${overlay}/shared"
-              ;;
-              *)
-                local overlay=${1:-local}
-                delete_manifests "${overlay}"
-              ;;
-            esac
+            local overlay=${1:-local}
+            delete_manifests "${overlay}"
             ;;
 
         headlamp)
@@ -450,15 +430,13 @@ main() {
             ;;
 
         status)
-            kubectl get pods -n $K8S_NAMESPACE "$@"
+            kubectl get pods --all-namespaces "$@"
             ;;
 
         run)
             local overlay=$1
-            local job=$2
-            apply_manifests "${overlay}/shared"
-            apply_manifests "$overlay/$job"
-            check_job_execution "$overlay" "$job"
+            apply_manifests "$overlay"
+            check_job_execution "$overlay"
             ;;
 
         *)

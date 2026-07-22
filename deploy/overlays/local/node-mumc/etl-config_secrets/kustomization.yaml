@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Specific to the dh-health-test-federation and dh-health-jupyter namespaces:
+# Prepend a prefix to etl-config-node and all secrets to avoid name collisions
+namePrefix: mumc-
+
+resources:
+  - ../../../../base/openehr-nodes/mumc/etl-zib/etl-config
+
+components:
+  - ../components/secrets

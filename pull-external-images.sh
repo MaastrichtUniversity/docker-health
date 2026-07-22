@@ -13,7 +13,7 @@ echo "Pulling external images into Minikube's Docker daemon..."
 
 # EHRBase images
 echo "Pulling EHRBase image..."
-docker pull ehrbase/ehrbase:2.6.0
+docker pull ehrbase/ehrbase:2.33.0
 
 # EHRBase Postgres image
 echo "Pulling EHRBase Postgres image..."

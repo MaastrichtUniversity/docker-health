@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terminology-server-proxy   # exact name used in the base deployment
+spec:
+  template:
+    spec:
+      # ---- volume definitions ----
+      volumes:
+        - name: terminology-logs
+          persistentVolumeClaim:
+            claimName: log-pvc-zio
+      # ---- mount points ----
+      containers:
+        - name: terminology-server-proxy
+          volumeMounts:
+            - name: terminology-logs
+              mountPath: /opt/app/logs/zio
+              subPath: terminology
+

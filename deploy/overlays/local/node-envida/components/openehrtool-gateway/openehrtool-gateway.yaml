@@ -1,8 +1,7 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: envida-openehrtool-gateway
-  namespace: dh-health
+  name: envida-openehrtool-gateway  
 spec:
   gatewayClassName: traefik
   listeners:
@@ -14,8 +13,7 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: envida-openehrtool-route
-  namespace: dh-health
+  name: envida-openehrtool-route  
 spec:
   parentRefs:
     - name: envida-openehrtool-gateway
@@ -27,5 +25,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: envida-openehrtool
+        - name: openehrtool
           port: 9000

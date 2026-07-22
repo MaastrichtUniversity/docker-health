@@ -1,0 +1,40 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dh-health-envida
+
+resources:
+ # ENVIDA-node
+  - ../../../../../base/openehr-nodes/envida/ehrbase
+  - ../../../../../base/openehr-nodes/envida/ehrdb
+  - ../../../../../base/openehr-nodes/envida/etl-zib
+  - ../../../../../base/openehr-nodes/envida/federation-rest
+  - ../../../../../base/openehr-nodes/envida/terminology-server-proxy
+  - ../../../../../base/openehr-nodes/envida/transform-rest
+  - ../../../../../base/openehr-nodes/envida/volumes
+  - ../../../node-envida/service-discovery
+  - ../../../node-envida/config
+
+components:
+  - ../../../shared-components
+  # ENVIDA-node
+  - ../../../node-envida/components/ehrbase-gateway
+  - ../../../node-envida/components/federation-rest-gateway
+  - ../../../node-envida/components/transform-rest-gateway
+  - ../../../node-envida/components/terminology-server-proxy-gateway
+  - ../../../node-envida/components/secrets
+
+patches:
+  # imagePullPolicy patches
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Never
+  - target:
+      kind: Job
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Never

@@ -1,16 +1,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: vitala-etl-config
-  namespace: dh-health
+  name: etl-config-node
 data:
   NODENAME: vitala
   DATASET_FOLDER_NAME: vitala-demo-data
   SOURCE_SYSTEM_ID: DEMO_DATA # "Nedap Ons"
   INPUT_FORMAT: csv
   LOGGER_FILENAME: logs/vitala/etl-zib.log
-  EHRBASE_BASE_URL: http://vitala-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
-  TRANSFORM_SPRING_BASE_URL: http://vitala-transform-rest.dh-health:8080
   WRITE_COMPOSITION: "true"
   # If SUBJECT_IDS is empty, extract subject_ids from dataset:
   SUBJECT_IDS: |
@@ -22,6 +19,7 @@ data:
       "DataHub-Bloeddruk-2024",
       "DataHub-BurgerlijkeStaat-2024",
       "DataHub-Contactpersoon-2024",
+      "DataHub-Diagnose-2024",
       "DataHub-DrugsGebruik-2024",
       "DataHub-FunctieHoren-2024",
       "DataHub-FunctieZien-2024",

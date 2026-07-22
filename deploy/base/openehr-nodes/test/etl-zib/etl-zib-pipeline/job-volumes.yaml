@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: etl-zib-pipeline          # must match the Job name in job.yaml
+spec:
+  template:
+    spec:
+      # ── container volume mounts ──
+      containers:
+        - name: etl-zib-pipeline
+          volumeMounts:
+            - name: data
+              mountPath: /code/data/test-demo-data
+            - name: etl-logs
+              mountPath: /code/logs/test
+              subPath: pipeline
+      # ── volume definitions ──
+      volumes:
+        - name: outputs
+          persistentVolumeClaim:
+            claimName: output-pvc-test
+        - name: data
+          hostPath:
+            path: /mnt/data/test-demo-data
+            type: Directory
+        - name: etl-logs
+          persistentVolumeClaim:
+            claimName: log-pvc-test
+                                                             

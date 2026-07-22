@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: notebooks-pv
-  namespace: dh-health
+  namespace: dh-health-jupyter
 spec:
   capacity:
     storage: 1Gi
@@ -10,9 +10,8 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-     namespace: dh-health
-     name: notebooks-pvc
-  storageClassName: local
+    name: notebooks-pvc
+    namespace: dh-health-jupyter
   hostPath:
     path: /usr/share/notebooks
     type: DirectoryOrCreate
@@ -21,11 +20,41 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: notebooks-pvc
-  namespace: dh-health
+  namespace: dh-health-jupyter
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local
   resources:
     requests:
       storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: log-pv-jupyter
+  namespace: dh-health-jupyter
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    name: log-pvc-jupyter
+    namespace: dh-health-jupyter
+  hostPath:
+    path: /usr/share/logs/jupyter
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: log-pvc-jupyter
+  namespace: dh-health-jupyter
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---

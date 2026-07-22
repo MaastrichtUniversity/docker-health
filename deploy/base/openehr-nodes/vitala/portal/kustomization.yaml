@@ -4,7 +4,8 @@ kind: Kustomization
 generatorOptions:
   disableNameSuffixHash: true
 
+components:
+- ../../../components/portal
+
 resources:
-- deployment.yaml
-- service.yaml
 - configmap.yaml
