@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+resources:
+  - secrets.yaml
+
+secretGenerator:
+  - name: nedap-cert
+    namespace: dh-health
+    files:
+        - envida_dabs-TE1002-development.pfx
