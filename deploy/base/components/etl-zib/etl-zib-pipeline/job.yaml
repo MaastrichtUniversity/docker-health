@@ -74,19 +74,7 @@ spec:
             secretKeyRef:
               name: transform-creds
               key: password
-        - name: NEDAP_CERT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: nedap-cert-pass
-              key: password
         volumeMounts:
           - name: outputs
             mountPath: /code/outputs
             subPath: pipeline
-          - name: nedap-cert
-            mountPath: /etc/nedap
-            readOnly: true
-      volumes:
-      - name: nedap-cert
-        secret:
-          secretName: nedap-cert
