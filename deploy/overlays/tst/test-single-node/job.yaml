@@ -2,7 +2,6 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: test-single-node
-  namespace: dh-health
 spec:
   backoffLimit: 0
   template:
@@ -18,21 +17,21 @@ spec:
         imagePullPolicy: IfNotPresent
         command:
           - "/wait-for-service.sh"
-          - "http://test-terminology-server-proxy.dh-health:8080/management/health"
+          - "http://terminology-server-proxy:8080/management/health"
           - "Terminology server proxy"
       - name: wait-ehrbase
         image: registry.prod.dh.unimaas.nl/docker-health/init-container:latest
         imagePullPolicy: IfNotPresent
         command:
           - "/wait-for-service.sh"
-          - "http://test-ehrbase.dh-health:8080/ehrbase/management/health"
+          - "http://ehrbase:8080/ehrbase/management/health"
           - "EHRbase"
       - name: wait-transform-rest
         image: registry.prod.dh.unimaas.nl/docker-health/init-container:latest
         imagePullPolicy: IfNotPresent
         command:
           - "/wait-for-service.sh"
-          - "http://test-transform-rest.dh-health:8080/management/health"
+          - "http://transform-rest:8080/management/health"
           - "Transform REST"
       containers:
       - name: test-single-node-runner

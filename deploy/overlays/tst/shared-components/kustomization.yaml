@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+resources:
+  - ../../../base/base-config
+
+components:
+  - data-encryption-secret
+  - federation-secret
+  - registry-secret
+  - terminology-server-proxy-secret
+
+patches:
+  # imagePullPolicy patches
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: IfNotPresent    

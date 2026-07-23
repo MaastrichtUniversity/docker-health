@@ -2,7 +2,6 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: test-federation
-  namespace: dh-health
 spec:
   backoffLimit: 0
   template:
@@ -13,29 +12,47 @@ spec:
           image: bitnamilegacy/kubectl:1.33.4 # TODO: Try not to use a third-party docker image
           imagePullPolicy: Never
           command:
-            - sh
+            - /bin/bash
             - -c
             - |
               set -e
-              JOBS=$(kubectl get jobs -n dh-health -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n' | grep 'etl-zib-pipeline$')
-              for job in $JOBS; do
-                echo "Waiting for job $job to complete..."
+
+              # -----------------------------------------------------------------
+              # Find every job in *any* namespace whose name ends with
+              #   etl-zib-pipeline
+              # -----------------------------------------------------------------
+              JOBS=$(kubectl get jobs -A -o jsonpath='{range .items[*]}{.metadata.namespace}{" "}{.metadata.name}{"\n"}{end}' | grep 'etl-zib-pipeline$')
+
+              if [[ -z "$JOBS" ]]; then
+                echo "No matching etl‑zib‑pipeline jobs found in any namespace."
+                exit 0
+              fi
+
+              # -----------------------------------------------------------------
+              # Process each <namespace> <job> pair
+              # -----------------------------------------------------------------
+              while read -r ns job; do
+                echo "Waiting for job $job in namespace $ns..."
+
+                # Wait until the job succeeds or fails
                 while true; do
-                  succeeded=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.succeeded}')                
-                  if [ "$succeeded" = "1" ]; then
-                    echo "$job is complete"
+                  succeeded=$(kubectl get job "$job" -n "$ns" -o jsonpath='{.status.succeeded}')
+                  if [[ "$succeeded" == "1" ]]; then
+                    echo "$job in $ns is complete"
                     break
                   fi
-              
-                  failed=$(kubectl get job "$job" -n dh-health -o jsonpath='{.status.failed}')
+
+                  failed=$(kubectl get job "$job" -n "$ns" -o jsonpath='{.status.failed}')
                   if [ "$failed" != "" ] && [ "$failed" -ge 1 ]; then
-                    echo "❌ $job has failed. Exiting."
+                    echo "❌  $job in $ns has failed. Exiting."
                     exit 1
                   fi
-                  echo "$job not completed yet, sleeping 10s..."
+
+                  echo "$job in $ns not completed yet, sleeping 10s..."
                   sleep 10
                 done
-              done
+              done <<< "$JOBS"
+              exit 0
       containers:
         - name: test-federation-runner
           image: registry.prod.dh.unimaas.nl/docker-health/federation-test:latest
@@ -60,10 +77,7 @@ spec:
                   name: envida-federation-break-the-glass-key
                   key: key
             - name: ENVIDA__FEDERATION_BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: envida-federation-rest-config
-                  key: FEDERATION_SERVER_URL
+              value: "http://federation-rest.dh-health-envida:8000"
             # MUMC-node
             - name: MUMC__NODENAME
               valueFrom:
@@ -81,10 +95,7 @@ spec:
                   name: mumc-federation-break-the-glass-key
                   key: key
             - name: MUMC__FEDERATION_BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: mumc-federation-rest-config
-                  key: FEDERATION_SERVER_URL
+              value: "http://federation-rest.dh-health-mumc:8000"
             # VITALA-node
             - name: VITALA__NODENAME
               valueFrom:
@@ -102,10 +113,7 @@ spec:
                   name: vitala-federation-break-the-glass-key
                   key: key
             - name: VITALA__FEDERATION_BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: vitala-federation-rest-config
-                  key: FEDERATION_SERVER_URL
+              value: "http://federation-rest.dh-health-vitala:8000"
             # ZIO-node
             - name: ZIO__NODENAME
               valueFrom:
@@ -123,7 +131,4 @@ spec:
                   name: zio-federation-break-the-glass-key
                   key: key
             - name: ZIO__FEDERATION_BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: zio-federation-rest-config
-                  key: FEDERATION_SERVER_URL
+              value: "http://federation-rest.dh-health-zio:8000"

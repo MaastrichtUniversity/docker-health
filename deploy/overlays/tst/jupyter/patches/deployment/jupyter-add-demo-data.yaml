@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyter-zib
+spec:
+  selector:
+    matchLabels:
+      app: jupyter-zib
+  template:
+    spec:
+      containers:
+        - name: jupyter-zib
+          volumeMounts:
+          - name: demo-data
+            mountPath: /home/jovyan/data
+            subPath: src/data
+      volumes:
+        - name: demo-data
+          persistentVolumeClaim:
+            claimName: git-repo-pvc

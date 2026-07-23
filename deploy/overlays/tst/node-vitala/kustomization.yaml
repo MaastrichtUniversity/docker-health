@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dh-health-vitala
+
+resources:
+  - ../../../base/openehr-nodes/vitala
+  - config
+  - service-discovery
+
+components:
+  - components
+  - ../shared-components
+
+patches:
+  - target:
+      group: ""
+      version: v1
+      kind: PersistentVolumeClaim
+      name: git-repo-pvc
+      namespace: dh-health-vitala
+    path: patches/pvc.yaml
+  - target:
+      group: batch
+      version: v1
+      kind: Job
+      name: vitala-etl-zib-pipeline
+      namespace: dh-health-vitala
+    path: patches/job/vitala-etl-zib-delete-demo-data.yaml
+  - target:
+      group: batch
+      version: v1
+      kind: Job
+      name: vitala-etl-zib-pipeline
+      namespace: dh-health-vitala
+    path: patches/job/vitala-etl-zib-add-demo-data.yaml

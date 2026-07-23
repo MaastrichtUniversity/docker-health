@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: dh-health
+namespace: dh-health-test-federation
 
 resources:
 - ../vault-operator/secrets
@@ -67,7 +67,7 @@ generatorOptions:
 
 secretGenerator:
   - name: etl-data-encryption-passphrase
-    namespace: dh-health
+    namespace: dh-health-test-federation
     literals:
       - passphrase=foobar
 

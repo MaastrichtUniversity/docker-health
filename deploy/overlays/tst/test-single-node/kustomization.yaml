@@ -1,19 +1,23 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: dh-health
+namespace: dh-health-test-single-node
 
 resources:
+- namespace.yaml
 - secrets.yaml
 - test-secrets.yaml
+- volumes.yaml
 - job.yaml
-#- registry-secret.yaml
-- ../../../base/common
 ## TEST-node
 - ../../../base/openehr-nodes/test/ehrbase
 - ../../../base/openehr-nodes/test/ehrdb
 - ../../../base/openehr-nodes/test/etl-zib/etl-config
 - ../../../base/openehr-nodes/test/transform-rest
 - ../../../base/openehr-nodes/test/terminology-server-proxy
+- ../../../base/openehr-nodes/test/etl-zib/etl-zib-pipeline
+
+components:
+  - ../shared-components
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
@@ -93,12 +97,12 @@ patches:
 # Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
 configMapGenerator:
 - name: test-ehrbase-config
-  namespace: dh-health
+  namespace: dh-health-test-single-node
   behavior: merge
   literals:
     - ADMIN_API_ACTIVE=true
 - name: test-etl-config
-  namespace: dh-health
+  namespace: dh-health-test-single-node
   behavior: merge
   literals:
     - EHRBASE_ADMIN_BASE_URL=http://test-ehrbase:8080/ehrbase/rest/admin

@@ -2,7 +2,6 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: populate-pvc-with-git-repo
-  namespace: dh-health
 spec:
   template:
     spec:
