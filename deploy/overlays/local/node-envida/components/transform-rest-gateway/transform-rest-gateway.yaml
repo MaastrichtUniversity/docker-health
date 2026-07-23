@@ -1,8 +1,7 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: envida-transform-rest-gateway
-  namespace: dh-health
+  name: envida-transform-rest-gateway  
 spec:
   gatewayClassName: traefik
   listeners:
@@ -14,8 +13,7 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: envida-transform-rest-route
-  namespace: dh-health
+  name: envida-transform-rest-route 
 spec:
   parentRefs:
     - name: envida-transform-rest-gateway
@@ -27,5 +25,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: envida-transform-rest
+        - name: transform-rest
           port: 8080

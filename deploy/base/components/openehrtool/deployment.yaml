@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openehrtool
+  labels:
+    app: openehrtool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openehrtool
+  template:
+    metadata:
+      labels:
+        app: openehrtool
+    spec:
+      containers:
+      - name: openehrtool
+        image: surfercrs4/openehrtool:latest
+        ports:
+        - containerPort: 9000
+        env:
+          - name: EHRBASEUSERS_adusername
+            valueFrom:
+              secretKeyRef:
+                name: ehrbase-admin-creds
+                key: username
+          - name: EHRBASEUSERS_adpassword
+            valueFrom:
+              secretKeyRef:
+                name: ehrbase-admin-creds
+                key: password
+          - name: EHRBASEUSERS_username
+            valueFrom:
+              secretKeyRef:
+                name: ehrbase-creds
+                key: username
+          - name: EHRBASEUSERS_password
+            valueFrom:
+              secretKeyRef:
+                name: ehrbase-creds
+                key: password
+          - name: EHRBASESERVER_nodename
+            valueFrom:
+              configMapKeyRef:
+                name: ehrbase-config-node
+                key: SERVER_NODENAME
+        envFrom:
+        - configMapRef:
+            name: openehrtool-config-base

@@ -4,6 +4,8 @@ kind: Kustomization
 generatorOptions:
   disableNameSuffixHash: true
 
-resources:
-- deployment.yaml
-- service.yaml
+components:
+- ../../../components/ehrdb
+
+patches:
+- path: deployment-volumes.yaml

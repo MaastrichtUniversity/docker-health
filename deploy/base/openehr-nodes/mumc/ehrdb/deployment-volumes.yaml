@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ehrdb
+spec:
+  template:
+    spec:
+      volumes:
+        - name: postgres-logs
+          persistentVolumeClaim:
+            claimName: log-pvc-mumc

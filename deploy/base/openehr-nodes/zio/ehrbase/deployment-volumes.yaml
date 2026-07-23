@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ehrbase               # must match the Deployment name in deployment.yaml
+spec:
+  template:
+    spec:
+      # ── PVC definition ──
+      volumes:
+        - name: ehrbase-logs
+          persistentVolumeClaim:
+            claimName: log-pvc-zio

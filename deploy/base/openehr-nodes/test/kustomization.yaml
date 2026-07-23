@@ -11,3 +11,4 @@ resources:
 - openehrtool
 - terminology-server-proxy
 - transform-rest
+- volumes

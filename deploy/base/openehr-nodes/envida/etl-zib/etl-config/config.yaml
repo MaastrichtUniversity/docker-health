@@ -1,15 +1,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: envida-etl-config
-  namespace: dh-health
+  name: etl-config-node
 data:
   NODENAME: envida
   DATASET_FOLDER_NAME: envida-demo-data
   SOURCE_SYSTEM_ID: DEMO_DATA # "Nedap Ons"
   LOGGER_FILENAME: logs/envida/etl-zib.log
-  EHRBASE_BASE_URL: http://envida-ehrbase.dh-health:8080/ehrbase/rest/openehr/v1
-  TRANSFORM_SPRING_BASE_URL: http://envida-transform-rest.dh-health:8080
   WRITE_COMPOSITION: "True"
   # If SUBJECT_IDS is empty, extract subject_ids from dataset:
   SUBJECT_IDS: |

@@ -6,4 +6,7 @@ generatorOptions:
 
 resources:
 - etl-config
-- etl-zib-pipeline
+- ../../../components/etl-zib/etl-zib-pipeline
+
+patches:
+- path: etl-zib-pipeline/job-volumes.yaml

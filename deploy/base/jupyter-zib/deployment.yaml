@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jupyter-zib
-  namespace: dh-health
   labels:
     app: jupyter-zib
 spec:
@@ -30,7 +29,6 @@ spec:
           volumeMounts:
             - name: jupyter-logs
               mountPath: /var/log/jupyter
-              subPath: jupyter
       containers:
       - name: jupyter-zib
         image: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib:latest
@@ -65,24 +63,21 @@ spec:
                 name: envida-ehrbase-creds
                 key: password
           - name: ENVIDA__EHRBASE_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: envida-etl-config
-                key: EHRBASE_BASE_URL
+            value: "http://ehrbase.dh-health-envida:8080/ehrbase/rest/openehr/v1"
           - name: ENVIDA__DATASET_FOLDER_NAME
             valueFrom:
               configMapKeyRef:
-                name: envida-etl-config
+                name: envida-etl-config-node
                 key: DATASET_FOLDER_NAME
           - name: ENVIDA__SOURCE_SYSTEM_ID
             valueFrom:
               configMapKeyRef:
-                name: envida-etl-config
+                name: envida-etl-config-node
                 key: SOURCE_SYSTEM_ID
           - name: ENVIDA__LOGGER_FILENAME
             valueFrom:
               configMapKeyRef:
-                name: envida-etl-config
+                name: envida-etl-config-node
                 key: LOGGER_FILENAME
           - name: ENVIDA__TRANSFORM_SPRING_USERNAME
             valueFrom:
@@ -96,10 +91,7 @@ spec:
                 key:
                   password
           - name: ENVIDA__TRANSFORM_SPRING_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: envida-etl-config
-                key: TRANSFORM_SPRING_BASE_URL
+            value: "http://transform-rest.dh-health-envida:8080"
           # MUMC-node
           - name: MUMC__EHRBASE_USERNAME
             valueFrom:
@@ -112,24 +104,21 @@ spec:
                 name: mumc-ehrbase-creds
                 key: password
           - name: MUMC__EHRBASE_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: mumc-etl-config
-                key: EHRBASE_BASE_URL
+            value: "http://ehrbase.dh-health-mumc:8080/ehrbase/rest/openehr/v1"
           - name: MUMC__DATASET_FOLDER_NAME
             valueFrom:
               configMapKeyRef:
-                name: mumc-etl-config
+                name: mumc-etl-config-node
                 key: DATASET_FOLDER_NAME
           - name: MUMC__SOURCE_SYSTEM_ID
             valueFrom:
               configMapKeyRef:
-                name: mumc-etl-config
+                name: mumc-etl-config-node
                 key: SOURCE_SYSTEM_ID
           - name: MUMC__LOGGER_FILENAME
             valueFrom:
               configMapKeyRef:
-                name: mumc-etl-config
+                name: mumc-etl-config-node
                 key: LOGGER_FILENAME
           - name: MUMC__TRANSFORM_SPRING_USERNAME
             valueFrom:
@@ -143,10 +132,7 @@ spec:
                 key:
                   password
           - name: MUMC__TRANSFORM_SPRING_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: mumc-etl-config
-                key: TRANSFORM_SPRING_BASE_URL
+            value: "http://transform-rest.dh-health-mumc:8080"
           # VITALA-node
           - name: VITALA__EHRBASE_USERNAME
             valueFrom:
@@ -159,24 +145,21 @@ spec:
                 name: vitala-ehrbase-creds
                 key: password
           - name: VITALA__EHRBASE_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: vitala-etl-config
-                key: EHRBASE_BASE_URL
+            value: "http://ehrbase.dh-health-vitala:8080/ehrbase/rest/openehr/v1"
           - name: VITALA__DATASET_FOLDER_NAME
             valueFrom:
               configMapKeyRef:
-                name: vitala-etl-config
+                name: vitala-etl-config-node
                 key: DATASET_FOLDER_NAME
           - name: VITALA__SOURCE_SYSTEM_ID
             valueFrom:
               configMapKeyRef:
-                name: vitala-etl-config
+                name: vitala-etl-config-node
                 key: SOURCE_SYSTEM_ID
           - name: VITALA__LOGGER_FILENAME
             valueFrom:
               configMapKeyRef:
-                name: vitala-etl-config
+                name: vitala-etl-config-node
                 key: LOGGER_FILENAME
           - name: VITALA__TRANSFORM_SPRING_USERNAME
             valueFrom:
@@ -190,10 +173,7 @@ spec:
                 key:
                   password
           - name: VITALA__TRANSFORM_SPRING_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: vitala-etl-config
-                key: TRANSFORM_SPRING_BASE_URL
+            value: "http://transform-rest.dh-health-vitala:8080"
           # ZIO-node
           - name: ZIO__EHRBASE_USERNAME
             valueFrom:
@@ -206,24 +186,21 @@ spec:
                 name: zio-ehrbase-creds
                 key: password
           - name: ZIO__EHRBASE_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: zio-etl-config
-                key: EHRBASE_BASE_URL
+            value: "http://ehrbase.dh-health-zio:8080/ehrbase/rest/openehr/v1"
           - name: ZIO__DATASET_FOLDER_NAME
             valueFrom:
               configMapKeyRef:
-                name: zio-etl-config
+                name: zio-etl-config-node
                 key: DATASET_FOLDER_NAME
           - name: ZIO__SOURCE_SYSTEM_ID
             valueFrom:
               configMapKeyRef:
-                name: zio-etl-config
+                name: zio-etl-config-node
                 key: SOURCE_SYSTEM_ID
           - name: ZIO__LOGGER_FILENAME
             valueFrom:
               configMapKeyRef:
-                name: zio-etl-config
+                name: zio-etl-config-node
                 key: LOGGER_FILENAME
           - name: ZIO__TRANSFORM_SPRING_USERNAME
             valueFrom:
@@ -234,13 +211,9 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: zio-transform-creds
-                key:
-                  password
+                key: password
           - name: ZIO__TRANSFORM_SPRING_BASE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: zio-etl-config
-                key: TRANSFORM_SPRING_BASE_URL
+            value: "http://transform-rest.dh-health-zio:8080"
         envFrom:
           - configMapRef:
               name: dry-run-config
@@ -249,7 +222,7 @@ spec:
           - configMapRef:
               name: zib-templates-config
           - configMapRef:
-              name: etl-config
+              name: etl-config-base
         volumeMounts:
           - name: demo-data
             mountPath: /home/jovyan/data
@@ -257,7 +230,6 @@ spec:
             mountPath: /home/jovyan/work
           - name: jupyter-logs
             mountPath: /var/log/jupyter
-            subPath: jupyter
       volumes:
         - name: demo-data
           hostPath:
@@ -268,5 +240,5 @@ spec:
               claimName: notebooks-pvc
         - name: jupyter-logs
           persistentVolumeClaim:
-            claimName: log-pvc
+            claimName: log-pvc-jupyter
             

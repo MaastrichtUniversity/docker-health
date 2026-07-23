@@ -51,7 +51,7 @@ rit.sh
 .vscode/
 
 # secrets for local (dev)
-deploy/overlays/local/shared/components/terminology-server-proxy-secret/secrets.yaml
+deploy/overlays/local/shared-components/terminology-server-proxy-secret/secrets.yaml
 # secrets for tst, acc and prod
 deploy/overlays/*/registry-secret.yaml
 deploy/overlays/*/*/registry-secret.yaml

@@ -46,7 +46,7 @@ The implementation relies on the following repositories:
 Credentials of the [Dutch terminology server](https://terminologieserver.nl/authorisation/auth/realms/nictiz/protocol/openid-connect/auth?client_id=account-console&redirect_uri=https%3A%2F%2Fterminologieserver.nl%2Fauthorisation%2Fauth%2Frealms%2Fnictiz%2Faccount%2F%23%2F&state=e082a979-038c-41ab-8096-d0396ac9820f&response_mode=fragment&response_type=code&scope=openid&nonce=30f31617-2935-48d1-ae46-6df5d20a96dd&code_challenge=0VDfFvHqmPTtvKmuJUF6rNMzRlSNwyZu9vPhV47VQn4&code_challenge_method=S256) need to be stored in secret files.
 
 Add the following file to the relevant overlays folders: local, local/test-single-node, local/test-federation, etc.
-e.g., `deploy/overlays/{overlay}/shared/components/terminology-server-proxy-secret/secrets.yaml`
+e.g., `deploy/overlays/{overlay}/shared-components/terminology-server-proxy-secret/secrets.yaml`
 
 #### Secret file example (need to replace the values with your encoded credentials)
 
@@ -55,7 +55,6 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: terminology-server-proxy-creds
-  namespace: dh-health
 data:
   username: SU5TRVJUX1lPVVJfUkVBTF9VU0VSTkFNRQ==
   password: SU5TRVJUX1lPVVJfUkVBTF9QQVNTV09SRA==
@@ -133,23 +132,21 @@ for more information on the Kubernetes architecture and deployed services.
 
 5. Apply Kubernetes manifests on the `local` overlay
 
-   **Note:** It is necessary to add the option `-s` in the command-line to apply the shared resources
-
-   1. Apply all node resources
+   1. Apply jupyter and all node resources (except the test node)
 
       ```bash
-      ./dh.sh apply -s local
+      ./dh.sh apply local
       ```
 
    2. Apply specific node resources
 
       ```bash
-      ./dh.sh apply -s local/node-{NODENAME}
+      ./dh.sh apply local/node-{NODENAME}
       ```
 
       with `{NODENAME}` corresponding to either `envida`, `mumc`, `vitala`, `zio` or `test`.
 
-6. Show status of all pods
+6. Show status of all pods across all namespaces
 
    ```bash
    ./dh.sh status
@@ -191,21 +188,19 @@ Checkout existing functionality in the dh.sh. For examples:
 ./dh.sh setup                        Setup Kubernetes environment
 ./dh.sh start                        Start Kubernetes environment
 ./dh.sh build                        Build all Docker images
-./dh.sh apply -s                     Apply Kubernetes manifests with local + shared overlay
 ./dh.sh apply                        Apply Kubernetes manifests with local overlay
-./dh.sh apply -s local/node-mumc     Apply Kubernetes manifests for MUMC and shared overlays
+./dh.sh apply local/node-mumc        Apply Kubernetes manifests for MUMC 
 ./dh.sh apply local/ops              Apply Kubernetes manifests with local/ops overlay  (ELK, Filbeat)
 ./dh.sh apply tst                    Apply Kubernetes manifests with tst overlay
 ./dh.sh delete                       Delete Kubernetes manifests with local overlay
-./dh.sh delete -s                    Delete Kubernetes manifests with local and shared overlay, including the namespace
 ./dh.sh delete local/ops             Delete Kubernetes manifests with local/ops overlay (ELK, Filbeat)
 ./dh.sh delete tst                   Delete Kubernetes manifests with tst overlay
 ./dh.sh status                       Print the pods status
 ./dh.sh status -w                    Print and follow the pods status
 ./dh.sh rollout                      Rollout a restart of all the deployments
 ./dh.sh rollout jupyter-zib          Rollout a restart of the jupyter-zib deployment
-./dh.sh run local test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status
-./dh.sh run local test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status
+./dh.sh run local/test-single-node   Apply Kubernetes manifests with 'test-single-node' overlay & wait and check of the job execution status
+./dh.sh run local/test-federation    Apply Kubernetes manifests with 'test-federation' overlay & wait and check of the job execution status
 ```
 
 ### Rebuilding and Updating Services
@@ -236,26 +231,26 @@ Pre-requirement: Clean up existing overlays.
 1. Run the test job
 
    ```bash
-   ./dh.sh apply -s local/test-single-node
+   ./dh.sh apply local/test-single-node
    ```
 
    Or Execute this command to wait & check the job execution
 
    ```bash
-   ./dh.sh run local test-single-node
+   ./dh.sh run local/test-single-node
    ```
 
 2. Check the results when the job has finished
 
    ```bash
-   kubectl get jobs/test-single-node -n dh-health -o jsonpath='{.status.conditions[1].type}'
+   kubectl get jobs/test-single-node -n dh-health-test-single-node -o jsonpath='{.status}' | jq
    ```
 
 3. Check the logs of test-single-node pod
 
    ```bash
-   kubectl logs -n dh-health jobs/test-single-node
-   kubectl logs -n dh-health -f jobs/test-single-node  # Autorefresh
+   kubectl logs -n dh-health-test-single-node jobs/test-single-node
+   kubectl logs -n dh-health-test-single-node -f jobs/test-single-node  # Autorefresh
    ```
 
 4. Manually clean up the containers
@@ -269,26 +264,26 @@ Pre-requirement: Clean up existing overlays.
 1. Run the test job
 
    ```bash
-   ./dh.sh apply -s local/test-federation
+   ./dh.sh apply local/test-federation
    ```
 
    Or Execute this command to wait & check the job execution
 
    ```bash
-   ./dh.sh run local test-federation
+   ./dh.sh run local/test-federation
    ```
 
 2. Check the results when the job has finished
 
    ```bash
-   kubectl get jobs/test-federation -n dh-health -o jsonpath='{.status.conditions[1].type}'
+   kubectl get jobs/test-federation -n dh-health-test-federation -o jsonpath='{.status}' | jq
    ```
 
 3. Check the logs of test-federation pod
 
    ```bash
-   kubectl logs -n dh-health jobs/test-federation
-   kubectl logs -n dh-health -f jobs/test-federation # Autorefresh
+   kubectl logs -n dh-health-test-federation jobs/test-federation
+   kubectl logs -n dh-health-test-federation -f jobs/test-federation # Autorefresh
    ```
 
 4. Manually clean up the containers
@@ -302,7 +297,7 @@ Pre-requirement: Clean up existing overlays.
 To view logs for a specific deployment, checkout a Kubernetes dashboard or run the following command:
 
 ```bash
-kubectl logs -l app=transform-rest -n dh-health
+kubectl logs -l app=transform-rest -n dh-health-test-single-node
 ```
 
 #### Log files
@@ -364,10 +359,6 @@ Follow these manual steps to deploy the stack in your local Minikube manually:
    ```
 
 6. Deploy to Minikube
-
-   ```bash
-   kubectl create namespace dh-health
-   ```
 
    ```bash
    kubectl apply -k deploy/overlays/local

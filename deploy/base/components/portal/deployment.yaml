@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portal
+  labels:
+    app: portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portal
+  template:
+    metadata:
+      labels:
+        app: portal
+    spec:
+      containers:
+      - name: portal
+        image: registry.prod.dh.unimaas.nl/docker-health/portal:latest
+        ports:
+        - containerPort: 3000
+        env:
+          - name: AUTH_USER
+            valueFrom:
+              secretKeyRef:
+                name: portal-creds
+                key: username
+          - name: AUTH_PASS
+            valueFrom:
+              secretKeyRef:
+                name: portal-creds
+                key: password
+          - name: FEDERATION_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: federation-key
+                key: key
+          - name: FEDERATION_BTG_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: federation-break-the-glass-key
+                key: key
+        envFrom:
+        - configMapRef:
+            name: portal-config-base
+        - configMapRef:
+            name: portal-config-node
