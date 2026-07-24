@@ -16,6 +16,13 @@ spec:
       # ---- mount points ----
       containers:
         - name: etl-zib-rest
+          env:
+            - name: NEDAP_CERT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nedap-cert-pass
+                  key: password
+        - name: etl-zib-rest
           volumeMounts:
             - name: outputs
               mountPath: /code/outputs
