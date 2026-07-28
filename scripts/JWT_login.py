@@ -10,7 +10,7 @@ import uuid
 JWK_SET_URL = "https://datahubmaastricht.nl/files/jwks-non-prod-mumc.json"
 # JWK_SET_URL = "https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks.json"
 
-def verify_jwt(token: str, jwk_url: str = JWK_SET_URL) -> dict:
+def verify_jwt(token: str, aud: str, jwk_url: str = JWK_SET_URL, ) -> dict:
     """Verify a JWT using a remote JWK Set.
 
     Returns the decoded payload if verification succeeds, otherwise raises an
@@ -25,10 +25,8 @@ def verify_jwt(token: str, jwk_url: str = JWK_SET_URL) -> dict:
     # # Determine algorithm from token header (fallback to RS256)
     # try:
     header = jwt.get_unverified_header(token)
-    alg = header.get("alg", "RS256")
-    # except Exception:
-    #     alg = "RS256"
-    return jwt.decode(token, signing_key.key, algorithms=[alg], audience="https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token")
+    alg = header.get("alg")
+    return jwt.decode(token, signing_key.key, algorithms=[alg], audience=aud)
 
 
 def get_jwt_token():
@@ -40,53 +38,61 @@ def get_jwt_token():
     # read and load the key
     private_key_pem = open('privatekey.pem', 'r').read()
 
-    public_key_pem = open('publickey509.pem', 'r').read()
-
-    epoch_time = int(time.time()) + 240
+    epoch_time = int(time.time())
+    epoch_time_exp = epoch_time + 240
 
     print(epoch_time)
 
+    # tst
+    client_id = "28bb8481-e3fd-44b5-8374-ac1c8ad7b0b6" # non-prd
+    url_token = "https://epic-itc-np.mumc.nl/interconnect-oauth2-tst/oauth2/token"
+
+    jti = str(uuid.uuid4())
+    print(f"jti: {jti}")
+
     payload = {
-        "iss": "62760e86-74be-4099-822d-1af7762c5d4d",
-        "sub": "62760e86-74be-4099-822d-1af7762c5d4d",
-        "aud": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token",
+        "iss": client_id,
+        "sub": client_id,
+        "aud": url_token,
         #"jti": "f9eaafba-2e49-11ea-8880-5ce0c5aee679", ## new uuid for each run
-        "jti": str(uuid.uuid4()),
-        "exp": epoch_time
+        "jti": jti,
+        "exp": epoch_time_exp,
+        "nbf": epoch_time,
+        "iat": epoch_time
     }
 
     headers = {
+        "alg": "RS384",
         "typ": "JWT",
         "kid": "qM4y9Eqej9Z1pgdAhU47xKpd9RVwhk6C7CgSUYh4res",
         "jku": JWK_SET_URL
     }
 
+    print(f"payload: {payload}")
     encoded_jwt = jwt.encode(payload, private_key_pem, algorithm="RS384", headers=headers)
 
     print("Client assertion JWT:", encoded_jwt)
     header = jwt.get_unverified_header(encoded_jwt)
     print("Header:", header)
-    verified = verify_jwt(encoded_jwt)
+    verified = verify_jwt(encoded_jwt, url_token)
     print("verify_jwt:", verified)
-
-    # decode = jwt.decode(encoded_jwt, key = public_key_pem , algorithms=["RS384"])
 
     data = {
         "grant_type": "client_credentials",
+        "client_id": client_id,
         "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
         "client_assertion": encoded_jwt
     }
 
-    response = requests.post("https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token", data=data)
+    response = requests.post(url_token, data=data, headers={"Content-Type": "application/x-www-form-urlencoded"})
+    print(response)
     access = response.json()
     print(access)
 
-    # # Optional: verify the access token if you have Epic's JWKS.
-    # decoded_payload = verify_jwt(access["access_token"])
-    # print("Decoded access token payload:", json.dumps(decoded_payload, indent=2))
     return access["access_token"]
 
 
 if __name__ == "__main__":
     print(get_jwt_token())
     # print(verify_jwt(get_jwt_token()))
+
