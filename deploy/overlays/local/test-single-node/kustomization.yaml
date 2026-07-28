@@ -16,12 +16,12 @@ resources:
 
 components:
   - ../shared-components
+  - ../certificates/nedap-certificate-secret
   # TEST-node
   - ../node-test/components/ehrbase-gateway
   - ../node-test/components/transform-rest-gateway
   - ../node-test/components/terminology-server-proxy-gateway
   - ../node-test/components/secrets
-  - ../shared-components/nedap-certificate-secret
 
 patches:
   # imagePullPolicy patches

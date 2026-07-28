@@ -45,10 +45,8 @@ The implementation relies on the following repositories:
 
 Credentials of the [Dutch terminology server](https://terminologieserver.nl/authorisation/auth/realms/nictiz/protocol/openid-connect/auth?client_id=account-console&redirect_uri=https%3A%2F%2Fterminologieserver.nl%2Fauthorisation%2Fauth%2Frealms%2Fnictiz%2Faccount%2F%23%2F&state=e082a979-038c-41ab-8096-d0396ac9820f&response_mode=fragment&response_type=code&scope=openid&nonce=30f31617-2935-48d1-ae46-6df5d20a96dd&code_challenge=0VDfFvHqmPTtvKmuJUF6rNMzRlSNwyZu9vPhV47VQn4&code_challenge_method=S256) need to be stored in secret files.
 
-Add the following file to the relevant overlays folders: local, local/test-single-node, local/test-federation, etc.
-e.g., `deploy/overlays/{overlay}/shared-components/terminology-server-proxy-secret/secrets.yaml`
-
-#### Secret file example (need to replace the values with your encoded credentials)
+Add the following file to the relevant overlay folders:
+`deploy/overlays/{overlay}/shared-components/terminology-server-proxy-secret/secrets.yaml`
 
 ```
 apiVersion: v1
@@ -58,12 +56,9 @@ metadata:
 data:
   username: SU5TRVJUX1lPVVJfUkVBTF9VU0VSTkFNRQ==
   password: SU5TRVJUX1lPVVJfUkVBTF9QQVNTV09SRA==
----
-# Add auto-generated secret of internals services to the kustomization's secretGenerator.
-# Add more secrets to externals services here.
 ```
 
-#### Encode your credentials with base64
+Replace the username & password values by the output of your encoded credentials.
 
 ```shell
 $ echo -n 'INSERT_YOUR_REAL_USERNAME' | base64
@@ -72,7 +67,25 @@ $ echo -n 'INSERT_YOUR_REAL_PASSWORD' | base64
 SU5TRVJUX1lPVVJfUkVBTF9QQVNTV09SRA==
 ```
 
-Replace the username & password values by the output of the commands.
+### Create the nedap ons secret files
+
+For the ENVIDA node, Nedap ons certificate and secret are required for direct connection to the server.
+
+Place the `envida_dabs-TE1002-development.pfx` certificate and the following `secrets.yaml` file in
+`deploy/overlays/{overlay}/certificates/nedap-certificate-secret/`.
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: nedap-cert-pass
+type: Opaque
+stringData:
+  password:  ABC123
+```
+
+Replace the password value by the password from the vault.
+
 
 #### Troubleshooting
 

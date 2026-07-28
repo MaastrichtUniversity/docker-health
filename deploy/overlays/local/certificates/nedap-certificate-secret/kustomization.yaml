@@ -6,6 +6,5 @@ resources:
 
 secretGenerator:
   - name: nedap-cert
-    namespace: dh-health
     files:
         - envida_dabs-TE1002-development.pfx
