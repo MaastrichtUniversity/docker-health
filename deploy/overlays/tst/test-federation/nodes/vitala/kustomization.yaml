@@ -4,21 +4,4 @@ kind: Kustomization
 namespace: dh-health-vitala
 
 resources:
-  # VITALA-node
-  - ../../../../../base/openehr-nodes/vitala/ehrbase
-  - ../../../../../base/openehr-nodes/vitala/ehrdb
-  - ../../../../../base/openehr-nodes/vitala/etl-zib
-  - ../../../../../base/openehr-nodes/vitala/federation-rest
-  - ../../../../../base/openehr-nodes/vitala/terminology-server-proxy
-  - ../../../../../base/openehr-nodes/vitala/transform-rest
-  - ../../../../../base/openehr-nodes/vitala/volumes
-  - ../../../node-vitala/service-discovery
-  - ../../../node-vitala/config
-
-components:
-  - ../../../shared-components
-  - ../../../node-vitala/components/secrets
-
-patches:
-  - path: vitala-etl-zib-delete-demo-data.yaml
-  - path: vitala-etl-zib-add-demo-data.yaml
+  - ../../../node-vitala

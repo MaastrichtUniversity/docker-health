@@ -4,21 +4,4 @@ kind: Kustomization
 namespace: dh-health-zio
 
 resources:
-  # ZIO-node
-  - ../../../../../base/openehr-nodes/zio/ehrbase
-  - ../../../../../base/openehr-nodes/zio/ehrdb
-  - ../../../../../base/openehr-nodes/zio/etl-zib
-  - ../../../../../base/openehr-nodes/zio/federation-rest
-  - ../../../../../base/openehr-nodes/zio/terminology-server-proxy
-  - ../../../../../base/openehr-nodes/zio/transform-rest
-  - ../../../../../base/openehr-nodes/zio/volumes
-  - ../../../node-zio/service-discovery
-  - ../../../node-zio/config
-
-components:
-  - ../../../shared-components
-  - ../../../node-zio/components/secrets
-
-patches:
-  - path: zio-etl-zib-delete-demo-data.yaml
-  - path: zio-etl-zib-add-demo-data.yaml
+  - ../../../node-zio

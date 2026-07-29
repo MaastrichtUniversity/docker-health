@@ -4,21 +4,4 @@ kind: Kustomization
 namespace: dh-health-mumc
 
 resources:
-  # MUMC-node
-  - ../../../../../base/openehr-nodes/mumc/ehrbase
-  - ../../../../../base/openehr-nodes/mumc/ehrdb
-  - ../../../../../base/openehr-nodes/mumc/etl-zib
-  - ../../../../../base/openehr-nodes/mumc/federation-rest
-  - ../../../../../base/openehr-nodes/mumc/terminology-server-proxy
-  - ../../../../../base/openehr-nodes/mumc/transform-rest
-  - ../../../../../base/openehr-nodes/mumc/volumes
-  - ../../../node-mumc/service-discovery
-  - ../../../node-mumc/config
-
-components:
-  - ../../../shared-components
-  - ../../../node-mumc/components/secrets
-
-patches:
-  - path: mumc-etl-zib-delete-demo-data.yaml
-  - path: mumc-etl-zib-add-demo-data.yaml
+  - ../../../node-mumc

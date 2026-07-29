@@ -4,21 +4,4 @@ kind: Kustomization
 namespace: dh-health-envida
 
 resources:
- # ENVIDA-node
-  - ../../../../../base/openehr-nodes/envida/ehrbase
-  - ../../../../../base/openehr-nodes/envida/ehrdb
-  - ../../../../../base/openehr-nodes/envida/etl-zib
-  - ../../../../../base/openehr-nodes/envida/federation-rest
-  - ../../../../../base/openehr-nodes/envida/terminology-server-proxy
-  - ../../../../../base/openehr-nodes/envida/transform-rest
-  - ../../../../../base/openehr-nodes/envida/volumes
-  - ../../../node-envida/service-discovery
-  - ../../../node-envida/config
-
-components:
-  - ../../../shared-components
-  - ../../../node-envida/components/secrets
-
-patches:
-  - path: envida-etl-zib-delete-demo-data.yaml
-  - path: envida-etl-zib-add-demo-data.yaml
+  - ../../../node-envida
