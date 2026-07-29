@@ -5,7 +5,6 @@ namespace: dh-health-test-federation
 
 resources:
   - namespace.yaml
-  - ../../../../base/base-config
   - job.yaml
   - job-reader-role.yaml
   - ../../node-envida/etl-config_secrets
