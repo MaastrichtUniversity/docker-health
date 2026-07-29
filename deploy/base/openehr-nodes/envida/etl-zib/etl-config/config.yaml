@@ -15,5 +15,6 @@ data:
     []
   TEMPLATE_IDS: |
     [
+      "DataHub-Lichaamsgewicht-2024",
       "DataHub-Patient-2024"
     ]
