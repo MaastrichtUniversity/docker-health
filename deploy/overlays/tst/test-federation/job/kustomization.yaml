@@ -7,11 +7,8 @@ resources:
   - namespace.yaml
   - job.yaml
   - job-reader-role.yaml
-  - vault-auth.yaml
-  - ../../node-envida/etl-config_secrets
-  - ../../node-mumc/etl-config_secrets
-  - ../../node-vitala/etl-config_secrets
-  - ../../node-zio/etl-config_secrets
+  - services-list-role-binding.yaml
+  - secrets
 
 patches:
   - target:
