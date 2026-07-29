@@ -27,12 +27,3 @@ patches:
         path: /spec/template/spec/imagePullSecrets
         value:
         - name: registry-credentials
-  # Patch the data mounts to use the GIT PVC
-  - path: patches/job/envida-etl-zib-delete-demo-data.yaml
-  - path: patches/job/envida-etl-zib-add-demo-data.yaml
-  - path: patches/job/vitala-etl-zib-delete-demo-data.yaml
-  - path: patches/job/vitala-etl-zib-add-demo-data.yaml
-  - path: patches/job/mumc-etl-zib-delete-demo-data.yaml
-  - path: patches/job/mumc-etl-zib-add-demo-data.yaml
-  - path: patches/job/zio-etl-zib-delete-demo-data.yaml
-  - path: patches/job/zio-etl-zib-add-demo-data.yaml

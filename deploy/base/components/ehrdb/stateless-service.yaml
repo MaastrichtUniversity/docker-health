@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
+  name: ehrdb
   labels:
-    app: nginx
+    app: ehrdb
 spec:
   ports:
   - port: 5432
   clusterIP: None
   selector:
-    app: nginx
+    app: ehrdb
