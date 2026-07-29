@@ -95,7 +95,7 @@ patches:
 # route internal traffic through the proxy regardless of no_proxy matching quirks.
 - target:
     kind: Deployment
-    name: .*-federation-rest
+    name: .*federation-rest
   patch: |-
     - op: add
       path: "/spec/template/spec/containers/0/env/-"
@@ -119,7 +119,7 @@ patches:
         value: ""
 - target:
     kind: Deployment
-    name: .*-portal
+    name: .*portal
   patch: |-
     - op: add
       path: "/spec/template/spec/containers/0/env/-"

@@ -6,3 +6,6 @@ resources:
 
 components:
   - ../components/secrets
+
+generatorOptions:
+  disableNameSuffixHash: true
