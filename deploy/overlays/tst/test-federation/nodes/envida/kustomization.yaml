@@ -17,9 +17,8 @@ resources:
 
 components:
   - ../../../shared-components
-  # ENVIDA-node
-  - ../../../node-envida/components/ehrbase-gateway
-  - ../../../node-envida/components/federation-rest-gateway
-  - ../../../node-envida/components/transform-rest-gateway
-  - ../../../node-envida/components/terminology-server-proxy-gateway
   - ../../../node-envida/components/secrets
+
+patches:
+  - path: envida-etl-zib-delete-demo-data.yaml
+  - path: envida-etl-zib-add-demo-data.yaml

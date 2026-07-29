@@ -17,9 +17,8 @@ resources:
 
 components:
   - ../../../shared-components
-  # MUMC-node
-  - ../../../node-mumc/components/ehrbase-gateway
-  - ../../../node-mumc/components/federation-rest-gateway
-  - ../../../node-mumc/components/transform-rest-gateway
-  - ../../../node-mumc/components/terminology-server-proxy-gateway
   - ../../../node-mumc/components/secrets
+
+patches:
+  - path: mumc-etl-zib-delete-demo-data.yaml
+  - path: mumc-etl-zib-add-demo-data.yaml

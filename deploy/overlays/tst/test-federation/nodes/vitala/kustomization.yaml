@@ -17,9 +17,8 @@ resources:
 
 components:
   - ../../../shared-components
-  # VITALA-node
-  - ../../../node-vitala/components/ehrbase-gateway
-  - ../../../node-vitala/components/federation-rest-gateway
-  - ../../../node-vitala/components/transform-rest-gateway
-  - ../../../node-vitala/components/terminology-server-proxy-gateway
   - ../../../node-vitala/components/secrets
+
+patches:
+  - path: vitala-etl-zib-delete-demo-data.yaml
+  - path: vitala-etl-zib-add-demo-data.yaml

@@ -17,9 +17,8 @@ resources:
 
 components:
   - ../../../shared-components
-  # ZIO-node
-  - ../../../node-zio/components/ehrbase-gateway
-  - ../../../node-zio/components/federation-rest-gateway
-  - ../../../node-zio/components/transform-rest-gateway
-  - ../../../node-zio/components/terminology-server-proxy-gateway
   - ../../../node-zio/components/secrets
+
+patches:
+  - path: zio-etl-zib-delete-demo-data.yaml
+  - path: zio-etl-zib-add-demo-data.yaml
