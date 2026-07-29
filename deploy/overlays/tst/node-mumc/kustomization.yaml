@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: dh-health-mumc
 
 resources:
+  - vault-auth.yaml
   - ../../../base/openehr-nodes/mumc
   - config
   - service-discovery
@@ -18,19 +19,16 @@ patches:
       version: v1
       kind: PersistentVolumeClaim
       name: git-repo-pvc
-      namespace: dh-health-mumc
     path: patches/pvc.yaml
   - target:
       group: batch
       version: v1
       kind: Job
-      name: mumc-etl-zib-pipeline
-      namespace: dh-health-mumc
+      name: etl-zib-pipeline
     path: patches/job/mumc-etl-zib-delete-demo-data.yaml
   - target:
       group: batch
       version: v1
       kind: Job
-      name: mumc-etl-zib-pipeline
-      namespace: dh-health-mumc
+      name: etl-zib-pipeline
     path: patches/job/mumc-etl-zib-add-demo-data.yaml

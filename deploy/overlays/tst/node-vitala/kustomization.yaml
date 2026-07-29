@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: dh-health-vitala
 
 resources:
+  - vault-auth.yaml
   - ../../../base/openehr-nodes/vitala
   - config
   - service-discovery
@@ -24,13 +25,13 @@ patches:
       group: batch
       version: v1
       kind: Job
-      name: vitala-etl-zib-pipeline
+      name: etl-zib-pipeline
       namespace: dh-health-vitala
     path: patches/job/vitala-etl-zib-delete-demo-data.yaml
   - target:
       group: batch
       version: v1
       kind: Job
-      name: vitala-etl-zib-pipeline
+      name: etl-zib-pipeline
       namespace: dh-health-vitala
     path: patches/job/vitala-etl-zib-add-demo-data.yaml

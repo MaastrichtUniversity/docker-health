@@ -1,13 +1,12 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: vitala-etl-zib-pipeline
-  namespace: dh-health
+  name: etl-zib-pipeline
 spec:
   template:
     spec:
       containers:
-        - name: vitala-etl-zib-pipeline
+        - name: etl-zib-pipeline
           volumeMounts:
             - name: data
               mountPath: /code/data/vitala-demo-data

@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: dh-health-envida
 
 resources:
+  - vault-auth.yaml
   - ../../../base/openehr-nodes/envida
   - config
   - service-discovery

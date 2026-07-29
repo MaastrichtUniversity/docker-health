@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: dh-health-zio
 
 resources:
+  - vault-auth.yaml
   - ../../../base/openehr-nodes/zio
   - config
   - service-discovery
@@ -24,13 +25,13 @@ patches:
       group: batch
       version: v1
       kind: Job
-      name: zio-etl-zib-pipeline
+      name: etl-zib-pipeline
       namespace: dh-health-zio
     path: patches/job/zio-etl-zib-delete-demo-data.yaml
   - target:
       group: batch
       version: v1
       kind: Job
-      name: zio-etl-zib-pipeline
+      name: etl-zib-pipeline
       namespace: dh-health-zio
     path: patches/job/zio-etl-zib-add-demo-data.yaml
