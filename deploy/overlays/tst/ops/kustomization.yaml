@@ -13,6 +13,9 @@ images:
 - name: registry.prod.dh.unimaas.nl/docker-health/elk
   newTag: '2026.1.1'
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 secretGenerator:
 # Filebeat
   - name: filebeat-certificate-authorities
@@ -37,6 +40,9 @@ secretGenerator:
   - name: kibana-password
     literals:
       - password=kibana
+  - name: elastic-password
+    literals:
+      - password=elastic
 
 patches:
   - path: filebeat-configmap-patch.yaml
