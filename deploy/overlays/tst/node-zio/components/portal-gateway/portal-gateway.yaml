@@ -8,7 +8,7 @@ spec:
     - name: http
       port: 80
       protocol: HTTP
-      hostname: portal.zio.local.dh.unimaas.nl
+      hostname: portal.zio.tst.dh.unimaas.nl
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -18,7 +18,7 @@ spec:
   parentRefs:
     - name: portal-gateway
   hostnames:
-    - portal.zio.local.dh.unimaas.nl
+    - portal.zio.tst.dh.unimaas.nl
   rules:
     - matches:
         - path:
