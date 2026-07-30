@@ -4,6 +4,7 @@ namespace: dh-health-ops
 
 resources:
 - namespace.yaml
+- vault-auth.yaml
 - secrets.yaml
 - elk-gateway.yaml
 - ../../../base-ops
@@ -33,6 +34,9 @@ secretGenerator:
   - name: logstash-key
     files:
         -  certs/elk.dh-health-ops.key
+  - name: kibana-password
+    literals:
+      - password=kibana
 
 patches:
   - path: filebeat-configmap-patch.yaml
