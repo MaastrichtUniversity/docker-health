@@ -17,7 +17,7 @@ spec:
             - name: https_proxy
               value: "http://proxy.unimaas.nl:3128"
             - name: no_proxy
-              value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/16,10.43.0.10"        
+              value: "localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/16,.cluster.local,10.42.0.0/16,10.43.0.10"
           command:
             - sh
             - -c
@@ -29,12 +29,43 @@ spec:
               git clone https://github.com/MaastrichtUniversity/docker-health.git /repo/src
               cd /repo/src
               git checkout "$GIT_BRANCH"
+              echo "Copying demo data to hostPath volumes..."
+              cp -r /repo/src/data/envida-demo-data/* /data/envida/ 2>/dev/null || echo "No envida data"
+              cp -r /repo/src/data/mumc-demo-data/* /data/mumc/ 2>/dev/null || echo "No mumc data"
+              cp -r /repo/src/data/vitala-demo-data/* /data/vitala/ 2>/dev/null || echo "No vitala data"
+              cp -r /repo/src/data/zio-demo-data/* /data/zio/ 2>/dev/null || echo "No zio data"
+              echo "Done."
           volumeMounts:
             - name: git-repo
               mountPath: /repo
+            - name: data-envida
+              mountPath: /data/envida
+            - name: data-mumc
+              mountPath: /data/mumc
+            - name: data-vitala
+              mountPath: /data/vitala
+            - name: data-zio
+              mountPath: /data/zio
       restartPolicy: Never
       volumes:
         - name: git-repo
-          persistentVolumeClaim:
-            claimName: git-repo-pvc
+          hostPath:
+            path: /mnt/demo-data
+            type: DirectoryOrCreate
+        - name: data-envida
+          hostPath:
+            path: /mnt/demo-data/data/envida-demo-data
+            type: DirectoryOrCreate
+        - name: data-mumc
+          hostPath:
+            path: /mnt/demo-data/data/mumc-demo-data
+            type: DirectoryOrCreate
+        - name: data-vitala
+          hostPath:
+            path: /mnt/demo-data/data/vitala-demo-data
+            type: DirectoryOrCreate
+        - name: data-zio
+          hostPath:
+            path: /mnt/demo-data/data/zio-demo-data
+            type: DirectoryOrCreate
   backoffLimit: 4

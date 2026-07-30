@@ -35,6 +35,13 @@ spec:
         command: ["start-notebook.sh", "--ServerApp.token=$(APP_TOKEN)"]
         ports:
           - containerPort: 8888
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "3Gi"
+            cpu: "1000m"
         env:
           # Jupyter configuration
           - name: CHOWN_HOME # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/troubleshooting.html#permission-denied-when-mounting-volumes

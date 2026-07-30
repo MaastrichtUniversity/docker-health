@@ -8,8 +8,5 @@ namePrefix: zio-
 resources:
   - ../../../../base/openehr-nodes/zio/etl-zib/etl-config
 
-components:
-  - ../components/secrets
-
 generatorOptions:
   disableNameSuffixHash: true

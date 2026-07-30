@@ -15,23 +15,24 @@ components:
 
 patches:
   - target:
-      group: ""
-      version: v1
-      kind: PersistentVolumeClaim
-      name: git-repo-pvc
-      namespace: dh-health-zio
-    path: patches/pvc.yaml
-  - target:
       group: batch
       version: v1
       kind: Job
       name: etl-zib-pipeline
-      namespace: dh-health-zio
-    path: patches/job/zio-etl-zib-delete-demo-data.yaml
-  - target:
-      group: batch
-      version: v1
-      kind: Job
-      name: etl-zib-pipeline
-      namespace: dh-health-zio
-    path: patches/job/zio-etl-zib-add-demo-data.yaml
+    patch: |
+      - op: replace
+        path: /spec/template/spec/volumes/1/hostPath/path
+        value: /mnt/demo-data/data/zio-demo-data
+      - op: replace
+        path: /spec/template/spec/volumes/1/hostPath/type
+        value: DirectoryOrCreate
+
+configMapGenerator:
+- name: proxy-config
+  literals:
+    - HTTP_PROXY=http://proxy.unimaas.nl:3128
+    - http_proxy=http://proxy.unimaas.nl:3128
+    - HTTPS_PROXY=http://proxy.unimaas.nl:3128
+    - https_proxy=http://proxy.unimaas.nl:3128
+    - NO_PROXY=localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1
+    - no_proxy=localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1
