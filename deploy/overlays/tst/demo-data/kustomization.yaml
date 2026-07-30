@@ -13,4 +13,4 @@ configMapGenerator:
 - name: git-config
   namespace: git-demo-data
   literals:
-    - GIT_BRANCH=DHDO-2211
+    - GIT_BRANCH=PLACEHOLDER
