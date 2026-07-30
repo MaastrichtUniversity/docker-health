@@ -1,60 +1,34 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: dh-health
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
-  newTag: '2026.1.1'
-- name: registry.prod.dh.unimaas.nl/docker-health/federation-test
-  newTag: '2026.1.1'
+  newTag: '2026.1.3'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
-  newTag: '2026.1.1'
+  newTag: '2026.1.3'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
-  newTag: '2026.1.1'
+  newTag: '2026.1.3'
 - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
-  newTag: '2026.1.1'
+  newTag: '2026.1.3'
 - name: registry.prod.dh.unimaas.nl/docker-health/portal
-  newTag: '2026.1.1'
+  newTag: '2026.1.3'
 - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-  newTag: '2026.1.1'
-- name: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib
-  newTag: '2026.1.1'
+  newTag: '2026.1.3'
 - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
-  newTag: '2026.1.1'
+  newTag: '2026.1.3'
 - name: registry.prod.dh.unimaas.nl/docker-health/init-container
-  newTag: '2026.1.1'
+  newTag: '2026.1.3'
 
 resources:
-# NEW vault secret operator
-- ./vault-operator/secrets
-- ./vault-operator/tls
-# Base resources
-- ../../base/common
-- ../../base/jupyter-zib
-# EHR-nodes
-- ../../base/openehr-nodes/envida
-- ../../base/openehr-nodes/mumc
-- ../../base/openehr-nodes/vitala
-- ../../base/openehr-nodes/zio
-# Gateway resources
-- patches/gateway/common/jupyter.yaml
-- patches/gateway/envida/portal.yaml
-- patches/gateway/mumc/portal.yaml
-- patches/gateway/vitala/portal.yaml
-- patches/gateway/zio/portal.yaml
-
-components:
-# Federation service role
-- ./roles
+# DHP resources
+- jupyter
+- node-envida
+- node-mumc
+- node-vitala
+- node-zio
 
 generatorOptions:
   disableNameSuffixHash: true
-
-secretGenerator:
-  - name: etl-data-encryption-passphrase
-    namespace: dh-health
-    literals:
-      - passphrase=foobar
 
 patches:
 # 'Global' patches that apply to all of one sort
@@ -117,7 +91,7 @@ patches:
 # route internal traffic through the proxy regardless of no_proxy matching quirks.
 - target:
     kind: Deployment
-    name: .*-federation-rest
+    name: .*federation-rest
   patch: |-
     - op: add
       path: "/spec/template/spec/containers/0/env/-"
@@ -141,7 +115,7 @@ patches:
         value: ""
 - target:
     kind: Deployment
-    name: .*-portal
+    name: .*portal
   patch: |-
     - op: add
       path: "/spec/template/spec/containers/0/env/-"
@@ -163,30 +137,3 @@ patches:
       value:
         name: https_proxy
         value: ""
-
-# Patch the data mounts to use the GIT PVC
-- path: patches/job/envida-etl-zib-delete-demo-data.yaml
-- path: patches/job/envida-etl-zib-add-demo-data.yaml
-- path: patches/job/vitala-etl-zib-delete-demo-data.yaml
-- path: patches/job/vitala-etl-zib-add-demo-data.yaml
-- path: patches/job/mumc-etl-zib-delete-demo-data.yaml
-- path: patches/job/mumc-etl-zib-add-demo-data.yaml
-- path: patches/job/zio-etl-zib-delete-demo-data.yaml
-- path: patches/job/zio-etl-zib-add-demo-data.yaml
-- path: patches/deployment/jupyter-delete-demo-data.yaml
-- path: patches/deployment/jupyter-add-demo-data.yaml
-# Delete TEST node configs
-- path: patches/deployment/jupyter-delete-test-config.yaml
-- path: patches/config/mumc-etl-config-patch.yaml
-
-configMapGenerator:
-- name: proxy-config
-  namespace: dh-health
-  literals:
-    - HTTP_PROXY=http://proxy.unimaas.nl:3128
-    - http_proxy=http://proxy.unimaas.nl:3128
-    - HTTPS_PROXY=http://proxy.unimaas.nl:3128
-    - https_proxy=http://proxy.unimaas.nl:3128
-    - NO_PROXY=localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1
-    - no_proxy=localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1
-    

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: ehrdb
 spec:
-  serviceName: nginx
+  serviceName: ehrdb
   replicas: 1
   selector:
     matchLabels:

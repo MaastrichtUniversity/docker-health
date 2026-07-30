@@ -1,0 +1,41 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dh-health-test-federation
+
+images:
+  - name: registry.prod.dh.unimaas.nl/docker-health/federation-test
+    newTag: '2026.1.3'
+
+resources:
+  - namespace.yaml
+  - job.yaml
+  - job-reader-role.yaml
+  - services-list-role-binding.yaml
+  - vault-auth.yaml
+  - secrets
+
+patches:
+  - target:
+      kind: Job
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: IfNotPresent
+  - target:
+      kind: Job
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/imagePullSecrets
+        value:
+        - name: registry-credentials
+
+configMapGenerator:
+- name: proxy-config
+  literals:
+    - HTTP_PROXY=http://proxy.unimaas.nl:3128
+    - http_proxy=http://proxy.unimaas.nl:3128
+    - HTTPS_PROXY=http://proxy.unimaas.nl:3128
+    - https_proxy=http://proxy.unimaas.nl:3128
+    - NO_PROXY=localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1
+    - no_proxy=localhost,.dh.local,.dh-health,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1

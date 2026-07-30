@@ -1,0 +1,25 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: jupyter-tls-secret
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: prod-vault.tst
+    kind: ClusterSecretStore
+  target:
+    name: jupyter-tls-secret
+    template:
+      type: kubernetes.io/tls
+      data:
+        tls.crt: "{{ .jupyter_crt }}"
+        tls.key: "{{ .jupyter_key }}"
+  data:
+  - secretKey: jupyter_crt
+    remoteRef:
+      key: fhml-srv018__tst-k3s-hdp
+      property: jupyter.tst.dh.unimaas.nl.crt
+  - secretKey: jupyter_key
+    remoteRef:
+      key: fhml-srv018__tst-k3s-hdp
+      property: jupyter.tst.dh.unimaas.nl.key
