@@ -5,23 +5,15 @@ metadata:
 data:
   NODENAME: mumc
   DATASET_FOLDER_NAME: mumc-demo-data
-  SOURCE_SYSTEM_ID: EPIC
-  INPUT_FORMAT: csv
+  SOURCE_SYSTEM_ID: EPIC_ON_FHIR
+  INPUT_FORMAT: fhir
   LOGGER_FILENAME: logs/mumc/etl-zib.log
   WRITE_COMPOSITION: "true"
   # Specify the SUBJECT_IDS for MUMC manually as a control.
-  SUBJECT_IDS: '["999999801","999990202","999990603"]'
+  SUBJECT_IDS: '["6688500642","6688500667"]'
   TEMPLATE_IDS: |
     [
-      "DataHub-Bloeddruk-2024",
-      "DataHub-InformedConsent",
-      "DataHub-Lichaamsgewicht-2024",
-      "DataHub-Lichaamslengte-2024",
-      "DataHub-Mobiliteit-2024",
-      "DataHub-Patient-2024",
-      "DataHub-VermogenTotEten-2024",
-      "DataHub-VermogenTotToiletgang-2024",
-      "DataHub-VermogenTotUiterlijkeVerzorging-2024"
+      "DataHub-Patient-2024"
     ]
 #  TEMPLATE_IDS: |
 #    [
