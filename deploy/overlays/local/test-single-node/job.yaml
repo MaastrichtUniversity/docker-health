@@ -93,12 +93,20 @@ spec:
             secretKeyRef:
               name: transform-creds
               key: password
+        - name: NEDAP_CERT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nedap-cert-pass
+              key: password
         volumeMounts:
         - name: data
           mountPath: /code/data/test-demo-data
         - name: etl-logs
           mountPath: /code/logs/test
           subPath: test/etl-test-single-node
+        - name: nedap-cert
+          mountPath: /etc/nedap
+          readOnly: true
       volumes:
       - name: data
         hostPath:
@@ -107,3 +115,8 @@ spec:
       - name: etl-logs
         persistentVolumeClaim:
           claimName: log-pvc-test
+      - name: nedap-cert
+        secret:
+          secretName: nedap-cert
+
+

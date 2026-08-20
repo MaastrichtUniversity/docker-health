@@ -11,6 +11,7 @@ resources:
 components:
   - components
   - ../shared-components
+  - ../certificates/nedap-certificate-secret
 
 patches:
   # imagePullPolicy patches

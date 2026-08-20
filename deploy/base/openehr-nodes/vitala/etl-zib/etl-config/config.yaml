@@ -6,6 +6,7 @@ data:
   NODENAME: vitala
   DATASET_FOLDER_NAME: vitala-demo-data
   SOURCE_SYSTEM_ID: DEMO_DATA # "Nedap Ons"
+  INPUT_FORMAT: csv
   LOGGER_FILENAME: logs/vitala/etl-zib.log
   WRITE_COMPOSITION: "true"
   # If SUBJECT_IDS is empty, extract subject_ids from dataset:

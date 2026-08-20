@@ -8,7 +8,9 @@ data:
   NODENAME: test
   DATASET_FOLDER_NAME: test-demo-data
   SOURCE_SYSTEM_ID: DEMO_DATA
+  INPUT_FORMAT: csv
   LOGGER_FILENAME: logs/test/etl-zib.log
+  NEDAP_CERT_BASE_URL: https://api-development.ons.io
   WRITE_COMPOSITION: "False"
   # If SUBJECT_IDS is empty, extract subject_ids from dataset:
   SUBJECT_IDS: |

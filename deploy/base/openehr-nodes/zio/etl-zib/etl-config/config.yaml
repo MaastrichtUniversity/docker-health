@@ -6,6 +6,7 @@ data:
   NODENAME: zio
   DATASET_FOLDER_NAME: zio-demo-data
   SOURCE_SYSTEM_ID: Tetra
+  INPUT_FORMAT: csv
   LOGGER_FILENAME: logs/zio/etl-zib.log
   WRITE_COMPOSITION: "true"
   # If SUBJECT_IDS is empty, extract subject_ids from dataset:

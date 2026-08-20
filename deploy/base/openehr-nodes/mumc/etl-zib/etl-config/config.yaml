@@ -6,6 +6,7 @@ data:
   NODENAME: mumc
   DATASET_FOLDER_NAME: mumc-demo-data
   SOURCE_SYSTEM_ID: EPIC
+  INPUT_FORMAT: csv
   LOGGER_FILENAME: logs/mumc/etl-zib.log
   WRITE_COMPOSITION: "true"
   # Specify the SUBJECT_IDS for MUMC manually as a control.
@@ -18,6 +19,7 @@ data:
       "DataHub-Lichaamslengte-2024",
       "DataHub-Mobiliteit-2024",
       "DataHub-Patient-2024",
+      "DataHub-VermogenTotDrinken-2024",
       "DataHub-VermogenTotEten-2024",
       "DataHub-VermogenTotToiletgang-2024",
       "DataHub-VermogenTotUiterlijkeVerzorging-2024"
