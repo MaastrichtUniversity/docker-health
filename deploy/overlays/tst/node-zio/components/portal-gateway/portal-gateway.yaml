@@ -5,6 +5,14 @@ metadata:
 spec:
   gatewayClassName: traefik
   listeners:
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: portal.zio.tst.dh.unimaas.nl
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: portal-zio-tls-secret
     - name: http
       port: 80
       protocol: HTTP
