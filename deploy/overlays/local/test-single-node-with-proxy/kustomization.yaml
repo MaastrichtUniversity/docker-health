@@ -2,15 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+  - ../../../base-config/proxy-namespaces/dh-health-test-single-node
   - ../test-single-node
-
-configMapGenerator:
-  - name: proxy-config
-    namespace: dh-health-test-single-node
-    options:
-      disableNameSuffixHash: true
-    envs:
-      - ../../../base-config/proxy.env
 
 patches:
   - target:

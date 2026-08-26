@@ -4,6 +4,7 @@ namespace: dh-health-ops
 
 resources:
 - namespace.yaml
+- ../../../base-config/proxy
 - vault-auth.yaml
 - secrets.yaml
 - elk-gateway.yaml
@@ -87,8 +88,3 @@ patches:
         value:
           configMapRef:
             name: proxy-config
-
-configMapGenerator:
-- name: proxy-config
-  envs:
-    - ../../../base-config/proxy.env

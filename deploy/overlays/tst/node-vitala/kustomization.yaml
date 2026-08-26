@@ -5,6 +5,7 @@ namespace: dh-health-vitala
 
 resources:
   - vault-auth.yaml
+  - ../../../base-config/proxy
   - ../../../base/openehr-nodes/vitala
   - config
   - service-discovery
@@ -26,8 +27,3 @@ patches:
       - op: replace
         path: /spec/template/spec/volumes/1/hostPath/type
         value: DirectoryOrCreate
-
-configMapGenerator:
-- name: proxy-config
-  envs:
-    - ../../../base-config/proxy.env

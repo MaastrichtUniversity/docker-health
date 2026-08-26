@@ -9,6 +9,7 @@ images:
 
 resources:
   - namespace.yaml
+  - ../../../../base-config/proxy
   - job.yaml
   - job-reader-role.yaml
   - services-list-role-binding.yaml
@@ -29,8 +30,3 @@ patches:
         path: /spec/template/spec/imagePullSecrets
         value:
         - name: registry-credentials
-
-configMapGenerator:
-- name: proxy-config
-  envs:
-    - ../../../../base-config/proxy.env

@@ -9,6 +9,7 @@ images:
 
 resources:
   - namespace.yaml
+  - ../../../base-config/proxy
   - secrets
   - tls.yaml
   - jupyter-zib-gateway.yaml
@@ -47,8 +48,3 @@ patches:
       - op: replace
         path: /spec/template/spec/volumes/0/hostPath/path
         value: /mnt/demo-data
-
-configMapGenerator:
-- name: proxy-config
-  envs:
-    - ../../../base-config/proxy.env

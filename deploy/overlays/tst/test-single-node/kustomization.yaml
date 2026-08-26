@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: dh-health-test-single-node
 
 resources:
+- ../../../base-config/proxy
 - namespace.yaml
 - vault-auth.yaml
 - secrets.yaml
@@ -94,6 +95,3 @@ configMapGenerator:
     behavior: merge
     literals:
       - EHRBASE_ADMIN_BASE_URL=http://ehrbase:8080/ehrbase/rest/admin
-  - name: proxy-config
-    envs:
-      - ../../../base-config/proxy.env

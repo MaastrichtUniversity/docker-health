@@ -2,33 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+  - ../../../base-config/proxy-namespaces/dh-health-envida
+  - ../../../base-config/proxy-namespaces/dh-health-mumc
+  - ../../../base-config/proxy-namespaces/dh-health-vitala
+  - ../../../base-config/proxy-namespaces/dh-health-zio
   - ../test-federation
-
-configMapGenerator:
-  - name: proxy-config
-    namespace: dh-health-envida
-    options:
-      disableNameSuffixHash: true
-    envs:
-      - ../../../base-config/proxy.env
-  - name: proxy-config
-    namespace: dh-health-mumc
-    options:
-      disableNameSuffixHash: true
-    envs:
-      - ../../../base-config/proxy.env
-  - name: proxy-config
-    namespace: dh-health-vitala
-    options:
-      disableNameSuffixHash: true
-    envs:
-      - ../../../base-config/proxy.env
-  - name: proxy-config
-    namespace: dh-health-zio
-    options:
-      disableNameSuffixHash: true
-    envs:
-      - ../../../base-config/proxy.env
 
 patches:
   - target:

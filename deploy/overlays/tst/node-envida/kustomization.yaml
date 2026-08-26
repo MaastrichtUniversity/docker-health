@@ -5,6 +5,7 @@ namespace: dh-health-envida
 
 resources:
   - vault-auth.yaml
+  - ../../../base-config/proxy
   - ../../../base/openehr-nodes/envida
   - config
   - service-discovery
@@ -23,8 +24,3 @@ patches:
       - op: replace
         path: /spec/template/spec/volumes/1/hostPath/path
         value: /mnt/demo-data/data/envida-demo-data
-
-configMapGenerator:
-- name: proxy-config
-  envs:
-    - ../../../base-config/proxy.env
