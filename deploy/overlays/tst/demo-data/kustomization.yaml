@@ -14,3 +14,7 @@ configMapGenerator:
   namespace: git-demo-data
   literals:
     - GIT_BRANCH=PLACEHOLDER
+- name: proxy-config
+  namespace: git-demo-data
+  envs:
+    - ../../../base-config/proxy.env
