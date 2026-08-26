@@ -6,11 +6,11 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- namespace.yaml
-- job.yaml
+  - namespace.yaml
+  - job.yaml
 
 configMapGenerator:
-- name: git-config
-  namespace: git-demo-data
-  literals:
-    - GIT_BRANCH=PLACEHOLDER
+  - name: git-config
+    namespace: git-demo-data
+    literals:
+      - GIT_BRANCH=2026.1

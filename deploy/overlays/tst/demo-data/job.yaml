@@ -35,6 +35,7 @@ spec:
               cp -r /repo/src/data/mumc-demo-data/* /data/mumc/ 2>/dev/null || echo "No mumc data"
               cp -r /repo/src/data/vitala-demo-data/* /data/vitala/ 2>/dev/null || echo "No vitala data"
               cp -r /repo/src/data/zio-demo-data/* /data/zio/ 2>/dev/null || echo "No zio data"
+              cp -r /repo/src/data/test-demo-data/* /data/test/ 2>/dev/null || echo "No test data"
               echo "Done."
           volumeMounts:
             - name: git-repo
@@ -47,6 +48,8 @@ spec:
               mountPath: /data/vitala
             - name: data-zio
               mountPath: /data/zio
+            - name: data-test
+              mountPath: /data/test
       restartPolicy: Never
       volumes:
         - name: git-repo
@@ -68,5 +71,9 @@ spec:
         - name: data-zio
           hostPath:
             path: /mnt/demo-data/data/zio-demo-data
+            type: DirectoryOrCreate
+        - name: data-test
+          hostPath:
+            path: /mnt/demo-data/data/test-demo-data
             type: DirectoryOrCreate
   backoffLimit: 4

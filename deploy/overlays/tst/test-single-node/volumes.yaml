@@ -9,8 +9,9 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-     name: log-pvc-test
- 
+    name: log-pvc-test
+    namespace: dh-health-test-single-node
+
   hostPath:
     path: /usr/share/logs/test
     type: DirectoryOrCreate
@@ -22,65 +23,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
- 
-  resources:
-    requests:
-      storage: 10Gi
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: output-pv-test
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  claimRef:
-     name: output-pvc-test
- 
-  hostPath:
-    path: /usr/share/outputs/test
-    type: DirectoryOrCreate
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: output-pvc-test
-spec:
-  accessModes:
-    - ReadWriteOnce
- 
-  resources:
-    requests:
-      storage: 10Gi
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: postgresql-data-pv-test
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  claimRef:
-     name: postgresql-data-pvc-test
- 
-  hostPath:
-    path: /usr/share/postgresql_data/test
-    type: DirectoryOrCreate
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgresql-data-pvc-test
-spec:
-  accessModes:
-    - ReadWriteOnce
- 
+
   resources:
     requests:
       storage: 10Gi
