@@ -8,6 +8,10 @@ data:
   SOURCE_SYSTEM_ID: EPIC_ON_FHIR
   INPUT_FORMAT: fhir
   LOGGER_FILENAME: logs/mumc/etl-zib.log
+  EPIC_ON_FHIR_BASE_URL: https://epic-itc-np.mumc.nl/interconnect-oauth2-tst
+  EPIC_ON_FHIR_CLIENT_ID: "28bb8481-e3fd-44b5-8374-ac1c8ad7b0b6"  # non-prd
+  EPIC_ON_FHIR_JWK_SET_URL: "https://datahubmaastricht.nl/files/jwks-non-prod-mumc.json"
+  EPIC_ON_FHIR_PRIVATE_KEY_PEM_PATH: "/etc/epic/privatekey.pem" # must match secret "epic-cert" mountPath
   WRITE_COMPOSITION: "true"
   # Specify the SUBJECT_IDS for MUMC manually as a control.
   SUBJECT_IDS: '["6688500642","6688500667"]'
