@@ -1,0 +1,17 @@
+﻿BSN;episode_id;patient_id;icpc;omschrijving;begindatum;einddatum;attentie;episode_status
+999999801;10000;10007;K87.00;Hypertensie met orgaanbeschadiging;;;0;Actueel
+999999801;10001;10007;H70;Otitis externa;;;;
+999990202;10002;10008;F02.00;Rood oog;20231231;20241231;0;Actueel
+999990603;10003;;A29.00;Andere algemene symptomen/klachten;;;;
+999991504;10004;10010;A29.00;Andere algemene symptomen/klachten;;;0;Actueel
+999991905;10005;10011;K86.00;Essentiële hypertensie zonder orgaanbeschadiging;;;0;Actueel
+999992806;10006;10012;A80.00;Ongeval/letsel;;;0;Actueel
+999993707;10007;10013;;;;;0;Actueel
+999994608;10008;10014;H70;Otitis externa;;;0;Actueel
+999995509;10009;10015;U71;Cystitis/urineweginfectie;;;0;Actueel
+999990810;10010;10016;R21;Globusgevoel;;;0;Actueel
+999992211;10011;10017;S13.00;Beet mens/dier;;;0;Actueel
+999990512;10012;10018;L80.05;(Sub)luxatie radiuskop/zondagsarmpje;;;0;Actueel
+999990913;10013;10019;T91.01;Vitamine b12 deficiëntie;;;0;Actueel
+999990214;10014;10020;D06.00;Andere gelokaliseerde buikpijn;;;0;Actueel
+999990615;10015;10021;L99.06;Syndroom van Tietze;;;0;Actueel
