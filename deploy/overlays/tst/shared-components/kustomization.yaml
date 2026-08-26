@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+resources:
+  - ../../../base/base-config
+
+components:
+  - data-encryption-secret
+  - federation-secret
+  - registry-secret
+  - terminology-server-proxy-secret
+
+configMapGenerator:
+  # Set ADMIN_API_ACTIVE: "true" in local overlay only for the usage of openEHRtool ADMIN methods.
+  - name: ehrbase-config-base
+    behavior: merge
+    literals:
+      - ADMIN_API_ACTIVE=true
