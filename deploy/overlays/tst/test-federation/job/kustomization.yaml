@@ -9,7 +9,6 @@ images:
 
 resources:
   - namespace.yaml
-  - ../../../../base-config/proxy
   - job.yaml
   - job-reader-role.yaml
   - services-list-role-binding.yaml

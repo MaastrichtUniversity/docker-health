@@ -67,17 +67,23 @@ patches:
       - op: add
         path: /spec/template/spec/containers/0/imagePullPolicy
         value: IfNotPresent
-        value: IfNotPresent
   - target:
       kind: Job
     patch: |-
       - op: add
         path: /spec/template/spec/containers/0/imagePullPolicy
-        value: IfNotPresent
-        value: IfNotPresent
+        value: Always
   # Proxy patches
   - target:
       kind: Deployment
+    patch: |-
+      - op: add
+        path: "/spec/template/spec/containers/0/envFrom/-"
+        value:
+          configMapRef:
+            name: proxy-config
+  - target:
+      kind: Job
     patch: |-
       - op: add
         path: "/spec/template/spec/containers/0/envFrom/-"
@@ -113,27 +119,27 @@ patches:
         value:
           name: https_proxy
           value: ""
-  - target:
-      kind: Deployment
-      name: .*portal
-    patch: |-
-      - op: add
-        path: "/spec/template/spec/containers/0/env/-"
-        value:
-          name: HTTP_PROXY
-          value: ""
-      - op: add
-        path: "/spec/template/spec/containers/0/env/-"
-        value:
-          name: http_proxy
-          value: ""
-      - op: add
-        path: "/spec/template/spec/containers/0/env/-"
-        value:
-          name: HTTPS_PROXY
-          value: ""
-      - op: add
-        path: "/spec/template/spec/containers/0/env/-"
-        value:
-          name: https_proxy
-          value: ""
+  # - target:
+  #     kind: Deployment
+  #     name: .*portal
+  #   patch: |-
+  #     - op: add
+  #       path: "/spec/template/spec/containers/0/env/-"
+  #       value:
+  #         name: HTTP_PROXY
+  #         value: ""
+  #     - op: add
+  #       path: "/spec/template/spec/containers/0/env/-"
+  #       value:
+  #         name: http_proxy
+  #         value: ""
+  #     - op: add
+  #       path: "/spec/template/spec/containers/0/env/-"
+  #       value:
+  #         name: HTTPS_PROXY
+  #         value: ""
+  #     - op: add
+  #       path: "/spec/template/spec/containers/0/env/-"
+  #       value:
+  #         name: https_proxy
+  #         value: ""
