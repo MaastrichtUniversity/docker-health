@@ -1,0 +1,4 @@
+﻿BSN;journaal_id;patient_id;contact_id;contactsoort;datumtijd;episode_id;episode_icpc;originele_medewerker_id;creatie_datumtijd;TEST_COMMENTS
+999990603;10000;10007;10000;C;20240212;10000;K87.00;10000;20240212;PASS
+999991504;10002;10008;10009;P;20220223;10002;F02.00;10000;20220223;PASS-Test data max
+999991905;10003;;;;;10003;;10001;20231112;PASS-Test data min
