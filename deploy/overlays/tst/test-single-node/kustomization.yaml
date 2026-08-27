@@ -4,18 +4,19 @@ kind: Kustomization
 namespace: dh-health-test-single-node
 
 resources:
-  - namespace.yaml
-  - vault-auth.yaml
-  - secrets.yaml
-  - test-secrets.yaml
-  - volumes.yaml
-  - job.yaml
-  # TEST-node
-  - ../../../base/openehr-nodes/test/ehrbase
-  - ../../../base/openehr-nodes/test/ehrdb
-  - ../../../base/openehr-nodes/test/etl-zib/etl-config
-  - ../../../base/openehr-nodes/test/terminology-server-proxy
-  - ../../../base/openehr-nodes/test/transform-rest
+- ../../../base-config/proxy
+- namespace.yaml
+- vault-auth.yaml
+- secrets.yaml
+- test-secrets.yaml
+- volumes.yaml
+- job.yaml
+# TEST-node
+- ../../../base/openehr-nodes/test/ehrbase
+- ../../../base/openehr-nodes/test/ehrdb
+- ../../../base/openehr-nodes/test/etl-zib/etl-config
+- ../../../base/openehr-nodes/test/terminology-server-proxy
+- ../../../base/openehr-nodes/test/transform-rest
 
 components:
   - ../shared-components
@@ -94,11 +95,3 @@ configMapGenerator:
     behavior: merge
     literals:
       - EHRBASE_ADMIN_BASE_URL=http://ehrbase:8080/ehrbase/rest/admin
-  - name: proxy-config
-    literals:
-      - HTTP_PROXY=http://proxy.unimaas.nl:3128
-      - http_proxy=http://proxy.unimaas.nl:3128
-      - HTTPS_PROXY=http://proxy.unimaas.nl:3128
-      - https_proxy=http://proxy.unimaas.nl:3128
-      - NO_PROXY=localhost,127.0.0.1,.dh.local,.dh-health,.dh-health-envida,.dh-health-vitala,.dh-health-mumc,.dh-health-zio,.dh-health-test-federation,.dh-health-test-single-node,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1,10.96.0.0/12,192.168.59.0/24,192.168.49.0/24,192.168.39.0/24
-      - no_proxy=localhost,127.0.0.1,.dh.local,.dh-health,.dh-health-envida,.dh-health-vitala,.dh-health-mumc,.dh-health-zio,.dh-health-test-federation,.dh-health-test-single-node,.unimaas.nl,.datahubmaastricht.nl,137.120.31.0/24,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1,10.96.0.0/12,192.168.59.0/24,192.168.49.0/24,192.168.39.0/24

@@ -2,6 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+  - ../../../base-config/proxy-namespaces/dh-health-envida
+  - ../../../base-config/proxy-namespaces/dh-health-mumc
+  - ../../../base-config/proxy-namespaces/dh-health-vitala
+  - ../../../base-config/proxy-namespaces/dh-health-zio
   - ../test-federation
 
 patches:
@@ -10,36 +14,16 @@ patches:
       name: .*terminology-server-proxy
     patch: |-
       - op: add
-        path: /spec/template/spec/containers/0/env/-
+        path: /spec/template/spec/containers/0/envFrom/-
         value:
-          name: http_proxy
-          value: http://proxy.unimaas.nl:3128
-      - op: add
-        path: /spec/template/spec/containers/0/env/-
-        value:
-          name: https_proxy
-          value: http://proxy.unimaas.nl:3128
-      - op: add
-        path: /spec/template/spec/containers/0/env/-
-        value:
-          name: no_proxy
-          value: localhost,127.0.0.1,.dh.local,.dh-health,.dh-health-envida,.dh-health-vitala,.dh-health-mumc,.dh-health-zio,.dh-health-test-federation,.dh-health-test-single-node,.unimaas.nl,.datahubmaastricht.nl,epic-pid.storage.surfsara.nl,edr-neu.eu.endpoint.security.microsoft.com,terminology-server-proxy,ehrbase,transform-rest,etl-zib-rest,federation-rest,137.120.31.0/24,137.120.31.76,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1,10.96.0.0/12,192.168.59.0/24,192.168.49.0/24,192.168.39.0/24
+          configMapRef:
+            name: proxy-config
   - target:
       kind: Job
       name: .*etl-zib-pipeline
     patch: |-
       - op: add
-        path: /spec/template/spec/containers/0/env/-
+        path: /spec/template/spec/containers/0/envFrom/-
         value:
-          name: http_proxy
-          value: http://proxy.unimaas.nl:3128
-      - op: add
-        path: /spec/template/spec/containers/0/env/-
-        value:
-          name: https_proxy
-          value: http://proxy.unimaas.nl:3128
-      - op: add
-        path: /spec/template/spec/containers/0/env/-
-        value:
-          name: no_proxy
-          value: localhost,127.0.0.1,.dh.local,.dh-health,.dh-health-envida,.dh-health-vitala,.dh-health-mumc,.dh-health-zio,.dh-health-test-federation,.dh-health-test-single-node,.unimaas.nl,.datahubmaastricht.nl,epic-pid.storage.surfsara.nl,edr-neu.eu.endpoint.security.microsoft.com,terminology-server-proxy,ehrbase,transform-rest,etl-zib-rest,federation-rest,137.120.31.0/24,137.120.31.76,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1,10.96.0.0/12,192.168.59.0/24,192.168.49.0/24,192.168.39.0/24
+          configMapRef:
+            name: proxy-config

@@ -5,6 +5,7 @@ namespace: dh-health-mumc
 
 resources:
   - vault-auth.yaml
+  - ../../../base-config/proxy
   - ../../../base/openehr-nodes/mumc
   - config
   - service-discovery
@@ -26,13 +27,3 @@ patches:
       - op: replace
         path: /spec/template/spec/volumes/1/hostPath/type
         value: DirectoryOrCreate
-
-configMapGenerator:
-- name: proxy-config
-  literals:
-    - HTTP_PROXY=http://proxy.unimaas.nl:3128
-    - http_proxy=http://proxy.unimaas.nl:3128
-    - HTTPS_PROXY=http://proxy.unimaas.nl:3128
-    - https_proxy=http://proxy.unimaas.nl:3128
-    - NO_PROXY=localhost,127.0.0.1,.dh.local,.dh-health,.dh-health-envida,.dh-health-vitala,.dh-health-mumc,.dh-health-zio,.dh-health-test-federation,.dh-health-test-single-node,.unimaas.nl,.datahubmaastricht.nl,epic-pid.storage.surfsara.nl,edr-neu.eu.endpoint.security.microsoft.com,137.120.31.0/24,137.120.31.76,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1,10.96.0.0/12,192.168.59.0/24,192.168.49.0/24,192.168.39.0/24
-    - no_proxy=localhost,127.0.0.1,.dh.local,.dh-health,.dh-health-envida,.dh-health-vitala,.dh-health-mumc,.dh-health-zio,.dh-health-test-federation,.dh-health-test-single-node,.unimaas.nl,.datahubmaastricht.nl,epic-pid.storage.surfsara.nl,edr-neu.eu.endpoint.security.microsoft.com,137.120.31.0/24,137.120.31.76,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1,10.96.0.0/12,192.168.59.0/24,192.168.49.0/24,192.168.39.0/24

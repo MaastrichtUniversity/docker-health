@@ -6,8 +6,9 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-  - namespace.yaml
-  - job.yaml
+- ../../../base-config/proxy
+- namespace.yaml
+- job.yaml
 
 configMapGenerator:
   - name: git-config
