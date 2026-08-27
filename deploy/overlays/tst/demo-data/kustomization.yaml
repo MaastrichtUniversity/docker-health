@@ -14,4 +14,4 @@ configMapGenerator:
   - name: git-config
     namespace: git-demo-data
     literals:
-      - GIT_BRANCH=2026.1
+      - GIT_BRANCH=PLACEHOLDER
