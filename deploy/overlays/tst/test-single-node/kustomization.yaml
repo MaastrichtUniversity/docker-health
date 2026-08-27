@@ -23,13 +23,13 @@ components:
 
 images:
   - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
-    newTag: "2026.2.0"
+    newTag: "2026.1.4"
   - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-    newTag: "2026.2.0"
+    newTag: "2026.1.4"
   - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
-    newTag: "2026.2.0"
+    newTag: "2026.1.4"
   - name: registry.prod.dh.unimaas.nl/docker-health/init-container
-    newTag: "2026.2.0"
+    newTag: "2026.1.4"
 
 generatorOptions:
   disableNameSuffixHash: true
@@ -82,6 +82,14 @@ patches:
   # Proxy patches
   - target:
       kind: Deployment
+    patch: |-
+      - op: add
+        path: "/spec/template/spec/containers/0/envFrom/-"
+        value:
+          configMapRef:
+            name: proxy-config
+  - target:
+      kind: Job
     patch: |-
       - op: add
         path: "/spec/template/spec/containers/0/envFrom/-"

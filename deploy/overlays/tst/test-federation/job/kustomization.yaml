@@ -5,7 +5,7 @@ namespace: dh-health-test-federation
 
 images:
   - name: registry.prod.dh.unimaas.nl/docker-health/federation-test
-    newTag: "2026.2.0"
+    newTag: "2026.1.4"
 
 resources:
   - namespace.yaml
@@ -13,6 +13,7 @@ resources:
   - job-reader-role.yaml
   - services-list-role-binding.yaml
   - vault-auth.yaml
+  - configmap.yaml
   - secrets
 
 generatorOptions:
