@@ -10,7 +10,7 @@ spec:
       initContainers:
         - name: wait-etl-jobs
           image: bitnamilegacy/kubectl:1.33.4 # TODO: Try not to use a third-party docker image
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           command:
                  - /bin/bash
                  - -c

@@ -11,7 +11,7 @@ resources:
 - job.yaml
 
 configMapGenerator:
-- name: git-config
-  namespace: git-demo-data
-  literals:
-    - GIT_BRANCH=PLACEHOLDER
+  - name: git-config
+    namespace: git-demo-data
+    literals:
+      - GIT_BRANCH=PLACEHOLDER
