@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dh-health-jupyter
+
+resources:
+  - namespace.yaml
+  - jupyter-zib-gateway.yaml
+  - ../../../base/jupyter-zib
+  - ../node-envida/etl-config
+  - ../node-mumc/etl-config
+  - ../node-vitala/etl-config
+  - ../node-zio/etl-config
+
+components:
+  - ../shared-components
+
+patches:
+  - target:
+      kind: Deployment
+      name: jupyter-zib
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib-prd:latest

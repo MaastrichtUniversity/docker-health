@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Jupyter needs one distinguishable copy of every node's ETL configuration.
+namePrefix: envida-
+
+resources:
+  - ../../../../base/openehr-nodes/envida/etl-zib/etl-config

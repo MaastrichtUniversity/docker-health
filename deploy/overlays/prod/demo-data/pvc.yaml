@@ -1,8 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: git-repo-pv
-  namespace: dh-health
+  name: git-repo-pv-envida
 spec:
   capacity:
     storage: 100Mi
@@ -10,18 +9,142 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-     namespace: dh-health
-     name: git-repo-pvc
+    namespace: dh-health-envida
+    name: git-repo-pvc
   storageClassName: local-path
   hostPath:
-    path: /mnt/demo-data
+    path: /mnt/demo-data/dh-health-envida
     type: DirectoryOrCreate
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: git-repo-pvc
-  namespace: dh-health
+  namespace: dh-health-envida
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: local-path
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: git-repo-pv-mumc
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: dh-health-mumc
+    name: git-repo-pvc
+  storageClassName: local-path
+  hostPath:
+    path: /mnt/demo-data/dh-health-mumc
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: git-repo-pvc
+  namespace: dh-health-mumc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: local-path
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: git-repo-pv-vitala
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: dh-health-vitala
+    name: git-repo-pvc
+  storageClassName: local-path
+  hostPath:
+    path: /mnt/demo-data/dh-health-vitala
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: git-repo-pvc
+  namespace: dh-health-vitala
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: local-path
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: git-repo-pv-zio
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: dh-health-zio
+    name: git-repo-pvc
+  storageClassName: local-path
+  hostPath:
+    path: /mnt/demo-data/dh-health-zio
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: git-repo-pvc
+  namespace: dh-health-zio
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: local-path
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: git-repo-pv-jupyter
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: dh-health-jupyter
+    name: git-repo-pvc
+  storageClassName: local-path
+  hostPath:
+    path: /mnt/demo-data/dh-health-jupyter
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: git-repo-pvc
+  namespace: dh-health-jupyter
 spec:
   accessModes:
     - ReadWriteOnce

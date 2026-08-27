@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dh-health-envida
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dh-health-mumc
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dh-health-vitala
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dh-health-zio
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dh-health-jupyter

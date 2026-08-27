@@ -1,15 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: dh-health
 
 images:
   - name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
     newTag: "2026.1.1"
-  - name: registry.prod.dh.unimaas.nl/docker-health/federation-test
-    newTag: "2026.1.1"
   - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
-    newTag: "2026.1.1"
-  - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
     newTag: "2026.1.1"
   - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
     newTag: "2026.1.1"
@@ -19,45 +14,20 @@ images:
     newTag: "2026.1.1"
   - name: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib
     newTag: "2026.1.1"
+  - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
+    newTag: "2026.1.1"
   - name: registry.prod.dh.unimaas.nl/docker-health/init-container
     newTag: "2026.1.1"
 
 resources:
-  - ./secrets.yaml
-  # Base resources
-  - ../../base/common
-  - ../../base/jupyter-zib
-  # Envida-node
-  - ../../base/openehr-nodes/envida
-  # MUMC-node
-  - ../../base/openehr-nodes/mumc
-  # VITALA-node
-  - ../../base/openehr-nodes/vitala
-  # ZIO-node
-  - ../../base/openehr-nodes/zio
-  # Gateway resources
-  - patches/gateway/common/jupyter.yaml
-  - patches/gateway/envida/portal.yaml
-  - patches/gateway/mumc/portal.yaml
-  - patches/gateway/vitala/portal.yaml
-  - patches/gateway/zio/portal.yaml
-
-components:
-  # Federation service role
-  - ./roles
-
-generatorOptions:
-  disableNameSuffixHash: true
-
-secretGenerator:
-  - name: etl-data-encryption-passphrase
-    namespace: dh-health
-    literals:
-      - passphrase=foobar
+  - secrets.yaml
+  - jupyter
+  - node-envida
+  - node-mumc
+  - node-vitala
+  - node-zio
 
 patches:
-  # 'Global' patches that apply to all of one sort
-  # Storage class patches
   - target:
       kind: PersistentVolume
     patch: |-
@@ -70,45 +40,35 @@ patches:
       - op: replace
         path: /spec/storageClassName
         value: local-path
-  # Image pull secret patches
   - target:
       kind: Deployment
     patch: |-
-      - op: replace
+      - op: add
         path: /spec/template/spec/imagePullSecrets
         value:
-        - name: registry-credentials
-  - target:
-      kind: Job
-    patch: |-
-      - op: replace
-        path: /spec/template/spec/imagePullSecrets
-        value:
-        - name: registry-credentials
-  # imagePullPolicy patches
-  - target:
-      kind: Deployment
-    patch: |-
-      - op: replace
+          - name: registry-credentials
+      - op: add
         path: /spec/template/spec/containers/0/imagePullPolicy
         value: IfNotPresent
   - target:
       kind: Job
     patch: |-
-      - op: replace
+      - op: add
+        path: /spec/template/spec/imagePullSecrets
+        value:
+          - name: registry-credentials
+      - op: add
         path: /spec/template/spec/containers/0/imagePullPolicy
         value: IfNotPresent
 
-  # Patch the data mounts to use the GIT PVC
+  # Use the Git-backed demo-data PVCs created by the separate demo-data overlay.
   - path: patches/job/envida-etl-zib-delete-demo-data.yaml
   - path: patches/job/envida-etl-zib-add-demo-data.yaml
-  - path: patches/job/vitala-etl-zib-delete-demo-data.yaml
-  - path: patches/job/vitala-etl-zib-add-demo-data.yaml
   - path: patches/job/mumc-etl-zib-delete-demo-data.yaml
   - path: patches/job/mumc-etl-zib-add-demo-data.yaml
+  - path: patches/job/vitala-etl-zib-delete-demo-data.yaml
+  - path: patches/job/vitala-etl-zib-add-demo-data.yaml
   - path: patches/job/zio-etl-zib-delete-demo-data.yaml
   - path: patches/job/zio-etl-zib-add-demo-data.yaml
   - path: patches/deployment/jupyter-delete-demo-data.yaml
   - path: patches/deployment/jupyter-add-demo-data.yaml
-  # Delete TEST node configs
-  - path: patches/deployment/jupyter-delete-test-config.yaml

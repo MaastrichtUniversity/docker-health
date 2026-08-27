@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jupyter-zib
-  namespace: dh-health
+  namespace: dh-health-jupyter
 spec:
   selector:
     matchLabels:
