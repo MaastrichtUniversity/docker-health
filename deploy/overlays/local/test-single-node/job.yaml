@@ -104,6 +104,9 @@ spec:
         - name: etl-logs
           mountPath: /code/logs/test
           subPath: test/etl-test-single-node
+        - name: epic-cert
+          mountPath: /etc/epic
+          readOnly: true
         - name: nedap-cert
           mountPath: /etc/nedap
           readOnly: true
@@ -115,6 +118,9 @@ spec:
       - name: etl-logs
         persistentVolumeClaim:
           claimName: log-pvc-test
+      - name: epic-cert
+        secret:
+          secretName: epic-cert
       - name: nedap-cert
         secret:
           secretName: nedap-cert

@@ -10,6 +10,10 @@ data:
   SOURCE_SYSTEM_ID: DEMO_DATA
   INPUT_FORMAT: csv
   LOGGER_FILENAME: logs/test/etl-zib.log
+  EPIC_ON_FHIR_BASE_URL: https://epic-itc-np.mumc.nl/interconnect-oauth2-tst
+  EPIC_ON_FHIR_CLIENT_ID: "28bb8481-e3fd-44b5-8374-ac1c8ad7b0b6"  # non-prd
+  EPIC_ON_FHIR_JWK_SET_URL: "https://datahubmaastricht.nl/files/jwks-non-prod-mumc.json"
+  EPIC_ON_FHIR_PRIVATE_KEY_PEM_PATH: "/etc/epic/privatekey.pem" # must match secret "epic-cert" mountPath
   NEDAP_CERT_BASE_URL: https://api-development.ons.io
   WRITE_COMPOSITION: "False"
   # If SUBJECT_IDS is empty, extract subject_ids from dataset:
