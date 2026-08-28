@@ -5,8 +5,6 @@ metadata:
 data:
   NODENAME: mumc
   DATASET_FOLDER_NAME: mumc-demo-data
-  SOURCE_SYSTEM_ID: EPIC_ON_FHIR
-  INPUT_FORMAT: fhir
   LOGGER_FILENAME: logs/mumc/etl-zib.log
   EPIC_ON_FHIR_BASE_URL: https://epic-itc-np.mumc.nl/interconnect-oauth2-tst
   EPIC_ON_FHIR_CLIENT_ID: "28bb8481-e3fd-44b5-8374-ac1c8ad7b0b6"  # non-prd
@@ -14,25 +12,29 @@ data:
   EPIC_ON_FHIR_PRIVATE_KEY_PEM_PATH: "/etc/epic/privatekey.pem" # must match secret "epic-cert" mountPath
   WRITE_COMPOSITION: "true"
   # Specify the SUBJECT_IDS for MUMC manually as a control.
-  SUBJECT_IDS: '["6688500642","6688500667","TestWrongID"]'
-  TEMPLATE_IDS: |
-    [
-      "DataHub-Patient-2024"
-    ]
-#  SOURCE_SYSTEM_ID: EPIC
+#  SUBJECT_IDS: '["6688500642","6688500667","TestWrongID"]'
+#  SOURCE_SYSTEM_ID: EPIC_ON_FHIR
+#  INPUT_FORMAT: fhir
 #  TEMPLATE_IDS: |
 #    [
-#      "DataHub-Bloeddruk-2024",
-#      "DataHub-InformedConsent",
-#      "DataHub-Lichaamsgewicht-2024",
-#      "DataHub-Lichaamslengte-2024",
-#      "DataHub-Mobiliteit-2024",
-#      "DataHub-Patient-2024",
-#      "DataHub-VermogenTotDrinken-2024",
-#      "DataHub-VermogenTotEten-2024",
-#      "DataHub-VermogenTotToiletgang-2024",
-#      "DataHub-VermogenTotUiterlijkeVerzorging-2024"
+#      "DataHub-Patient-2024"
 #    ]
+  SOURCE_SYSTEM_ID: EPIC
+  INPUT_FORMAT: csv
+  SUBJECT_IDS: '["999999801","999990202","999990603"]'
+  TEMPLATE_IDS: |
+    [
+      "DataHub-Bloeddruk-2024",
+      "DataHub-InformedConsent",
+      "DataHub-Lichaamsgewicht-2024",
+      "DataHub-Lichaamslengte-2024",
+      "DataHub-Mobiliteit-2024",
+      "DataHub-Patient-2024",
+      "DataHub-VermogenTotDrinken-2024",
+      "DataHub-VermogenTotEten-2024",
+      "DataHub-VermogenTotToiletgang-2024",
+      "DataHub-VermogenTotUiterlijkeVerzorging-2024"
+    ]
 
 #  TEMPLATE_IDS: |
 #    [
