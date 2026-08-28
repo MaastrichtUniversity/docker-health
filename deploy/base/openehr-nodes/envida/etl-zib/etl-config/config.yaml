@@ -9,6 +9,7 @@ data:
   INPUT_FORMAT: "fhir"
   LOGGER_FILENAME: logs/envida/etl-zib.log
   NEDAP_CERT_BASE_URL: https://api-development.ons.io
+  NEDAP_NUMBER_PATIENT_MAX: 20
   WRITE_COMPOSITION: "True"
   # If SUBJECT_IDS is empty, extract subject_ids from dataset:
   SUBJECT_IDS: |
