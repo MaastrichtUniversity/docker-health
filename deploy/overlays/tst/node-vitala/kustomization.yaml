@@ -6,7 +6,15 @@ namespace: dh-health-vitala
 resources:
   - vault-auth.yaml
   - ../../../base-config/proxy
-  - ../../../base/openehr-nodes/vitala
+  - ../../../base/openehr-nodes/vitala/ehrbase
+  - ../../../base/openehr-nodes/vitala/ehrdb
+  - ../../../base/openehr-nodes/vitala/etl-zib
+  - ../../../base/openehr-nodes/vitala/federation-rest
+  - ../../../base/openehr-nodes/vitala/openehrtool
+  - ../../../base/openehr-nodes/vitala/portal
+  - ../../../base/openehr-nodes/vitala/terminology-server-proxy
+  - ../../../base/openehr-nodes/vitala/transform-rest
+  - volumes.yaml
   - config
   - service-discovery
 

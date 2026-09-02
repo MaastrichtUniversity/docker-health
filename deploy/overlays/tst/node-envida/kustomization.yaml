@@ -6,7 +6,15 @@ namespace: dh-health-envida
 resources:
   - vault-auth.yaml
   - ../../../base-config/proxy
-  - ../../../base/openehr-nodes/envida
+  - ../../../base/openehr-nodes/envida/ehrbase
+  - ../../../base/openehr-nodes/envida/ehrdb
+  - ../../../base/openehr-nodes/envida/etl-zib
+  - ../../../base/openehr-nodes/envida/federation-rest
+  - ../../../base/openehr-nodes/envida/openehrtool
+  - ../../../base/openehr-nodes/envida/portal
+  - ../../../base/openehr-nodes/envida/terminology-server-proxy
+  - ../../../base/openehr-nodes/envida/transform-rest
+  - volumes.yaml
   - config
   - service-discovery
 

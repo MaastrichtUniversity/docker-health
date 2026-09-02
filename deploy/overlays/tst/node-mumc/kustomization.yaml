@@ -6,7 +6,15 @@ namespace: dh-health-mumc
 resources:
   - vault-auth.yaml
   - ../../../base-config/proxy
-  - ../../../base/openehr-nodes/mumc
+  - ../../../base/openehr-nodes/mumc/ehrbase
+  - ../../../base/openehr-nodes/mumc/ehrdb
+  - ../../../base/openehr-nodes/mumc/etl-zib
+  - ../../../base/openehr-nodes/mumc/federation-rest
+  - ../../../base/openehr-nodes/mumc/openehrtool
+  - ../../../base/openehr-nodes/mumc/portal
+  - ../../../base/openehr-nodes/mumc/terminology-server-proxy
+  - ../../../base/openehr-nodes/mumc/transform-rest
+  - volumes.yaml
   - config
   - service-discovery
 

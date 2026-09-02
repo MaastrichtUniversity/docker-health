@@ -2,8 +2,8 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: log-pv-test
-  namespace: dh-health-test-single-node
+  name: log-pv-envida
+  namespace: dh-health-envida
 spec:
   capacity:
     storage: 10Gi
@@ -13,16 +13,16 @@ spec:
   storageClassName: nfs-csi
   csi:
     driver: nfs.csi.k8s.io
-    volumeHandle: nfs-test-logs
+    volumeHandle: nfs-envida-logs
     volumeAttributes:
       server: fhml-srv017.unimaas.nl
-      share: /bkp/tst-k3s/logs/test
+      share: /bkp/tst-k3s/logs/envida
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: log-pvc-test
-  namespace: dh-health-test-single-node
+  name: log-pvc-envida
+  namespace: dh-health-envida
 spec:
   accessModes:
     - ReadWriteMany
@@ -30,13 +30,13 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: nfs-csi
-  volumeName: log-pv-test
+  volumeName: log-pv-envida
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: output-pv-test
-  namespace: dh-health-test-single-node
+  name: output-pv-envida
+  namespace: dh-health-envida
 spec:
   capacity:
     storage: 10Gi
@@ -46,16 +46,16 @@ spec:
   storageClassName: nfs-csi
   csi:
     driver: nfs.csi.k8s.io
-    volumeHandle: nfs-test-outputs
+    volumeHandle: nfs-envida-outputs
     volumeAttributes:
       server: fhml-srv017.unimaas.nl
-      share: /bkp/tst-k3s/outputs/test
+      share: /bkp/tst-k3s/outputs/envida
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: output-pvc-test
-  namespace: dh-health-test-single-node
+  name: output-pvc-envida
+  namespace: dh-health-envida
 spec:
   accessModes:
     - ReadWriteMany
@@ -63,4 +63,4 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: nfs-csi
-  volumeName: output-pv-test
+  volumeName: output-pv-envida

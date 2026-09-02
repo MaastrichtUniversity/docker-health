@@ -6,7 +6,15 @@ namespace: dh-health-zio
 resources:
   - vault-auth.yaml
   - ../../../base-config/proxy
-  - ../../../base/openehr-nodes/zio
+  - ../../../base/openehr-nodes/zio/ehrbase
+  - ../../../base/openehr-nodes/zio/ehrdb
+  - ../../../base/openehr-nodes/zio/etl-zib
+  - ../../../base/openehr-nodes/zio/federation-rest
+  - ../../../base/openehr-nodes/zio/openehrtool
+  - ../../../base/openehr-nodes/zio/portal
+  - ../../../base/openehr-nodes/zio/terminology-server-proxy
+  - ../../../base/openehr-nodes/zio/transform-rest
+  - volumes.yaml
   - config
   - service-discovery
 
