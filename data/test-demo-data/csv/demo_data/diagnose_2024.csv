@@ -3,7 +3,7 @@ BSN,DiagnoseDatum,StartDatum,EindDatum,DiagnoseNaam,NadereSpecificatieDiagnoseNa
 999999801,2025-04-01,2025,2026,A04.1,,,,,Zorgverlener_2,2024-11-14T15:50:14.321,PASS-Test duplication check
 999999801,2025-04-01,2025,,A04.1,,,,,Zorgverlener_2,2023-11-14T15:50:14.321,FAIL-Test duplication check
 999990202,2022-01-10,2022-01-10,2022-03-01,S47,Injury of left shoulder and clavicula,Car accident,16982005,Links,Zorgverlener_1,2022-01-10T10:30:00.000,PASS-Test data max
-999990603,2022-02,2026,,T68,,,,,Zorgverlener_3,2022-02-01T10:30:00.000,PASS-Test data min
+999990603,2022-02,2026,,T68,,,,,,2022-02-01T10:30:00.000,PASS-Test data min
 999991504,,,,,,,,,,,FAIL-Test data none
 999991905,,,,,,,,,,2026-02-12T09:30:11.112,FAIL-Test data empty
 999992806,2020-03-10,2020-03-10,2020-04-20,U07.1,COVID-19 infection,,,,Zorgverlener_2,2020-03-10T00:00:00.000,PASS
