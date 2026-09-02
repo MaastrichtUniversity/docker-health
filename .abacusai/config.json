@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(kubectl kustomize *)",
+      "Bash(cat *)",
+      "Bash(sed *)",
+      "Bash(mkdir *)",
+      "Bash(rm *)",
+      "Bash(python3 *)",
+      "Bash(p *)",
+      "Bash(s *)",
+      "Bash(git mv \"$base/secrets.yaml\" *)",
+      "Bash(git rm *)",
+      "Bash(git stash *)",
+      "Bash(awk *)",
+      "Bash(git stash pop *)",
+      "Bash(git add *)"
+    ]
+  }
+}

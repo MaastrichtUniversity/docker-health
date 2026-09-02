@@ -65,20 +65,6 @@ patches:
         value:
         - name: registry-credentials
 
-  # Storage class patches
-  - target:
-      kind: PersistentVolume
-    patch: |-
-      - op: replace
-        path: /spec/storageClassName
-        value: local-path
-  - target:
-      kind: PersistentVolumeClaim
-    patch: |-
-      - op: replace
-        path: /spec/storageClassName
-        value: local-path
-
   # Proxy patches
   - target:
       kind: Deployment

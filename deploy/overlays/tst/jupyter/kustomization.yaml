@@ -31,14 +31,7 @@ patches:
         path: /spec/template/spec/imagePullSecrets
         value:
         - name: registry-credentials
-  - target:
-      group: apps
-      version: v1
-      kind: Deployment
-      name: jupyter-zib
-      namespace: dh-health-jupyter
-    path: patches/deployment/jupyter-delete-test-config.yaml
-  # NEW: Patch the Jupyter Deployment to use /mnt/demo-data
+  # Patch the Jupyter Deployment to use /mnt/demo-data
   - target:
       group: apps
       version: v1

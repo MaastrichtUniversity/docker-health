@@ -32,19 +32,6 @@ generatorOptions:
 
 patches:
   # 'Global' patches that apply to all of one sort
-  # Storage class patches
-  - target:
-      kind: PersistentVolume
-    patch: |-
-      - op: replace
-        path: /spec/storageClassName
-        value: local-path
-  - target:
-      kind: PersistentVolumeClaim
-    patch: |-
-      - op: replace
-        path: /spec/storageClassName
-        value: local-path
   # Image pull secret patches
   - target:
       kind: Deployment
@@ -119,27 +106,3 @@ patches:
         value:
           name: https_proxy
           value: ""
-  # - target:
-  #     kind: Deployment
-  #     name: .*portal
-  #   patch: |-
-  #     - op: add
-  #       path: "/spec/template/spec/containers/0/env/-"
-  #       value:
-  #         name: HTTP_PROXY
-  #         value: ""
-  #     - op: add
-  #       path: "/spec/template/spec/containers/0/env/-"
-  #       value:
-  #         name: http_proxy
-  #         value: ""
-  #     - op: add
-  #       path: "/spec/template/spec/containers/0/env/-"
-  #       value:
-  #         name: HTTPS_PROXY
-  #         value: ""
-  #     - op: add
-  #       path: "/spec/template/spec/containers/0/env/-"
-  #       value:
-  #         name: https_proxy
-  #         value: ""

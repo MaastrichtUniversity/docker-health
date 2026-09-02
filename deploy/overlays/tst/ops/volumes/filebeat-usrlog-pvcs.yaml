@@ -1,18 +1,17 @@
----
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: log-pv-test
+  name: pv-filebeat-usrlog
 spec:
   capacity:
     storage: 5Gi
   accessModes:
-    - ReadWriteMany
+    - ReadOnlyMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: nfs-csi
   csi:
     driver: nfs.csi.k8s.io
-    volumeHandle: nfs-log-test
+    volumeHandle: nfs-filebeat-usrlog
     volumeAttributes:
       server: fhml-srv017.unimaas.nl
       share: /bkp/tst-k3s/logs
@@ -20,12 +19,12 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: log-pvc-test
+  name: filebeat-usrlog-pvc
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadOnlyMany
   resources:
     requests:
       storage: 5Gi
   storageClassName: nfs-csi
-  volumeName: log-pv-test
+  volumeName: pv-filebeat-usrlog
