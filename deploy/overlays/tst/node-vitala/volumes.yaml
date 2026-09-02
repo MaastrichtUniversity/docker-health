@@ -64,3 +64,36 @@ spec:
       storage: 10Gi
   storageClassName: nfs-csi
   volumeName: output-pv-vitala
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgresql-data-pv-vitala
+  namespace: dh-health-vitala
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn-retain
+  csi:
+    driver: driver.longhorn.io
+    volumeHandle: postgresql-data-vitala
+    volumeAttributes:
+      numberOfReplicas: "3"
+      staleReplicaTimeout: "2880"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-data-pvc-vitala
+  namespace: dh-health-vitala
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: longhorn-retain
+  volumeName: postgresql-data-pv-vitala
