@@ -11,7 +11,7 @@ BSN,DiagnoseDatum,StartDatum,EindDatum,DiagnoseNaam,NadereSpecificatieDiagnoseNa
 999994608,2026,2026,,S10.1,,Abrasion of throat,51185008,,,,FAIL-DATE_TIME is empty
 999995509,2026,2026,,S10.1,,Abrasion of throat,51185008,,,026-09-30T12:15:15.120,FAIL-DATE_TIME has a wrong datetime format
 999990810,2026-01,2026-01,,,,Abrasion of throat,51185008,,,2022-01-10T10:30:00.000,FAIL-DiagnoseNaam is missing
-999992211,2026-01,2026-01,,WrongValue,,Abrasion of throat,51185008,,,2022-01-10T10:30:00.000,PASS-DiagnoseNaam has a wrong value but is free text now
+999992211,2026-01,2026-01,,WrongValue,,Abrasion of throat,51185008,,,2022-01-10T10:30:00.000,FAIL-DiagnoseNaam has a wrong value
 999990512,,,2026-02,S36.01,,,,,Zorgverlener_1,2026-02-12T6:50:10.000,FAIL-DiagnoseDatum is missing
 999990913,WrongValue,,2026-02,S36.01,,,,,Zorgverlener_1,2026-02-12T6:50:10.000,FAIL-DiagnoseDatum has a wrong value
 999990214,2024-01-31,2024-01-10,,U07.1,,,,Bilateraal,Zorgverlener_2,2024-01-31T10:00:00.111,PASS-LOCATIE is missing while Lateraliteit is present
