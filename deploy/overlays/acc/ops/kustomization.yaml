@@ -31,6 +31,12 @@ secretGenerator:
   - name: logstash-key
     files:
         -  certs/elk.dh-health-ops.key
+  - name: elastic-password
+    literals:
+      - password=elastic
+  - name: kibana-password
+    literals:
+      - password=kibana
 
 patches:
   - path: filebeat-configmap-patch.yaml
