@@ -1,5 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: git-demo-data
 
 generatorOptions:
   disableNameSuffixHash: true
@@ -9,6 +10,9 @@ resources:
 - job.yaml
 
 configMapGenerator:
-  - name: git-config
-    literals:
-      - GIT_BRANCH=PLACEHOLDER
+- literals:
+  - GIT_BRANCH=PLACEHOLDER
+  name: git-config
+  namespace: git-demo-data
+  options:
+    disableNameSuffixHash: true
