@@ -23,3 +23,13 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/image
         value: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib-prd:latest
+# NEW: Patch the Jupyter Deployment to use /mnt/demo-data
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: jupyter-zib
+    patch: |
+      - op: replace
+        path: /spec/template/spec/volumes/0/hostPath/path
+        value: /mnt/demo-data

@@ -1,7 +1,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 resources:
-  - namespaces.yaml
-  - pvc.yaml
-  - job.yaml
+- namespace.yaml
+- job.yaml
+
+configMapGenerator:
+  - name: git-config
+    literals:
+      - GIT_BRANCH=PLACEHOLDER
