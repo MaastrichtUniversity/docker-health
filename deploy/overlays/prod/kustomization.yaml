@@ -3,21 +3,19 @@ kind: Kustomization
 
 images:
   - name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
-    newTag: "2026.1.1"
+    newTag: "2026.1.4"
   - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
-    newTag: "2026.1.1"
+    newTag: "2026.1.4"
   - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
-    newTag: "2026.1.1"
+    newTag: "2026.1.4"
   - name: registry.prod.dh.unimaas.nl/docker-health/portal
-    newTag: "2026.1.1"
+    newTag: "2026.1.4"
   - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-    newTag: "2026.1.1"
-  - name: registry.prod.dh.unimaas.nl/docker-health/jupyter-zib
-    newTag: "2026.1.1"
+    newTag: "2026.1.4"
   - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
-    newTag: "2026.1.1"
+    newTag: "2026.1.4"
   - name: registry.prod.dh.unimaas.nl/docker-health/init-container
-    newTag: "2026.1.1"
+    newTag: "2026.1.4"
 
 resources:
   - secrets.yaml
@@ -26,6 +24,9 @@ resources:
   - node-mumc
   - node-vitala
   - node-zio
+  
+generatorOptions:
+  disableNameSuffixHash: true
 
 patches:
   - target:
@@ -60,15 +61,3 @@ patches:
       - op: add
         path: /spec/template/spec/containers/0/imagePullPolicy
         value: IfNotPresent
-
-  # Use the Git-backed demo-data PVCs created by the separate demo-data overlay.
-  - path: patches/job/envida-etl-zib-delete-demo-data.yaml
-  - path: patches/job/envida-etl-zib-add-demo-data.yaml
-  - path: patches/job/mumc-etl-zib-delete-demo-data.yaml
-  - path: patches/job/mumc-etl-zib-add-demo-data.yaml
-  - path: patches/job/vitala-etl-zib-delete-demo-data.yaml
-  - path: patches/job/vitala-etl-zib-add-demo-data.yaml
-  - path: patches/job/zio-etl-zib-delete-demo-data.yaml
-  - path: patches/job/zio-etl-zib-add-demo-data.yaml
-  - path: patches/deployment/jupyter-delete-demo-data.yaml
-  - path: patches/deployment/jupyter-add-demo-data.yaml
