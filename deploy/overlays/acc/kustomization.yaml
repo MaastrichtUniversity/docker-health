@@ -26,6 +26,9 @@ resources:
   - node-mumc
   - node-vitala
   - node-zio
+  
+generatorOptions:
+  disableNameSuffixHash: true
 
 patches:
   - target:
