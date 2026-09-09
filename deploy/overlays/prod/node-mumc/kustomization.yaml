@@ -11,3 +11,14 @@ resources:
 components:
   - components
   - ../shared-components
+
+patches:
+  - target:
+      group: batch
+      version: v1
+      kind: Job
+      name: etl-zib-pipeline
+    patch: |
+      - op: replace
+        path: /spec/template/spec/volumes/1/hostPath/path
+        value: /mnt/demo-data/data/mumc-demo-data
