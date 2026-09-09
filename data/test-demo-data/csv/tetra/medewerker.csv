@@ -1,0 +1,8 @@
+﻿medewerker_id;medewerker_agb;naam_volledig;gebruikersnaam;praktijk_id;TEST_COMMENTS
+10000;01999986;Mw. Jansen van Wijck S Van ;asch;10000;Zorgverlener Data max
+10001;;;;;Zorgverlener Data min
+10002;;Dhr. Verhoeven K ;bruinsma;10000;Test male
+10003;;Mw. de Wit F De ;;10000;Test female
+10004;;Mw.;asch;10000;Test no surname
+10005;;Askeri ;;10000;Test only surname
+10006;;Dhr. Bob K L;bob;;Test no praktijk_id, multiple first names
