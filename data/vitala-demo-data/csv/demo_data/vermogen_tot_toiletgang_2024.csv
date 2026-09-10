@@ -1,4 +1,5 @@
-BSN,TOILETGEBRUIK,ZORG_BIJ_MENSTRUATIE,PRODUCT_TYPE,DATE_TIME
-999990603,Niet in staat tot toiletgang,Hulp nodig bij zorgen voor menstruatiehygiëne,Toiletstoel,2012-12-31
-999992806,In staat om zelfstandig naar toilet te gaan,In staat om zelfstandig te zorgen voor menstruatiehygiëne,Zelf katheteriseren,1999-05-13T15:50:14.321
-999993707,Hulp nodig bij toiletgang,,Verblijfskatheter,2025-05-19T16:00:12.100
+BSN,TOILETGEBRUIK,ZORG_BIJ_MENSTRUATIE,PRODUCT_TYPE,DATE_TIME,TEST_COMMENT
+999990603,Niet in staat tot toiletgang,Hulp nodig bij zorgen voor menstruatiehygiëne,,2012-12-31,
+999990603,Niet in staat tot toiletgang,Hulp nodig bij zorgen voor menstruatiehygiëne,Toiletstoel,2014-12-31,Test multiple query calls for a single patient
+999992806,In staat om zelfstandig naar toilet te gaan,In staat om zelfstandig te zorgen voor menstruatiehygiëne,Zelf katheteriseren,1999-05-13T15:50:14.321,
+999993707,Hulp nodig bij toiletgang,,Verblijfskatheter,2025-05-19T16:00:12.100,
