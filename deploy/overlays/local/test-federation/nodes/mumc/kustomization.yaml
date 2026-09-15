@@ -17,6 +17,7 @@ resources:
 
 components:
   - ../../../shared-components
+  - ../../../certificates/epic-certificate-secret
   # MUMC-node
   - ../../../node-mumc/components/ehrbase-gateway
   - ../../../node-mumc/components/federation-rest-gateway

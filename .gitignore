@@ -54,6 +54,7 @@ rit.sh
 deploy/overlays/local/shared-components/terminology-server-proxy-secret/secrets.yaml
 deploy/overlays/local/certificates/nedap-certificate-secret/envida_dabs-TE1002-development.pfx
 deploy/overlays/local/certificates/nedap-certificate-secret/secrets.yaml
+deploy/overlays/local/certificates/epic-certificate-secret/privatekey.pem
 # secrets for tst, acc and prod
 deploy/overlays/*/registry-secret.yaml
 deploy/overlays/*/*/registry-secret.yaml

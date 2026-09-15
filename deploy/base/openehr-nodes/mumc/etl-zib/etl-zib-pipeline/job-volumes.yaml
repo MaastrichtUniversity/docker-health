@@ -17,6 +17,9 @@ spec:
             - name: etl-logs
               mountPath: /code/logs/mumc
               subPath: mumc/pipeline
+            - name: epic-cert
+              mountPath: /etc/epic
+              readOnly: true
       # ── volume definitions ──
       volumes:
         - name: outputs
@@ -29,4 +32,7 @@ spec:
         - name: etl-logs
           persistentVolumeClaim:
             claimName: log-pvc-mumc
+        - name: epic-cert
+          secret:
+            secretName: epic-cert
                                                              
