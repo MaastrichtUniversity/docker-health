@@ -37,8 +37,12 @@ deploy/
     - **test-single-node**: Job for running single-node tests
     - **test-federation**: Job for running federation tests
 - **tst**
-- <s>**acc**</s>
-- <s>**prod**</s>
+- **acc**
+- **prod**
+
+The `local`, `tst`, `acc`, and `prod` runtime overlays deploy each client node
+in its own namespace (`dh-health-{nodename}`) and deploy Jupyter in
+`dh-health-jupyter`.
 
 ## Services
 
@@ -102,6 +106,11 @@ For encryption between filebeat and elk, CA certificates need to be stored in `c
   kubectl apply -k deploy/overlays/tst    # For development
   kubectl apply -k deploy/overlays/prod   # For production
   ```
+- Before rendering or applying `acc` or `prod`, Jenkins copies the private
+  environment Secret manifest to `deploy/overlays/{environment}/secrets.yaml`
+  and the Envida Nedap certificate to the environment's
+  `certificates/nedap-certificate-secret` directory. Registry credentials are
+  provisioned separately in each runtime namespace.
 
 ## Instructions for new code integration
 
