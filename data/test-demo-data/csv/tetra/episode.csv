@@ -1,0 +1,17 @@
+﻿episode_id;patient_id;icpc;omschrijving;begindatum;einddatum;attentie;episode_status
+10000;10007;K87.00;Hypertensie met orgaanbeschadiging;;;0;Actueel
+10001;10007;H70;Otitis externa;;;;
+10002;10008;F02.00;Rood oog;20231231;20241231;0;Actueel
+10003;;A29.00;Andere algemene symptomen/klachten;;;;
+10004;10010;A29.00;Andere algemene symptomen/klachten;;;0;Actueel
+10005;10011;K86.00;Essentiële hypertensie zonder orgaanbeschadiging;;;0;Actueel
+10006;10012;A80.00;Ongeval/letsel;;;0;Actueel
+10007;10013;;;;;0;Actueel
+10008;10014;H70;Otitis externa;;;0;Actueel
+10009;10015;U71;Cystitis/urineweginfectie;;;0;Actueel
+10010;10016;R21;Globusgevoel;;;0;Actueel
+10011;10017;S13.00;Beet mens/dier;;;0;Actueel
+10012;10018;L80.05;(Sub)luxatie radiuskop/zondagsarmpje;;;0;Actueel
+10013;10019;T91.01;Vitamine b12 deficiëntie;;;0;Actueel
+10014;10020;D06.00;Andere gelokaliseerde buikpijn;;;0;Actueel
+10015;10021;L99.06;Syndroom van Tietze;;;0;Actueel

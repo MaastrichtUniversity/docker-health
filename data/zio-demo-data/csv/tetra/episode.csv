@@ -1,0 +1,4 @@
+﻿episode_id;patient_id;icpc;omschrijving;begindatum;einddatum;attentie;episode_status
+10000;10007;K87.00;Hypertensie met orgaanbeschadiging;;;0;Actueel
+10002;10008;F02.00;Rood oog;20231231;20241231;0;Actueel
+10003;;A29.00;Andere algemene symptomen/klachten;;;;

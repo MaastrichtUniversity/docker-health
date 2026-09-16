@@ -1,0 +1,8 @@
+﻿journaalregel_id;patient_id;journaal_id;soepcode;tekst;icpc;eimcode;regeltype;originele_medewerker_id;creatie_datumtijd;TEST_COMMENTS
+10665;10009;10003;;;;;;;;Data min 
+10666;10009;10003;;;;;;;;
+10108;10008;10002;S;Vanmiddag op school onder ander kindje terecht gekomen, ander kindje aan linker arm getrokken, sindsdien gebruikt ze haar armpje niet meer. ;;;;10000;20210927;
+10109;10008;10002;O;flexie linker arm pijnlijk, beweegt armpje zelf niet meer. ;;;;10000;20210927;
+10110;10008;10002;E;L80.05. (Sub)luxatie radiuskop/zondagsarmpje;L80.05;;;10000;20210927;Data Max
+10665;10016;10028;O;systolische bloeddruk: 137;;;L;10000;20210715;
+10666;10016;10028;O;diastolische bloeddruk: 86;;;L;10000;20210715;
