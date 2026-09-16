@@ -54,6 +54,7 @@ rit.sh
 deploy/overlays/local/shared-components/terminology-server-proxy-secret/secrets.yaml
 deploy/overlays/local/certificates/nedap-certificate-secret/envida_dabs-TE1002-development.pfx
 deploy/overlays/local/certificates/nedap-certificate-secret/secrets.yaml
+deploy/overlays/local/certificates/epic-certificate-secret/privatekey.pem
 # secrets for tst, acc and prod
 deploy/overlays/*/registry-secret.yaml
 deploy/overlays/*/*/registry-secret.yaml
@@ -66,5 +67,11 @@ elk/GeoLite2-City.mmdb
 dh-mac.sh
 # Ignore secret files
 deploy/overlays/*/secrets.yaml
+# Private Jenkins source manifests (never commit credential values)
+secrets-acc.yml
+secrets-prod.yml
+# Environment-specific Nedap certificates copied by Jenkins
+deploy/overlays/acc/certificates/nedap-certificate-secret/*.pfx
+deploy/overlays/prod/certificates/nedap-certificate-secret/*.pfx
 # Ignore opencode.json
 opencode.json

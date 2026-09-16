@@ -8,7 +8,10 @@ resources:
 
 images:
 - name: registry.prod.dh.unimaas.nl/docker-health/elk
-  newTag: '2024.1.10'
+  newTag: '2026.1.4'
+
+generatorOptions:
+  disableNameSuffixHash: true
 
 secretGenerator:
 # Filebeat
@@ -31,6 +34,12 @@ secretGenerator:
   - name: logstash-key
     files:
         -  certs/elk.dh-health-ops.key
+  - name: elastic-password
+    literals:
+      - password=elastic
+  - name: kibana-password
+    literals:
+      - password=kibana
 
 patches:
   - path: filebeat-configmap-patch.yaml

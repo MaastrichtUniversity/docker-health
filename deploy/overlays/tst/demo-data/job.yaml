@@ -11,13 +11,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: git-config
-          env:
-            - name: http_proxy
-              value: "http://proxy.unimaas.nl:3128"
-            - name: https_proxy
-              value: "http://proxy.unimaas.nl:3128"
-            - name: no_proxy
-              value: "localhost,127.0.0.1,.dh.local,.dh-health,.dh-health-envida,.dh-health-vitala,.dh-health-mumc,.dh-health-zio,.dh-health-test-federation,.dh-health-test-single-node,.unimaas.nl,.datahubmaastricht.nl,epic-pid.storage.surfsara.nl,edr-neu.eu.endpoint.security.microsoft.com,137.120.31.0/24,137.120.31.76,.cluster.local,10.42.0.0/12,10.43.0.0/12,10.43.0.10,10.43.0.1,10.96.0.0/12,192.168.59.0/24,192.168.49.0/24,192.168.39.0/24"
+            - configMapRef:
+                name: proxy-config
 
           command:
             - sh
@@ -35,6 +30,7 @@ spec:
               cp -r /repo/src/data/mumc-demo-data/* /data/mumc/ 2>/dev/null || echo "No mumc data"
               cp -r /repo/src/data/vitala-demo-data/* /data/vitala/ 2>/dev/null || echo "No vitala data"
               cp -r /repo/src/data/zio-demo-data/* /data/zio/ 2>/dev/null || echo "No zio data"
+              cp -r /repo/src/data/test-demo-data/* /data/test/ 2>/dev/null || echo "No test data"
               echo "Done."
           volumeMounts:
             - name: git-repo
@@ -47,6 +43,8 @@ spec:
               mountPath: /data/vitala
             - name: data-zio
               mountPath: /data/zio
+            - name: data-test
+              mountPath: /data/test
       restartPolicy: Never
       volumes:
         - name: git-repo
@@ -68,5 +66,9 @@ spec:
         - name: data-zio
           hostPath:
             path: /mnt/demo-data/data/zio-demo-data
+            type: DirectoryOrCreate
+        - name: data-test
+          hostPath:
+            path: /mnt/demo-data/data/test-demo-data
             type: DirectoryOrCreate
   backoffLimit: 4

@@ -1,4 +1,5 @@
 BSN,DiagnoseDatum,StartDatum,EindDatum,DiagnoseNaam,NadereSpecificatieDiagnoseNaam,Toelichting,LOCATIE,LATERALITEIT,DiagnoseSteller::zorgverlener_2024,DATE_TIME
-999990603,2022-02,2026,,T68,,,,,Zorgverlener_1,2022-02-01T10:30:00.000
+999990603,2023-02,,,T68,,,38266002,,Zorgverlener_2,2023-02-01T10:30:00.000
+999990603,2022-02,2020-10-01,2026-04,T68,Secondary Hypothermia,State 3 (< 27 °C),38266002,Bilateraal,Zorgverlener_1,2022-02-01T10:30:00.000
 999992806,2020-03-10,2020-03-10,2020-04-20,U07.1,COVID-19 infection,,,,Zorgverlener_1,2020-03-10T00:00:00.000
 999993707,2025-01-10,,,T27.2,,,,,Zorgverlener_2,2021-09-30T12:15:15.120
