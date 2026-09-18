@@ -24,11 +24,18 @@ data:
 #      "Z6081",
 #      "Z6082",
 #      "Z6780",
-#      "Z7324"
+#      "Z7324",
+#      "Lichaamsgewicht",
+#      "Z1316",
+#      "Z1519",
+#      "Z1520",
+#      "Z1530",
+#      "Z1536"
 #    ]
 #  TEMPLATE_IDS: |
 #    [
 #      "DataHub-Bloeddruk-2024",
+#      "DataHub-Lichaamsgewicht-2024",
 #      "DataHub-Patient-2024"
 #    ]
   SOURCE_SYSTEM_ID: EPIC             # Default SOURCE_SYSTEM_ID for test-federation
