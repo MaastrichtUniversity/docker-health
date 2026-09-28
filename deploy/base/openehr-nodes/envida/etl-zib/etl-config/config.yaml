@@ -25,5 +25,8 @@ data:
       "DataHub-VermogenTotEten-2024",
       "DataHub-VermogenTotMondverzorging-2024",
       "DataHub-VermogenTotToiletgang-2024",
-      "DataHub-VermogenTotUiterlijkeVerzorging-2024"
+      "DataHub-VermogenTotUiterlijkeVerzorging-2024",
+      "DataHub-VermogenTotZelfstandigMedicatiegebruik-2024",
+      "DataHub-VermogenTotZichKleden-2024",
+      "DataHub-VermogenTotZichWassen-2024"
     ]
