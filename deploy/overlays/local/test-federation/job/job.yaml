@@ -53,6 +53,71 @@ spec:
                      done                                                                                                                                                                                                                                                                                          
                    done <<< "$JOBS"
                    exit 0
+        - name: query-federation-services
+          image: python:3.12-slim
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: X_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: federation-service-creds
+                  key: key
+          command:
+            - /bin/bash
+            - -c
+            - |                                                                                                                
+              pip install --quiet httpx   
+              set -x
+              echo "Starting!"
+              # -----------------------------------------------------------------                                                                                                       
+              # Python query‑readiness check for each federation node                                                                                                                   
+              # -----------------------------------------------------------------       
+              time python - <<'PY'                                                                                                                                            
+              import asyncio, time, os, httpx
+
+              service_headers = {"X-API-Key": os.getenv("X_API_KEY")}
+              
+              
+              async def wait_until_query_ready(client, node):
+                  consecutive_successes = 0
+                  max_retries = 20
+                  while consecutive_successes < 2 and max_retries > 0:
+                      started = time.monotonic()
+                      try:
+                          response = await client.get(
+                              f"http://federation-rest.dh-health-{node}:8000/own-data/query",
+                              params={"query": "SELECT COUNT(e/ehr_id/value) FROM EHR e"},
+                              headers=service_headers,
+                              timeout=5,
+                          )
+                          max_retries -= 1
+                          duration = time.monotonic() - started
+                          if response.status_code == 200 and duration < 2:
+                              consecutive_successes += 1
+                          else:
+                              consecutive_successes = 0
+                          print(f"consecutive_successes '{consecutive_successes}' for node {node}")
+                      except httpx.HTTPError:
+                          consecutive_successes = 0
+                          print(f"HTTPError for node {node}")
+                      if consecutive_successes < 2:
+                          print(f"Sleep for node {node}")
+                          await asyncio.sleep(2)
+                  if max_retries == 0:
+                      raise RuntimeError(f"Max number of retries reached")
+ 
+              
+              async def main():
+                  nodes = ["envida", "mumc", "vitala", "zio"]
+                  async with httpx.AsyncClient() as client:
+                      for n in nodes:
+                          await wait_until_query_ready(client, n)
+              
+              
+              if __name__ == "__main__":
+                  asyncio.run(main())                                                                                                                                                  
+              PY
+              echo "Done!"
       containers:
         - name: test-federation-runner
           image: registry.prod.dh.unimaas.nl/docker-health/federation-test:latest
