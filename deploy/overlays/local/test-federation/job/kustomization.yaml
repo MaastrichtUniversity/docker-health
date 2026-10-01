@@ -13,6 +13,9 @@ resources:
   - ../../node-vitala/etl-config_secrets
   - ../../node-zio/etl-config_secrets
 
+components:
+  - ../../shared-components/federation-secret
+
 patches:
   # imagePullPolicy patches
   - target:
