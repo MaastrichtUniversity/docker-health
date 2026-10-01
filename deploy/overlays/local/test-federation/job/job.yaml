@@ -67,7 +67,6 @@ spec:
             - -c
             - |                                                                                                                
               pip install --quiet httpx   
-              set -x
               echo "Starting!"
               # -----------------------------------------------------------------                                                                                                       
               # Python query‑readiness check for each federation node                                                                                                                   
