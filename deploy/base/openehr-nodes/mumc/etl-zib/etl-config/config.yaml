@@ -20,6 +20,7 @@ data:
 #      "6688500642",
 #      "6688500667",
 #      "Bloeddruk",
+#      "Lichaamslengte",
 #      "Z6079",
 #      "Z6081",
 #      "Z6082",
@@ -29,7 +30,8 @@ data:
 #  TEMPLATE_IDS: |
 #    [
 #      "DataHub-Bloeddruk-2024",
-#      "DataHub-Patient-2024"
+#      "DataHub-Patient-2024",
+#      "DataHub-Lichaamslengte-2024"
 #    ]
   SOURCE_SYSTEM_ID: EPIC             # Default SOURCE_SYSTEM_ID for test-federation
   INPUT_FORMAT: csv
