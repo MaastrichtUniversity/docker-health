@@ -53,6 +53,7 @@ data:
       "DataHub-Patient-2024",
       "DataHub-VermogenTotDrinken-2024",
       "DataHub-VermogenTotEten-2024",
+      "DataHub-VermogenTotMondverzorging-2024",
       "DataHub-VermogenTotToiletgang-2024",
       "DataHub-VermogenTotUiterlijkeVerzorging-2024"
     ]
