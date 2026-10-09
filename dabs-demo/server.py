@@ -372,7 +372,7 @@ def main():
                         help="basis-URL van de federation API van je eigen node")
     parser.add_argument("--key", default=KEY_NORMAAL, help="X-API-Key van je node")
     parser.add_argument("--btg-key", default=KEY_BTG, help="break-the-glass key van je node")
-    parser.add_argument("--host", default="127.0.0.1",
+    parser.add_argument("--host", default="0.0.0.0",
                         help="luisteradres; 0.0.0.0 om de demo op het netwerk te delen")
     parser.add_argument("--eigen-node", default=None,
                         help="naam van de eigen node; standaard afgeleid uit de federation-URL")
