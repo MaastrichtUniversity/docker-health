@@ -14,3 +14,4 @@ resources:
 - terminology-server-proxy
 - transform-rest
 - volumes
+- dabs-demo

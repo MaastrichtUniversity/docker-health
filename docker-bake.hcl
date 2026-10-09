@@ -12,7 +12,7 @@ variable "ENV_REGISTRY_HOST" {
 }
 
 group "default" {
-  targets = ["transform-rest", "federation-rest", "test-federation-rest", "etl-zib-pipeline", "etl-zib-rest", "test-single-node", "jupyter-zib", "jupyter-zib-prd", "portal", "terminology-server-proxy", "elk", "init-container"]
+  targets = ["transform-rest", "federation-rest", "test-federation-rest", "etl-zib-pipeline", "etl-zib-rest", "test-single-node", "jupyter-zib", "jupyter-zib-prd", "portal", "terminology-server-proxy", "elk", "init-container", "dabs-demo"]
 }
 
 target "_src_etl" {
@@ -120,4 +120,10 @@ target "init-container" {
   dockerfile = "Dockerfile"
   tags = ["${ENV_REGISTRY_HOST}/docker-health/init-container:${ENV_TAG}"]
   context = "./init-container"
+}
+
+target "dabs-demo" {
+  dockerfile = "Dockerfile"
+  tags = ["${ENV_REGISTRY_HOST}/docker-health/dabs-demo:${ENV_TAG}"]
+  context = "./dabs-demo"
 }

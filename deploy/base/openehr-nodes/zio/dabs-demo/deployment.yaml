@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dabs-demo
+  labels:
+    app: dabs-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dabs-demo
+  template:
+    metadata:
+      labels:
+        app: dabs-demo
+    spec:
+      containers:
+        - name: dabs-demo
+          image: registry.prod.dh.unimaas.nl/docker-health/dabs-demo:latest
+          ports:
+            - containerPort: 8800
+          envFrom:
+            - configMapRef:
+                name: timezone-config
