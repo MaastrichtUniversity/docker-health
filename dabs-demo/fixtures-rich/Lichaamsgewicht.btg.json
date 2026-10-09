@@ -1,0 +1,116 @@
+{
+  "zio_federation": [
+    {
+      "gewichtwaarde_magnitude": 82.0,
+      "gewichtwaarde_units": "kg",
+      "gewicht_datum_tijd": "2019-05-22T00:00:00",
+      "toelichting": null,
+      "kleding": null,
+      "system_id": "Tetra",
+      "provider": "zio",
+      "start_time": "2019-05-22T00:00:00"
+    },
+    {
+      "gewichtwaarde_magnitude": 79.3,
+      "gewichtwaarde_units": "kg",
+      "gewicht_datum_tijd": "2021-03-17T00:00:00",
+      "toelichting": null,
+      "kleding": null,
+      "system_id": "Tetra",
+      "provider": "zio",
+      "start_time": "2021-03-17T00:00:00"
+    },
+    {
+      "gewichtwaarde_magnitude": 76.8,
+      "gewichtwaarde_units": "kg",
+      "gewicht_datum_tijd": "2023-09-05T00:00:00",
+      "toelichting": null,
+      "kleding": null,
+      "system_id": "Tetra",
+      "provider": "zio",
+      "start_time": "2023-09-05T00:00:00"
+    },
+    {
+      "gewichtwaarde_magnitude": 75.1,
+      "gewichtwaarde_units": "kg",
+      "gewicht_datum_tijd": "2024-08-20T00:00:00",
+      "toelichting": null,
+      "kleding": null,
+      "system_id": "Tetra",
+      "provider": "zio",
+      "start_time": "2024-08-20T00:00:00"
+    },
+    {
+      "gewichtwaarde_magnitude": 74.0,
+      "gewichtwaarde_units": "kg",
+      "gewicht_datum_tijd": "2025-01-01T00:00:00",
+      "toelichting": null,
+      "kleding": null,
+      "system_id": "Tetra",
+      "provider": "zio",
+      "start_time": "2025-01-01T00:00:00"
+    }
+  ],
+  "mumc_federation": [
+    {
+      "gewichtwaarde_magnitude": 88.4,
+      "gewichtwaarde_units": "kg",
+      "gewicht_datum_tijd": "2023-02-14T09:20:00",
+      "toelichting": null,
+      "kleding": null,
+      "system_id": "EPIC",
+      "provider": "mumc",
+      "start_time": "2023-02-14T09:20:00"
+    },
+    {
+      "gewichtwaarde_magnitude": 86.1,
+      "gewichtwaarde_units": "kg",
+      "gewicht_datum_tijd": "2023-06-27T11:05:00",
+      "toelichting": null,
+      "kleding": null,
+      "system_id": "EPIC",
+      "provider": "mumc",
+      "start_time": "2023-06-27T11:05:00"
+    },
+    {
+      "gewichtwaarde_magnitude": 84.7,
+      "gewichtwaarde_units": "kg",
+      "gewicht_datum_tijd": "2023-11-09T14:40:00",
+      "toelichting": null,
+      "kleding": null,
+      "system_id": "EPIC",
+      "provider": "mumc",
+      "start_time": "2023-11-09T14:40:00"
+    },
+    {
+      "gewichtwaarde_magnitude": 81.0,
+      "gewichtwaarde_units": "kg",
+      "gewicht_datum_tijd": "2024-01-24T14:54:00",
+      "toelichting": null,
+      "kleding": null,
+      "system_id": "EPIC",
+      "provider": "mumc",
+      "start_time": "2024-01-24T14:54:00"
+    },
+    {
+      "gewichtwaarde_magnitude": 80.2,
+      "gewichtwaarde_units": "kg",
+      "gewicht_datum_tijd": "2024-10-15T10:15:00",
+      "toelichting": null,
+      "kleding": null,
+      "system_id": "EPIC",
+      "provider": "mumc",
+      "start_time": "2024-10-15T10:15:00"
+    },
+    {
+      "gewichtwaarde_magnitude": 79.5,
+      "gewichtwaarde_units": "kg",
+      "gewicht_datum_tijd": "2025-06-18T13:30:00",
+      "toelichting": null,
+      "kleding": null,
+      "system_id": "EPIC",
+      "provider": "mumc",
+      "start_time": "2025-06-18T13:30:00"
+    }
+  ]
+}

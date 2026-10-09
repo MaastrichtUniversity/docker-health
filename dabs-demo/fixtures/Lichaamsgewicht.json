@@ -1,0 +1,15 @@
+{
+  "zio_federation": [
+    {
+      "gewichtwaarde_magnitude": 74,
+      "gewichtwaarde_units": "kg",
+      "gewicht_datum_tijd": "2025-01-01T00:00:00",
+      "toelichting": null,
+      "kleding": null,
+      "system_id": "Tetra",
+      "provider": "zio",
+      "start_time": "2025-01-01T00:00:00"
+    }
+  ],
+  "mumc_federation": []
+}

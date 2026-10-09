@@ -1,0 +1,20 @@
+{
+  "zio_federation": [
+    {
+      "manchet_type": null,
+      "meetmethode": null,
+      "systolische_bloeddruk": 139,
+      "diastolische_bloeddruk": 85,
+      "gemiddelde_bloeddruk": null,
+      "bloeddruk_datum_tijd": "2018-08-11T00:00:00",
+      "toelichting": null,
+      "anatomische_locatie": null,
+      "houding": null,
+      "diastolisch_eindpunt": null,
+      "system_id": "Tetra",
+      "provider": "zio",
+      "start_time": "2018-08-11T00:00:00"
+    }
+  ],
+  "mumc_federation": []
+}

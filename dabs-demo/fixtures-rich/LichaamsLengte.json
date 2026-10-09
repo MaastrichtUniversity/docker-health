@@ -1,0 +1,15 @@
+{
+  "zio_federation": [
+    {
+      "lengtewaarde_magnitude": 181,
+      "lengtewaarde_units": "cm",
+      "lengte_datum_tijd": "2025-01-01T00:00:00",
+      "toelichting": null,
+      "positie": null,
+      "system_id": "Tetra",
+      "provider": "zio",
+      "start_time": "2025-01-01T00:00:00"
+    }
+  ],
+  "mumc_federation": []
+}

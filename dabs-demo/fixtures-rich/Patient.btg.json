@@ -1,0 +1,135 @@
+{
+  "zio_federation": [
+    {
+      "naamgegevens": {
+        "voornamen": "Marieke",
+        "initialen": "J.P.M.",
+        "roepnaam": null,
+        "naamgebruik": null,
+        "voorvoegsels": "van",
+        "achternaam": "Putten",
+        "voorvoegsels_partner": "van der",
+        "achternaam_partner": "Giessen",
+        "titels": null
+      },
+      "adresgegevens": [
+        {
+          "straat": "Begijnekade",
+          "huisnummer": "13",
+          "huisnummerletter": null,
+          "huisnummertoevoeging": "TG",
+          "aanduiding_bij_nummer": null,
+          "woonplaats": "Utrecht",
+          "gemeente": null,
+          "postcode": "3512VV",
+          "land": null,
+          "adres_soort": null,
+          "additionele_informatie": null
+        }
+      ],
+      "contactgegevens": {
+        "telefoonnummers": [
+          {
+            "telefoonnummer": "624310831",
+            "nummer_soort": null,
+            "telecom_type": null,
+            "toelichting": null
+          }
+        ],
+        "email_adressen": []
+      },
+      "identificatienummer": [
+        "999990603",
+        "10009"
+      ],
+      "geboortedatum": "1985-07-18",
+      "meerling_indicator": false,
+      "meerling_volgorde": null,
+      "geslacht": "Unknown",
+      "genderidentiteit": null,
+      "overlijdens_indicator": false,
+      "datum_overlijden": null,
+      "system_id": "Tetra",
+      "provider": "zio",
+      "start_time": "1985-07-18T00:00:00",
+      "_veld_gewijzigd": {
+        "naam": "2019-01-10",
+        "geboortedatum": "2018-08-11",
+        "geslacht": "2025-01-01",
+        "identificatienummer": "2025-01-01",
+        "adres": "2025-03-14",
+        "telefoon": "2024-11-02",
+        "overleden": "2025-01-01"
+      }
+    }
+  ],
+  "mumc_federation": [
+    {
+      "naamgegevens": {
+        "voornamen": "B.E.A.C.O.N.T.W.O.P.",
+        "initialen": null,
+        "roepnaam": null,
+        "naamgebruik": null,
+        "voorvoegsels": null,
+        "achternaam": "Berken van der",
+        "voorvoegsels_partner": null,
+        "achternaam_partner": null,
+        "titels": null
+      },
+      "adresgegevens": [
+        {
+          "straat": "Goatstraat",
+          "huisnummer": "500",
+          "huisnummerletter": null,
+          "huisnummertoevoeging": null,
+          "aanduiding_bij_nummer": null,
+          "woonplaats": "s-Hertogenbosch",
+          "gemeente": null,
+          "postcode": "4269 VA",
+          "land": null,
+          "adres_soort": null,
+          "additionele_informatie": null
+        }
+      ],
+      "contactgegevens": {
+        "telefoonnummers": [
+          {
+            "telefoonnummer": "(026) 292 69 00",
+            "nummer_soort": null,
+            "telecom_type": null,
+            "toelichting": null
+          }
+        ],
+        "email_adressen": [
+          {
+            "email_adres": "look@this.com",
+            "email_soort": null
+          }
+        ]
+      },
+      "identificatienummer": [
+        "999990603"
+      ],
+      "geboortedatum": "1996-03-19",
+      "meerling_indicator": false,
+      "meerling_volgorde": null,
+      "geslacht": "Male",
+      "genderidentiteit": null,
+      "overlijdens_indicator": false,
+      "datum_overlijden": null,
+      "system_id": "EPIC",
+      "provider": "mumc",
+      "start_time": "1996-03-19T00:00:00",
+      "_veld_gewijzigd": {
+        "naam": "2024-06-04",
+        "geboortedatum": "2024-01-24",
+        "geslacht": "2024-01-24",
+        "identificatienummer": "2022-05-11",
+        "adres": "2023-02-14",
+        "telefoon": "2021-06-30",
+        "email": "2023-09-01",
+        "overleden": "2024-06-04"
+      }
+    }
+  ]
+}
