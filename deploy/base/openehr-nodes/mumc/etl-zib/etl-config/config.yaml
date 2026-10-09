@@ -31,14 +31,23 @@ data:
 #      "Z1519",
 #      "Z1520",
 #      "Z1530",
-#      "Z1536"
+#      "Z1536",
+#      "More Diagnose",
+#      "6688501017",
+#      "6688501028",
+#      "6688501030",
+#      "6688501073",
+#      "6688501074",
+#      "6688501075",
+#      "6688501076"
 #    ]
 #  TEMPLATE_IDS: |
 #    [
 #      "DataHub-Bloeddruk-2024",
 #      "DataHub-Lichaamsgewicht-2024",
 #      "DataHub-Patient-2024",
-#      "DataHub-Lichaamslengte-2024"
+#      "DataHub-Lichaamslengte-2024",
+#      "DataHub-Diagnose-2024"
 #    ]
   SOURCE_SYSTEM_ID: EPIC             # Default SOURCE_SYSTEM_ID for test-federation
   INPUT_FORMAT: csv
