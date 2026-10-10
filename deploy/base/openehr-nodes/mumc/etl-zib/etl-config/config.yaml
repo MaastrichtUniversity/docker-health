@@ -63,7 +63,8 @@ data:
       "DataHub-VermogenTotDrinken-2024",
       "DataHub-VermogenTotEten-2024",
       "DataHub-VermogenTotToiletgang-2024",
-      "DataHub-VermogenTotUiterlijkeVerzorging-2024"
+      "DataHub-VermogenTotUiterlijkeVerzorging-2024",
+      "DataHub-VermogenTotZichKleden-2024"
     ]
 
 #  TEMPLATE_IDS: |
