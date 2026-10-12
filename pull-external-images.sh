@@ -35,4 +35,8 @@ docker pull bitnamilegacy/kubectl:1.33.4 # TODO: Try not to use a third-party do
 echo "Pulling alpine/git:latest ..."
 docker pull alpine/git:latest
 
+# Python for query-federation-services
+echo "Pulling python:3.12-slim ..."
+docker pull python:3.12-slim
+
 echo "All external images have been pulled into Minikube's Docker daemon."
