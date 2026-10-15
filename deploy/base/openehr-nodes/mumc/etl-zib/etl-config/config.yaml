@@ -20,16 +20,34 @@ data:
 #      "6688500642",
 #      "6688500667",
 #      "Bloeddruk",
+#      "Lichaamslengte",
 #      "Z6079",
 #      "Z6081",
 #      "Z6082",
 #      "Z6780",
-#      "Z7324"
+#      "Z7324",
+#      "Lichaamsgewicht",
+#      "Z1316",
+#      "Z1519",
+#      "Z1520",
+#      "Z1530",
+#      "Z1536",
+#      "More Diagnose",
+#      "6688501017",
+#      "6688501028",
+#      "6688501030",
+#      "6688501073",
+#      "6688501074",
+#      "6688501075",
+#      "6688501076"
 #    ]
 #  TEMPLATE_IDS: |
 #    [
 #      "DataHub-Bloeddruk-2024",
-#      "DataHub-Patient-2024"
+#      "DataHub-Lichaamsgewicht-2024",
+#      "DataHub-Patient-2024",
+#      "DataHub-Lichaamslengte-2024",
+#      "DataHub-Diagnose-2024"
 #    ]
   SOURCE_SYSTEM_ID: EPIC             # Default SOURCE_SYSTEM_ID for test-federation
   INPUT_FORMAT: csv
@@ -44,6 +62,7 @@ data:
       "DataHub-Patient-2024",
       "DataHub-VermogenTotDrinken-2024",
       "DataHub-VermogenTotEten-2024",
+      "DataHub-VermogenTotMondverzorging-2024",
       "DataHub-VermogenTotToiletgang-2024",
       "DataHub-VermogenTotUiterlijkeVerzorging-2024",
       "DataHub-VermogenTotZichKleden-2024"
