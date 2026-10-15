@@ -90,7 +90,6 @@ def fixture_bsn(dataset: str) -> str:
 
 
 def load_fixture(endpoint: str, btg: bool, dataset: str, bsn: str = None) -> dict:
-    print(f"load_fixture")
     naam = f"{endpoint}.btg.json" if btg else f"{endpoint}.json"
     payload = json.loads((fixture_dir(dataset) / naam).read_text())
     # De fixtures beschrijven één patiënt. Een ander BSN hoort leeg terug te komen,
@@ -217,7 +216,6 @@ def fetch_live(endpoint: str, bsn: str, requester: str, btg: bool) -> dict:
     antwoord en lezen we de body dus gewoon uit. De platte live-lijst wordt hier meteen
     genormaliseerd naar de oude vorm per node.
     """
-    print(f"fetch_live")
     qs = urllib.parse.urlencode({"bsn": bsn, "requester": requester})
     req = urllib.request.Request(
         f"{CONFIG['federation_base']}/{endpoint}?{qs}",
@@ -240,7 +238,6 @@ def get_payload(endpoint: str, bsn: str, requester: str, btg: bool, dataset: str
     Met ``alleen_nodes`` wordt uitsluitend de echte federation API bevraagd en is er geen
     terugval op fixtures: wat de nodes leveren is wat je ziet, ook als dat niets is.
     """
-    print(f"get_payload")
     if alleen_nodes:
         try:
             return fetch_live(endpoint, bsn, requester, btg), "live"
@@ -252,7 +249,6 @@ def get_payload(endpoint: str, bsn: str, requester: str, btg: bool, dataset: str
                 "message": f"{err} — {CONFIG['federation_base']}/{endpoint}"}}}, "live"
 
     if CONFIG["mode"] != "live":
-        print(f"get_payload load_fixture")
         return load_fixture(endpoint, btg, dataset, bsn), "fixture"
     try:
         payload = fetch_live(endpoint, bsn, requester, btg)
@@ -261,12 +257,9 @@ def get_payload(endpoint: str, bsn: str, requester: str, btg: bool, dataset: str
         if not any(successes.get(k) for k in successes):
             if not payload.get("failures"):
                 return payload, "live"
-            print(f"get_payload failures load_fixture")
             return load_fixture(endpoint, btg, dataset, bsn), "fixture-fallback"
         return payload, "live"
     except Exception as ex:
-        print(f"error: {ex}")
-        print(f"get_payload Exception load_fixture")
         return load_fixture(endpoint, btg, dataset, bsn), "fixture-fallback"
 
 
@@ -298,7 +291,6 @@ def flatten(per_node: dict, datum_veld: str) -> list:
 
 def fixture_totaal(bsn: str, dataset: str, btg: bool) -> int:
     """Telt alle records in een fixtureset, om te bepalen wat break-the-glass oplevert."""
-    print(f"fixture_totaal")
     return sum(
         len(records)
         for endpoint in ENDPOINTS
@@ -386,13 +378,11 @@ def build_response(bsn: str, requester: str, btg: bool, dataset: str,
                           "message": "Geen gegevens voor dit BSN"})
 
 
-    print(f"check mode {CONFIG["mode"]}")
     # Hoeveel records levert break-the-glass werkelijk op? Uit de fixtures exact te
     # bepalen; live zouden we daarvoor alles dubbel moeten ophalen, dus dan laten we het
     # open en houdt de UI het bij een algemene formulering.
     btg_extra = None
     if btg and not alleen_nodes and CONFIG["mode"] != "live":
-        print(f"btg_extra")
         btg_extra = fixture_totaal(bsn, dataset, True) - fixture_totaal(bsn, dataset, False)
 
     result = {
@@ -413,8 +403,6 @@ def build_response(bsn: str, requester: str, btg: bool, dataset: str,
             "sources": sorted(bronnen),
         },
     }
-
-    print(f"result: {result}")
 
     return result
 
@@ -449,8 +437,6 @@ class Handler(BaseHTTPRequestHandler):
         pad = parsed.path
         query = urllib.parse.parse_qs(parsed.query)
 
-        print(CONFIG)
-
         if pad.startswith("/api/patient/"):
             bsn = pad.rsplit("/", 1)[-1]
             if not bsn.isdigit():
@@ -465,10 +451,8 @@ class Handler(BaseHTTPRequestHandler):
             # bron=nodes: uitsluitend de echte endpoints, geen fixtures, geen terugval.
             alleen_nodes = query.get("bron", ["demo"])[0] == "nodes"
             try:
-                print(f"patient")
                 return self._json(build_response(bsn, requester, btg, dataset, alleen_nodes))
             except Exception as err:  # nooit een demo laten klappen op een stacktrace
-                print(f"patient")
                 return self._json({"error": f"{type(err).__name__}: {err}"}, 500)
 
         if pad == "/api/config":
