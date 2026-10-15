@@ -35,6 +35,13 @@ WEB = ROOT / "web"
 
 ENDPOINTS = ["Patient", "Bloeddruk", "Lichaamsgewicht", "LichaamsLengte"]
 
+# De nodes die de federatie hoort te hebben. De oude successes/failures-vorm noemde ze
+# zelf; de nieuwe platte lijst laat weggevallen nodes gewoon weg. Zonder deze lijst
+# verdwijnen offline/consent-nodes stil uit de strip in plaats van als "geen gegevens"
+# te verschijnen. Aan te passen met DABS_NODES.
+KNOWN_NODES = [n.strip().lower() for n in
+               os.environ.get("DABS_NODES", "zio,mumc,envida,vitala").split(",") if n.strip()]
+
 # De federation API van een node bevraagt zijn eigen EHRbase en fant uit naar de andere
 # nodes. Een node bevragen volstaat dus. key1 hoort bij MUMC; ZIO wijst hem af met een 401.
 # Deze drie verschillen per werkplek. Ze zijn in te stellen met een vlag of een
@@ -93,11 +100,122 @@ def load_fixture(endpoint: str, btg: bool, dataset: str, bsn: str = None) -> dic
     return payload
 
 
+# ---------------------------------------------------------------------------
+# Normaliseren van de live-API
+# ---------------------------------------------------------------------------
+# De federation API levert per endpoint een platte lijst, met per record een ``Provider``
+# die de node noemt en alle velden in PascalCase. De rest van deze server én de frontend
+# werken op de oude vorm: per node een lijst met snake_case velden. Deze functies vertalen
+# het ene naar het andere, zodat alleen fetch_live hoeft te weten dat het formaat is
+# veranderd.
+def _snake(naam: str) -> str:
+    """PascalCase -> snake_case. 'LengteDatumTijd' -> 'lengte_datum_tijd'."""
+    uit = []
+    for i, teken in enumerate(naam):
+        vorige = naam[i - 1] if i else ""
+        if (teken.isupper() and i and vorige != "_"
+                and (not vorige.isupper()
+                     or (i + 1 < len(naam) and naam[i + 1].islower()))):
+            uit.append("_")
+        uit.append(teken.lower())
+    return "".join(uit)
+
+
+def _vind(knoop: dict, naam: str, standaard=None):
+    """Case-ongevoelig één sleutel uit een dict halen."""
+    for sleutel, waarde in knoop.items():
+        if sleutel.lower() == naam.lower():
+            return waarde
+    return standaard
+
+
+def _omzetten(knoop):
+    """Zet een live-waarde om naar snake_case.
+
+    Twee geneste conventies worden daarbij uitgepakt: ``{Magnitude, Units}`` (een meting)
+    wordt ``{"magnitude": ..., "units": ...}`` en ``{Value, Code, Terminology}`` (een
+    gecodeerde waarde) wordt zijn ``Value``.
+    """
+    if isinstance(knoop, dict):
+        sleutels = {sleutel.lower() for sleutel in knoop}
+        if sleutels == {"magnitude", "units"}:
+            return {"magnitude": _vind(knoop, "Magnitude"), "units": _vind(knoop, "Units")}
+        if sleutels <= {"value", "code", "terminology"}:
+            return _vind(knoop, "Value")
+        return {_snake(sleutel): _omzetten(waarde) for sleutel, waarde in knoop.items()}
+    if isinstance(knoop, list):
+        return [_omzetten(item) for item in knoop]
+    return knoop
+
+
+def _ontvouw(record: dict, bron: str, magnitude: str, units: str) -> None:
+    """``GewichtWaarde: {Magnitude, Units}`` -> losse ``..._magnitude`` en ``..._units``."""
+    waarde = record.pop(bron, None)
+    if isinstance(waarde, dict):
+        record[magnitude] = waarde.get("magnitude")
+        record[units] = waarde.get("units")
+
+
+def _norm_gewicht(record: dict) -> dict:
+    _ontvouw(record, "gewicht_waarde", "gewichtwaarde_magnitude", "gewichtwaarde_units")
+    return record
+
+
+def _norm_lengte(record: dict) -> dict:
+    _ontvouw(record, "lengte_waarde", "lengtewaarde_magnitude", "lengtewaarde_units")
+    return record
+
+
+def _norm_bloeddruk(record: dict) -> dict:
+    # Anders dan gewicht en lengte draagt de sleutel hier geen "Waarde": de frontend leest
+    # ``systolische_bloeddruk`` als een getal, niet als object.
+    for veld in ("systolische_bloeddruk", "diastolische_bloeddruk", "gemiddelde_bloeddruk"):
+        _ontvouw(record, veld, veld, f"{veld}_units")
+    # AnatomischeLocatie kan een gecodeerde waarde of een {Locatie, Lateraliteit}-object
+    # zijn; de frontend leest ``locatie``.
+    if isinstance(record.get("anatomische_locatie"), str):
+        record["anatomische_locatie"] = {"locatie": record["anatomische_locatie"], "lateraliteit": None}
+    return record
+
+
+def _norm_patient(record: dict) -> dict:
+    # De frontend leest dit als bool; de API stuurt een gecodeerde waarde die altijd truthy
+    # is, en dan zou "Ja" altijd op het scherm komen.
+    record["overlijdens_indicator"] = str(record.get("overlijdens_indicator") or "").strip().lower() in {
+        "dead", "ja", "true"}
+    return record
+
+
+NORMALISEERDERS = {
+    "Patient": _norm_patient,
+    "Bloeddruk": _norm_bloeddruk,
+    "Lichaamsgewicht": _norm_gewicht,
+    "LichaamsLengte": _norm_lengte,
+}
+
+
+def normaliseer_live(payload, endpoint: str) -> dict:
+    """Zet de platte live-lijst om naar de oude vorm per node.
+
+    Groepeert op ``Provider`` tot ``{"<node>_federation": [...]}`` met snake_case velden.
+    Een payload die de oude successes/failures-vorm al heeft, gaat ongewijzigd door.
+    """
+    if not isinstance(payload, list):
+        return payload
+    per_node = {}
+    for record in payload:
+        node = str(record.get("Provider") or "onbekend").lower()
+        omgezet = NORMALISEERDERS.get(endpoint, lambda r: r)(_omzetten(record))
+        per_node.setdefault(f"{node}_federation", []).append(omgezet)
+    return per_node
+
+
 def fetch_live(endpoint: str, bsn: str, requester: str, btg: bool) -> dict:
     """Haalt een endpoint op bij de federation API.
 
     Een 503 is hier geen fout: zolang niet alle nodes gezond zijn is dat het normale
-    antwoord, met de geslaagde nodes in ``successes``. Die body lezen we dus gewoon uit.
+    antwoord en lezen we de body dus gewoon uit. De platte live-lijst wordt hier meteen
+    genormaliseerd naar de oude vorm per node.
     """
     print(f"fetch_live")
     qs = urllib.parse.urlencode({"bsn": bsn, "requester": requester})
@@ -108,10 +226,10 @@ def fetch_live(endpoint: str, bsn: str, requester: str, btg: bool) -> dict:
     )
     try:
         with urllib.request.urlopen(req, timeout=CONFIG["timeout"]) as resp:
-            return json.loads(resp.read())
+            return normaliseer_live(json.loads(resp.read()), endpoint)
     except urllib.error.HTTPError as err:
         if err.code == 503:
-            return json.loads(err.read())
+            return normaliseer_live(json.loads(err.read()), endpoint)
         raise
 
 
@@ -220,6 +338,12 @@ def build_response(bsn: str, requester: str, btg: bool, dataset: str,
         alle_nodes.update(node_label(k) for k in successes)
         alle_nodes.update(node_label(k) for k in failures)
         bronnen.add(bron)
+
+    # De nieuwe live-API laat weggevallen nodes weg; vul de verwachte set aan zodat een
+    # offline of consent-geblokkeerde node als zodanig in de strip staat. Alleen wanneer de
+    # echte API bevraagd is: de fixtures modelleren bewust alleen zio + mumc.
+    if alleen_nodes or bronnen & {"live", "fixture-fallback"}:
+        alle_nodes.update(KNOWN_NODES)
 
     def voor(endpoint, veld):
         return flatten(per_endpoint.get(endpoint, {}), veld)
