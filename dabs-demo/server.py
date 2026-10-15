@@ -1,22 +1,22 @@
-"""BFF + statische server voor de DABS dashboard demo.
+"""BFF + static server for the DABS dashboard demo.
 
-Draait op de Python standard library, zonder pip install. Twee taken:
+Runs on the Python standard library, no pip install. Two jobs:
 
-1. ``/api/patient/<bsn>`` - haalt de vier federation-endpoints op, normaliseert de
-   200/503-responses tot een model dat de frontend kan tekenen, en houdt de API-keys
-   serverside.
-2. Alles daarbuiten - serveert ``web/``.
+1. ``/api/patient/<bsn>`` - fetches the four federation endpoints, normalizes the
+   200/503 responses into a model the frontend can draw, and keeps the API keys
+   server-side.
+2. Everything else - serves ``web/``.
 
-Modi (``--mode``):
-  fixture  De vastgelegde responses uit fixtures/. Standaard, want het cluster levert
-           op dit moment geen data.
-  live     De echte federation API. Valt per endpoint terug op de fixture als de node
-           niet antwoordt, zodat een demo niet omvalt op een wegvallende node.
+Modes (``--mode``):
+  fixture  The recorded responses from fixtures/. Default, because the cluster currently
+           serves no data.
+  live     The real federation API. Falls back per endpoint to the fixture if the node
+           does not answer, so a demo does not collapse on a failing node.
 
-Starten:
-    python3 server.py                      # fixtures, getrouwe set
-    python3 server.py --dataset rich       # fixtures, verrijkte meetreeksen
-    python3 server.py --mode live          # echte federation API
+Starting:
+    python3 server.py                      # fixtures, faithful set
+    python3 server.py --dataset rich       # fixtures, enriched measurement series
+    python3 server.py --mode live          # real federation API
 """
 
 import argparse
@@ -35,29 +35,29 @@ WEB = ROOT / "web"
 
 ENDPOINTS = ["Patient", "Bloeddruk", "Lichaamsgewicht", "LichaamsLengte"]
 
-# De nodes die de federatie hoort te hebben. De oude successes/failures-vorm noemde ze
-# zelf; de nieuwe platte lijst laat weggevallen nodes gewoon weg. Zonder deze lijst
-# verdwijnen offline/consent-nodes stil uit de strip in plaats van als "geen gegevens"
-# te verschijnen. Aan te passen met DABS_NODES.
+# The nodes the federation is supposed to have. The old successes/failures shape named
+# them itself; the new flat list simply leaves out nodes that dropped away. Without this
+# list, offline/consent nodes vanish silently from the strip instead of appearing as
+# "no data". Adjust with DABS_NODES.
 KNOWN_NODES = [n.strip().lower() for n in
                os.environ.get("DABS_NODES", "zio,mumc,envida,vitala").split(",") if n.strip()]
 
-# De federation API van een node bevraagt zijn eigen EHRbase en fant uit naar de andere
-# nodes. Een node bevragen volstaat dus. key1 hoort bij MUMC; ZIO wijst hem af met een 401.
-# Deze drie verschillen per werkplek. Ze zijn in te stellen met een vlag of een
-# omgevingsvariabele, zodat de code op elke machine ongewijzigd kan blijven.
-# De demo draait bij ZIO, dus bevragen we de federation API van ZIO. Dat bepaalt het
-# perspectief: de eigen node wordt zonder informed-consent-filter bevraagd, alle andere
-# nodes mét. Wijs dit naar een andere node en het beeld verandert navenant.
+# A node's federation API queries its own EHRbase and fans out to the other nodes.
+# Querying one node is therefore enough. key1 belongs to MUMC; ZIO rejects it with a 401.
+# These three differ per workstation. They can be set with a flag or an environment
+# variable, so the code can stay unchanged on every machine.
+# The demo runs at ZIO, so we query ZIO's federation API. That determines the perspective:
+# the own node is queried without the informed-consent filter, all other nodes with it.
+# Point this at another node and the picture changes accordingly.
 FEDERATION_BASE = os.environ.get("DABS_FEDERATION_BASE", "http://federation.zio.local.dh.unimaas.nl")
-KEY_NORMAAL = os.environ.get("DABS_KEY", "key2")
+KEY_NORMAL = os.environ.get("DABS_KEY", "key2")
 KEY_BTG = os.environ.get("DABS_BTG_KEY", "btgkey2")
 
-def eigen_node_uit_url(base: str) -> str:
-    """Leidt de eigen node af uit 'federation.<node>.local.dh.unimaas.nl'."""
+def own_node_from_url(base: str) -> str:
+    """Derives the own node from 'federation.<node>.local.dh.unimaas.nl'."""
     host = urllib.parse.urlparse(base).hostname or ""
-    delen = host.split(".")
-    return delen[1] if len(delen) > 1 and delen[0] == "federation" else ""
+    parts = host.split(".")
+    return parts[1] if len(parts) > 1 and parts[0] == "federation" else ""
 
 
 CONFIG = {
@@ -65,156 +65,155 @@ CONFIG = {
     "dataset": "faithful",
     "timeout": 30,
     "federation_base": FEDERATION_BASE,
-    "key": KEY_NORMAAL,
+    "key": KEY_NORMAL,
     "btg_key": KEY_BTG,
-    "eigen_node": eigen_node_uit_url(FEDERATION_BASE),
+    "eigen_node": own_node_from_url(FEDERATION_BASE),
 }
 
 
 # ---------------------------------------------------------------------------
-# Ophalen
+# Fetching
 # ---------------------------------------------------------------------------
 def fixture_dir(dataset: str) -> pathlib.Path:
     return ROOT / ("fixtures-rich" if dataset == "rich" else "fixtures")
 
 
 def fixture_bsn(dataset: str) -> str:
-    """Het BSN waar de fixtures over gaan, gelezen uit de Patient-fixture."""
+    """The BSN the fixtures are about, read from the Patient fixture."""
     patient = json.loads((fixture_dir(dataset) / "Patient.btg.json").read_text())
     for records in patient.values():
         for record in records:
-            nummers = record.get("identificatienummer") or []
-            if nummers:
-                return str(nummers[0])
+            numbers = record.get("identificatienummer") or []
+            if numbers:
+                return str(numbers[0])
     return ""
 
 
 def load_fixture(endpoint: str, btg: bool, dataset: str, bsn: str = None) -> dict:
-    naam = f"{endpoint}.btg.json" if btg else f"{endpoint}.json"
-    payload = json.loads((fixture_dir(dataset) / naam).read_text())
-    # De fixtures beschrijven één patiënt. Een ander BSN hoort leeg terug te komen,
-    # anders toont de demo de gegevens van de demopatiënt onder een vreemd nummer.
+    name = f"{endpoint}.btg.json" if btg else f"{endpoint}.json"
+    payload = json.loads((fixture_dir(dataset) / name).read_text())
+    # The fixtures describe one patient. A different BSN should come back empty,
+    # otherwise the demo shows the demo patient's data under a foreign number.
     if bsn is not None and bsn != fixture_bsn(dataset):
         return {node: [] for node in payload}
     return payload
 
 
 # ---------------------------------------------------------------------------
-# Normaliseren van de live-API
+# Normalizing the live API
 # ---------------------------------------------------------------------------
-# De federation API levert per endpoint een platte lijst, met per record een ``Provider``
-# die de node noemt en alle velden in PascalCase. De rest van deze server én de frontend
-# werken op de oude vorm: per node een lijst met snake_case velden. Deze functies vertalen
-# het ene naar het andere, zodat alleen fetch_live hoeft te weten dat het formaat is
-# veranderd.
-def _snake(naam: str) -> str:
+# The federation API returns a flat list per endpoint, with a ``Provider`` per record that
+# names the node and all fields in PascalCase. The rest of this server and the frontend
+# work on the old shape: a list per node with snake_case fields. These functions translate
+# one into the other, so only fetch_live needs to know that the format has changed.
+def _snake(name: str) -> str:
     """PascalCase -> snake_case. 'LengteDatumTijd' -> 'lengte_datum_tijd'."""
-    uit = []
-    for i, teken in enumerate(naam):
-        vorige = naam[i - 1] if i else ""
-        if (teken.isupper() and i and vorige != "_"
-                and (not vorige.isupper()
-                     or (i + 1 < len(naam) and naam[i + 1].islower()))):
-            uit.append("_")
-        uit.append(teken.lower())
-    return "".join(uit)
+    out = []
+    for i, char in enumerate(name):
+        prev = name[i - 1] if i else ""
+        if (char.isupper() and i and prev != "_"
+                and (not prev.isupper()
+                     or (i + 1 < len(name) and name[i + 1].islower()))):
+            out.append("_")
+        out.append(char.lower())
+    return "".join(out)
 
 
-def _vind(knoop: dict, naam: str, standaard=None):
-    """Case-ongevoelig één sleutel uit een dict halen."""
-    for sleutel, waarde in knoop.items():
-        if sleutel.lower() == naam.lower():
-            return waarde
-    return standaard
+def _find(node: dict, name: str, default=None):
+    """Case-insensitively pull one key from a dict."""
+    for key, value in node.items():
+        if key.lower() == name.lower():
+            return value
+    return default
 
 
-def _omzetten(knoop):
-    """Zet een live-waarde om naar snake_case.
+def _convert(node):
+    """Converts a live value to snake_case.
 
-    Twee geneste conventies worden daarbij uitgepakt: ``{Magnitude, Units}`` (een meting)
-    wordt ``{"magnitude": ..., "units": ...}`` en ``{Value, Code, Terminology}`` (een
-    gecodeerde waarde) wordt zijn ``Value``.
+    Two nested conventions are unwrapped in the process: ``{Magnitude, Units}`` (a
+    measurement) becomes ``{"magnitude": ..., "units": ...}`` and ``{Value, Code,
+    Terminology}`` (a coded value) becomes its ``Value``.
     """
-    if isinstance(knoop, dict):
-        sleutels = {sleutel.lower() for sleutel in knoop}
-        if sleutels == {"magnitude", "units"}:
-            return {"magnitude": _vind(knoop, "Magnitude"), "units": _vind(knoop, "Units")}
-        if sleutels <= {"value", "code", "terminology"}:
-            return _vind(knoop, "Value")
-        return {_snake(sleutel): _omzetten(waarde) for sleutel, waarde in knoop.items()}
-    if isinstance(knoop, list):
-        return [_omzetten(item) for item in knoop]
-    return knoop
+    if isinstance(node, dict):
+        keys = {key.lower() for key in node}
+        if keys == {"magnitude", "units"}:
+            return {"magnitude": _find(node, "Magnitude"), "units": _find(node, "Units")}
+        if keys <= {"value", "code", "terminology"}:
+            return _find(node, "Value")
+        return {_snake(key): _convert(value) for key, value in node.items()}
+    if isinstance(node, list):
+        return [_convert(item) for item in node]
+    return node
 
 
-def _ontvouw(record: dict, bron: str, magnitude: str, units: str) -> None:
-    """``GewichtWaarde: {Magnitude, Units}`` -> losse ``..._magnitude`` en ``..._units``."""
-    waarde = record.pop(bron, None)
-    if isinstance(waarde, dict):
-        record[magnitude] = waarde.get("magnitude")
-        record[units] = waarde.get("units")
+def _unfold(record: dict, source: str, magnitude: str, units: str) -> None:
+    """``GewichtWaarde: {Magnitude, Units}`` -> separate ``..._magnitude`` and ``..._units``."""
+    value = record.pop(source, None)
+    if isinstance(value, dict):
+        record[magnitude] = value.get("magnitude")
+        record[units] = value.get("units")
 
 
-def _norm_gewicht(record: dict) -> dict:
-    _ontvouw(record, "gewicht_waarde", "gewichtwaarde_magnitude", "gewichtwaarde_units")
+def _norm_weight(record: dict) -> dict:
+    _unfold(record, "gewicht_waarde", "gewichtwaarde_magnitude", "gewichtwaarde_units")
     return record
 
 
-def _norm_lengte(record: dict) -> dict:
-    _ontvouw(record, "lengte_waarde", "lengtewaarde_magnitude", "lengtewaarde_units")
+def _norm_length(record: dict) -> dict:
+    _unfold(record, "lengte_waarde", "lengtewaarde_magnitude", "lengtewaarde_units")
     return record
 
 
-def _norm_bloeddruk(record: dict) -> dict:
-    # Anders dan gewicht en lengte draagt de sleutel hier geen "Waarde": de frontend leest
-    # ``systolische_bloeddruk`` als een getal, niet als object.
-    for veld in ("systolische_bloeddruk", "diastolische_bloeddruk", "gemiddelde_bloeddruk"):
-        _ontvouw(record, veld, veld, f"{veld}_units")
-    # AnatomischeLocatie kan een gecodeerde waarde of een {Locatie, Lateraliteit}-object
-    # zijn; de frontend leest ``locatie``.
+def _norm_blood_pressure(record: dict) -> dict:
+    # Unlike weight and length, the key here carries no "Value": the frontend reads
+    # ``systolische_bloeddruk`` as a number, not as an object.
+    for field in ("systolische_bloeddruk", "diastolische_bloeddruk", "gemiddelde_bloeddruk"):
+        _unfold(record, field, field, f"{field}_units")
+    # AnatomischeLocatie can be a coded value or a {Locatie, Lateraliteit} object;
+    # the frontend reads ``locatie``.
     if isinstance(record.get("anatomische_locatie"), str):
         record["anatomische_locatie"] = {"locatie": record["anatomische_locatie"], "lateraliteit": None}
     return record
 
 
 def _norm_patient(record: dict) -> dict:
-    # De frontend leest dit als bool; de API stuurt een gecodeerde waarde die altijd truthy
-    # is, en dan zou "Ja" altijd op het scherm komen.
+    # The frontend reads this as a bool; the API sends a coded value that is always truthy,
+    # and then "Ja" would always appear on screen.
     record["overlijdens_indicator"] = str(record.get("overlijdens_indicator") or "").strip().lower() in {
         "dead", "ja", "true"}
     return record
 
 
-NORMALISEERDERS = {
+NORMALIZERS = {
     "Patient": _norm_patient,
-    "Bloeddruk": _norm_bloeddruk,
-    "Lichaamsgewicht": _norm_gewicht,
-    "LichaamsLengte": _norm_lengte,
+    "Bloeddruk": _norm_blood_pressure,
+    "Lichaamsgewicht": _norm_weight,
+    "LichaamsLengte": _norm_length,
 }
 
 
-def normaliseer_live(payload, endpoint: str) -> dict:
-    """Zet de platte live-lijst om naar de oude vorm per node.
+def normalize_live(payload, endpoint: str) -> dict:
+    """Converts the flat live list into the old shape per node.
 
-    Groepeert op ``Provider`` tot ``{"<node>_federation": [...]}`` met snake_case velden.
-    Een payload die de oude successes/failures-vorm al heeft, gaat ongewijzigd door.
+    Groups by ``Provider`` into ``{"<node>_federation": [...]}`` with snake_case fields.
+    A payload that already has the old successes/failures shape passes through unchanged.
     """
     if not isinstance(payload, list):
         return payload
     per_node = {}
     for record in payload:
         node = str(record.get("Provider") or "onbekend").lower()
-        omgezet = NORMALISEERDERS.get(endpoint, lambda r: r)(_omzetten(record))
-        per_node.setdefault(f"{node}_federation", []).append(omgezet)
+        converted = NORMALIZERS.get(endpoint, lambda r: r)(_convert(record))
+        per_node.setdefault(f"{node}_federation", []).append(converted)
     return per_node
 
 
 def fetch_live(endpoint: str, bsn: str, requester: str, btg: bool) -> dict:
-    """Haalt een endpoint op bij de federation API.
+    """Fetches one endpoint from the federation API.
 
-    Een 503 is hier geen fout: zolang niet alle nodes gezond zijn is dat het normale
-    antwoord en lezen we de body dus gewoon uit. De platte live-lijst wordt hier meteen
-    genormaliseerd naar de oude vorm per node.
+    A 503 is not an error here: as long as not all nodes are healthy that is the normal
+    answer, so we simply read the body. The flat live list is immediately normalized here
+    into the old shape per node.
     """
     qs = urllib.parse.urlencode({"bsn": bsn, "requester": requester})
     req = urllib.request.Request(
@@ -224,26 +223,26 @@ def fetch_live(endpoint: str, bsn: str, requester: str, btg: bool) -> dict:
     )
     try:
         with urllib.request.urlopen(req, timeout=CONFIG["timeout"]) as resp:
-            return normaliseer_live(json.loads(resp.read()), endpoint)
+            return normalize_live(json.loads(resp.read()), endpoint)
     except urllib.error.HTTPError as err:
         if err.code == 503:
-            return normaliseer_live(json.loads(err.read()), endpoint)
+            return normalize_live(json.loads(err.read()), endpoint)
         raise
 
 
 def get_payload(endpoint: str, bsn: str, requester: str, btg: bool, dataset: str,
-                alleen_nodes: bool = False) -> tuple:
-    """Levert (payload, bron) waarbij bron 'live', 'fixture' of 'fixture-fallback' is.
+                nodes_only: bool = False) -> tuple:
+    """Returns (payload, source) where source is 'live', 'fixture' or 'fixture-fallback'.
 
-    Met ``alleen_nodes`` wordt uitsluitend de echte federation API bevraagd en is er geen
-    terugval op fixtures: wat de nodes leveren is wat je ziet, ook als dat niets is.
+    With ``nodes_only`` only the real federation API is queried and there is no fallback to
+    fixtures: what the nodes deliver is what you see, even if that is nothing.
     """
-    if alleen_nodes:
+    if nodes_only:
         try:
             return fetch_live(endpoint, bsn, requester, btg), "live"
         except Exception as err:
-            # De federation API zelf is onbereikbaar, dus we weten niets per node.
-            # Dat als één duidelijke melding tonen is eerlijker dan per node gokken.
+            # The federation API itself is unreachable, so we know nothing per node.
+            # Showing that as one clear message is more honest than guessing per node.
             return {"successes": {}, "failures": {"federatie_federation": {
                 "error": type(err).__name__,
                 "message": f"{err} — {CONFIG['federation_base']}/{endpoint}"}}}, "live"
@@ -252,7 +251,7 @@ def get_payload(endpoint: str, bsn: str, requester: str, btg: bool, dataset: str
         return load_fixture(endpoint, btg, dataset, bsn), "fixture"
     try:
         payload = fetch_live(endpoint, bsn, requester, btg)
-        # Een response zonder enige geslaagde node is voor een demo waardeloos; val terug.
+        # A response without a single successful node is worthless for a demo; fall back.
         successes = payload.get("successes", payload)
         if not any(successes.get(k) for k in successes):
             if not payload.get("failures"):
@@ -264,10 +263,10 @@ def get_payload(endpoint: str, bsn: str, requester: str, btg: bool, dataset: str
 
 
 # ---------------------------------------------------------------------------
-# Normaliseren
+# Normalizing
 # ---------------------------------------------------------------------------
 def split_payload(payload: dict) -> tuple:
-    """Haalt (per_node_records, failures) uit een 200- of 503-body."""
+    """Pulls (per_node_records, failures) out of a 200 or 503 body."""
     if "successes" in payload or "failures" in payload:
         return payload.get("successes", {}), payload.get("failures", {})
     return payload, {}
@@ -277,20 +276,20 @@ def node_label(key: str) -> str:
     return key.removesuffix("_federation")
 
 
-def flatten(per_node: dict, datum_veld: str) -> list:
-    """Plat de per-node lijsten tot een reeks, verrijkt met _source en gesorteerd op datum."""
-    rijen = []
+def flatten(per_node: dict, date_field: str) -> list:
+    """Flattens the per-node lists into one series, enriched with _source and sorted by date."""
+    rows = []
     for node_key, records in per_node.items():
         for record in records:
-            rij = dict(record)
-            rij["_source"] = node_label(node_key)
-            rijen.append(rij)
-    rijen.sort(key=lambda r: r.get(datum_veld) or "")
-    return rijen
+            row = dict(record)
+            row["_source"] = node_label(node_key)
+            rows.append(row)
+    rows.sort(key=lambda r: r.get(date_field) or "")
+    return rows
 
 
-def fixture_totaal(bsn: str, dataset: str, btg: bool) -> int:
-    """Telt alle records in een fixtureset, om te bepalen wat break-the-glass oplevert."""
+def fixture_total(bsn: str, dataset: str, btg: bool) -> int:
+    """Counts all records in a fixture set, to determine what break-the-glass yields."""
     return sum(
         len(records)
         for endpoint in ENDPOINTS
@@ -298,109 +297,109 @@ def fixture_totaal(bsn: str, dataset: str, btg: bool) -> int:
     )
 
 
-def bepaal_modus(bronnen: set) -> str:
-    """Vertaalt de gebruikte databronnen naar een label voor de statusstrip."""
-    if bronnen == {"live"}:
+def determine_mode(sources: set) -> str:
+    """Translates the data sources used into a label for the status strip."""
+    if sources == {"live"}:
         return "live"
-    if bronnen == {"fixture"}:
+    if sources == {"fixture"}:
         return "fixture"
-    if bronnen == {"fixture-fallback"}:
-        return "fallback"  # live geprobeerd, geen enkele node leverde
+    if sources == {"fixture-fallback"}:
+        return "fallback"  # live attempted, no single node delivered
     return "gemengd"
 
 
 def build_response(bsn: str, requester: str, btg: bool, dataset: str,
-                   alleen_nodes: bool = False) -> dict:
+                   nodes_only: bool = False) -> dict:
     start = time.time()
 
     with ThreadPoolExecutor(max_workers=4) as pool:
-        resultaten = dict(
+        results = dict(
             zip(
                 ENDPOINTS,
-                pool.map(lambda ep: get_payload(ep, bsn, requester, btg, dataset, alleen_nodes), ENDPOINTS),
+                pool.map(lambda ep: get_payload(ep, bsn, requester, btg, dataset, nodes_only), ENDPOINTS),
             )
         )
 
-    per_endpoint, bronnen = {}, set()
-    alle_failures, alle_nodes = {}, set()
-    for endpoint, (payload, bron) in resultaten.items():
+    per_endpoint, sources = {}, set()
+    all_failures, all_nodes = {}, set()
+    for endpoint, (payload, source) in results.items():
         successes, failures = split_payload(payload)
         per_endpoint[endpoint] = successes
-        alle_failures.update(failures)
-        alle_nodes.update(node_label(k) for k in successes)
-        alle_nodes.update(node_label(k) for k in failures)
-        bronnen.add(bron)
+        all_failures.update(failures)
+        all_nodes.update(node_label(k) for k in successes)
+        all_nodes.update(node_label(k) for k in failures)
+        sources.add(source)
 
-    # De nieuwe live-API laat weggevallen nodes weg; vul de verwachte set aan zodat een
-    # offline of consent-geblokkeerde node als zodanig in de strip staat. Alleen wanneer de
-    # echte API bevraagd is: de fixtures modelleren bewust alleen zio + mumc.
-    if alleen_nodes or bronnen & {"live", "fixture-fallback"}:
-        alle_nodes.update(KNOWN_NODES)
+    # The new live API leaves out nodes that dropped away; fill in the expected set so an
+    # offline or consent-blocked node appears as such in the strip. Only when the real API
+    # was queried: the fixtures deliberately model only zio + mumc.
+    if nodes_only or sources & {"live", "fixture-fallback"}:
+        all_nodes.update(KNOWN_NODES)
 
-    def voor(endpoint, veld):
-        return flatten(per_endpoint.get(endpoint, {}), veld)
+    def series_for(endpoint, field):
+        return flatten(per_endpoint.get(endpoint, {}), field)
 
-    bloeddruk = voor("Bloeddruk", "bloeddruk_datum_tijd")
-    gewicht = voor("Lichaamsgewicht", "gewicht_datum_tijd")
-    lengte = voor("LichaamsLengte", "lengte_datum_tijd")
-    patient = voor("Patient", "start_time")
+    blood_pressure = series_for("Bloeddruk", "bloeddruk_datum_tijd")
+    weight = series_for("Lichaamsgewicht", "gewicht_datum_tijd")
+    length = series_for("LichaamsLengte", "lengte_datum_tijd")
+    patient = series_for("Patient", "start_time")
 
-    # Per node bepalen wat er aan de hand is. Drie uitkomsten die de UI los toont:
-    # offline (node antwoordde niet), consent_blocked (node antwoordde, maar het
-    # informed-consent-filter liet niets door) en ok.
-    tellingen = {}
-    for reeks in (bloeddruk, gewicht, lengte, patient):
-        for rij in reeks:
-            tellingen[rij["_source"]] = tellingen.get(rij["_source"], 0) + 1
+    # Determine per node what is going on. Three outcomes the UI shows separately:
+    # offline (node did not answer), consent_blocked (node answered, but the
+    # informed-consent filter let nothing through) and ok.
+    counts = {}
+    for series in (blood_pressure, weight, length, patient):
+        for row in series:
+            counts[row["_source"]] = counts.get(row["_source"], 0) + 1
 
-    # De API vertelt niet waarom een node nul records teruggeeft. Twee gevallen zijn wel
-    # te onderscheiden: levert geen enkele node iets, dan is de patiënt er niet; levert
-    # een andere node wel en staat break-the-glass uit, dan is het consent-filter de reden.
-    iemand_heeft_data = any(tellingen.values())
-    eigen = CONFIG["eigen_node"]
+    # The API does not say why a node returns zero records. Two cases can be
+    # distinguished: if no single node delivers anything, the patient is not there; if
+    # another node does and break-the-glass is off, then the consent filter is the reason.
+    someone_has_data = any(counts.values())
+    own_node = CONFIG["eigen_node"]
 
     nodes = []
-    # Eigen node eerst: die bepaalt het perspectief en wordt niet consent-gefilterd.
-    for naam in sorted(alle_nodes, key=lambda n: (n != eigen, n)):
-        aantal = tellingen.get(naam, 0)
-        basis = {"name": naam, "own": naam == eigen}
-        if f"{naam}_federation" in alle_failures:
-            fout = alle_failures[f"{naam}_federation"]
-            bericht = fout.get("message") if isinstance(fout, dict) else str(fout)
-            nodes.append({**basis, "status": "offline", "records": 0, "message": bericht})
-        elif aantal:
-            nodes.append({**basis, "status": "ok", "records": aantal, "message": None})
-        elif iemand_heeft_data and not btg:
-            nodes.append({**basis, "status": "consent_blocked", "records": 0,
+    # Own node first: it determines the perspective and is not consent-filtered.
+    for name in sorted(all_nodes, key=lambda n: (n != own_node, n)):
+        count = counts.get(name, 0)
+        base = {"name": name, "own": name == own_node}
+        if f"{name}_federation" in all_failures:
+            error = all_failures[f"{name}_federation"]
+            message = error.get("message") if isinstance(error, dict) else str(error)
+            nodes.append({**base, "status": "offline", "records": 0, "message": message})
+        elif count:
+            nodes.append({**base, "status": "ok", "records": count, "message": None})
+        elif someone_has_data and not btg:
+            nodes.append({**base, "status": "consent_blocked", "records": 0,
                           "message": "Geen toestemming voor gegevensuitwisseling"})
         else:
-            nodes.append({**basis, "status": "geen_data", "records": 0,
+            nodes.append({**base, "status": "geen_data", "records": 0,
                           "message": "Geen gegevens voor dit BSN"})
 
 
-    # Hoeveel records levert break-the-glass werkelijk op? Uit de fixtures exact te
-    # bepalen; live zouden we daarvoor alles dubbel moeten ophalen, dus dan laten we het
-    # open en houdt de UI het bij een algemene formulering.
+    # How many records does break-the-glass actually yield? From the fixtures it can be
+    # determined exactly; live we would have to fetch everything twice for that, so we
+    # leave it open and the UI sticks to a general wording.
     btg_extra = None
-    if btg and not alleen_nodes and CONFIG["mode"] != "live":
-        btg_extra = fixture_totaal(bsn, dataset, True) - fixture_totaal(bsn, dataset, False)
+    if btg and not nodes_only and CONFIG["mode"] != "live":
+        btg_extra = fixture_total(bsn, dataset, True) - fixture_total(bsn, dataset, False)
 
     result = {
         "bsn": bsn,
         "nodes": nodes,
         "patient": patient,
-        "bloeddruk": bloeddruk,
-        "gewicht": gewicht,
-        "lengte": lengte,
+        "bloeddruk": blood_pressure,
+        "gewicht": weight,
+        "lengte": length,
         "meta": {
             "btg": btg,
             "requester": requester,
             "duration_ms": int((time.time() - start) * 1000),
-            "mode": "nodes" if alleen_nodes else bepaal_modus(bronnen),
-            "dataset": None if alleen_nodes else dataset,
+            "mode": "nodes" if nodes_only else determine_mode(sources),
+            "dataset": None if nodes_only else dataset,
             "eigen_node": CONFIG["eigen_node"],
             "btg_extra_records": btg_extra,
-            "sources": sorted(bronnen),
+            "sources": sorted(sources),
         },
     }
 
@@ -434,38 +433,38 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
-        pad = parsed.path
+        path = parsed.path
         query = urllib.parse.parse_qs(parsed.query)
 
-        if pad.startswith("/api/patient/"):
-            bsn = pad.rsplit("/", 1)[-1]
+        if path.startswith("/api/patient/"):
+            bsn = path.rsplit("/", 1)[-1]
             if not bsn.isdigit():
                 return self._json({"error": "Ongeldig BSN"}, 400)
             requester = query.get("requester", ["Rolf"])[0]
             btg = query.get("btg", ["false"])[0].lower() == "true"
-            # De client mag de dataset per verzoek kiezen; dat voedt de schakelaar
-            # "alleen brondata", die de aangevulde reeksen buiten beeld houdt.
+            # The client may choose the dataset per request; that feeds the "alleen brondata"
+            # toggle, which keeps the enriched series out of view.
             dataset = query.get("dataset", [CONFIG["dataset"]])[0]
             if dataset not in ("faithful", "rich"):
                 dataset = CONFIG["dataset"]
-            # bron=nodes: uitsluitend de echte endpoints, geen fixtures, geen terugval.
-            alleen_nodes = query.get("bron", ["demo"])[0] == "nodes"
+            # bron=nodes: only the real endpoints, no fixtures, no fallback.
+            nodes_only = query.get("bron", ["demo"])[0] == "nodes"
             try:
-                return self._json(build_response(bsn, requester, btg, dataset, alleen_nodes))
-            except Exception as err:  # nooit een demo laten klappen op een stacktrace
+                return self._json(build_response(bsn, requester, btg, dataset, nodes_only))
+            except Exception as err:  # never let a demo crash on a stack trace
                 return self._json({"error": f"{type(err).__name__}: {err}"}, 500)
 
-        if pad == "/api/config":
+        if path == "/api/config":
             return self._json({"mode": CONFIG["mode"], "dataset": CONFIG["dataset"]})
 
-        bestand = WEB / "index.html" if pad in ("/", "") else WEB / pad.lstrip("/")
+        file = WEB / "index.html" if path in ("/", "") else WEB / path.lstrip("/")
         try:
-            bestand = bestand.resolve()
-            bestand.relative_to(WEB.resolve())  # weert padtraversal
-            data = bestand.read_bytes()
+            file = file.resolve()
+            file.relative_to(WEB.resolve())  # blocks path traversal
+            data = file.read_bytes()
         except (OSError, ValueError):
             return self._send(b"Niet gevonden", "text/plain; charset=utf-8", 404)
-        self._send(data, MIME.get(bestand.suffix, "application/octet-stream"))
+        self._send(data, MIME.get(file.suffix, "application/octet-stream"))
 
 
 def main():
@@ -478,7 +477,7 @@ def main():
                         help="seconden per federation-call voordat op de fixture wordt teruggevallen")
     parser.add_argument("--federation-base", default=FEDERATION_BASE,
                         help="basis-URL van de federation API van je eigen node")
-    parser.add_argument("--key", default=KEY_NORMAAL, help="X-API-Key van je node")
+    parser.add_argument("--key", default=KEY_NORMAL, help="X-API-Key van je node")
     parser.add_argument("--btg-key", default=KEY_BTG, help="break-the-glass key van je node")
     parser.add_argument("--host", default="0.0.0.0",
                         help="luisteradres; 0.0.0.0 om de demo op het netwerk te delen")
@@ -492,7 +491,7 @@ def main():
     CONFIG["federation_base"] = args.federation_base.rstrip("/")
     CONFIG["key"] = args.key
     CONFIG["btg_key"] = args.btg_key
-    CONFIG["eigen_node"] = args.eigen_node or eigen_node_uit_url(CONFIG["federation_base"])
+    CONFIG["eigen_node"] = args.eigen_node or own_node_from_url(CONFIG["federation_base"])
 
     print(f"\n  DABS demo   mode={args.mode}  dataset={args.dataset}")
     print(f"  federation  {CONFIG['federation_base']}  (eigen node: {CONFIG['eigen_node'] or 'onbekend'})")
