@@ -2,3 +2,8 @@ BSN,MANCHET_TYPE,MEETMETHODE,SYSTOLISCHE_BLOEDDRUK (mmHg),DIASTOLISCHE_BLOEDDRUK
 999990603,Jong kind,Non-invasief,108,73,,2021-07-04T21:03:56.351,,,,,,1984-04-16T15:34:59.427,PASS-Test data min
 999991504,,,,,,,,,,,,,FAIL-Test data none
 999991905,,,,,,,,,,,,2024-10-10T10:10:10.410,FAIL-Test data empty
+999990603,,Non-invasief,139,85,,2018-08-11T00:00:00.000,,Structuur van linker bovenarm,Links,Zittende positie,,2018-08-11T00:00:00.000,PASS
+999990603,,Non-invasief,142,89,,2021-03-17T00:00:00.000,,Structuur van linker bovenarm,Links,Zittende positie,,2021-03-17T00:00:00.000,PASS
+999990603,,Non-invasief,136,87,,2023-09-05T00:00:00.000,,Structuur van rechter bovenarm,Rechts,Staande positie,,2023-09-05T00:00:00.000,PASS
+999990603,,Non-invasief,133,84,,2024-08-20T00:00:00.000,,Structuur van linker bovenarm,Links,Zittende positie,,2024-08-20T00:00:00.000,PASS
+999990603,,Non-invasief,129,83,,2025-01-01T00:00:00.000,,Structuur van linker bovenarm,Links,Zittende positie,,2025-01-01T00:00:00.000,PASS

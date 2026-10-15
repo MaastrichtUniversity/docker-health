@@ -2,3 +2,8 @@ BSN,MANCHET_TYPE,MEETMETHODE,SYSTOLISCHE_BLOEDDRUK (mmHg),DIASTOLISCHE_BLOEDDRUK
 999999801,Groot,Bloeddrukmeting met gebruikmaking van manchet,110,65,68,2024-06-26T09:10:25.629,the health condition of the patient’s cardiovascular system.,Structuur van rechter bovenarm,Rechts,Liggende positie,Fase 5,2024-11-14T15:50:14.321,PASS-Test valid start_time
 999990603,,,108,73,,2021-07-04T21:03:56.351,,,,,,1983-03-16T15:34:59.427,PASS-Test data min
 999992806,Extra groot,Invasief meten van arteriële bloeddruk,108,73,53,2003-12-05T20:49:02.547,De arteriële bloeddruk,Structuur van bovenbeen,Links,Gekantelde positie,Fase 4,2007-12-04T12:09:45.581,PASS
+999990603,,Non-invasief,122,80,,2022-05-05T00:00:00.000,,Structuur van bovenarm,Links,Liggende positie,,2022-05-05T00:00:00.000,PASS
+999990603,,Non-invasief,130,85,,2023-04-04T00:00:00.000,,Structuur van bovenarm,Links,Liggende positie,,2023-04-04T00:00:00.000,PASS
+999990603,,Non-invasief,127,81,,2024-02-20T00:00:00.000,,Structuur van bovenbeen,Rechts,Staande positie,,2024-02-20T00:00:00.000,PASS
+999990603,,Non-invasief,124,79,,2024-11-20T00:00:00.000,,Structuur van bovenarm,Links,Liggende positie,,2024-11-20T00:00:00.000,PASS
+999990603,,Non-invasief,119,77,,2025-05-05T00:00:00.000,,Structuur van bovenarm,Links,Zittende positie,,2025-05-05T00:00:00.000,PASS

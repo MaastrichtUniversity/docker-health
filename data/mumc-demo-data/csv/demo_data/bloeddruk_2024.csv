@@ -2,3 +2,8 @@ BSN,MANCHET_TYPE,MEETMETHODE,SYSTOLISCHE_BLOEDDRUK (mmHg),DIASTOLISCHE_BLOEDDRUK
 999999801,Standaard,Non-invasief,120,75,71,2023-11-14T15:50:14.321,de gezondheidstoestand van het cardiovasculairsysteem van de patiënt,Structuur van bovenarm,Links,Staande positie,Fase 4,2023-11-14T15:50:14.321,PASS
 999990202,Klein,Invasief,130,56,53,2023-11-14T15:50:14.321,A comment,Structuur van linker bovenarm,Bilateraal,Zittende positie,Other,2023-12-31T23:59:59.871,PASS-Test data max
 999990603,,,108,73,,2021-07-04T21:03:56.351,,,,,,1983-03-16T15:34:59.427,PASS-Test data min
+999990603,,Non-invasief,128,84,,2023-02-14T09:20:00.000,,Structuur van rechter bovenarm,Rechts,Zittende positie,,2023-02-14T09:20:00.000,PASS
+999990603,,Non-invasief,134,88,,2023-06-27T11:05:00.000,,Structuur van rechter bovenarm,Rechts,Zittende positie,,2023-06-27T11:05:00.000,PASS
+999990603,,Non-invasief,126,82,,2024-01-24T14:54:00.000,,Structuur van linker bovenarm,Links,Gekantelde positie,,2024-01-24T14:54:00.000,PASS
+999990603,,Non-invasief,109,75,,2024-06-04T20:51:14.000,,Structuur van linker bovenarm,Links,Gekantelde positie,,2024-06-04T20:51:14.000,PASS
+999990603,,Non-invasief,118,79,,2024-10-15T10:15:00.000,,Structuur van linker bovenarm,Links,Zittende positie,,2024-10-15T10:15:00.000,PASS
