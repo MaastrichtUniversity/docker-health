@@ -5,8 +5,8 @@ metadata:
 data:
   NODENAME: envida
   DATASET_FOLDER_NAME: envida-demo-data
-  SOURCE_SYSTEM_ID: "Nedap Ons"
-  INPUT_FORMAT: "fhir"
+  SOURCE_SYSTEM_ID: DEMO_DATA
+  INPUT_FORMAT: csv
   LOGGER_FILENAME: logs/envida/etl-zib.log
   NEDAP_CERT_BASE_URL: https://api-development.ons.io
   NEDAP_NUMBER_PATIENT_MAX: "20"
@@ -16,18 +16,9 @@ data:
     []
   TEMPLATE_IDS: |
     [
+      "DataHub-InformedConsent",
       "DataHub-Bloeddruk-2024",
-      "DataHub-Diagnose-2024",
       "DataHub-Lichaamsgewicht-2024",
       "DataHub-Lichaamslengte-2024",
-      "DataHub-Mobiliteit-2024",
-      "DataHub-Patient-2024",
-      "DataHub-VermogenTotDrinken-2024",
-      "DataHub-VermogenTotEten-2024",
-      "DataHub-VermogenTotMondverzorging-2024",
-      "DataHub-VermogenTotToiletgang-2024",
-      "DataHub-VermogenTotUiterlijkeVerzorging-2024",
-      "DataHub-VermogenTotZelfstandigMedicatiegebruik-2024",
-      "DataHub-VermogenTotZichKleden-2024",
-      "DataHub-VermogenTotZichWassen-2024"
+      "DataHub-Patient-2024"
     ]
