@@ -1,0 +1,302 @@
+[
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "zio",
+    "StartTime": "2002-01-19T09:43:13.174",
+    "GewichtWaarde": {
+      "Magnitude": 85,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2002-01-19T09:43:13.174",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "zio",
+    "StartTime": "2010-02-02T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 88.1,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2010-02-02T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "zio",
+    "StartTime": "2014-06-14T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 90.4,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2014-06-14T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "zio",
+    "StartTime": "2018-03-03T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 92.0,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2018-03-03T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "zio",
+    "StartTime": "2021-01-11T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 89.5,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2021-01-11T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "zio",
+    "StartTime": "2023-12-12T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 87.2,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2023-12-12T00:00:00",
+    "Toelichting": null,
+    "Kleding": {
+      "Value": "Minimale kleding",
+      "Code": "220121000146105",
+      "Terminology": "ContextKleding & SNOMED CT"
+    }
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "envida",
+    "StartTime": "2009-05-05T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 64.0,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2009-05-05T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "envida",
+    "StartTime": "2013-09-09T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 67.3,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2013-09-09T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "envida",
+    "StartTime": "2017-04-04T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 70.5,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2017-04-04T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "envida",
+    "StartTime": "2020-08-08T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 72.8,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2020-08-08T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "envida",
+    "StartTime": "2022-11-11T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 71.4,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2022-11-11T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "envida",
+    "StartTime": "2024-01-01T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 70.9,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2024-01-01T00:00:00",
+    "Toelichting": null,
+    "Kleding": {
+      "Value": "Minimale kleding",
+      "Code": "220121000146105",
+      "Terminology": "ContextKleding & SNOMED CT"
+    }
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "mumc",
+    "StartTime": "2023-09-10T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 75.7,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2023-09-10T00:00:00",
+    "Toelichting": null,
+    "Kleding": {
+      "Value": "Minimale kleding",
+      "Code": "220121000146105",
+      "Terminology": "ContextKleding & SNOMED CT"
+    }
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "mumc",
+    "StartTime": "2008-01-01T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 61.2,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2008-01-01T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "mumc",
+    "StartTime": "2012-03-03T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 65.8,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2012-03-03T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "mumc",
+    "StartTime": "2016-07-07T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 69.0,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2016-07-07T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "mumc",
+    "StartTime": "2019-10-10T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 73.4,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2019-10-10T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "mumc",
+    "StartTime": "2024-01-20T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 76.2,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2024-01-20T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "vitala",
+    "StartTime": "2011-02-02T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 55.5,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2011-02-02T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "vitala",
+    "StartTime": "2015-05-05T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 58.9,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2015-05-05T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "vitala",
+    "StartTime": "2018-08-08T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 62.1,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2018-08-08T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "vitala",
+    "StartTime": "2021-11-11T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 65.0,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2021-11-11T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "vitala",
+    "StartTime": "2024-02-02T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 66.6,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2024-02-02T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "vitala",
+    "StartTime": "2025-06-06T00:00:00",
+    "GewichtWaarde": {
+      "Magnitude": 67.1,
+      "Units": "kg"
+    },
+    "GewichtDatumTijd": "2025-06-06T00:00:00",
+    "Toelichting": null,
+    "Kleding": null
+  }
+]

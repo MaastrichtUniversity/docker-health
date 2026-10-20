@@ -1,0 +1,66 @@
+[
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "zio",
+    "StartTime": "2001-03-19T11:43:13.174",
+    "LengteWaarde": {
+      "Magnitude": 184,
+      "Units": "cm"
+    },
+    "LengteDatumTijd": "2001-03-19T10:43:13.174",
+    "Toelichting": "Zonder schoenen",
+    "Positie": {
+      "Value": "Liggende positie",
+      "Code": "102538003",
+      "Terminology": "SNOMED CT"
+    }
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "envida",
+    "StartTime": "2001-03-19T11:43:13.174",
+    "LengteWaarde": {
+      "Magnitude": 199,
+      "Units": "cm"
+    },
+    "LengteDatumTijd": "2001-03-19T10:43:13.174",
+    "Toelichting": "Zonder schoenen",
+    "Positie": {
+      "Value": "Liggende positie",
+      "Code": "102538003",
+      "Terminology": "SNOMED CT"
+    }
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "mumc",
+    "StartTime": "2002-01-19T09:43:13.174",
+    "LengteWaarde": {
+      "Magnitude": 120,
+      "Units": "cm"
+    },
+    "LengteDatumTijd": "2002-01-19T09:43:13.174",
+    "Toelichting": null,
+    "Positie": {
+      "Value": "Other",
+      "Code": "OTH",
+      "Terminology": "SNOMED CT"
+    }
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "vitala",
+    "StartTime": "2001-03-19T11:43:13.174",
+    "LengteWaarde": {
+      "Magnitude": 199,
+      "Units": "cm"
+    },
+    "LengteDatumTijd": "2001-03-19T10:43:13.174",
+    "Toelichting": "Zonder schoenen",
+    "Positie": {
+      "Value": "Liggende positie",
+      "Code": "102538003",
+      "Terminology": "SNOMED CT"
+    }
+  }
+]

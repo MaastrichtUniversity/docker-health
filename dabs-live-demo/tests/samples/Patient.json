@@ -1,0 +1,390 @@
+[
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "zio",
+    "StartTime": "2024-10-10T10:10:10.41",
+    "Naamgegevens": {
+      "Voornamen": "Johanna Petronella Maria",
+      "Initialen": "J.P.M.",
+      "Roepnaam": "Jo",
+      "Naamgebruik": {
+        "Value": "Eigen geslachtsnaam",
+        "Code": "NL1",
+        "Terminology": "NaamGebruik"
+      },
+      "Voorvoegsels": "van",
+      "Achternaam": "Putten",
+      "VoorvoegselsPartner": "van der",
+      "AchternaamPartner": "Giessen",
+      "Titels": "Prof"
+    },
+    "Adresgegevens": [
+      {
+        "Straat": "1e Jacob van Campenstr",
+        "Huisnummer": "15",
+        "Huisnummerletter": "BV",
+        "Huisnummertoevoeging": "TG",
+        "AanduidingBijNummer": {
+          "Value": "Bij",
+          "Code": "by",
+          "Terminology": "AanduidingBijHuisnummer & NullFlavor"
+        },
+        "Woonplaats": "Hoogmade",
+        "Gemeente": "Kaag en Braassem",
+        "Postcode": "1012 NX",
+        "Land": {
+          "Value": "Nederland",
+          "Code": "NL",
+          "Terminology": "ISO 3166-1 alpha-2 & NullFlavor"
+        },
+        "AdresSoort": {
+          "Value": "Visit Address",
+          "Code": "PHYS",
+          "Terminology": "AddressUse & NullFlavor"
+        },
+        "AdditioneleInformatie": "Data Max"
+      }
+    ],
+    "Contactgegevens": {
+      "Telefoonnummers": [
+        {
+          "Telefoonnummer": "31611234568",
+          "NummerSoort": {
+            "Value": "Work Place",
+            "Code": "WP",
+            "Terminology": "AddressUse & NullFlavor"
+          },
+          "TelecomType": {
+            "Value": "Mobile Contact",
+            "Code": "MC",
+            "Terminology": "TelecomDeviceTypes & AddressUse & NullFavor"
+          },
+          "Toelichting": "c"
+        }
+      ],
+      "EmailAdressen": [
+        {
+          "EmailAdres": "giesput@myweb.nl",
+          "EmailSoort": {
+            "Value": "Primary Home",
+            "Code": "HP",
+            "Terminology": "AddressUse & NullFlavor"
+          }
+        }
+      ]
+    },
+    "Identificatienummer": [
+      "999990603"
+    ],
+    "Geboortedatum": "1984-10-03",
+    "MeerlingIndicator": false,
+    "MeerlingVolgorde": null,
+    "Geslacht": {
+      "Value": "Unknown",
+      "Code": "UNK",
+      "Terminology": "http://terminology.hl7.org/CodeSystem/v3-NullFlavor"
+    },
+    "Genderidentiteit": {
+      "Value": "Non-binaire genderidentiteit",
+      "Code": "33791000087105",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "OverlijdensIndicator": {
+      "Value": "Dead",
+      "Code": "at0006",
+      "Terminology": "local"
+    },
+    "DatumOverlijden": "2042-01-01"
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "envida",
+    "StartTime": "2023-11-18T15:30:12.123",
+    "Naamgegevens": {
+      "Voornamen": "Johanna Petronella Maria",
+      "Initialen": "J.P.M.",
+      "Roepnaam": "Jo",
+      "Naamgebruik": {
+        "Value": "Eigen geslachtsnaam",
+        "Code": "NL1",
+        "Terminology": "NaamGebruik"
+      },
+      "Voorvoegsels": "van",
+      "Achternaam": "Putten",
+      "VoorvoegselsPartner": "van der",
+      "AchternaamPartner": "Giessen",
+      "Titels": "Prof"
+    },
+    "Adresgegevens": [
+      {
+        "Straat": "1e Jacob van Campenstr",
+        "Huisnummer": "15",
+        "Huisnummerletter": "BV",
+        "Huisnummertoevoeging": "TG",
+        "AanduidingBijNummer": {
+          "Value": "Bij",
+          "Code": "by",
+          "Terminology": "AanduidingBijHuisnummer & NullFlavor"
+        },
+        "Woonplaats": "Hoogmade",
+        "Gemeente": "Kaag en Braassem",
+        "Postcode": "1012 NX",
+        "Land": {
+          "Value": "Nederland",
+          "Code": "NL",
+          "Terminology": "ISO 3166-1 alpha-2 & NullFlavor"
+        },
+        "AdresSoort": {
+          "Value": "Visit Address",
+          "Code": "PHYS",
+          "Terminology": "AddressUse & NullFlavor"
+        },
+        "AdditioneleInformatie": "Data Max"
+      }
+    ],
+    "Contactgegevens": {
+      "Telefoonnummers": [
+        {
+          "Telefoonnummer": "31611234568",
+          "NummerSoort": {
+            "Value": "Work Place",
+            "Code": "WP",
+            "Terminology": "AddressUse & NullFlavor"
+          },
+          "TelecomType": {
+            "Value": "Mobile Contact",
+            "Code": "MC",
+            "Terminology": "TelecomDeviceTypes & AddressUse & NullFavor"
+          },
+          "Toelichting": "c"
+        }
+      ],
+      "EmailAdressen": [
+        {
+          "EmailAdres": "giesput@myweb.nl",
+          "EmailSoort": {
+            "Value": "Primary Home",
+            "Code": "HP",
+            "Terminology": "AddressUse & NullFlavor"
+          }
+        }
+      ]
+    },
+    "Identificatienummer": [
+      "999990603"
+    ],
+    "Geboortedatum": "1984-10-03",
+    "MeerlingIndicator": false,
+    "MeerlingVolgorde": null,
+    "Geslacht": {
+      "Value": "Unknown",
+      "Code": "UNK",
+      "Terminology": "http://terminology.hl7.org/CodeSystem/v3-NullFlavor"
+    },
+    "Genderidentiteit": {
+      "Value": "Non-binaire genderidentiteit",
+      "Code": "33791000087105",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "OverlijdensIndicator": {
+      "Value": "Dead",
+      "Code": "at0006",
+      "Terminology": "local"
+    },
+    "DatumOverlijden": "2042-01-01"
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "mumc",
+    "StartTime": "2023-11-14T15:50:14.321",
+    "Naamgegevens": {
+      "Voornamen": "Johanna Petronella Maria",
+      "Initialen": "J.P.M.",
+      "Roepnaam": "Jo",
+      "Naamgebruik": {
+        "Value": "Eigen geslachtsnaam",
+        "Code": "NL1",
+        "Terminology": "NaamGebruik"
+      },
+      "Voorvoegsels": "van",
+      "Achternaam": "Putten",
+      "VoorvoegselsPartner": "van der",
+      "AchternaamPartner": "Giessen",
+      "Titels": "Prof"
+    },
+    "Adresgegevens": [
+      {
+        "Straat": "1e Jacob van Campenstr",
+        "Huisnummer": "15",
+        "Huisnummerletter": "BV",
+        "Huisnummertoevoeging": "TG",
+        "AanduidingBijNummer": {
+          "Value": "Bij",
+          "Code": "by",
+          "Terminology": "AanduidingBijHuisnummer & NullFlavor"
+        },
+        "Woonplaats": "Hoogmade",
+        "Gemeente": "Kaag en Braassem",
+        "Postcode": "1012 NX",
+        "Land": {
+          "Value": "Nederland",
+          "Code": "NL",
+          "Terminology": "ISO 3166-1 alpha-2 & NullFlavor"
+        },
+        "AdresSoort": {
+          "Value": "Visit Address",
+          "Code": "PHYS",
+          "Terminology": "AddressUse & NullFlavor"
+        },
+        "AdditioneleInformatie": "Data Max"
+      }
+    ],
+    "Contactgegevens": {
+      "Telefoonnummers": [
+        {
+          "Telefoonnummer": "31611234568",
+          "NummerSoort": {
+            "Value": "Work Place",
+            "Code": "WP",
+            "Terminology": "AddressUse & NullFlavor"
+          },
+          "TelecomType": {
+            "Value": "Mobile Contact",
+            "Code": "MC",
+            "Terminology": "TelecomDeviceTypes & AddressUse & NullFavor"
+          },
+          "Toelichting": "c"
+        }
+      ],
+      "EmailAdressen": [
+        {
+          "EmailAdres": "giesput@myweb.nl",
+          "EmailSoort": {
+            "Value": "Primary Home",
+            "Code": "HP",
+            "Terminology": "AddressUse & NullFlavor"
+          }
+        }
+      ]
+    },
+    "Identificatienummer": [
+      "999990603"
+    ],
+    "Geboortedatum": "1984-10-03",
+    "MeerlingIndicator": false,
+    "MeerlingVolgorde": null,
+    "Geslacht": {
+      "Value": "Unknown",
+      "Code": "UNK",
+      "Terminology": "http://terminology.hl7.org/CodeSystem/v3-NullFlavor"
+    },
+    "Genderidentiteit": {
+      "Value": "Non-binaire genderidentiteit",
+      "Code": "33791000087105",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "OverlijdensIndicator": {
+      "Value": "Dead",
+      "Code": "at0006",
+      "Terminology": "local"
+    },
+    "DatumOverlijden": "2042-01-01"
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "vitala",
+    "StartTime": "2023-11-14T15:50:14.321",
+    "Naamgegevens": {
+      "Voornamen": "Johanna Petronella Maria",
+      "Initialen": "J.P.M.",
+      "Roepnaam": "Jo",
+      "Naamgebruik": {
+        "Value": "Eigen geslachtsnaam",
+        "Code": "NL1",
+        "Terminology": "NaamGebruik"
+      },
+      "Voorvoegsels": "van",
+      "Achternaam": "Putten",
+      "VoorvoegselsPartner": "van der",
+      "AchternaamPartner": "Giessen",
+      "Titels": "Prof"
+    },
+    "Adresgegevens": [
+      {
+        "Straat": "1e Jacob van Campenstr",
+        "Huisnummer": "15",
+        "Huisnummerletter": "BV",
+        "Huisnummertoevoeging": "TG",
+        "AanduidingBijNummer": {
+          "Value": "Bij",
+          "Code": "by",
+          "Terminology": "AanduidingBijHuisnummer & NullFlavor"
+        },
+        "Woonplaats": "Hoogmade",
+        "Gemeente": "Kaag en Braassem",
+        "Postcode": "1012 NX",
+        "Land": {
+          "Value": "Nederland",
+          "Code": "NL",
+          "Terminology": "ISO 3166-1 alpha-2 & NullFlavor"
+        },
+        "AdresSoort": {
+          "Value": "Visit Address",
+          "Code": "PHYS",
+          "Terminology": "AddressUse & NullFlavor"
+        },
+        "AdditioneleInformatie": "Data Max"
+      }
+    ],
+    "Contactgegevens": {
+      "Telefoonnummers": [
+        {
+          "Telefoonnummer": "31611234568",
+          "NummerSoort": {
+            "Value": "Work Place",
+            "Code": "WP",
+            "Terminology": "AddressUse & NullFlavor"
+          },
+          "TelecomType": {
+            "Value": "Mobile Contact",
+            "Code": "MC",
+            "Terminology": "TelecomDeviceTypes & AddressUse & NullFavor"
+          },
+          "Toelichting": "c"
+        }
+      ],
+      "EmailAdressen": [
+        {
+          "EmailAdres": "giesput@myweb.nl",
+          "EmailSoort": {
+            "Value": "Primary Home",
+            "Code": "HP",
+            "Terminology": "AddressUse & NullFlavor"
+          }
+        }
+      ]
+    },
+    "Identificatienummer": [
+      "999990603"
+    ],
+    "Geboortedatum": "1984-10-03",
+    "MeerlingIndicator": false,
+    "MeerlingVolgorde": null,
+    "Geslacht": {
+      "Value": "Unknown",
+      "Code": "UNK",
+      "Terminology": "http://terminology.hl7.org/CodeSystem/v3-NullFlavor"
+    },
+    "Genderidentiteit": {
+      "Value": "Non-binaire genderidentiteit",
+      "Code": "33791000087105",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "OverlijdensIndicator": {
+      "Value": "Dead",
+      "Code": "at0006",
+      "Terminology": "local"
+    },
+    "DatumOverlijden": "2042-01-01"
+  }
+]

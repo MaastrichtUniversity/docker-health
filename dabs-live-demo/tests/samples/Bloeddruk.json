@@ -1,0 +1,868 @@
+[
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "zio",
+    "StartTime": "2018-08-11T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 139,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 85,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2018-08-11T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van linker bovenarm",
+        "Code": "368208006",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Links",
+        "Code": "7771000",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "zio",
+    "StartTime": "2017-05-02T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 128,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 79,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2017-05-02T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van linker bovenarm",
+        "Code": "368208006",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Links",
+        "Code": "7771000",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "zio",
+    "StartTime": "2019-01-20T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 135,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 82,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2019-01-20T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van linker bovenarm",
+        "Code": "368208006",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Links",
+        "Code": "7771000",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "zio",
+    "StartTime": "2020-11-05T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 142,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 88,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2020-11-05T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van linker bovenarm",
+        "Code": "368208006",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Links",
+        "Code": "7771000",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "zio",
+    "StartTime": "2022-06-15T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 130,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 81,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2022-06-15T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van linker bovenarm",
+        "Code": "368208006",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Links",
+        "Code": "7771000",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "zio",
+    "StartTime": "2023-09-07T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 126,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 78,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2023-09-07T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van linker bovenarm",
+        "Code": "368208006",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Links",
+        "Code": "7771000",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "envida",
+    "StartTime": "1983-03-16T15:34:59.427",
+    "ManchetType": null,
+    "Meetmethode": null,
+    "SystolischeBloeddruk": {
+      "Magnitude": 108,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 73,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2021-07-04T21:03:56.351",
+    "Toelichting": null,
+    "AnatomischeLocatie": null,
+    "Houding": null,
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "envida",
+    "StartTime": "2016-02-11T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 118,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 74,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2016-02-11T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": null,
+    "Houding": null,
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "envida",
+    "StartTime": "2017-08-23T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 121,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 76,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2017-08-23T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": null,
+    "Houding": null,
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "envida",
+    "StartTime": "2019-04-14T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 124,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 77,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2019-04-14T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": null,
+    "Houding": null,
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "envida",
+    "StartTime": "2020-12-30T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 127,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 80,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2020-12-30T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": null,
+    "Houding": null,
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "envida",
+    "StartTime": "2022-10-19T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 119,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 75,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2022-10-19T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": null,
+    "Houding": null,
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "mumc",
+    "StartTime": "2015-03-08T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 132,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 84,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2015-03-08T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van rechter bovenarm",
+        "Code": "368209003",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Rechts",
+        "Code": "24028007",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "mumc",
+    "StartTime": "2016-07-21T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 136,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 86,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2016-07-21T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van rechter bovenarm",
+        "Code": "368209003",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Rechts",
+        "Code": "24028007",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "mumc",
+    "StartTime": "2018-01-15T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 141,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 90,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2018-01-15T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van rechter bovenarm",
+        "Code": "368209003",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Rechts",
+        "Code": "24028007",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "mumc",
+    "StartTime": "2019-09-27T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 129,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 83,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2019-09-27T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van rechter bovenarm",
+        "Code": "368209003",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Rechts",
+        "Code": "24028007",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "mumc",
+    "StartTime": "2021-04-03T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 134,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 85,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2021-04-03T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van rechter bovenarm",
+        "Code": "368209003",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Rechts",
+        "Code": "24028007",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "mumc",
+    "StartTime": "2023-02-18T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 138,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 87,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2023-02-18T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van rechter bovenarm",
+        "Code": "368209003",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Rechts",
+        "Code": "24028007",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "vitala",
+    "StartTime": "2024-03-12T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 121,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 80,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2024-03-12T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van bovenarm",
+        "Code": "40983000",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Bilateraal",
+        "Code": "51440002",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "vitala",
+    "StartTime": "2015-01-05T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 115,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 72,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2015-01-05T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van bovenarm",
+        "Code": "40983000",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Bilateraal",
+        "Code": "51440002",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "vitala",
+    "StartTime": "2016-11-11T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 117,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 74,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2016-11-11T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van bovenarm",
+        "Code": "40983000",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Bilateraal",
+        "Code": "51440002",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "vitala",
+    "StartTime": "2018-06-06T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 123,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 78,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2018-06-06T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van bovenarm",
+        "Code": "40983000",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Bilateraal",
+        "Code": "51440002",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "vitala",
+    "StartTime": "2020-02-02T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 125,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 79,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2020-02-02T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van bovenarm",
+        "Code": "40983000",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Bilateraal",
+        "Code": "51440002",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  },
+  {
+    "SystemId": "DEMO_DATA",
+    "Provider": "vitala",
+    "StartTime": "2022-08-08T00:00:00",
+    "ManchetType": null,
+    "Meetmethode": {
+      "Value": "Non-invasief",
+      "Code": "22762002",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "SystolischeBloeddruk": {
+      "Magnitude": 120,
+      "Units": "mm[Hg]"
+    },
+    "DiastolischeBloeddruk": {
+      "Magnitude": 77,
+      "Units": "mm[Hg]"
+    },
+    "GemiddeldeBloeddruk": null,
+    "BloeddrukDatumTijd": "2022-08-08T00:00:00",
+    "Toelichting": null,
+    "AnatomischeLocatie": {
+      "Locatie": {
+        "Value": "Structuur van bovenarm",
+        "Code": "40983000",
+        "Terminology": "SNOMED CT & NullFlavor"
+      },
+      "Lateraliteit": {
+        "Value": "Bilateraal",
+        "Code": "51440002",
+        "Terminology": "SNOMED CT"
+      }
+    },
+    "Houding": {
+      "Value": "Zittende positie",
+      "Code": "33586001",
+      "Terminology": "SNOMED CT & NullFlavor"
+    },
+    "DiastolischEindpunt": null
+  }
+]
