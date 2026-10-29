@@ -59,6 +59,16 @@ spec:
                 name: etl-data-encryption-passphrase
                 key: passphrase
           # ENVIDA-node
+          - name: ENVIDA__EHRBASE_ADMIN_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: envida-ehrbase-admin-creds
+                key: username
+          - name: ENVIDA__EHRBASE_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: envida-ehrbase-admin-creds
+                key: password
           - name: ENVIDA__EHRBASE_USERNAME
             valueFrom:
               secretKeyRef:
@@ -100,6 +110,16 @@ spec:
           - name: ENVIDA__TRANSFORM_SPRING_BASE_URL
             value: "http://transform-rest.dh-health-envida:8080"
           # MUMC-node
+          - name: MUMC__EHRBASE_ADMIN_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-admin-creds
+                key: username
+          - name: MUMC__EHRBASE_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mumc-ehrbase-admin-creds
+                key: password
           - name: MUMC__EHRBASE_USERNAME
             valueFrom:
               secretKeyRef:
@@ -141,6 +161,16 @@ spec:
           - name: MUMC__TRANSFORM_SPRING_BASE_URL
             value: "http://transform-rest.dh-health-mumc:8080"
           # VITALA-node
+          - name: VITALA__EHRBASE_ADMIN_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: vitala-ehrbase-admin-creds
+                key: username
+          - name: VITALA__EHRBASE_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: vitala-ehrbase-admin-creds
+                key: password
           - name: VITALA__EHRBASE_USERNAME
             valueFrom:
               secretKeyRef:
@@ -182,6 +212,16 @@ spec:
           - name: VITALA__TRANSFORM_SPRING_BASE_URL
             value: "http://transform-rest.dh-health-vitala:8080"
           # ZIO-node
+          - name: ZIO__EHRBASE_ADMIN_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: zio-ehrbase-admin-creds
+                key: username
+          - name: ZIO__EHRBASE_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: zio-ehrbase-admin-creds
+                key: password
           - name: ZIO__EHRBASE_USERNAME
             valueFrom:
               secretKeyRef:
