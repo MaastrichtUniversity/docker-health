@@ -319,7 +319,7 @@ function kpiTegels(data) {
   rij.appendChild(
     lg
       ? tegel("Laatste lengte",
-          [fmtGetal(lg.lengtewaarde_magnitude), el("small", { text: lg.lengtewaarde_units })],
+          [fmtGetal(lg.lengtewaarde_magnitude, 1), el("small", { text: lg.lengtewaarde_units })],
           [bronBadge(lg._source), fmtDatum(lg.lengte_datum_tijd)])
       : tegel("Laatste lengte", ["Geen meting"], [], true)
   );
