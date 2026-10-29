@@ -13,13 +13,7 @@ data:
   SUBJECT_IDS: |
     []
   TEMPLATE_IDS: |
-    [
-      "DataHub-InformedConsent",
-      "DataHub-Bloeddruk-2024",
-      "DataHub-Lichaamsgewicht-2024",
-      "DataHub-Lichaamslengte-2024",
-      "DataHub-Patient-2024"
-    ]
+    []
 #  TEMPLATE_IDS: |
 #    [
 #      "DataHub-Ademhaling-2024",
