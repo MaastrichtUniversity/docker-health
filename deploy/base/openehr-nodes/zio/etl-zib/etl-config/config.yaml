@@ -5,7 +5,7 @@ metadata:
 data:
   NODENAME: zio
   DATASET_FOLDER_NAME: zio-demo-data
-  SOURCE_SYSTEM_ID: DEMO_DATA
+  SOURCE_SYSTEM_ID: Tetra
   INPUT_FORMAT: csv
   LOGGER_FILENAME: logs/zio/etl-zib.log
   WRITE_COMPOSITION: "true"
