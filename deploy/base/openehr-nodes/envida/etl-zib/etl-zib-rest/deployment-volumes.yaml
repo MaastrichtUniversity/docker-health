@@ -22,7 +22,6 @@ spec:
                 secretKeyRef:
                   name: nedap-cert-pass
                   key: password
-        - name: etl-zib-rest
           volumeMounts:
             - name: outputs
               mountPath: /code/outputs
