@@ -201,7 +201,17 @@ body {
 .legenda i { width: 11px; height: 11px; display: inline-block; }
 .legenda .lijn { width: 16px; height: 3px; border-radius: 2px; }
 .legenda-marker { display: block; overflow: visible; }
+Improve .paneel-rechts { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.paneel-knop {
+  padding: 5px 11px; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  background: #fff; color: var(--tekst); border: 1px solid var(--rand); border-radius: var(--radius);
+}
+.paneel-knop:hover { border-color: var(--accent); color: var(--accent); }
+.paneel-knop.actief { background: var(--navy); border-color: var(--navy); color: #fff; }
 
+/* De viewBox-breedte wordt bij het tekenen op de daadwerkelijke pixelbreedte
+   gezet (zie tekenDashboard), zodat width:100% een 1:1-mapping is en tekst,
+   lijnen en markers een vaste grootte houden ongeacht het venster. */
 .grafiek { width: 100%; display: block; overflow: visible; }
 .grafiek text { font-size: 11px; fill: var(--gedempt); }
 .grafiek .as { stroke: #c4cbdb; stroke-width: 1; }
