@@ -27,7 +27,7 @@ function bronStijl(bron) {
 const LIJN_NEUTRAAL = "#7c8396";
 const BRON_NAAM = { mumc: "MUMC", zio: "ZIO", federatie: "Federation-API" };
 
-const state = { bsn: null, btg: false, alleenBrondata: false, data: null, laden: false, config: {} };
+const state = { bsn: null, btg: false, alleenBrondata: false, data: null, laden: false, config: {}, bdLaatsteJaar: false, gwLaatsteJaar: false };
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, kinderen = []) => {
@@ -76,8 +76,8 @@ function toonZoek() {
 function openDossier(bsn) {
   state.bsn = bsn;
   state.data = null;
-  $("#pk-naam").textContent = "Dhr/Mw test (46)";
-  $("#pk-geboortedatum").textContent = "01-01-1980";
+  $("#pk-naam").textContent = "Mw A. De Vries";
+  $("#pk-geboortedatum").textContent = "8-10-1950";
   $("#pk-bsn").textContent = bsn;
   $("#view-zoek").classList.add("verborgen");
   $("#view-dossier").classList.remove("verborgen");
@@ -102,8 +102,8 @@ function zoek(bsn) {
   doel.appendChild(
     el("button", { class: "treffer", onclick: () => openDossier(bsn) }, [
       el("div", {}, [
-        el("div", { class: "treffer-naam", text: "Dhr/Mw test" }),
-        el("div", { class: "treffer-meta", text: `BSN ${bsn} · geboren 01-01-1980 · Praktijk DABS` }),
+        el("div", { class: "treffer-naam", text: "Mw A. De Vries" }),
+        el("div", { class: "treffer-meta", text: `BSN ${bsn} · geboren 8-10-1950 · Praktijk DABS` }),
       ]),
     ])
   );
@@ -518,10 +518,27 @@ function paneel(titel, kopExtra, body) {
 
 /* ── Bloeddruk ─────────────────────────────────────────────────────── */
 
+const JAAR_MS = 365 * 86400000;
+
 function bloeddrukPaneel(data) {
-  const rijen = data.bloeddruk;
-  if (!rijen.length) {
+  const alles = data.bloeddruk;
+  if (!alles.length) {
     return paneel("Bloeddruk", null, el("div", { class: "leegmelding", text: "Geen bloeddrukmetingen beschikbaar." }));
+  }
+
+  const rijen = state.bdLaatsteJaar
+    ? alles.filter((r) => Date.now() - new Date(r.bloeddruk_datum_tijd).getTime() <= JAAR_MS)
+    : alles;
+
+  const knop = el("button", {
+    class: `paneel-knop${state.bdLaatsteJaar ? " actief" : ""}`,
+    "aria-pressed": String(state.bdLaatsteJaar),
+    text: "Laatste 12 maanden",
+    onclick: () => { state.bdLaatsteJaar = !state.bdLaatsteJaar; tekenDashboard(state.data); },
+  });
+
+  if (!rijen.length) {
+    return paneel("Bloeddruk", knop, el("div", { class: "leegmelding", text: "Geen bloeddrukmetingen in de laatste 12 maanden." }));
   }
 
   const punt = (r, veld, label) => ({
@@ -586,15 +603,32 @@ function bloeddrukPaneel(data) {
   legendaItems.push({ vorm: "lijn", kleur: LIJN_NEUTRAAL, label: "Systolisch" });
   legendaItems.push({ vorm: "streeplijn", kleur: LIJN_NEUTRAAL, label: "Diastolisch" });
 
-  return paneel("Bloeddruk", legenda(legendaItems), [uitleg, svg, tabel].filter(Boolean));
+  return paneel("Bloeddruk",
+    el("div", { class: "paneel-rechts" }, [legenda(legendaItems), knop]),
+    [uitleg, svg, tabel].filter(Boolean));
 }
 
 /* ── Gewicht ───────────────────────────────────────────────────────── */
 
 function gewichtPaneel(data) {
-  const rijen = data.gewicht;
-  if (!rijen.length) {
+  const alles = data.gewicht;
+  if (!alles.length) {
     return paneel("Gewichtsverloop", null, el("div", { class: "leegmelding", text: "Geen gewichtsmetingen beschikbaar." }));
+  }
+
+  const rijen = state.gwLaatsteJaar
+    ? alles.filter((r) => Date.now() - new Date(r.gewicht_datum_tijd).getTime() <= JAAR_MS)
+    : alles;
+
+  const knop = el("button", {
+    class: `paneel-knop${state.gwLaatsteJaar ? " actief" : ""}`,
+    "aria-pressed": String(state.gwLaatsteJaar),
+    text: "Laatste 12 maanden",
+    onclick: () => { state.gwLaatsteJaar = !state.gwLaatsteJaar; tekenDashboard(state.data); },
+  });
+
+  if (!rijen.length) {
+    return paneel("Gewichtsverloop", knop, el("div", { class: "leegmelding", text: "Geen gewichtsmetingen in de laatste 12 maanden." }));
   }
 
   const bronnen = [...new Set(rijen.map((r) => r._source))].sort();
@@ -630,7 +664,10 @@ function gewichtPaneel(data) {
   ]);
 
   return paneel("Gewichtsverloop",
-    legenda(bronnen.map((b) => ({ vorm: "marker", bron: b, label: bronNaam(b) }))),
+    el("div", { class: "paneel-rechts" }, [
+      legenda(bronnen.map((b) => ({ vorm: "marker", bron: b, label: bronNaam(b) }))),
+      knop,
+    ]),
     [svg, tabel]);
 }
 

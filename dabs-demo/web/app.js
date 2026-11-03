@@ -76,8 +76,8 @@ function toonZoek() {
 function openDossier(bsn) {
   state.bsn = bsn;
   state.data = null;
-  $("#pk-naam").textContent = "Dhr/Mw test (46)";
-  $("#pk-geboortedatum").textContent = "01-01-1980";
+  $("#pk-naam").textContent = "Mw A. De Vries";
+  $("#pk-geboortedatum").textContent = "8-10-1950";
   $("#pk-bsn").textContent = bsn;
   $("#view-zoek").classList.add("verborgen");
   $("#view-dossier").classList.remove("verborgen");
@@ -102,8 +102,8 @@ function zoek(bsn) {
   doel.appendChild(
     el("button", { class: "treffer", onclick: () => openDossier(bsn) }, [
       el("div", {}, [
-        el("div", { class: "treffer-naam", text: "Dhr/Mw test" }),
-        el("div", { class: "treffer-meta", text: `BSN ${bsn} · geboren 01-01-1980 · Praktijk DABS` }),
+        el("div", { class: "treffer-naam", text: "Mw A. De Vries" }),
+        el("div", { class: "treffer-meta", text: `BSN ${bsn} · geboren 8-10-1950 · Praktijk DABS` }),
       ]),
     ])
   );
