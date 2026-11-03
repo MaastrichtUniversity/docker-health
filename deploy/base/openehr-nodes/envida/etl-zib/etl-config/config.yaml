@@ -5,8 +5,8 @@ metadata:
 data:
   NODENAME: envida
   DATASET_FOLDER_NAME: envida-demo-data
-  SOURCE_SYSTEM_ID: DEMO_DATA
-  INPUT_FORMAT: csv
+  SOURCE_SYSTEM_ID: "Nedap Ons"
+  INPUT_FORMAT: "fhir"
   LOGGER_FILENAME: logs/envida/etl-zib.log
   NEDAP_CERT_BASE_URL: https://api-development.ons.io
   NEDAP_NUMBER_PATIENT_MAX: "20"
