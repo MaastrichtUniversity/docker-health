@@ -89,7 +89,12 @@ function kiesTab(naam) {
   const isDabs = naam === "dabs";
   $("#tab-leeg").classList.toggle("verborgen", isDabs);
   $("#tab-dabs").classList.toggle("verborgen", !isDabs);
-  if (isDabs && !state.data && !state.laden) laadDabs();
+  if (isDabs) {
+    // Data al geladen: opnieuw tekenen zodat de grafieken de actuele
+    // breedte oppakken (bijv. na een vensterverandering terwijl de tab af was).
+    if (state.data) tekenDashboard(state.data);
+    else if (!state.laden) laadDabs();
+  }
 }
 
 function zoek(bsn) {
@@ -150,6 +155,13 @@ function tekenDashboard(data) {
   const doel = $("#tab-dabs");
   doel.innerHTML = "";
 
+  // De beschikbare tekenbreedte meten, zodat de grafieken op echte pixelmaten
+  // worden getekenen in plaats van op een vaste schaal die mee schaalt.
+  const proef = el("div", { style: "visibility:hidden" });
+  doel.appendChild(proef);
+  const breedte = Math.max(360, proef.clientWidth - 34); // paneel-rand (2×1) + paneel-body-padding (2×16)
+  proef.remove();
+
   doel.appendChild(federatiestrip(data));
 
   if (data.meta.btg) {
@@ -185,8 +197,8 @@ function tekenDashboard(data) {
 
   doel.appendChild(patientgegevens(data));
   doel.appendChild(kpiTegels(data));
-  doel.appendChild(bloeddrukPaneel(data));
-  doel.appendChild(gewichtPaneel(data));
+  doel.appendChild(bloeddrukPaneel(data, breedte));
+  doel.appendChild(gewichtPaneel(data, breedte));
   doel.appendChild(ruweData(data));
 }
 
@@ -371,9 +383,11 @@ function netteTicks(min, max, aantal = 5) {
  * Tijdreeksgrafiek als inline SVG.
  * series: [{naam, kleur, punten:[{t:Date, y:Number, bron, tip}], streep}]
  * banden: [{van, tot, kleur, label}] — horizontale referentievlakken
+ * breedte: pixelbreedte van de tekening; de viewBox volgt die 1:1, zodat tekst,
+ * lijnstreken en markers een vaste grootte houden ongeacht de venstergrootte.
  */
-function tekenGrafiek({ series, banden = [], yEenheid = "", hoogte = 300, domeinHint = null }) {
-  const B = 900, H = hoogte;
+function tekenGrafiek({ series, banden = [], yEenheid = "", hoogte = 300, domeinHint = null, breedte = 900 }) {
+  const B = breedte, H = hoogte;
   const M = { boven: 26, rechts: 16, onder: 36, links: 52 };
   const pb = B - M.links - M.rechts;
   const ph = H - M.boven - M.onder;
@@ -520,7 +534,7 @@ function paneel(titel, kopExtra, body) {
 
 const JAAR_MS = 365 * 86400000;
 
-function bloeddrukPaneel(data) {
+function bloeddrukPaneel(data, breedte = 900) {
   const alles = data.bloeddruk;
   if (!alles.length) {
     return paneel("Bloeddruk", null, el("div", { class: "leegmelding", text: "Geen bloeddrukmetingen beschikbaar." }));
@@ -573,6 +587,7 @@ function bloeddrukPaneel(data) {
     ],
     yEenheid: "mmHg",
     domeinHint: { min: 60, max: 150 }, // houdt de klinische referentie in beeld
+    breedte,
   });
 
   const uitleg = rijen.length < 4
@@ -610,7 +625,7 @@ function bloeddrukPaneel(data) {
 
 /* ── Gewicht ───────────────────────────────────────────────────────── */
 
-function gewichtPaneel(data) {
+function gewichtPaneel(data, breedte = 900) {
   const alles = data.gewicht;
   if (!alles.length) {
     return paneel("Gewichtsverloop", null, el("div", { class: "leegmelding", text: "Geen gewichtsmetingen beschikbaar." }));
@@ -647,7 +662,7 @@ function gewichtPaneel(data) {
     })),
   }];
 
-  const svg = tekenGrafiek({ series, yEenheid: "kg", hoogte: 260 });
+  const svg = tekenGrafiek({ series, yEenheid: "kg", hoogte: 260, breedte });
 
   const tabel = el("div", { class: "tabelwrap" }, [
     el("table", { class: "data" }, [
@@ -801,6 +816,16 @@ $("#topbar-bsn").addEventListener("keydown", (e) => { if (e.key === "Enter") $("
 $("#tabs").addEventListener("click", (e) => {
   const knop = e.target.closest("button[data-tab]");
   if (knop) kiesTab(knop.dataset.tab);
+});
+
+let _resizeTimer = null;
+window.addEventListener("resize", () => {
+  clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(() => {
+    const zichtbaar = !$("#view-dossier").classList.contains("verborgen") &&
+                      !$("#tab-dabs").classList.contains("verborgen");
+    if (state.data && zichtbaar) tekenDashboard(state.data);
+  }, 150);
 });
 
 fetch("/api/config").then((r) => r.json()).then((c) => { state.config = c; }).catch(() => {});

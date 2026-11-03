@@ -209,6 +209,9 @@ body {
 .paneel-knop:hover { border-color: var(--accent); color: var(--accent); }
 .paneel-knop.actief { background: var(--navy); border-color: var(--navy); color: #fff; }
 
+/* De viewBox-breedte wordt bij het tekenen op de daadwerkelijke pixelbreedte
+   gezet (zie tekenDashboard), zodat width:100% een 1:1-mapping is en tekst,
+   lijnen en markers een vaste grootte houden ongeacht het venster. */
 .grafiek { width: 100%; display: block; overflow: visible; }
 .grafiek text { font-size: 11px; fill: var(--gedempt); }
 .grafiek .as { stroke: #c4cbdb; stroke-width: 1; }
