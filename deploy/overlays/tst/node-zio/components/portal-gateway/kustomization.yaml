@@ -3,3 +3,4 @@ kind: Component
 
 resources:
   - portal-gateway.yaml
+  - dabs-demo-gateway.yaml

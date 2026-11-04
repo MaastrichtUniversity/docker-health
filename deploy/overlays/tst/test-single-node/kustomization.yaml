@@ -4,19 +4,19 @@ kind: Kustomization
 namespace: dh-health-test-single-node
 
 resources:
-- ../../../base-config/proxy
-- namespace.yaml
-- vault-auth.yaml
-- secrets.yaml
-- test-secrets.yaml
-- volumes.yaml
-- job.yaml
-# TEST-node
-- ../../../base/openehr-nodes/test/ehrbase
-- ../../../base/openehr-nodes/test/ehrdb
-- ../../../base/openehr-nodes/test/etl-zib/etl-config
-- ../../../base/openehr-nodes/test/terminology-server-proxy
-- ../../../base/openehr-nodes/test/transform-rest
+  - ../../../base-config/proxy
+  - namespace.yaml
+  - vault-auth.yaml
+  - secrets.yaml
+  - test-secrets.yaml
+  - volumes.yaml
+  - job.yaml
+  # TEST-node
+  - ../../../base/openehr-nodes/test/ehrbase
+  - ../../../base/openehr-nodes/test/ehrdb
+  - ../../../base/openehr-nodes/test/etl-zib/etl-config
+  - ../../../base/openehr-nodes/test/terminology-server-proxy
+  - ../../../base/openehr-nodes/test/transform-rest
 
 components:
   - ../shared-components
@@ -97,7 +97,6 @@ patches:
           configMapRef:
             name: proxy-config
 
-# Set ADMIN_API_ACTIVE: "true" and ADMIN_BASE_URL for development purposes while running the tests teardown.
 configMapGenerator:
   - name: etl-config-node
     behavior: merge
