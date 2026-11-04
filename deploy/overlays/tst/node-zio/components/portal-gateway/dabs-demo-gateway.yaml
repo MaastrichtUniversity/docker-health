@@ -1,0 +1,37 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: dabs-demo-gateway
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: brickshuisarts.zio.tst.dh.unimaas.nl
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: brick-zio-tls-secret
+    - name: http
+      port: 80
+      protocol: HTTP
+      hostname: brickshuisarts.zio.tst.dh.unimaas.nl
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: dabs-demo-route
+spec:
+  parentRefs:
+    - name: dabs-demo-gateway
+  hostnames:
+    - brickshuisarts.zio.tst.dh.unimaas.nl
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: dabs-demo
+          port: 8800

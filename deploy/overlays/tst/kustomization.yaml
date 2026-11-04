@@ -18,6 +18,8 @@ images:
     newTag: "2026.1.4"
   - name: registry.prod.dh.unimaas.nl/docker-health/init-container
     newTag: "2026.1.4"
+  - name: registry.prod.dh.unimaas.nl/docker-health/dabs-demo
+    newTag: "2026.1.4"
 
 resources:
   # DHP resources
