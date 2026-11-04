@@ -13,7 +13,7 @@ resources:
 components:
   - components
   - ../shared-components
-  - ../certificates/nedap-certificate-secret
+## - ../certificates/nedap-certificate-secret
 
 patches:
   - target:

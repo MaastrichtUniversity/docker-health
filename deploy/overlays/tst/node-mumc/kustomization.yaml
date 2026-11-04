@@ -13,7 +13,7 @@ resources:
 components:
   - components
   - ../shared-components
-  - ../certificates/epic-certificate-secret
+##  - ../certificates/epic-certificate-secret
 
 patches:
   - target:
