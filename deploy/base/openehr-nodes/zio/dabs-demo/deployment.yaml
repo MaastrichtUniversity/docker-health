@@ -19,6 +19,21 @@ spec:
           image: registry.prod.dh.unimaas.nl/docker-health/dabs-demo:latest
           ports:
             - containerPort: 8800
+          env:
+            - name: DABS_FEDERATION_BASE
+              value: "http://federation.zio.local.dh.unimaas.nl"
+            - name: DABS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: federation-key
+                  key: key
+            - name: DABS_BTG_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: federation-break-the-glass-key
+                  key: key
           envFrom:
+            - configMapRef:
+                name: timezone-config
             - configMapRef:
                 name: timezone-config
