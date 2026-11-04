@@ -35,5 +35,3 @@ spec:
           envFrom:
             - configMapRef:
                 name: timezone-config
-            - configMapRef:
-                name: timezone-config
