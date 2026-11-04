@@ -49,9 +49,9 @@ KNOWN_NODES = [n.strip().lower() for n in
 # The demo runs at ZIO, so we query ZIO's federation API. That determines the perspective:
 # the own node is queried without the informed-consent filter, all other nodes with it.
 # Point this at another node and the picture changes accordingly.
-FEDERATION_BASE = os.environ.get("DABS_FEDERATION_BASE", "http://federation.zio.local.dh.unimaas.nl")
-KEY_NORMAL = os.environ.get("DABS_KEY", "key2")
-KEY_BTG = os.environ.get("DABS_BTG_KEY", "btgkey2")
+FEDERATION_BASE = os.environ.get("DABS_FEDERATION_BASE", "wrongURL")
+KEY_NORMAL = os.environ.get("DABS_KEY", "wrongKEY")
+KEY_BTG = os.environ.get("DABS_BTG_KEY", "wrongBTGKey")
 
 def own_node_from_url(base: str) -> str:
     """Derives the own node from 'federation.<node>.local.dh.unimaas.nl'."""
