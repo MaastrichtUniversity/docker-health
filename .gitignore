@@ -75,3 +75,5 @@ deploy/overlays/acc/certificates/nedap-certificate-secret/*.pfx
 deploy/overlays/prod/certificates/nedap-certificate-secret/*.pfx
 # Ignore opencode.json
 opencode.json
+deploy/overlays/tst/certificates/epic-certificate-secret/*.pem
+deploy/overlays/tst/certificates/nedap-certificate-secret/*.pfx
