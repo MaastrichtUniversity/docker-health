@@ -21,7 +21,7 @@ spec:
             - containerPort: 8800
           env:
             - name: DABS_FEDERATION_BASE
-              value: "http://federation.zio.local.dh.unimaas.nl"
+              value: "http://federation-rest.dh-health-zio:8000"
             - name: DABS_KEY
               valueFrom:
                 secretKeyRef:
