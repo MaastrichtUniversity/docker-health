@@ -3,23 +3,23 @@ kind: Kustomization
 
 images:
   - name: registry.prod.dh.unimaas.nl/docker-health/federation-rest
-    newTag: "2026.1.4"
+    newTag: "demo"
   - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-rest
-    newTag: "2026.1.4"
+    newTag: "demo"
   - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-test
-    newTag: "2026.1.4"
+    newTag: "demo"
   - name: registry.prod.dh.unimaas.nl/docker-health/etl-zib-pipeline
-    newTag: "2026.1.4"
+    newTag: "demo"
   - name: registry.prod.dh.unimaas.nl/docker-health/portal
-    newTag: "2026.1.4"
+    newTag: "demo"
   - name: registry.prod.dh.unimaas.nl/docker-health/transform-rest
-    newTag: "2026.1.4"
+    newTag: "demo"
   - name: registry.prod.dh.unimaas.nl/docker-health/terminology-server-proxy
-    newTag: "2026.1.4"
+    newTag: "demo"
   - name: registry.prod.dh.unimaas.nl/docker-health/init-container
-    newTag: "2026.1.4"
+    newTag: "demo"
   - name: registry.prod.dh.unimaas.nl/docker-health/dabs-demo
-    newTag: "2026.1.4"
+    newTag: "demo"
 
 resources:
   # DHP resources
